@@ -1,0 +1,11 @@
+@import 'tailwind/components';
+
+@layer components {
+  .highlight {
+    @apply text-base font-bold md:text-lg;
+  }
+
+  .capation {
+    @apply text-sm md:text-sm;
+  }
+}
