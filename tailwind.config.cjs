@@ -13,7 +13,7 @@ module.exports = {
     },
     extend: {
       colors: {
-        // bg: '#FFC37D',
+        bg: '#4D4D4D',
         primary: '#B7EC5D',
         'primary-dark': '#648D1E',
         'primary-frame': 'rgba(183, 236, 93, 0.3)',

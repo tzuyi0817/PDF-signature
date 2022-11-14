@@ -12,7 +12,7 @@ Clone this repository and install dependencies by running `pnpm`(Node.js version
 - `pnpm build`: Build in production mode
 - `pnpm preview`: Run preview
 
-## Project files
+## Project Files
 
 <!-- ```text
 src/
