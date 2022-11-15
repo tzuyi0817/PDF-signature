@@ -7,8 +7,13 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/',
-    name: 'Index',
+    name: 'index',
     component: () => import('@/pages/Index.vue')
+  },
+  {
+    path: '/upload',
+    name: 'upload',
+    component: () => import('@/pages/upload.vue')
   },
 ];
 

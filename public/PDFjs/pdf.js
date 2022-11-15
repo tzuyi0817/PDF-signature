@@ -1152,7 +1152,7 @@ async function _fetchDocument(worker, source, pdfDataRangeTransport, docId) {
   }
   const workerId = await worker.messageHandler.sendWithPromise("GetDocRequest", {
     docId,
-    apiVersion: '3.1.34',
+    apiVersion: '3.1.45',
     data: source.data,
     password: source.password,
     disableAutoFetch: source.disableAutoFetch,
@@ -2811,9 +2811,9 @@ class InternalRenderTask {
     }
   }
 }
-const version = '3.1.34';
+const version = '3.1.45';
 exports.version = version;
-const build = 'bfe6ff589';
+const build = '859335a1a';
 exports.build = build;
 
 /***/ }),
@@ -6792,7 +6792,7 @@ class CanvasGraphics {
     const currentTransform = (0, _display_utils.getCurrentTransform)(ctx);
     ctx.transform(scaleX, skewX, skewY, scaleY, 0, 0);
     const mask = this._createMaskCanvas(img);
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.setTransform(1, 0, 0, 1, mask.offsetX - currentTransform[4], mask.offsetY - currentTransform[5]);
     for (let i = 0, ii = positions.length; i < ii; i += 2) {
       const trans = _util.Util.transform(currentTransform, [scaleX, skewX, skewY, scaleY, positions[i], positions[i + 1]]);
       const [x, y] = _util.Util.applyTransform([0, 0], trans);
@@ -15595,8 +15595,8 @@ var _is_node = __w_pdfjs_require__(12);
 var _text_layer = __w_pdfjs_require__(29);
 var _svg = __w_pdfjs_require__(30);
 var _xfa_layer = __w_pdfjs_require__(28);
-const pdfjsVersion = '3.1.34';
-const pdfjsBuild = 'bfe6ff589';
+const pdfjsVersion = '3.1.45';
+const pdfjsBuild = '859335a1a';
 {
   if (_is_node.isNodeJS) {
     const {

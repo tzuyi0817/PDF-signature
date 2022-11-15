@@ -1,0 +1,7 @@
+@import 'tailwindcss/components';
+
+@layer components {
+  .layout {
+    @apply pt-14 px-[10px];
+  }
+}

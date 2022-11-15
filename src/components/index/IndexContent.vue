@@ -30,20 +30,8 @@ const currentCom = computed(() => {
 </script>
 
 <template>
-  <div class="index_content">
-    <h5 class="border-b-2 border-primary py-1 px-4">{{ title }}</h5>
+  <div class="index_content content">
+    <h5 class="title">{{ title }}</h5>
     <component :is="currentCom"></component>
   </div>
 </template>
-
-<style lang="postcss" scoped>
-.index_content {
-  @apply
-  w-full
-  h-[calc(100vh-120px)]
-  bg-white
-  p-3
-  shadow-[inset_0px_2px_4px_rgba(135,135,135,0.35),inset_0px_5px_8px_rgba(215,215,215,0.3),inset_0px_-2px_4px_rgba(135,135,135,0.65),inset_0px_-6px_6px_rgba(215,215,215,0.55)]
-  rounded-[20px];
-}
-</style>
