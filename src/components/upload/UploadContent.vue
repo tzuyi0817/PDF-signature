@@ -1,14 +1,19 @@
 <script setup lang="ts">
 import { ref, defineAsyncComponent, onMounted } from 'vue';
+import { usePdfStore } from '@/store';
 import SignStepBtn from '@/components/SignStepBtn.vue';
 import useFabric from '@/hooks/useFabric';
 import toast from '@/utils/toast';
+import useRedirect from '@/hooks/useRedirect';
 
 const isShowWarnPopup = ref(false);
 const isNextDisabled = ref(true);
-const fileNme = ref('');
+const fileName = ref('');
+const projectName = ref('');
+const isShowPen = ref(true);
 const SignPopup = defineAsyncComponent(() => import('@/components/SignPopup.vue'));
-const { createCanvas, drawPDF, drawImage } = useFabric('canvas');
+const { createCanvas, drawPDF, drawImage, pages, currentId } = useFabric('canvas');
+const { goBack } = useRedirect();
 
 function toggleWarnPopup(isOpen: boolean) {
   isShowWarnPopup.value = isOpen;
@@ -20,17 +25,35 @@ function nextStep() {
 
 async function uploadFile(event: Event) {
   const MAX_SIZE = 20 * 1024 * 1024;
-  const { files } = event.target as HTMLInputElement;
+  const target = event.target as HTMLInputElement;
+  const { files } = target;
   if (!files) return;
   const file = files[0];
-  console.log({ file })
+  console.log({ file });
+
   if (file.size > MAX_SIZE) {
-    toast.showToast('檔案大小超過20MB', 'error');
-    return;
+    target.value = '';
+    return toast.showToast('檔案大小超過20MB', 'error');
   }
   file.type === 'application/pdf' ? await drawPDF(file) : drawImage(file);
   toast.showToast('檔案上傳成功', 'success');
-  fileNme.value = file.name;
+  fileName.value = file.name;
+  projectName.value = file.name.replace(/.pdf|.png|.jpg/, '');
+  target.value = '';
+}
+
+function remove() {
+  usePdfStore().removePDF(currentId.value);
+  fileName.value = '';
+}
+
+function focus() {
+  isShowPen.value = false; 
+}
+
+function blur() {
+  isShowPen.value = true;
+  usePdfStore().updatePDF(currentId.value, projectName.value);
 }
 
 onMounted(createCanvas);
@@ -39,13 +62,25 @@ onMounted(createCanvas);
 <template>
   <div class="upload_content content">
     <h5 class="title text-center">上傳檔案</h5>
+    <div v-show="fileName" class="upload_content_box">
+      <div class="relative flex flex-col gap-2 items-center">
+        <img src="@/assets/icon/ic_close.svg" alt="" class="absolute -right-8 -top-8" @click="remove" />
+        <canvas id="canvas" class="border-2 border-gray-20"></canvas>
+        <h5>{{ fileName }}</h5>
+        <p class="text-gray-40">{{ pages }}頁</p>
+      </div>
 
-    <div v-show="fileNme" class="upload_content_box">
-      <canvas id="canvas" class="border-2 border-gray-20"></canvas>
+      <div class="w-full flex flex-col gap-4 items-center">
+        <p>專案名稱</p>
+        <label class="w-[90%] relative">
+          <input type="text" v-model.trim="projectName" class="input" @focus="focus" @blur="blur" />
+          <img v-show="isShowPen" src="@/assets/icon/ic_edit.svg" alt="" class="absolute right-1 top-[2px]" />
+        </label>
+      </div>
     </div>
 
-    <div v-if="!fileNme" class="upload_content_box border-dashed border-secondary border-[1px]">
-      <img src="@/assets/img/img_photo.svg" alt="">
+    <div v-if="!fileName" class="upload_content_box border-dashed border-secondary border-[1px]">
+      <img src="@/assets/img/img_photo.svg" alt="" />
       <button class="btn btn_primary">
         <input
           type="file"
@@ -62,7 +97,7 @@ onMounted(createCanvas);
       <p class="text-center">確定要放棄編輯文件?</p>
       <div class="flex justify-between">
         <button class="btn btn_base" @click="toggleWarnPopup(false)">先不要</button>
-        <button class="btn btn_primary">放棄</button>
+        <button class="btn btn_primary" @click="goBack">放棄</button>
       </div>
     </sign-popup>
   </div>
@@ -75,11 +110,13 @@ onMounted(createCanvas);
     my-[20px]
     mx-[10px]
     rounded-[20px]
+    pt-12
     flex
     flex-col
     justify-center
     items-center
     gap-7
+    overflow-y-auto
     w-[calc(100%-20px)]
     h-[calc(100%-128px)];
   }

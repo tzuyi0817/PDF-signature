@@ -5,7 +5,7 @@
     @apply text-base font-bold md:text-lg;
   }
 
-  .capation {
+  .caption {
     @apply text-sm md:text-sm;
   }
 }

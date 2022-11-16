@@ -13,7 +13,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/upload',
     name: 'upload',
-    component: () => import('@/pages/upload.vue')
+    component: () => import('@/pages/Upload.vue')
   },
 ];
 

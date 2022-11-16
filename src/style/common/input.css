@@ -1,0 +1,20 @@
+@import 'tailwindcss/components';
+@import './text.css';
+
+@layer components {
+  .input {
+    @apply
+    w-full
+    border-2
+    border-gray-20
+    rounded-[50px]
+    px-6
+    py-[6px]
+    transition-colors
+    duration-500
+    focus:shadow-primary
+    focus:shadow
+    focus:border-primary
+    focus:outline-primary;
+  }
+}

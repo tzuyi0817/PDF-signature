@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { storeToRefs } from 'pinia';
+import { usePdfStore } from '@/store';
 import useRedirect from '@/hooks/useRedirect';
+import SignFiles from '@/components/SignFiles.vue';
 
-const files = reactive([]);
 const { goPage } = useRedirect();
+const { PDFList } = storeToRefs(usePdfStore());
 </script>
 
 <template>
   <div class="index_files">
-    <ul v-if="files.length">
-      <li v-for="file in files"></li>
-    </ul>
+    <sign-files v-if="PDFList.length" type="file" :list="PDFList" />
 
-    <div v-else class="flex flex-col items-center gap-5">
+    <div v-else class="h-full flex flex-col items-center justify-center gap-5">
       <img
         src="@/assets/icon/ic_add_dark.svg"
         alt=""
@@ -28,7 +28,7 @@ const { goPage } = useRedirect();
 
 <style lang="postcss" scoped>
 .index_files {
-  @apply flex items-center justify-center h-[calc(100%-38px)];
+  @apply h-[calc(100%-38px)];
   &_add {
     @apply cursor-pointer transition-transform duration-500 hover:scale-90;
   }
