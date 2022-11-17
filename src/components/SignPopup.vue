@@ -1,13 +1,19 @@
 <script setup lang="ts">
+import { onMounted, ComponentInternalInstance } from 'vue';
+
 interface Props {
   title: string;
+  instance?: ComponentInternalInstance | null;
 }
 
 const props = defineProps<Props>();
+const emit = defineEmits(['childMounted']);
+
+onMounted(() => emit('childMounted'));
 </script>
 
 <template>
-  <div class="sign_popup">
+  <div class="sign_popup mask">
     <div class="sign_popup_box">
       <h5 class="border-b-2 border-primary py-1 px-4 text-center">{{ title }}</h5>
       <slot></slot>
@@ -17,13 +23,12 @@ const props = defineProps<Props>();
 
 <style lang="postcss" scoped>
 .sign_popup {
-  @apply fixed top-0 left-0 w-full h-full bg-black/50 flex items-center justify-center;
+  @apply bg-black/50 flex items-center justify-center;
   &_box {
     @apply
     w-[90%]
-    h-[40%]
     max-w-[530px]
-    max-h-[335px]
+    min-h-[335px]
     px-8
     pt-4
     pb-7

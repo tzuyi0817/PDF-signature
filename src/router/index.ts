@@ -15,6 +15,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'upload',
     component: () => import('@/pages/Upload.vue')
   },
+  {
+    path: '/signature',
+    name: 'signature',
+    component: () => import('@/pages/Signature.vue')
+  },
 ];
 
 const router = createRouter({

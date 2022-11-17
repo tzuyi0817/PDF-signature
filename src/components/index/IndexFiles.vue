@@ -18,7 +18,7 @@ const { PDFList } = storeToRefs(usePdfStore());
         alt=""
         width="80"
         height="80"
-        class="index_files_add"
+        class="iconScale"
         @click="goPage('upload')"
       />
       <h2>快來建立新檔吧</h2>
@@ -29,8 +29,5 @@ const { PDFList } = storeToRefs(usePdfStore());
 <style lang="postcss" scoped>
 .index_files {
   @apply h-[calc(100%-38px)];
-  &_add {
-    @apply cursor-pointer transition-transform duration-500 hover:scale-90;
-  }
 }
 </style>

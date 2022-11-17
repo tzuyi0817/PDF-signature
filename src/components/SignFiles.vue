@@ -55,14 +55,20 @@ function clear() {
         @blur="blur"
       />
     </label>
-    <ul class="w-[90%]">
-      <sign-file v-for="(PDF, index) in search" :key="PDF.PDFId" :file="PDF" :index="index" />
+    <ul class="w-full h-[calc(100%-60px)] overflow-y-auto gap-6 px-[5%]">
+      <sign-file
+        v-for="(PDF, index) in search"
+        :key="PDF.PDFId"
+        :file="PDF"
+        :index="index"
+        :type="type"
+      />
     </ul>
   </div>
 </template>
 
 <style lang="postcss" scoped>
 .sign_files {
-  @apply w-full flex flex-col items-center;
+  @apply w-full flex flex-col items-center h-full;
 }
 </style>

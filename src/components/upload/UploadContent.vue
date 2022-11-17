@@ -1,27 +1,17 @@
 <script setup lang="ts">
-import { ref, defineAsyncComponent, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { usePdfStore } from '@/store';
 import SignStepBtn from '@/components/SignStepBtn.vue';
 import useFabric from '@/hooks/useFabric';
 import toast from '@/utils/toast';
-import useRedirect from '@/hooks/useRedirect';
+import useWarnPopup from '@/hooks/useWarnPopup';
 
-const isShowWarnPopup = ref(false);
 const isNextDisabled = ref(true);
 const fileName = ref('');
 const projectName = ref('');
 const isShowPen = ref(true);
-const SignPopup = defineAsyncComponent(() => import('@/components/SignPopup.vue'));
-const { createCanvas, drawPDF, drawImage, pages, currentId } = useFabric('canvas');
-const { goBack } = useRedirect();
-
-function toggleWarnPopup(isOpen: boolean) {
-  isShowWarnPopup.value = isOpen;
-}
-
-function nextStep() {
-  console.log('nextStep');
-}
+const { createCanvas, drawPDF, drawImage, pages } = useFabric('canvas');
+const { isShowWarnPopup, SignPopup, goBack, goPage, toggleWarnPopup } = useWarnPopup();
 
 async function uploadFile(event: Event) {
   const MAX_SIZE = 20 * 1024 * 1024;
@@ -40,11 +30,18 @@ async function uploadFile(event: Event) {
   fileName.value = file.name;
   projectName.value = file.name.replace(/.pdf|.png|.jpg/, '');
   target.value = '';
+  isNextDisabled.value = false;
 }
 
 function remove() {
-  usePdfStore().removePDF(currentId.value);
   fileName.value = '';
+  usePdfStore().setCurrentPDF({
+    PDFId: '',
+    name: '',
+    updateDate: 0,
+    PDFBase64: '',
+    pages: 0,
+  });
 }
 
 function focus() {
@@ -53,7 +50,7 @@ function focus() {
 
 function blur() {
   isShowPen.value = true;
-  usePdfStore().updatePDF(currentId.value, projectName.value);
+  usePdfStore().setCurrentPDFName(projectName.value);
 }
 
 onMounted(createCanvas);
@@ -92,7 +89,7 @@ onMounted(createCanvas);
       <p class="tracking-wider text-gray-40 px-4 text-center">僅支援 PDF、JPG、PNG 檔案 , 且容量不超過 20MB。</p>
     </div>
 
-    <sign-step-btn :isNextDisabled="isNextDisabled" @nextStep="nextStep" @prevStep="toggleWarnPopup(true)" />
+    <sign-step-btn :isNextDisabled="isNextDisabled" @nextStep="goPage('signature')" @prevStep="toggleWarnPopup(true)" />
     <sign-popup title="警告" v-if="isShowWarnPopup">
       <p class="text-center">確定要放棄編輯文件?</p>
       <div class="flex justify-between">
@@ -119,9 +116,6 @@ onMounted(createCanvas);
     overflow-y-auto
     w-[calc(100%-20px)]
     h-[calc(100%-128px)];
-  }
-  &_footer {
-    @apply flex justify-between;
   }
 }
 </style>

@@ -36,7 +36,7 @@ const currentCom = computed(() => {
     <img
         src="@/assets/icon/ic_add_tint.svg"
         alt=""
-        class="index_content_add"
+        class="index_content_add iconScale"
         @click="goPage('upload')"
       />
     <h5 class="title">{{ title }}</h5>
@@ -53,10 +53,6 @@ const currentCom = computed(() => {
     absolute
     right-3
     -top-8
-    cursor-pointer
-    transition-transform
-    duration-500
-    hover:scale-90
     md:w-20
     md:h-20;
   }

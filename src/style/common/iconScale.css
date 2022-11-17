@@ -1,0 +1,7 @@
+@import 'tailwindcss/components';
+
+@layer components {
+  .iconScale {
+    @apply cursor-pointer transition-transform duration-500 hover:scale-90;
+  }
+}

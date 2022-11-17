@@ -8,10 +8,18 @@ const props = defineProps<Props>();
 
 <template>
   <div class="sign_step">
-    <div :class="['sign_step_dot', { 'sign_step_dot-light': status === 'upload' }]"></div>
-    <div class="sign_step_line"></div>
-    <div :class="['sign_step_dot', { 'sign_step_dot-light': status === 'sign' }]"></div>
-    <div class="sign_step_line"></div>
+    <div :class="[
+      'sign_step_dot',
+      { 'sign_step_dot-light': status === 'upload' },
+      { 'sign_step_dot-complete': status === 'sign' || status === 'complete' },
+    ]"></div>
+    <div :class="['sign_step_line', status === 'sign' || status === 'complete' ? 'bg-primary' : 'bg-gray-40']"></div>
+    <div :class="[
+      'sign_step_dot',
+      { 'sign_step_dot-light': status === 'sign' },
+      { 'sign_step_dot-complete': status === 'complete' },
+    ]"></div>
+    <div :class="['sign_step_line', status === 'complete' ? 'bg-primary' : 'bg-gray-40']"></div>
     <div :class="['sign_step_dot', { 'sign_step_dot-light': status === 'complete' }]"></div>
   </div>
 </template>
@@ -24,9 +32,12 @@ const props = defineProps<Props>();
     &-light {
       @apply border-primary shadow-[0px_0px_0px_4px_rgba(183,236,93,0.5)];
     }
+    &-complete {
+      @apply border-primary bg-primary;
+    }
   }
   &_line {
-    @apply bg-gray-40 w-[90px] h-[2px];
+    @apply w-[90px] h-[2px];
   }
 }
 </style>

@@ -10,8 +10,17 @@
     shadow-[inset_0px_2px_4px_rgba(135,135,135,0.35),inset_0px_5px_8px_rgba(215,215,215,0.3),inset_0px_-2px_4px_rgba(135,135,135,0.65),inset_0px_-6px_6px_rgba(215,215,215,0.55)]
     relative
     rounded-[20px];
-    .title {
-      @apply border-b-2 border-primary py-1 px-4;
+  }
+  .toolbar {
+    @apply m-4 flex justify-center items-center gap-6;
+    li {
+      @apply cursor-pointer;
     }
+    img {
+      @apply w-7;
+    }
+  }
+  .title {
+    @apply border-b-2 border-primary py-1 px-4;
   }
 }

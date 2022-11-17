@@ -4,19 +4,20 @@ import { createImageSrc } from '@/utils/image';
 
 interface Props {
   icon: string;
-  customClass: string;
+  customClass?: string;
+  isActive?: boolean;
 }
 
 const props = defineProps<Props>();
 const hover = computed(() => {
   return `url('${createImageSrc(`icon/ic_${props.icon}_h.svg`)}')`;
-})
+});
 </script>
 
 <template>
   <img
-    :src="createImageSrc(`icon/ic_${icon}.svg`)"
-    :class="['bg-contain cursor-pointer', customClass]"
+    :src="createImageSrc(`icon/ic_${icon}${isActive ? '_h' : '' }.svg`)"
+    :class="['bg-contain cursor-pointer transition-opacity duration-500', customClass]"
   />
 </template>
 

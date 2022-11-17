@@ -4,23 +4,34 @@ import { printPDF, getPDFDocument } from '@/utils/pdfJs';
 import { usePdfStore } from '@/store';
 import type { PDF } from '@/types/pdf';
 
-const fabricMap = new Map();
+interface SpecifyPageArgs {
+  page: number;
+  PDF: Omit<PDF, 'pages'> | PDF;
+  scale?: number;
+}
+
+const fabricMap = new Map<string, fabric.Canvas>();
 
 export default function useFabric(id: string) {
-  const currentId = ref('');
   const pages = ref(1);
 
   function createCanvas() {
-    if (fabricMap.has(id)) return;
-    fabricMap.set(id, new fabric.Canvas(id));
+    if (fabricMap.has(id)) {
+      return fabricMap.get(id)?.initialize(id);
+    }
+    const canvas = new fabric.Canvas(id);
+
+    fabricMap.set(id, canvas);
+    return canvas;
   }
 
   async function drawPDF(file: File) {
     const canvas = fabricMap.get(id);
-
+    if (!canvas) return;
     canvas.requestRenderAll();
     const PDFBase64 = await printPDF(file);
     if (!PDFBase64) return;
+    const { setCurrentPDF } = usePdfStore();
     const now = Date.now();
     const PDFId = `${file.name}${now}`;
     const PDF = {
@@ -30,14 +41,14 @@ export default function useFabric(id: string) {
       PDFBase64,
     };
 
-    await specifyPage(1, PDF);
-    currentId.value = PDFId;
+    await specifyPage({ page: 1, PDF });
+    setCurrentPDF({ ...PDF, pages: pages.value });
   }
 
-  async function specifyPage(page: number, PDF: Omit<PDF, 'pages'> | PDF) {
+  async function specifyPage({ page, PDF, scale = 1 }: SpecifyPageArgs) {
     const pdfDoc = await getPDFDocument(PDF.PDFBase64);
     const pdfPage = await toRaw(pdfDoc).getPage(page);
-    const viewport = pdfPage.getViewport({ scale: 1 });
+    const viewport = pdfPage.getViewport({ scale });
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
     const renderContext = {
@@ -45,17 +56,16 @@ export default function useFabric(id: string) {
       viewport,
     };
     const renderTask = pdfPage.render(renderContext);
-    const { addPDF } = usePdfStore();
 
     canvas.height = viewport.height;
     canvas.width = viewport.width;
-    renderTask.promise.then(() => renderPDF(canvas));
     pages.value = pdfDoc.numPages;
-    addPDF({ ...PDF, pages: pdfDoc.numPages });
+    return renderTask.promise.then(() => renderPDF(canvas));
   }
 
   function renderPDF(pdfCanvas: HTMLCanvasElement) {
     const canvas = fabricMap.get(id);
+    if (!canvas) return;
     const pdfImage = pdfToImage(pdfCanvas);
 
     canvas.setWidth(pdfImage.width! / window.devicePixelRatio);
@@ -87,6 +97,5 @@ export default function useFabric(id: string) {
     removeCanvas,
     specifyPage,
     pages,
-    currentId,
   }
 }
