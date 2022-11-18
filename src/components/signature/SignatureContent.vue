@@ -5,15 +5,24 @@ import { usePdfStore } from '@/store';
 import SignIcon from '@/components/SignIcon.vue';
 import SignStepBtn from '@/components/SignStepBtn.vue';
 import SignatureSign from '@/components/signature/SignatureSign.vue';
+import SignatureImage from '@/components/signature/SignatureImage.vue';
+import SignatureLiteral from '@/components/signature/SignatureLiteral.vue';
 import useWarnPopup from '@/hooks/useWarnPopup';
 import useFabric from '@/hooks/useFabric';
 
-const isNextDisabled = ref(true);
 const isShowSign = ref(false);
+const isShowImage = ref(false);
+const isShowLiteral = ref(false);
 const currentPage = ref(1);
 const { currentPDF } = storeToRefs(usePdfStore());
-const { isShowWarnPopup, SignPopup, goBack, goPage, toggleWarnPopup } = useWarnPopup();
-const { createCanvas, specifyPage } = useFabric('canvas');
+const { isShowWarnPopup, SignPopup, goBack, toggleWarnPopup } = useWarnPopup();
+const {
+  isShowWarnPopup: isShowNextWarnPopup,
+  SignPopup: NextWarnPopup,
+  goPage,
+  toggleWarnPopup: toggleNextWarnPopup,
+} = useWarnPopup();
+const { createCanvas, specifyPage, addFabric, addTextFabric } = useFabric('canvas');
 
 function setPDF() {
   createCanvas();
@@ -28,6 +37,14 @@ function showSign() {
   isShowSign.value = true;
 }
 
+function showImage() {
+  isShowImage.value = true;
+}
+
+function showLiteral() {
+  isShowLiteral.value = true;
+}
+
 onMounted(setPDF)
 </script>
 
@@ -37,8 +54,8 @@ onMounted(setPDF)
 
     <ul class="toolbar">
       <li><sign-icon icon="sign" @click="showSign" /></li>
-      <li><sign-icon icon="pic" @click="" /></li>
-      <li><sign-icon icon="text" @click="" /></li>
+      <li><sign-icon icon="pic" @click="showImage" /></li>
+      <li><sign-icon icon="text" @click="showLiteral" /></li>
       <li><sign-icon icon="page" @click="" /></li>
     </ul>
 
@@ -48,7 +65,7 @@ onMounted(setPDF)
       </div>
     </div>
 
-    <sign-step-btn :isNextDisabled="isNextDisabled" @nextStep="goPage('signature')" @prevStep="toggleWarnPopup(true)" />
+    <sign-step-btn :isNextDisabled="false" @nextStep="toggleNextWarnPopup(true)" @prevStep="toggleWarnPopup(true)" />
     <sign-popup title="警告" v-if="isShowWarnPopup">
       <p class="text-center">確定要放棄已編輯的內容?</p>
       <div class="flex justify-between">
@@ -56,7 +73,17 @@ onMounted(setPDF)
         <button class="btn btn_primary" @click="goBack">放棄</button>
       </div>
     </sign-popup>
-    <signature-sign v-model:isShowSign="isShowSign" />
+
+    <signature-sign v-model:isShowSign="isShowSign" @useSignature="addFabric" />
+    <signature-image v-model:isShowImage="isShowImage" @useImage="addFabric" />
+    <signature-literal v-model:isShowLiteral="isShowLiteral" @useLiteral="addTextFabric" />
+    <next-warn-popup title="警告" v-if="isShowNextWarnPopup">
+      <p class="text-center">確定要已完成簽署文件?</p>
+      <div class="flex justify-between">
+        <button class="btn btn_base" @click="toggleNextWarnPopup(false)">先不要</button>
+        <button class="btn btn_primary" @click="">確定</button>
+      </div>
+    </next-warn-popup>
   </div>
 </template>
 

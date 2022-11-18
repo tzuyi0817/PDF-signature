@@ -34,7 +34,7 @@ export default defineStore('pdf_signature_pdf', {
       return this.PDFList.find(item => item.PDFId === id);
     },
     addPDF(PDF: PDF) {
-      this.PDFList.push(PDF);
+      this.PDFList.unshift(PDF);
     },
     updatePDF(id: string, PDF: PDF) {
       const index = this.PDFList.findIndex(item => item.PDFId === id);

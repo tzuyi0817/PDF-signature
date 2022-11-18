@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { onMounted, ComponentInternalInstance } from 'vue';
+import { onMounted } from 'vue';
 
 interface Props {
   title: string;
-  instance?: ComponentInternalInstance | null;
 }
 
 const props = defineProps<Props>();
@@ -28,7 +27,7 @@ onMounted(() => emit('childMounted'));
     @apply
     w-[90%]
     max-w-[530px]
-    min-h-[335px]
+    min-h-[261px]
     px-8
     pt-4
     pb-7

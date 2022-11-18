@@ -10,14 +10,11 @@ const defaultState: SignatureStore = {
 
 export default defineStore('pdf_signature_signature', {
   state: () => ({ ...defaultState }),
-  getters: {
-
-  },
   actions: {
     addSignature(signature: string) {
-      this.signatureList.push(signature);
+      this.signatureList.unshift(signature);
     },
-    removeSignature(signature: string) {
+    deleteSignature(signature: string) {
       this.signatureList = this.signatureList.filter(sign => sign !== signature);
     }
   },
