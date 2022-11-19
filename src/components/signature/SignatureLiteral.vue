@@ -20,7 +20,7 @@ const { literalList } = storeToRefs(useLiteralStore());
 const { isShowWarnPopup, SignPopup, toggleWarnPopup } = useWarnPopup();
 
 function useLiteral() {
-  emit('useLiteral', currentSelect.value);
+  emit('useLiteral', currentSelect.value, 'text');
   close();
 }
 

@@ -20,6 +20,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'signature',
     component: () => import('@/pages/Signature.vue')
   },
+  {
+    path: '/complete',
+    name: 'complete',
+    component: () => import('@/pages/Complete.vue')
+  },
 ];
 
 const router = createRouter({

@@ -5,7 +5,7 @@ export default {
   status: ref('success'),
   isShowToast: ref(false),
   timer: null as NodeJS.Timeout | null,
-  showToast(msg: string, status: string, time = 1800) {
+  showToast(msg: string, status: 'success' | 'error', time = 1800) {
     this.timer && clearTimeout(this.timer);
     this.msg.value = msg;
     this.status.value = status;

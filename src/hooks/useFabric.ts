@@ -1,12 +1,17 @@
 import { ref, toRaw } from 'vue';
 import { fabric } from 'fabric';
-import { printPDF, getPDFDocument } from '@/utils/pdfJs';
+import { printPDF, getPDFDocument, readBlob } from '@/utils/pdfJs';
 import { usePdfStore } from '@/store';
 import type { PDF } from '@/types/pdf';
 
 interface SpecifyPageArgs {
   page: number;
   PDF: Omit<PDF, 'pages'> | PDF;
+  scale?: number;
+}
+
+interface RenderImageArgs {
+  url: string;
   scale?: number;
 }
 
@@ -62,30 +67,53 @@ export default function useFabric(id: string) {
     canvas.height = viewport.height;
     canvas.width = viewport.width;
     pages.value = pdfDoc.numPages;
-    return renderTask.promise.then(() => renderPDF(canvas));
+    return renderTask.promise.then(() => renderCanvas(canvas));
   }
 
-  function renderPDF(pdfCanvas: HTMLCanvasElement) {
+  function renderCanvas(canvasTemp: HTMLCanvasElement) {
     const canvas = fabricMap.get(id);
     if (!canvas) return;
-    const pdfImage = pdfToImage(pdfCanvas);
+    const image = canvasToImage(canvasTemp);
 
-    canvas.setWidth(pdfImage.width! / window.devicePixelRatio);
-    canvas.setHeight(pdfImage.height! / window.devicePixelRatio);
-    canvas.setBackgroundImage(pdfImage, canvas.renderAll.bind(canvas));
+    canvas.setWidth(image.width! / window.devicePixelRatio);
+    canvas.setHeight(image.height! / window.devicePixelRatio);
+    canvas.setBackgroundImage(image, canvas.renderAll.bind(canvas));
   }
 
-  function pdfToImage(pdfData: HTMLCanvasElement) {
+  function canvasToImage(canvasTemp: HTMLCanvasElement) {
     const scale = 1 / window.devicePixelRatio;
   
-    return new fabric.Image(pdfData, {
+    return new fabric.Image(canvasTemp, {
       scaleX: scale,
       scaleY: scale,
     });
   }
   
-  function drawImage(file: File) {
-  
+  async function drawImage(file: File) {
+    const base64 = await readBlob(file) as string;
+    const { setCurrentPDF } = usePdfStore();
+    const now = Date.now();
+    const PDFId = `${file.name}${now}`;
+    const PDF = {
+      PDFId,
+      name: file.name.replace(/.png|.jpg|.jpeg/, ''),
+      updateDate: now,
+      PDFBase64: base64,
+    };
+
+    renderImage({ url: base64 });
+    setCurrentPDF({ ...PDF, pages: pages.value });
+  }
+
+  function renderImage({ url, scale = 0.5 }: RenderImageArgs) {
+    const canvas = fabricMap.get(id);
+    if (!canvas) return;
+    fabric.Image.fromURL(url, (image) => {
+      image.scale(scale)
+      canvas.setWidth(image.width! * scale);
+      canvas.setHeight(image.height! * scale);
+      canvas.setBackgroundImage(image, canvas.renderAll.bind(canvas));
+    });
   }
 
   function addFabric(src: string) {
@@ -172,7 +200,7 @@ export default function useFabric(id: string) {
   }
 
   function clearPool(canvas: fabric.Canvas) {
-    fabricImagePool.forEach(image => canvas.remove(image));
+    fabricImagePool.forEach(image => deleteIcon(canvas, image));
   }
 
   function removeCanvas(id: string) {
@@ -185,6 +213,7 @@ export default function useFabric(id: string) {
     drawImage,
     removeCanvas,
     specifyPage,
+    renderImage,
     addFabric,
     addTextFabric,
     pages,

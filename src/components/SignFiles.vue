@@ -14,9 +14,7 @@ const props = defineProps<Props>();
 const keyword = ref('');
 const searchIconColor = ref('#CCCCCC');
 const isShowClose = computed(() => keyword.value);
-const search = computed(() => {
-  return props.list.filter(({ name }) => name.includes(keyword.value));
-});
+const search = computed(() => props.list.filter(({ name }) => name.includes(keyword.value)));
 
 function focus() {
   searchIconColor.value = '#B7EC5D';
@@ -55,7 +53,8 @@ function clear() {
         @blur="blur"
       />
     </label>
-    <ul class="w-full h-[calc(100%-60px)] overflow-y-auto gap-6 px-[5%]">
+
+    <ul v-if="search.length" class="w-full h-[calc(100%-60px)] overflow-y-auto gap-6 px-[5%]">
       <sign-file
         v-for="(PDF, index) in search"
         :key="PDF.PDFId"
@@ -64,6 +63,11 @@ function clear() {
         :type="type"
       />
     </ul>
+  
+    <div v-else class="w-[80%] h-[calc(100%-60px)] flex flex-col items-center justify-center gap-10">
+      <img src="@/assets/img/img_search.svg" alt="" />
+      <h3 class="text-gray-40 text-center">找不到任何符合搜尋條件的項目</h3>
+    </div>
   </div>
 </template>
 

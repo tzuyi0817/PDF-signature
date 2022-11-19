@@ -14,3 +14,19 @@ export function deepClone<T extends Record<any, any>>(obj: T, hash = new WeakMap
   });
   return clone;
 }
+
+export function debounce(fun: Function, time = 500) {
+  let timer: NodeJS.Timeout | null = null;
+
+  return function (this: () => unknown, ...args: unknown[]) {
+    timer && clearTimeout(timer);
+    timer = setTimeout(() => {
+      fun.apply(this, args);
+      timer = null;
+    }, time);
+  }
+}
+
+export function sleep(time = 500) {
+  return new Promise(resolve => setTimeout(resolve, time));
+}

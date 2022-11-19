@@ -10,6 +10,8 @@ export interface PDF {
 	updateDate: number;
 	PDFBase64: string;
 	pages: number;
+	canvas?: string[];
+	trashDate?: number;
 }
 /**
  * Document initialization / loading parameters object.

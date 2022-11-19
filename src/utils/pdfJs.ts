@@ -14,7 +14,7 @@ export async function getPDFDocument(data: string): Promise<PDFDocumentProxy> {
   return await window.pdfjsLib.getDocument({ data }).promise;
 }
 
-function readBlob(file: File): Promise<FileReader['result']> {
+export function readBlob(file: File): Promise<FileReader['result']> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.addEventListener('load', () => resolve(reader.result));

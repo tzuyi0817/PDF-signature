@@ -4,6 +4,8 @@ import type { PDF } from '@/types/pdf';
 interface PDFStore {
   currentPDF: PDF;
   PDFList: PDF[];
+  archiveList: PDF[];
+  trashList: PDF[];
 }
 
 const defaultState: PDFStore = {
@@ -13,9 +15,12 @@ const defaultState: PDFStore = {
     updateDate: 0,
     PDFBase64: '',
     pages: 0,
+    canvas: [],
+    trashDate: 0,
   },
   PDFList: [],
-  // archiveList: [],
+  archiveList: [],
+  trashList: [],
 };
 
 export default defineStore('pdf_signature_pdf', {
@@ -30,29 +35,51 @@ export default defineStore('pdf_signature_pdf', {
     setCurrentPDFName(name: string) {
       this.currentPDF.name = name;
     },
-    getPDF(id: string) {
-      return this.PDFList.find(item => item.PDFId === id);
+    setCurrentPDFCanvas(canvas: string[]) {
+      this.currentPDF.canvas = canvas;
     },
     addPDF(PDF: PDF) {
-      this.PDFList.unshift(PDF);
+      this.PDFList.unshift({ ...PDF });
     },
     updatePDF(id: string, PDF: PDF) {
       const index = this.PDFList.findIndex(item => item.PDFId === id);
       if (index === -1) return;
       this.PDFList[index] = PDF;
     },
-    removePDF(id: string) {
+    deletePDF(id: string) {
       this.PDFList = this.PDFList.filter(({ PDFId }) => id !== PDFId);
+    },
+    addArchive(PDF: PDF) {
+      this.deletePDF(PDF.PDFId);
+      this.archiveList.unshift(PDF);
+    },
+    deleteArchive(id: string) {
+      this.archiveList = this.archiveList.filter(({ PDFId }) => id !== PDFId);
+    },
+    addTrash(PDF: PDF) {
+      this.deletePDF(PDF.PDFId);
+      this.deleteArchive(PDF.PDFId);
+      this.trashList.unshift({ ...PDF, trashDate: Date.now() });
+    },
+    deleteTrash(id: string) {
+      this.trashList = this.trashList.filter(({ PDFId }) => id !== PDFId);
+    },
+    filterTrash() {
+      const MAX_DAY = 30 * 24 * 60 * 60 * 1000;
+      const now = Date.now();
+
+      this.trashList = this.trashList.filter(({ trashDate }) => {
+        return (now - trashDate!) < MAX_DAY;
+      });
     }
-    // setArchiveList(list) {
-    //   this.archiveList = list;
-    // }
   },
   persist: {
     storage: localStorage,
     paths: [
-      'PDFList',
       'currentPDF',
+      'PDFList',
+      'archiveList',
+      'trashList',
     ],
   },
 });

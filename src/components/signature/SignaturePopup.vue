@@ -5,6 +5,7 @@ interface Props {
   isShowPopup: boolean;
   title: string;
   isDisabled: boolean;
+  customUseBtnName?: string;
 }
 
 const props = defineProps<Props>();
@@ -24,7 +25,9 @@ function close() {
     </div>
     <div class="flex justify-center gap-5">
       <button class="btn btn_base" @click="close">取消</button>
-      <button class="btn btn_primary" :disabled="isDisabled" @click="emit('use')">使用</button>
+      <button class="btn btn_primary" :disabled="isDisabled" @click="emit('use')">
+        {{ customUseBtnName ?? '使用' }}
+      </button>
     </div>
   </div>
 </template>

@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed } from 'vue';
 import SignIcon from '@/components/SignIcon.vue';
-import useFabric from '@/hooks/useFabric';
+import { usePdfStore } from '@/store';
+import { downloadPDF } from '@/utils/jspdf';
 import type { MenuTab } from '@/types/menu';
 import type { PDF } from '@/types/pdf';
 
@@ -13,40 +14,55 @@ interface Props {
 
 const props = defineProps<Props>();
 const isShowMore = ref(false);
-const isShowCanvas = ref(false);
-
-const canvasId = `canvas${props.index}`;
-const { createCanvas, specifyPage } = useFabric(canvasId);
-
 const time = computed(() => {
-  const [iso] = new Date(props.file.updateDate).toISOString().split('.');
-  return iso.replace(/T/, ' ');
+  const [date, time] = new Date(props.file.updateDate).toLocaleString('en-GB').split(',');
+  const [day, month, year] = date.split('/');
+
+  return `${year}-${month}-${day} ${time}`;
 });
 
 const more = computed(() => {
+  const { file } = props;
+  const { addArchive, addTrash } = usePdfStore();
   const moreMap = {
-    file: ['download', 'archive', 'trash'],
-    archive: ['reduction', 'trash'],
+    file: [
+      { icon: 'download', feat: download },
+      { icon: 'archive', feat: () => addArchive(file) },
+      { icon: 'trash', feat: () => addTrash(file) },
+    ],
+    archive: [
+      { icon: 'reduction', feat: reductionArchive },
+      { icon: 'trash', feat: () => addTrash(file) },
+    ],
     trash: [],
   };
   return moreMap[props.type];
 });
 
-async function setPDF() {
-  createCanvas();
-  await specifyPage({
-    page: 1,
-    PDF: props.file,
-    scale: 0.5,
-  });
-  isShowCanvas.value = true;
+function download() {
+  downloadPDF(props.file);
+  toggleMore(false);
+}
+
+function reductionArchive() {
+  const { addPDF, deleteArchive } = usePdfStore();
+  const { file } = props;
+
+  deleteArchive(file.PDFId);
+  addPDF(file);
+}
+
+function reductionTrash() {
+  const { addPDF, deleteTrash } = usePdfStore();
+  const { file } = props;
+
+  deleteTrash(file.PDFId);
+  addPDF(file);
 }
 
 function toggleMore(isOpen: boolean) {
   isShowMore.value = isOpen;
 }
-
-onMounted(setPDF);
 </script>
 
 <template>
@@ -54,17 +70,19 @@ onMounted(setPDF);
     <div :class="['transition-all duration-500', isShowMore ? 'opacity-100 z-10' : 'opacity-0 -z-[1]']">
       <div v-if="isShowMore" class="mask" @click="toggleMore(false)"></div>
       <ul class="sign_file_more">
-        <li class="cursor-pointer" v-for="effect in more" :key="effect">
-          <sign-icon :icon="effect" @click="" />
+        <li class="cursor-pointer" v-for="effect in more" :key="effect.icon">
+          <sign-icon :icon="effect.icon" @click="effect.feat" />
         </li>
       </ul>
     </div>
     <sign-icon
+      v-if="more.length"
       icon="more" 
       :customClass="`absolute right-2 top-1 ${isShowMore ? 'opacity-0' : 'opacity-100'}`"
       @click="toggleMore(true)"
     />
-    <canvas v-show="isShowCanvas" :id="canvasId" class="border-2 border-gray-20"></canvas>
+    <sign-icon v-else icon="reduction" customClass="absolute right-2 top-1" @click="reductionTrash" />
+    <img :src="file.canvas?.at(0)" class="border-2 border-gray-20 w-1/3" alt="" />
     <p class="mt-4 mb-1">{{ file.name }}</p>
     <p class="text-gray-40">{{ time }}</p>
   </li>

@@ -19,18 +19,22 @@ async function uploadFile(event: Event) {
   const { files } = target;
   if (!files) return;
   const file = files[0];
-  console.log({ file });
 
   if (file.size > MAX_SIZE) {
     target.value = '';
     return toast.showToast('檔案大小超過20MB', 'error');
   }
-  file.type === 'application/pdf' ? await drawPDF(file) : drawImage(file);
-  toast.showToast('檔案上傳成功', 'success');
-  fileName.value = file.name;
-  projectName.value = file.name.replace(/.pdf|.png|.jpg/, '');
+
+  try {
+    file.type === 'application/pdf' ? await drawPDF(file) : drawImage(file);
+    toast.showToast('檔案上傳成功', 'success');
+    fileName.value = file.name;
+    projectName.value = file.name.replace(/.pdf|.png|.jpg|.jpeg/, '');
+    isNextDisabled.value = false;
+  } catch {
+    toast.showToast('檔案上傳失敗', 'error');
+  }
   target.value = '';
-  isNextDisabled.value = false;
 }
 
 function remove() {
