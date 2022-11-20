@@ -29,7 +29,7 @@ function changeTab(tab: MenuTab) {
 
 <style lang="postcss" scoped>
 .index_menu {
-  @apply flex gap-1 ml-5;
+  @apply flex gap-1 ml-5 md:flex-col md:gap-[10px] md:translate-y-[82px];
   li {
     @apply
     border-2
@@ -45,9 +45,13 @@ function changeTab(tab: MenuTab) {
     transition-colors
     duration-500
     drop-shadow-md
-    rounded-t-[100px];
+    rounded-t-[100px]
+    md:w-[62px]
+    md:h-[56px]
+    md:translate-x-1
+    md:-rotate-90;
     img {
-      @apply w-[22px];
+      @apply w-[22px] md:w-7 md:rotate-90;
     }
   }
 }

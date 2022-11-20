@@ -44,7 +44,8 @@ usePdfStore().filterTrash();
     absolute
     left-1/2
     -translate-x-1/2
-    -bottom-6;
+    -bottom-6
+    md:-bottom-3;
   }
 }
 </style>

@@ -16,9 +16,7 @@ const { PDFList } = storeToRefs(usePdfStore());
       <img
         src="@/assets/icon/ic_add_dark.svg"
         alt=""
-        width="80"
-        height="80"
-        class="iconScale"
+        class="iconScale w-[80px] h-[80] md:w-[136px] md:h-[136px]"
         @click="goPage('upload')"
       />
       <h2>快來建立新檔吧</h2>
@@ -28,6 +26,6 @@ const { PDFList } = storeToRefs(usePdfStore());
 
 <style lang="postcss" scoped>
 .index_files {
-  @apply h-[calc(100%-38px)];
+  @apply h-[calc(100%-38px)] md:h-[calc(100%-66px)];
 }
 </style>

@@ -40,7 +40,10 @@ const currentCom = computed(() => {
         @click="goPage('upload')"
       />
     <h5 class="title">{{ title }}</h5>
-    <component :is="currentCom"></component>
+
+    <keep-alive>
+      <component :is="currentCom"></component>
+    </keep-alive>
   </div>
 </template>
 
@@ -54,7 +57,9 @@ const currentCom = computed(() => {
     right-3
     -top-8
     md:w-20
-    md:h-20;
+    md:h-20
+    md:-right-10
+    md:top-10;
   }
 }
 </style>

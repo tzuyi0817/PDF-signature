@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue';
 import SignIcon from '@/components/SignIcon.vue';
 import SignFile from '@/components/SignFile.vue';
-import type { MenuTab } from '@/types/menu';
+import type { MenuTab, FileShowStatus } from '@/types/menu';
 import type { PDF } from '@/types/pdf';
 
 interface Props {
@@ -12,9 +12,11 @@ interface Props {
 
 const props = defineProps<Props>();
 const keyword = ref('');
+const showStatus = ref<FileShowStatus>('list');
 const searchIconColor = ref('#CCCCCC');
 const isShowClose = computed(() => keyword.value);
 const search = computed(() => props.list.filter(({ name }) => name.includes(keyword.value)));
+const isListStatus = computed(() => showStatus.value === 'list');
 
 function focus() {
   searchIconColor.value = '#B7EC5D';
@@ -27,11 +29,15 @@ function blur() {
 function clear() {
   keyword.value = '';
 }
+
+function changeShowStatus(status: FileShowStatus) {
+  showStatus.value = status;
+}
 </script>
 
 <template>
   <div class="sign_files">
-    <label class="w-[90%] relative m-3">
+    <label class="w-[90%] relative m-3 max-w-[400px] md:absolute md:-top-16">
       <svg
         width="40"
         height="40"
@@ -47,32 +53,53 @@ function clear() {
       <input
         type="text"
         v-model.trim="keyword"
-        class="input pl-10"
+        class="input pl-12"
         placeholder="請輸入關鍵字"
         @focus="focus"
         @blur="blur"
       />
     </label>
 
-    <ul v-if="search.length" class="w-full h-[calc(100%-60px)] overflow-y-auto gap-6 px-[5%]">
+    <div class="hidden md:flex items-end w-full px-4 py-5">
+      <p class="text-sm w-[300px] pl-16">{{ isListStatus ? '建立時間' : '' }}</p>
+
+      <div class="flex justify-between items-end flex-1">
+        <p class="text-sm">{{ isListStatus ?  '專案名稱' : '' }}</p>
+        <div class="flex gap-1">
+          <sign-icon icon="list" :isActive="showStatus === 'list'" @click="changeShowStatus('list')" />
+          <sign-icon icon="card" :isActive="showStatus === 'card'" @click="changeShowStatus('card')" />
+        </div>
+      </div>
+    </div>
+
+    <ul
+      v-if="search.length" 
+      :class="[
+        'w-full h-[calc(100%-60px)] overflow-y-auto gap-6 px-4', 
+        { 'md:flex md:flex-row md:gap-5': !isListStatus }
+      ]"
+    >
       <sign-file
         v-for="(PDF, index) in search"
         :key="PDF.PDFId"
         :file="PDF"
         :index="index"
         :type="type"
+        :isListStatus="isListStatus"
+        :keyword="keyword"
       />
     </ul>
   
-    <div v-else class="w-[80%] h-[calc(100%-60px)] flex flex-col items-center justify-center gap-10">
-      <img src="@/assets/img/img_search.svg" alt="" />
-      <h3 class="text-gray-40 text-center">找不到任何符合搜尋條件的項目</h3>
+    <div v-else class="w-[80%] h-[calc(100%-60px)] flex flex-col items-center justify-center">
+      <img src="@/assets/img/img_search.svg" alt="" class="mb-10" />
+      <h3 class="text-gray-40 text-center mb-3">找不到任何符合搜尋條件的項目</h3>
+      <p class="text-gray-40 text-center">請嘗試其他搜尋詞</p>
     </div>
   </div>
 </template>
 
 <style lang="postcss" scoped>
 .sign_files {
-  @apply w-full flex flex-col items-center h-full;
+  @apply w-full flex flex-col items-center h-full relative;
 }
 </style>

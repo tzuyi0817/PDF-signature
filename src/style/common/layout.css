@@ -2,6 +2,13 @@
 
 @layer components {
   .layout {
-    @apply pt-14 px-[10px];
+    @apply
+    pt-14 
+    px-[10px]
+    md:flex
+    md:flex-row
+    md:justify-center
+    md:pt-[120px]
+    md:-translate-x-[40px];
   }
 }

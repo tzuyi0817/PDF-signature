@@ -10,6 +10,8 @@ interface Props {
   file: PDF;
   index: number;
   type: MenuTab;
+  isListStatus: boolean;
+  keyword: string;
 }
 
 const props = defineProps<Props>();
@@ -63,14 +65,27 @@ function reductionTrash() {
 function toggleMore(isOpen: boolean) {
   isShowMore.value = isOpen;
 }
+
+function splitName(name: string) {
+  const { keyword } = props;
+  const start = name.indexOf(keyword);
+  const end = start + keyword.length;
+  const spiltName = [name.slice(0, start), name.slice(start, end), name.slice(end)];
+
+  return spiltName.reduce((html, str, index) => {
+    if (!str) return html;
+  
+    return html + `<span class="${index === 1 ? 'text-primary' : ''}">${str}</span>`;
+  }, '');
+}
 </script>
 
 <template>
-  <li class="sign_file">
+  <li :class="['sign_file flex-col', isListStatus ? 'md:flex-row' : 'md:w-[316px] md:h-fit']">
     <div :class="['transition-all duration-500', isShowMore ? 'opacity-100 z-10' : 'opacity-0 -z-[1]']">
       <div v-if="isShowMore" class="mask" @click="toggleMore(false)"></div>
       <ul class="sign_file_more">
-        <li class="cursor-pointer" v-for="effect in more" :key="effect.icon">
+        <li v-for="effect in more" :key="effect.icon">
           <sign-icon :icon="effect.icon" @click="effect.feat" />
         </li>
       </ul>
@@ -78,13 +93,38 @@ function toggleMore(isOpen: boolean) {
     <sign-icon
       v-if="more.length"
       icon="more" 
-      :customClass="`absolute right-2 top-1 ${isShowMore ? 'opacity-0' : 'opacity-100'}`"
+      :customClass="`absolute right-2 top-1 ${isShowMore ? 'opacity-0' : 'opacity-100'} md:hidden`"
       @click="toggleMore(true)"
     />
-    <sign-icon v-else icon="reduction" customClass="absolute right-2 top-1" @click="reductionTrash" />
-    <img :src="file.canvas?.at(0)" class="border-2 border-gray-20 w-1/3" alt="" />
-    <p class="mt-4 mb-1">{{ file.name }}</p>
-    <p class="text-gray-40">{{ time }}</p>
+    <sign-icon v-else icon="reduction" customClass="absolute right-2 top-1 md:hidden" @click="reductionTrash" />
+
+    <div :class="['w-1/3 h-[150px] flex items-center justify-center', { 'md:hidden': isListStatus }]">
+      <img :src="file.canvas?.at(0)" class="border-2 border-gray-20 w-full" alt="" />
+    </div>
+
+    <div :class="[
+      'sign_file_content flex-col mt-4 text-center', 
+      { 'md:mt-0 md:flex-row md:items-center md:w-full md:text-start': isListStatus },
+    ]">
+      <div :class="{ 'md:flex md:flex-row-reverse md:items-center md:gap-1 md:flex-1': isListStatus }">
+        <p class="flex-1" v-html="splitName(file.name )"></p>
+        <p :class="['text-gray-40', { 'md:text-black md:w-[236px]': isListStatus }]">{{ time }}</p>
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" :class="['hidden', { 'md:block': isListStatus }]">
+          <rect x="13" y="12" width="14" height="16" rx="2" stroke="#4D4D4D" stroke-width="2"/>
+          <path d="M17 16H23" stroke="#4D4D4D" stroke-width="2" stroke-linecap="round"/>
+          <path d="M17 20H23" stroke="#4D4D4D" stroke-width="2" stroke-linecap="round"/>
+          <path d="M17 24H21" stroke="#4D4D4D" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <ul :class="['flex-row gap-1 hidden justify-center md:flex', { 'mt-4': !isListStatus }]">
+        <template v-if="more.length">
+          <li v-for="effect in more" :key="effect.icon">
+            <sign-icon :icon="effect.icon" @click="effect.feat" />
+          </li>
+        </template>
+        <sign-icon v-else icon="reduction" @click="reductionTrash" />
+      </ul>
+    </div>
   </li>
 </template>
 
@@ -96,12 +136,15 @@ function toggleMore(isOpen: boolean) {
   border-secondary-tint
   p-4
   flex
-  flex-col
   items-center
   rounded-[20px]
   shadow-[0px_2px_6px_rgba(0,0,0,0.12),0px_2px_10px_rgba(0,0,0,0.08),inset_0px_-2px_4px_rgba(215,215,215,0.5)]
   mb-6
-  justify-center;
+  transition-all
+  duration-500
+  justify-center
+  md:hover:border-primary
+  md:hover:bg-gradient-to-b from-white to-primary/30;
   &_more {
     @apply
     absolute
@@ -117,6 +160,14 @@ function toggleMore(isOpen: boolean) {
     shadow-primary
     shadow
     rounded-[20px];
+  }
+  &:hover > .sign_file_content > svg {
+    rect, path {
+      @apply stroke-primary;
+    }
+  }
+  &_content {
+    @apply flex gap-1 transition-all duration-500;
   }
 }
 </style>
