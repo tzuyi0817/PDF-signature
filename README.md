@@ -14,51 +14,89 @@ Clone this repository and install dependencies by running `pnpm`(Node.js version
 
 ## Project Files
 
-<!-- ```text
+```text
 src/
 ├── assets/
-│   ├── bg/*
-│   ├── btn/*
-│   ├── character/*
+│   ├── contract/*
 │   ├── font/*
 │   ├── icon/*
-│   ├── logo/*
-│   ├── main/*
+│   ├── img/*
+│   └── logo/*
 ├── components/
-│   ├── BigTitle.vue
-│   ├── F2eApply.vue
-│   ├── F2eCharacters.vue
-│   ├── F2eContest.vue
-│   ├── F2eHeader.vue
-│   ├── F2eMap.vue
-│   ├── F2eMenu.vue
-│   ├── F2eParticipants.vue
-│   ├── F2eQuestions.vue
-│   ├── F2eSchedule.vue
-│   ├── F2eSponsors.vue
-|   ├── F2eStage.vue
-|   ├── F2eTheme.vue
-│   ├── F2eTraffic.vue
-│   ├── JoinBtn.vue
-|   ├── Loading.vue
-|   ├── TitleFrame.vue
+│   ├── complete/
+│   │   └── CompleteContent.vue
+│   ├── index/
+│   │   ├── IndexArchives.vue
+│   │   ├── IndexContent.vue
+│   │   ├── IndexFiles.vue
+│   │   ├── IndexMenu.vue
+│   │   └── IndexTrash.vue
+│   ├── signature/
+│   │   ├── SignatureCanvasItem.vue
+│   │   ├── SignatureContent.vue
+│   │   ├── SignatureDrawPopup.vue
+│   │   ├── SignatureImage.vue
+│   │   ├── SignatureLiteral.vue
+│   │   ├── SignatureMask.vue
+│   │   ├── SignaturePage.vue
+│   │   ├── SignaturePopup.vue
+│   │   └── SignatureSign.vue
+│   ├── upload/
+│   │   └── UploadContent.vue
+│   ├── SignFile.vue
+│   ├── SignFiles.vue
+│   ├── SignFooter.vue
+│   ├── SignHeader.vue
+│   ├── SignIcon.vue
+│   ├── SignPopup.vue
+│   ├── SignStep.vue
+│   ├── SignStepBtn.vue
+│   └── SignToast.vue
+└── hooks/
+│   ├── useFabric.ts
+│   ├── useRedirect.ts
+│   └── useWarnPopup.vue
 └── pages/
+│   ├── Complete.vue
 │   ├── Index.vue
+│   ├── Signature.vue
+│   └── Upload.vue
+└── router/
+│   └── index.ts
 └── store/
-│   ├── flag.ts
+│   ├── image.ts
 │   ├── index.ts
+│   ├── literal.ts
+│   ├── pdf.ts
+│   └── signature.ts
 └── style/
 │   ├── common/
 |   │   ├── all.css
-|   │   └── badge.css   
+│   │   ├── button.css
+│   │   ├── content.css
+│   │   ├── iconScale.css
+│   │   ├── input.css
+│   │   ├── layout.css
+│   │   ├── mask.css
+│   │   ├── scrollbar.css
+|   │   └── text.css   
 │   ├── index.css
-│   ├── tailwind.css
+│   └── tailwind.css
+└── types/
+│   ├── menu.d.ts
+│   └── pdf.d.ts
 └── utils/
+│   ├── checkType.ts
 │   ├── common.ts
-│   └── gasp.ts
-└── App.vue
+│   ├── image.ts
+│   ├── jspdf.ts
+│   ├── pdfJs.ts
+│   └── toast.ts
+├── App.vue
+├── global.d.ts
+├── vite-env.d.ts
 └── main.ts
-``` -->
+```
 
 ## Use Technology
 
