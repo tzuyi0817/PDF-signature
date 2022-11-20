@@ -30,3 +30,7 @@ export function debounce(fun: Function, time = 500) {
 export function sleep(time = 500) {
   return new Promise(resolve => setTimeout(resolve, time));
 }
+
+export function isDesktop() {
+  return window.innerWidth > 768;
+}

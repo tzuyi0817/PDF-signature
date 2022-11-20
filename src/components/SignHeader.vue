@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import SignIcon from '@/components/SignIcon.vue';
-
 </script>
 
 <template>
@@ -16,6 +15,6 @@ import SignIcon from '@/components/SignIcon.vue';
 
 <style lang="postcss" scoped>
 .sign_header {
-  @apply fixed w-full flex justify-between items-center bg-black p-2 z-[1] md:p-4;
+  @apply fixed w-full flex justify-between items-center bg-black p-2 md:p-4;
 }
 </style>

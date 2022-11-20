@@ -15,7 +15,7 @@
   }
 
   body {
-    @apply text-base bg-bg;
+    @apply text-base tracking-wider bg-bg;
   }
 
   h1 {

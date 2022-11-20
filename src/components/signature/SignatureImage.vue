@@ -38,27 +38,48 @@ function toggleImagePopup(isOpen: boolean) {
   isShowImagePopup.value = isOpen;
 }
 
-function uploadFile(event: Event) {
-  const MAX_SIZE = 20 * 1024 * 1024;
+async function uploadFile(event: Event) {
   const target = event.target as HTMLInputElement;
   const { files } = target;
+
+  await readerFile(files);
+  target.value = '';
+}
+
+function dropFile(event: DragEvent) {
+  const { dataTransfer } = event;
+  const files = dataTransfer?.files;
+  
+  readerFile(files);
+}
+
+async function readerFile(files: FileList | null | undefined) {
   if (!files) return;
+  const MAX_SIZE = 20 * 1024 * 1024;
   const file = files[0];
+  const regexp = /.png|.jpg|.jpeg/;
+
+  if (!regexp.test(file.type)) {
+    return toast.showToast('檔案格式不符', 'error');
+  }
 
   if (file.size > MAX_SIZE) {
-    target.value = '';
     return toast.showToast('檔案大小超過20MB', 'error');
   }
-  const fileReader = new FileReader();
 
-  fileReader.readAsDataURL(file);
-  fileReader.onload = () => {
-    if (!fileReader.result) return;
-    useImageStore().addImage(fileReader.result as string);
-    toggleImagePopup(false);
-    toast.showToast('圖片新增成功', 'success');
+  try {
+    const fileReader = new FileReader();
+
+    fileReader.readAsDataURL(file);
+    fileReader.onload = () => {
+      if (!fileReader.result) return;
+      useImageStore().addImage(fileReader.result as string);
+      toggleImagePopup(false);
+      toast.showToast('圖片新增成功', 'success');
+    }
+  } catch {
+    toast.showToast('圖片上傳失敗', 'error');
   }
-  target.value = '';
 }
 
 function close() {
@@ -88,7 +109,7 @@ function close() {
         :key="image"
         @click="selectImage(image)"
         :class="[
-          'rounded-[20px] relative w-full flex justify-center',
+          'rounded-[20px] relative w-full flex justify-center cursor-pointer',
           currentSelect === image ? 'bg-primary opacity-70' : 'bg-white',
         ]" 
       >
@@ -116,7 +137,12 @@ function close() {
   </signature-popup>
 
   <sign-popup title="新增圖片" v-if="isShowImagePopup">
-    <div class="signature_image_add">
+    <div
+      class="signature_image_add"
+      @dragover.stop.prevent
+      @dragenter.stop.prevent
+      @drop.stop.prevent="dropFile"
+    >
       <img src="@/assets/img/img_photo.svg" alt="" />
       <button class="btn btn_primary">
         <input
@@ -126,14 +152,19 @@ function close() {
           @change="uploadFile"
         />選擇檔案
       </button>
-      <p class="tracking-wider text-gray-40 px-4 text-center">僅支援 JPG、PNG 檔案 , 且容量不超過 20MB。</p>
+
+      <div class="text-center">
+        <h5 class="text-gray-40 mb-3 hidden md:block">或者將檔案拖曳到這裡</h5>
+        <p class="text-gray-40 px-4 text-center">僅支援 JPG、PNG 檔案 , 且容量不超過 20MB。</p>
+      </div>
     </div>
+
     <button class="btn btn_base" @click="toggleImagePopup(false)">取消</button>
   </sign-popup>
 
   <sign-popup title="警告" v-if="isShowWarnPopup">
     <p class="text-center">確定要刪除此圖片?</p>
-    <div class="flex justify-between">
+    <div class="flex justify-between md:justify-evenly">
       <button class="btn btn_base" @click="toggleWarnPopup(false)">先不要</button>
       <button class="btn btn_primary" @click="deleteImage">刪除</button>
     </div>

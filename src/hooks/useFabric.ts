@@ -75,13 +75,13 @@ export default function useFabric(id: string) {
     if (!canvas) return;
     const image = canvasToImage(canvasTemp);
 
-    canvas.setWidth(image.width! / window.devicePixelRatio);
-    canvas.setHeight(image.height! / window.devicePixelRatio);
+    canvas.setWidth(image.width! / 3);
+    canvas.setHeight(image.height! / 3);
     canvas.setBackgroundImage(image, canvas.renderAll.bind(canvas));
   }
 
   function canvasToImage(canvasTemp: HTMLCanvasElement) {
-    const scale = 1 / window.devicePixelRatio;
+    const scale = 1 / 3;
   
     return new fabric.Image(canvasTemp, {
       scaleX: scale,
@@ -187,10 +187,10 @@ export default function useFabric(id: string) {
     // @ts-ignore
     const { oCoords, angle, width, height } = event.transform?.target ?? event.target;
     const { x, y } = oCoords?.tl!;
-    const offsetX = Math.cos(angle * (Math.PI / 180)) * (width / 30);
-    const offsetY = Math.sin(angle * (Math.PI / 180)) * (height / 30);
+    const offsetX = Math.cos(angle * (Math.PI / 180)) * ((width + 500) / 30);
+    const offsetY = Math.sin(angle * (Math.PI / 180)) * ((height + 360) / 30);
 
-    icon.top = y - offsetY - 35;
+    icon.top = y - offsetY - 15;
     icon.left = x - offsetX - 15;
   }
 

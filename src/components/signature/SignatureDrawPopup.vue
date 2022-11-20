@@ -3,6 +3,7 @@ import { ref, defineAsyncComponent } from 'vue';
 import { useSignatureStore } from '@/store';
 import SignIcon from '@/components/SignIcon.vue';
 import toast from '@/utils/toast';
+import { isDesktop } from '@/utils/common';
 
 const emit = defineEmits(['close']);
 const canvasDraw = ref<HTMLCanvasElement | null>(null);
@@ -29,9 +30,16 @@ function addSignature() {
 }
 
 function setCanvas() {
+  if (!canvasDraw.value) return;
+  if (isDesktop()) {
+    canvasDraw.value.height = 235;
+    canvasDraw.value.width = 466;
+  } else {
+    canvasDraw.value.height = window.innerHeight - 400;
+  }
   drawCtx.ctx = canvasDraw.value?.getContext('2d');
   if (!drawCtx.ctx) return;
-  drawCtx.ctx.lineWidth = 4;
+  drawCtx.ctx.lineWidth = 2;
   drawCtx.ctx.lineCap = 'round';
 }
 
@@ -108,9 +116,7 @@ function clear() {
     </ul>
     <canvas
       ref="canvasDraw"
-      class="w-full h-[40vh] bg-secondary-tint border-2 border-gray-30 rounded-[20px] mb-6"
-      width="500"
-      height="300"
+      class="bg-secondary-tint border-2 border-gray-30 rounded-[20px] mb-6"
       @mousedown.prevent="startPosition"
       @mouseup="finishedPosition"
       @mouseleave="finishedPosition"
@@ -120,7 +126,7 @@ function clear() {
       @touchcancel="finishedPosition"
       @touchmove="draw"
     ></canvas>
-    <div class="flex justify-between">
+    <div class="flex justify-between md:justify-evenly">
       <button class="btn btn_base" @click="emit('close')">取消</button>
       <button class="btn btn_primary" @click="addSignature" :disabled="!isDraw">確定</button>
     </div>

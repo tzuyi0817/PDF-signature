@@ -3,12 +3,13 @@
 @layer components {
   .layout {
     @apply
-    pt-14 
     px-[10px]
+    pt-14
     md:flex
     md:flex-row
     md:justify-center
-    md:pt-[120px]
+    md:pt-0
+    md:translate-y-[120px]
     md:-translate-x-[40px];
   }
 }

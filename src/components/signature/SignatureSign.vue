@@ -66,7 +66,7 @@ function close() {
         :key="signature"
         @click="selectSignature(signature)"
         :class="[
-          'rounded-[20px] relative w-full flex justify-center',
+          'rounded-[20px] relative w-full flex justify-center cursor-pointer',
           currentSelect === signature ? 'bg-primary opacity-70' : 'bg-white',
         ]" 
       >

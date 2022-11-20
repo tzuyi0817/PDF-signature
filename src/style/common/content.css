@@ -21,7 +21,7 @@
       @apply cursor-pointer;
     }
     img {
-      @apply w-7;
+      @apply w-7 md:w-9;
     }
   }
   .title {

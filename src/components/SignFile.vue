@@ -68,7 +68,7 @@ function toggleMore(isOpen: boolean) {
 
 function splitName(name: string) {
   const { keyword } = props;
-  const start = name.indexOf(keyword);
+  const start = name.toLowerCase().indexOf(keyword.toLowerCase());
   const end = start + keyword.length;
   const spiltName = [name.slice(0, start), name.slice(start, end), name.slice(end)];
 
@@ -81,7 +81,7 @@ function splitName(name: string) {
 </script>
 
 <template>
-  <li :class="['sign_file flex-col', isListStatus ? 'md:flex-row' : 'md:w-[316px] md:h-fit']">
+  <li :class="['sign_file flex flex-col', isListStatus ? 'md:flex-row' : 'md:w-[316px] md:flex-shrink-0 md:h-fit']">
     <div :class="['transition-all duration-500', isShowMore ? 'opacity-100 z-10' : 'opacity-0 -z-[1]']">
       <div v-if="isShowMore" class="mask" @click="toggleMore(false)"></div>
       <ul class="sign_file_more">
@@ -135,7 +135,6 @@ function splitName(name: string) {
   relative
   border-secondary-tint
   p-4
-  flex
   items-center
   rounded-[20px]
   shadow-[0px_2px_6px_rgba(0,0,0,0.12),0px_2px_10px_rgba(0,0,0,0.08),inset_0px_-2px_4px_rgba(215,215,215,0.5)]
@@ -161,7 +160,7 @@ function splitName(name: string) {
     shadow
     rounded-[20px];
   }
-  &:hover > .sign_file_content > svg {
+  &:hover > .sign_file_content > div > svg {
     rect, path {
       @apply stroke-primary;
     }

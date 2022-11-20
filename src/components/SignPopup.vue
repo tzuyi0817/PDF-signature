@@ -14,7 +14,7 @@ onMounted(() => emit('childMounted'));
 <template>
   <div class="sign_popup mask">
     <div class="sign_popup_box">
-      <h5 class="border-b-2 border-primary py-1 px-4 text-center">{{ title }}</h5>
+      <h5 class="border-b-2 border-primary py-1 px-4 text-center font-medium md:pb-4">{{ title }}</h5>
       <slot></slot>
     </div>
   </div>
@@ -22,7 +22,7 @@ onMounted(() => emit('childMounted'));
 
 <style lang="postcss" scoped>
 .sign_popup {
-  @apply bg-black/50 flex items-center justify-center;
+  @apply bg-black/50 flex items-center justify-center z-[2];
   &_box {
     @apply
     w-[90%]
@@ -36,7 +36,9 @@ onMounted(() => emit('childMounted'));
     flex
     flex-col
     justify-between
-    bg-white;
+    bg-white
+    md:min-h-[335px]
+    md:max-h-[566px];
   }
 }
 </style>

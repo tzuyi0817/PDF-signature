@@ -42,16 +42,16 @@ function warnConfirm() {
 
 <template>
   <div class="complete_content content">
-    <h5 class="title text-center">簽署完成</h5>
+    <h5 class="title text-center w-full">簽署完成</h5>
 
-    <ul class="toolbar">
+    <ul class="toolbar md:absolute md:right-10 md:top-5">
       <li><sign-icon icon="download" @click="download" /></li>
       <li><sign-icon icon="archive" @click="openWarnPopup('archive')" /></li>
       <li><sign-icon icon="trash" @click="openWarnPopup('trash')" /></li>
     </ul>
 
     <div class="complete_content_file">
-      <div class="w-fit h-fit py-5 px-3 scale-150 origin-top-left flex flex-col gap-5">
+      <div class="w-fit h-fit py-5 px-3 scale-150 origin-top-left flex flex-col gap-5 md:scale-100 md:py-10 md:px-14">
         <template v-for="canvas in currentPDF.canvas" :key="canvas">
           <img :src="canvas" alt="" />
         </template>
@@ -59,7 +59,7 @@ function warnConfirm() {
     </div>
 
     <button 
-      class="btn btn_primary"
+      class="btn btn_primary md:absolute md:left-10 md:top-7"
       :disabled="false"
       @click="goPage('index')"
     >
@@ -68,7 +68,7 @@ function warnConfirm() {
     
     <sign-popup title="警告" v-if="isShowWarnPopup">
       <p class="text-center">{{ warnContent }}</p>
-      <div class="flex justify-between">
+      <div class="flex justify-between md:justify-evenly">
         <button class="btn btn_base" @click="toggleWarnPopup(false)">先不要</button>
         <button class="btn btn_primary" @click="warnConfirm">確定</button>
       </div>
@@ -81,6 +81,7 @@ function warnConfirm() {
   @apply 
   flex 
   flex-col
+  relative
   items-center;
   &_file {
     @apply
@@ -90,7 +91,10 @@ function warnConfirm() {
     border-gray-30
     overflow-auto
     w-[calc(100%-20px)]
-    h-[calc(100%-178px)];
+    h-[calc(100%-178px)]
+    max-w-[842px]
+    md:mt-6
+    md:h-[calc(100%-110px)];
   }
 }
 </style>

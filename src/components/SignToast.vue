@@ -43,7 +43,9 @@ const close = closeToast.bind(toast);
   opacity-0
   border-primary
   border-2
-  rounded-[50px];
+  rounded-[50px]
+  md:w-[415px]
+  md:-translate-x-[calc(50%+40px)];
   &-show {
     @apply translate-y-0 opacity-100 pointer-events-auto;
   }

@@ -24,6 +24,14 @@ const emit = defineEmits(['prevStep', 'nextStep'])
 
 <style lang="postcss" scoped>
 .sign_step_btn {
-  @apply flex items-center justify-between mx-[10px];
+  @apply
+  flex
+  items-center
+  justify-between
+  mx-[10px]
+  md:absolute
+  md:top-6
+  md:left-5
+  md:w-[calc(100%-70px)];
 }
 </style>

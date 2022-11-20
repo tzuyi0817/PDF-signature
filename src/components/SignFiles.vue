@@ -15,8 +15,11 @@ const keyword = ref('');
 const showStatus = ref<FileShowStatus>('list');
 const searchIconColor = ref('#CCCCCC');
 const isShowClose = computed(() => keyword.value);
-const search = computed(() => props.list.filter(({ name }) => name.includes(keyword.value)));
 const isListStatus = computed(() => showStatus.value === 'list');
+const search = computed(() => {
+  const target = keyword.value.toLowerCase();
+  return props.list.filter(({ name }) => name.toLowerCase().includes(target));
+});
 
 function focus() {
   searchIconColor.value = '#B7EC5D';
@@ -76,7 +79,7 @@ function changeShowStatus(status: FileShowStatus) {
       v-if="search.length" 
       :class="[
         'w-full h-[calc(100%-60px)] overflow-y-auto gap-6 px-4', 
-        { 'md:flex md:flex-row md:gap-5': !isListStatus }
+        { 'md:flex md:flex-row md:flex-wrap md:gap-4': !isListStatus }
       ]"
     >
       <sign-file
@@ -100,6 +103,6 @@ function changeShowStatus(status: FileShowStatus) {
 
 <style lang="postcss" scoped>
 .sign_files {
-  @apply w-full flex flex-col items-center h-full relative;
+  @apply w-full flex flex-col items-center h-full relative justify-center;
 }
 </style>

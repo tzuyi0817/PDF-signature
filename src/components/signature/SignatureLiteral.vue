@@ -46,6 +46,12 @@ function toggleLiteralPopup(isOpen: boolean) {
   isShowLiteralPopup.value = isOpen;
 }
 
+function dragLiteral(event: DragEvent) {
+  const target = event.target as HTMLPreElement;
+
+  event.dataTransfer?.setData('text/plain', target.innerText);
+}
+
 function close() {
   emit('update:isShowLiteral', false);
 }
@@ -73,11 +79,11 @@ function close() {
         :key="literal"
         @click="selectLiteral(literal)"
         :class="[
-          'rounded-[20px] relative w-full flex justify-center',
+          'rounded-[20px] relative w-full flex justify-center cursor-pointer',
           currentSelect === literal ? 'bg-primary opacity-70' : 'bg-white',
         ]" 
       >
-        <p class="whitespace-pre-wrap w-full p-3">{{ literal }}</p>
+        <p class="whitespace-pre-wrap w-full p-3" draggable="true" @dragstart="dragLiteral">{{ literal }}</p>
         <sign-icon
           v-show="currentSelect === literal"
           icon="close_s" 
@@ -103,7 +109,7 @@ function close() {
   <sign-popup title="新增文字" v-if="isShowLiteralPopup">
     <textarea class="input my-5 h-[40vh] rounded-[20px]" v-model="literal"></textarea>
 
-    <div class="flex justify-between">
+    <div class="flex justify-between md:justify-evenly">
       <button class="btn btn_base" @click="toggleLiteralPopup(false)">取消</button>
       <button class="btn btn_primary" :disabled="!literal" @click="addLiteral">確定</button>
     </div>
@@ -111,7 +117,7 @@ function close() {
 
   <sign-popup title="警告" v-if="isShowWarnPopup">
     <p class="text-center">確定要刪除此文字?</p>
-    <div class="flex justify-between">
+    <div class="flex justify-between md:justify-evenly">
       <button class="btn btn_base" @click="toggleWarnPopup(false)">先不要</button>
       <button class="btn btn_primary" @click="deleteLiteral">刪除</button>
     </div>
