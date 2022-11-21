@@ -2,6 +2,7 @@ import { ref, toRaw } from 'vue';
 import { fabric } from 'fabric';
 import { printPDF, getPDFDocument, readBlob } from '@/utils/pdfJs';
 import { usePdfStore } from '@/store';
+import { createImageSrc } from '@/utils/image';
 import type { PDF } from '@/types/pdf';
 
 interface SpecifyPageArgs {
@@ -165,7 +166,7 @@ export default function useFabric(id: string) {
     event: fabric.IEvent<Event>,
     fab: fabric.Image | fabric.Text
   ): Promise<fabric.Image> {
-    const src = '/src/assets/icon/ic_close_s.svg';
+    const src = createImageSrc('icon/ic_close_s.svg');
 
     return new Promise(resolve => {
       fabric.Image.fromURL(src, (icon) => {
