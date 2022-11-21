@@ -90,6 +90,8 @@ function usePage(page: number) {
 }
 
 function toggleNextWarnPopup(isOpen: boolean) {
+  // @ts-ignore
+  signatureCanvasItem.value.forEach(({ clearActive }) => clearActive());
   isShowNextWarnPopup.value = isOpen;
 }
 

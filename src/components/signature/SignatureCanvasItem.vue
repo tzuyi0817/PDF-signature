@@ -12,7 +12,14 @@ interface Props {
 const props = defineProps<Props>();
 const canvasDom = ref<HTMLCanvasElement | null>(null);
 const canvasId = `canvas${props.page - 1}`;
-const { createCanvas, specifyPage, addFabric, addTextFabric, renderImage } = useFabric(canvasId);
+const {
+  createCanvas,
+  specifyPage,
+  addFabric,
+  addTextFabric,
+  renderImage,
+  clearActive,
+} = useFabric(canvasId);
 
 async function setPDF() {
   const { file, page } = props;
@@ -25,17 +32,21 @@ async function setPDF() {
 }
 
 function dropImage(event: DragEvent) {
-  const { dataTransfer } = event;
+  const { dataTransfer, offsetX, offsetY } = event;
   const value = dataTransfer?.getData('text/plain');
-
   if (!value) return;
+  const position = {
+    x: offsetX - 71,
+    y: offsetY - 55,
+  };
+
   value.startsWith('data:image')
-    ? addFabric(value)
-    : addTextFabric(value);
+    ? addFabric(value, position)
+    : addTextFabric(value, position);
 }
 
 onMounted(setPDF);
-defineExpose({ addFabric, addTextFabric, canvasDom });
+defineExpose({ addFabric, addTextFabric, clearActive, canvasDom });
 </script>
 
 <template>

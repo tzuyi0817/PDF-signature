@@ -116,12 +116,12 @@ export default function useFabric(id: string) {
     });
   }
 
-  function addFabric(src: string) {
+  function addFabric(src: string, position = { x: 100, y: 50 }) {
     const canvas = fabricMap.get(id);
     if (!canvas) return;
     fabric.Image.fromURL(src, (image) => {
-      image.top = 100;
-      image.left = 50;
+      image.top = position.y;
+      image.left = position.x;
       image.scaleX = 0.5;
       image.scaleY = 0.5;
       image.borderColor = 'black';
@@ -133,12 +133,12 @@ export default function useFabric(id: string) {
     });
   }
 
-  function addTextFabric(text: string) {
+  function addTextFabric(text: string, position = { x: 100, y: 50 }) {
     const canvas = fabricMap.get(id);
     if (!canvas) return;
     const textFabric = new fabric.Text(text, {
-      top: 100,
-      left: 50,
+      top: position.y,
+      left: position.x,
       fontFamily: 'helvetica',
       borderColor: 'black',
       cornerStrokeColor: 'black',
@@ -203,19 +203,21 @@ export default function useFabric(id: string) {
     fabricImagePool.forEach(image => deleteIcon(canvas, image));
   }
 
-  function removeCanvas(id: string) {
-    fabricMap.delete(id);
+  function clearActive() {
+    const canvas = fabricMap.get(id);
+    if (!canvas) return;
+    canvas.discardActiveObject().renderAll();
   }
 
   return {
     createCanvas,
     drawPDF,
     drawImage,
-    removeCanvas,
     specifyPage,
     renderImage,
     addFabric,
     addTextFabric,
+    clearActive,
     pages,
   }
 }
