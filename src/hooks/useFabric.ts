@@ -170,6 +170,7 @@ export default function useFabric(id: string) {
 
     return new Promise(resolve => {
       fabric.Image.fromURL(src, (icon) => {
+        icon.hoverCursor = 'pointer';
         moveIcon(event, icon)
         icon.on('selected', () => {
           canvas.remove(fab);
