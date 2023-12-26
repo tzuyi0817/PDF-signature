@@ -1,28 +1,39 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { createImageSrc } from '@/utils/image';
+import { ref, computed } from 'vue';
 
 interface Props {
-  icon: string;
-  customClass?: string;
-  isActive?: boolean;
+  name: string;
+  prefix?: string;
+  color?: string;
+  hoverChangeSvg?: boolean;
 }
 
-const props = defineProps<Props>();
-const hover = computed(() => {
-  return `url('${createImageSrc(`icon/ic_${props.icon}_h.svg`)}')`;
+const props = withDefaults(defineProps<Props>(), {
+  prefix: 'icon',
+  color: '#4D4D4D',
+  hoverChangeSvg: false,
+});
+
+const isHover = ref(false);
+const symbolId = computed(() => {
+  const symbol = `#${props.prefix}-ic_${props.name}`;
+
+  if (props.hoverChangeSvg && isHover.value && !props.name.includes('_h')) return `${symbol}_h`;
+  return symbol;
 });
 </script>
 
 <template>
-  <img
-    :src="createImageSrc(`icon/ic_${icon}${isActive ? '_h' : '' }.svg`)"
-    :class="['bg-contain cursor-pointer transition-opacity duration-500', customClass]"
-  />
+  <svg
+    aria-hidden="true"
+    :title="symbolId"
+    :class="['cursor-pointer', { 'transition-colors hover:text-primary': !hoverChangeSvg }]"
+    @mouseenter="isHover = true"
+    @mouseleave="isHover = false"
+  >
+    <use
+      :href="symbolId"
+      :fill="color"
+    />
+  </svg>
 </template>
-
-<style lang="postcss" scoped>
-img:hover {
-  @apply content-[v-bind(hover)];
-}
-</style>

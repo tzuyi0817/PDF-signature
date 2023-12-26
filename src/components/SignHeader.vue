@@ -4,11 +4,25 @@ import SignIcon from '@/components/SignIcon.vue';
 
 <template>
   <header class="sign_header">
-    <img src="@/assets/logo/logo_darkbg_horizontal.png" class="w-36 md:w-[228px]" alt="" />
+    <router-link to="/">
+      <img
+        src="@/assets/logo/logo_darkbg_horizontal.png"
+        class="w-36 md:w-[228px]"
+        alt="logo"
+      />
+    </router-link>
 
-    <div class="flex gap-2 md:gap-4">
-      <sign-icon icon="help" customClass="w-[24px] md:w-[40px]" />
-      <sign-icon icon="user" customClass="w-[30px] md:w-[50px]" />
+    <div class="flex items-center gap-2 md:gap-4">
+      <sign-icon
+        name="help"
+        hoverChangeSvg
+        class="w-6 h-6 md:w-[40px] md:h-[40px]"
+      />
+      <sign-icon
+        name="user"
+        hoverChangeSvg
+        class="w-[30px] h-[30px] md:w-[50px] md:h-[50px]"
+      />
     </div>
   </header>
 </template>

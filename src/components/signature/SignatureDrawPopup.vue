@@ -11,7 +11,7 @@ const currentTool = ref('black');
 const isDraw = ref(false);
 const SignPopup = defineAsyncComponent(() => import('@/components/SignPopup.vue'));
 const drawCtx = {
-  ctx: null as CanvasRenderingContext2D | null | undefined, 
+  ctx: null as CanvasRenderingContext2D | null | undefined,
   isPainting: false,
 };
 
@@ -49,7 +49,7 @@ function getPaintPosition(event: MouseEvent | TouchEvent) {
 
   if (event.type === 'mousemove') {
     const { clientX, clientY } = event as MouseEvent;
-    return { x: clientX - left , y: clientY - top };
+    return { x: clientX - left, y: clientY - top };
   }
 
   const { touches } = event as TouchEvent;
@@ -87,31 +87,41 @@ function clear() {
 </script>
 
 <template>
-  <sign-popup title="建立簽名檔" @childMounted="setCanvas">
+  <sign-popup
+    title="建立簽名檔"
+    @childMounted="setCanvas"
+  >
     <ul class="toolbar">
       <li>
         <sign-icon
-          icon="color_black"
+          :name="currentTool === 'black' ? 'color_black_h' : 'color_black'"
+          class="w-7 h-7"
+          hoverChangeSvg
           @click="selectTool('black')"
-          :isActive="currentTool === 'black'"
         />
       </li>
       <li>
         <sign-icon
-          icon="color_blue"
+          :name="currentTool === 'blue' ? 'color_blue_h' : 'color_blue'"
+          class="w-7 h-7"
+          hoverChangeSvg
           @click="selectTool('blue')"
-          :isActive="currentTool === 'blue'"
         />
       </li>
       <li>
         <sign-icon
-          icon="color_red"
+          :name="currentTool === 'red' ? 'color_red_h' : 'color_red'"
+          class="w-7 h-7"
+          hoverChangeSvg
           @click="selectTool('red')"
-          :isActive="currentTool === 'red'"
         />
       </li>
       <li>
-        <sign-icon icon="trash" @click="clear" />
+        <sign-icon
+          name="trash"
+          class="w-7 h-7"
+          @click="clear"
+        />
       </li>
     </ul>
     <canvas
@@ -127,8 +137,19 @@ function clear() {
       @touchmove="draw"
     ></canvas>
     <div class="flex justify-between md:justify-evenly">
-      <button class="btn btn_base" @click="emit('close')">取消</button>
-      <button class="btn btn_primary" @click="addSignature" :disabled="!isDraw">確定</button>
+      <button
+        class="btn btn_base"
+        @click="emit('close')"
+      >
+        取消
+      </button>
+      <button
+        class="btn btn_primary"
+        @click="addSignature"
+        :disabled="!isDraw"
+      >
+        確定
+      </button>
     </div>
   </sign-popup>
 </template>

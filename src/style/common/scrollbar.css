@@ -4,9 +4,9 @@
   ::-webkit-scrollbar {
     @apply w-2 h-2;
   }
- 
+
   ::-webkit-scrollbar-track {
-    @apply  bg-white;
+    @apply bg-gray-10;
   }
 
   ::-webkit-scrollbar-thumb {

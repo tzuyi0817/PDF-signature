@@ -15,7 +15,7 @@ const { isShowWarnPopup, SignPopup, goPage, toggleWarnPopup } = useWarnPopup();
 const warnContent = computed(() => {
   const contentMap = {
     archive: '確定要封存此檔案?',
-    trash: '確定要刪除此檔案?'
+    trash: '確定要刪除此檔案?',
   };
   return contentMap[warnType.value];
 });
@@ -45,32 +45,69 @@ function warnConfirm() {
     <h5 class="title text-center w-full">簽署完成</h5>
 
     <ul class="toolbar md:absolute md:right-10 md:top-5">
-      <li><sign-icon icon="download" @click="download" /></li>
-      <li><sign-icon icon="archive" @click="openWarnPopup('archive')" /></li>
-      <li><sign-icon icon="trash" @click="openWarnPopup('trash')" /></li>
+      <li>
+        <sign-icon
+          name="download"
+          class="w-9 h-9"
+          @click="download"
+        />
+      </li>
+      <li>
+        <sign-icon
+          name="archive"
+          class="w-9 h-9"
+          @click="openWarnPopup('archive')"
+        />
+      </li>
+      <li>
+        <sign-icon
+          name="trash"
+          class="w-9 h-9"
+          @click="openWarnPopup('trash')"
+        />
+      </li>
     </ul>
 
     <div class="complete_content_file">
       <div class="w-fit h-fit py-5 px-3 scale-150 origin-top-left flex flex-col gap-5 md:scale-100 md:py-10 md:px-14">
-        <template v-for="canvas in currentPDF.canvas" :key="canvas">
-          <img :src="canvas" alt="" />
+        <template
+          v-for="canvas in currentPDF.canvas"
+          :key="canvas"
+        >
+          <img
+            :src="canvas"
+            alt="PDF document"
+          />
         </template>
       </div>
     </div>
 
-    <button 
+    <button
       class="btn btn_primary md:absolute md:left-10 md:top-7"
       :disabled="false"
       @click="goPage('index')"
     >
       <span class="text-4xl font-thin">←</span>回首頁
     </button>
-    
-    <sign-popup title="警告" v-if="isShowWarnPopup">
+
+    <sign-popup
+      title="警告"
+      v-if="isShowWarnPopup"
+    >
       <p class="text-center">{{ warnContent }}</p>
       <div class="flex justify-between md:justify-evenly">
-        <button class="btn btn_base" @click="toggleWarnPopup(false)">先不要</button>
-        <button class="btn btn_primary" @click="warnConfirm">確定</button>
+        <button
+          class="btn btn_base"
+          @click="toggleWarnPopup(false)"
+        >
+          先不要
+        </button>
+        <button
+          class="btn btn_primary"
+          @click="warnConfirm"
+        >
+          確定
+        </button>
       </div>
     </sign-popup>
   </div>
@@ -78,14 +115,12 @@ function warnConfirm() {
 
 <style lang="postcss" scoped>
 .complete_content {
-  @apply 
-  flex 
+  @apply flex 
   flex-col
   relative
   items-center;
   &_file {
-    @apply
-    mb-5
+    @apply mb-5
     bg-gray-30
     border-2
     border-gray-30

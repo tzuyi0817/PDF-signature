@@ -2,6 +2,6 @@
 
 @layer components {
   .mask {
-    @apply fixed w-full h-full top-0 left-0 transition-all duration-500;
+    @apply fixed w-full h-full top-0 left-0 transition-all;
   }
 }

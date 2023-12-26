@@ -17,15 +17,27 @@ function close() {
 </script>
 
 <template>
-  <signature-mask :isShowMask="isShowPopup" @close="close" />
+  <signature-mask
+    :isShowMask="isShowPopup"
+    @close="close"
+  />
   <div :class="['signature_popup z-[1]', isShowPopup ? 'translate-y-0 md:block' : 'translate-y-[100%] md:hidden']">
     <h5 class="title text-center md:hidden">{{ title }}</h5>
     <div class="signature_popup_content">
       <slot></slot>
     </div>
     <div class="flex justify-center gap-5 md:hidden">
-      <button class="btn btn_base" @click="close">取消</button>
-      <button class="btn btn_primary" :disabled="isDisabled" @click="emit('use')">
+      <button
+        class="btn btn_base"
+        @click="close"
+      >
+        取消
+      </button>
+      <button
+        class="btn btn_primary"
+        :disabled="isDisabled"
+        @click="emit('use')"
+      >
         {{ customUseBtnName ?? '使用' }}
       </button>
     </div>
@@ -34,8 +46,7 @@ function close() {
 
 <style lang="postcss" scoped>
 .signature_popup {
-  @apply
-  fixed
+  @apply fixed
   bottom-0
   left-0
   h-[70%]
@@ -43,7 +54,7 @@ function close() {
   w-full
   rounded-t-[40px]
   transition-transform
-  duration-500
+  
   shadow-inner
   py-6
   px-8
@@ -57,8 +68,7 @@ function close() {
   md:rounded-b-[40px]
   md:translate-x-11;
   &_content {
-    @apply
-    my-6
+    @apply my-6
     h-[calc(100%-128px)]
     w-full
     bg-secondary-tint

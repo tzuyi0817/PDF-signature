@@ -32,14 +32,14 @@ function close() {
 
 <template>
   <signature-popup
-    :isShowPopup="isShowPage" 
+    :isShowPopup="isShowPage"
     title="選擇頁面"
     :isDisabled="false"
     customUseBtnName="選擇"
     @close="close"
     @use="usePage"
   >
-    <ul class="signature_page_content">
+    <ul class="signature_page_content signature_list">
       <li
         v-for="page in currentPDF.pages"
         :key="page"
@@ -47,9 +47,12 @@ function close() {
         :class="[
           'rounded-[20px] relative w-full flex justify-center py-3 cursor-pointer',
           currentPage === page ? 'bg-primary opacity-70' : 'bg-white',
-        ]" 
+        ]"
       >
-        <signature-page-item :file="currentPDF" :page="page" />
+        <signature-page-item
+          :file="currentPDF"
+          :page="page"
+        />
         <span class="highlight absolute left-4 top-2">{{ `${page}.` }}</span>
         <div
           v-show="currentPage === page"
@@ -59,19 +62,3 @@ function close() {
     </ul>
   </signature-popup>
 </template>
-
-<style lang="postcss" scoped>
-.signature_page {
-  &_content {
-    @apply
-    h-full
-    overflow-y-auto
-    flex
-    flex-col
-    px-4
-    py-5
-    gap-2
-    items-center;
-  }
-}
-</style>

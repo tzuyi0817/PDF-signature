@@ -12,21 +12,14 @@ interface Props {
 const props = defineProps<Props>();
 const canvasDom = ref<HTMLCanvasElement | null>(null);
 const canvasId = `canvas${props.page - 1}`;
-const {
-  createCanvas,
-  specifyPage,
-  addFabric,
-  addTextFabric,
-  renderImage,
-  clearActive,
-} = useFabric(canvasId);
+const { createCanvas, specifyPage, addFabric, addTextFabric, renderImage, clearActive } = useFabric(canvasId);
 
 async function setPDF() {
   const { file, page } = props;
   const scale = isDesktop() ? 4 : 2;
 
   createCanvas();
-  file.PDFBase64.startsWith('data:image') 
+  file.PDFBase64.startsWith('data:image')
     ? renderImage({ url: file.PDFBase64, scale })
     : await specifyPage({ page: page, PDF: file, scale });
 }
@@ -40,9 +33,7 @@ function dropImage(event: DragEvent) {
     y: offsetY - 55,
   };
 
-  value.startsWith('data:image')
-    ? addFabric(value, position)
-    : addTextFabric(value, position);
+  value.startsWith('data:image') ? addFabric(value, position) : addTextFabric(value, position);
 }
 
 onMounted(setPDF);
@@ -51,11 +42,14 @@ defineExpose({ addFabric, addTextFabric, clearActive, canvasDom });
 
 <template>
   <div
-    class="absolute py-5 px-3 md:py-10 md:px-14" 
+    class="absolute py-5 px-3 md:py-10 md:px-14"
     @dragover.stop.prevent
     @dragenter.stop.prevent
     @drop.stop.prevent="dropImage"
   >
-    <canvas :id="canvasId" ref="canvasDom"></canvas>
+    <canvas
+      :id="canvasId"
+      ref="canvasDom"
+    ></canvas>
   </div>
 </template>

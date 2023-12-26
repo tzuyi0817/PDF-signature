@@ -3,8 +3,7 @@
 
 @layer components {
   .btn {
-    @apply
-    min-w-[131px]
+    @apply min-w-[131px]
     h-[41px]
     py-2
     px-7
@@ -16,7 +15,6 @@
     cursor-pointer
     rounded-[50px]
     transition-all
-    duration-500
     gap-2
     highlight
     hover:text-primary
@@ -27,7 +25,7 @@
     disabled:hover:bg-gray-20
     disabled:cursor-not-allowed;
     &_base {
-      @apply  border-gray-50 text-gray-50 hover:text-primary hover:bg-gray-50;
+      @apply border-gray-50 text-gray-50 hover:text-primary hover:bg-gray-50;
     }
     &_primary {
       @apply bg-secondary border-primary text-primary hover:text-black hover:bg-primary;

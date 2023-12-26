@@ -15,14 +15,32 @@ function changeTab(tab: MenuTab) {
 
 <template>
   <ul class="index_menu">
-    <li :class="currentTab === 'file' ? 'bg-white' : 'bg-gray-60'" @click="changeTab('file')">
-      <img src="@/assets/icon/ic_file_h.svg" alt="" />
+    <li
+      :class="currentTab === 'file' ? 'bg-white' : 'bg-gray-60'"
+      @click="changeTab('file')"
+    >
+      <img
+        src="@/assets/icon/ic_file_h.svg"
+        alt="file icon"
+      />
     </li>
-    <li :class="currentTab === 'archive' ? 'bg-white' : 'bg-gray-60'" @click="changeTab('archive')">
-      <img src="@/assets/icon/ic_archive_h.svg" alt="" />
+    <li
+      :class="currentTab === 'archive' ? 'bg-white' : 'bg-gray-60'"
+      @click="changeTab('archive')"
+    >
+      <img
+        src="@/assets/icon/ic_archive_h.svg"
+        alt="archive icon"
+      />
     </li>
-    <li :class="currentTab === 'trash' ? 'bg-white' : 'bg-gray-60'" @click="changeTab('trash')">
-      <img src="@/assets/icon/ic_trash_h.svg" alt="" />
+    <li
+      :class="currentTab === 'trash' ? 'bg-white' : 'bg-gray-60'"
+      @click="changeTab('trash')"
+    >
+      <img
+        src="@/assets/icon/ic_trash_h.svg"
+        alt="trash icon"
+      />
     </li>
   </ul>
 </template>
@@ -31,8 +49,7 @@ function changeTab(tab: MenuTab) {
 .index_menu {
   @apply flex gap-1 ml-5 md:flex-col md:gap-[10px] md:translate-y-[82px];
   li {
-    @apply
-    border-2
+    @apply border-2
     border-b-0
     border-gray-70
     flex
@@ -43,7 +60,6 @@ function changeTab(tab: MenuTab) {
     h-[42px]
     cursor-pointer
     transition-colors
-    duration-500
     drop-shadow-md
     rounded-t-[100px]
     md:w-[62px]

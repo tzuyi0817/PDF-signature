@@ -59,13 +59,16 @@ function close() {
 
 <template>
   <signature-popup
-    :isShowPopup="isShowLiteral" 
+    :isShowPopup="isShowLiteral"
     title="文字庫"
     :isDisabled="!currentSelect"
     @close="close"
     @use="useLiteral"
   >
-    <ul v-if="literalList.length" class="signature_literal_content">
+    <ul
+      v-if="literalList.length"
+      class="signature_literal_content signature_list"
+    >
       <img
         src="@/assets/icon/ic_add_dark.svg"
         alt=""
@@ -81,19 +84,28 @@ function close() {
         :class="[
           'rounded-[20px] relative w-full flex justify-center cursor-pointer',
           currentSelect === literal ? 'bg-primary opacity-70' : 'bg-white',
-        ]" 
+        ]"
       >
-        <p class="whitespace-pre-wrap w-full p-3" draggable="true" @dragstart="dragLiteral">{{ literal }}</p>
+        <p
+          class="whitespace-pre-wrap w-full p-3"
+          draggable="true"
+          @dragstart="dragLiteral"
+        >
+          {{ literal }}
+        </p>
         <sign-icon
           v-show="currentSelect === literal"
-          icon="close_s" 
+          name="close_s"
           @click="toggleWarnPopup(true)"
-          class="absolute top-1 left-1"
+          class="absolute top-1 right-1 w-10 h-10 text-gray-80 hover:text-gray-60"
         />
       </li>
     </ul>
 
-    <div v-else class="signature_literal_content justify-center">
+    <div
+      v-else
+      class="signature_literal_content justify-center"
+    >
       <img
         src="@/assets/icon/ic_add_dark.svg"
         alt=""
@@ -106,36 +118,50 @@ function close() {
     </div>
   </signature-popup>
 
-  <sign-popup title="新增文字" v-if="isShowLiteralPopup">
-    <textarea class="input my-5 h-[40vh] rounded-[20px]" v-model="literal"></textarea>
+  <sign-popup
+    title="新增文字"
+    v-if="isShowLiteralPopup"
+  >
+    <textarea
+      class="input my-5 h-[40vh] rounded-[20px]"
+      v-model="literal"
+    ></textarea>
 
     <div class="flex justify-between md:justify-evenly">
-      <button class="btn btn_base" @click="toggleLiteralPopup(false)">取消</button>
-      <button class="btn btn_primary" :disabled="!literal" @click="addLiteral">確定</button>
+      <button
+        class="btn btn_base"
+        @click="toggleLiteralPopup(false)"
+      >
+        取消
+      </button>
+      <button
+        class="btn btn_primary"
+        :disabled="!literal"
+        @click="addLiteral"
+      >
+        確定
+      </button>
     </div>
   </sign-popup>
 
-  <sign-popup title="警告" v-if="isShowWarnPopup">
+  <sign-popup
+    title="警告"
+    v-if="isShowWarnPopup"
+  >
     <p class="text-center">確定要刪除此文字?</p>
     <div class="flex justify-between md:justify-evenly">
-      <button class="btn btn_base" @click="toggleWarnPopup(false)">先不要</button>
-      <button class="btn btn_primary" @click="deleteLiteral">刪除</button>
+      <button
+        class="btn btn_base"
+        @click="toggleWarnPopup(false)"
+      >
+        先不要
+      </button>
+      <button
+        class="btn btn_primary"
+        @click="deleteLiteral"
+      >
+        刪除
+      </button>
     </div>
   </sign-popup>
 </template>
-
-<style lang="postcss" scoped>
-.signature_literal {
-  &_content {
-    @apply
-    h-full
-    overflow-y-auto
-    flex
-    flex-col
-    px-4
-    py-5
-    gap-2
-    items-center;
-  }
-}
-</style>

@@ -49,7 +49,7 @@ async function uploadFile(event: Event) {
 function dropFile(event: DragEvent) {
   const { dataTransfer } = event;
   const files = dataTransfer?.files;
-  
+
   readerFile(files);
 }
 
@@ -76,10 +76,16 @@ async function readerFile(files: FileList | null | undefined) {
       useImageStore().addImage(fileReader.result as string);
       toggleImagePopup(false);
       toast.showToast('圖片新增成功', 'success');
-    }
+    };
   } catch {
     toast.showToast('圖片上傳失敗', 'error');
   }
+}
+
+function dragImage(event: DragEvent) {
+  const target = event.target as HTMLImageElement;
+
+  event.dataTransfer?.setData('text/plain', target.src);
 }
 
 function close() {
@@ -89,13 +95,16 @@ function close() {
 
 <template>
   <signature-popup
-    :isShowPopup="isShowImage" 
+    :isShowPopup="isShowImage"
     title="圖片庫"
     :isDisabled="!currentSelect"
     @close="close"
     @use="useImage"
   >
-    <ul v-if="imageList.length" class="signature_image_content">
+    <ul
+      v-if="imageList.length"
+      class="signature_image_content signature_list"
+    >
       <img
         src="@/assets/icon/ic_add_dark.svg"
         alt=""
@@ -111,19 +120,27 @@ function close() {
         :class="[
           'rounded-[20px] relative w-full flex justify-center cursor-pointer',
           currentSelect === image ? 'bg-primary opacity-70' : 'bg-white',
-        ]" 
+        ]"
       >
-        <img :src="image" alt="" class="object-contain rounded-[20px]" />
+        <img
+          :src="image"
+          alt=""
+          class="object-contain rounded-[20px]"
+          @dragstart="dragImage"
+        />
         <sign-icon
           v-show="currentSelect === image"
-          icon="close_s" 
+          name="close_s"
           @click="toggleWarnPopup(true)"
-          class="absolute top-1 left-1"
+          class="absolute top-1 right-1 w-10 h-10 text-gray-80 hover:text-gray-60 drop-shadow-md"
         />
       </li>
     </ul>
 
-    <div v-else class="signature_image_content justify-center">
+    <div
+      v-else
+      class="signature_image_content justify-center"
+    >
       <img
         src="@/assets/icon/ic_add_dark.svg"
         alt=""
@@ -136,14 +153,20 @@ function close() {
     </div>
   </signature-popup>
 
-  <sign-popup title="新增圖片" v-if="isShowImagePopup">
+  <sign-popup
+    title="新增圖片"
+    v-if="isShowImagePopup"
+  >
     <div
       class="signature_image_add"
       @dragover.stop.prevent
       @dragenter.stop.prevent
       @drop.stop.prevent="dropFile"
     >
-      <img src="@/assets/img/img_photo.svg" alt="" />
+      <img
+        src="@/assets/img/img_photo.svg"
+        alt=""
+      />
       <button class="btn btn_primary">
         <input
           type="file"
@@ -159,34 +182,40 @@ function close() {
       </div>
     </div>
 
-    <button class="btn btn_base" @click="toggleImagePopup(false)">取消</button>
+    <button
+      class="btn btn_base"
+      @click="toggleImagePopup(false)"
+    >
+      取消
+    </button>
   </sign-popup>
 
-  <sign-popup title="警告" v-if="isShowWarnPopup">
+  <sign-popup
+    title="警告"
+    v-if="isShowWarnPopup"
+  >
     <p class="text-center">確定要刪除此圖片?</p>
     <div class="flex justify-between md:justify-evenly">
-      <button class="btn btn_base" @click="toggleWarnPopup(false)">先不要</button>
-      <button class="btn btn_primary" @click="deleteImage">刪除</button>
+      <button
+        class="btn btn_base"
+        @click="toggleWarnPopup(false)"
+      >
+        先不要
+      </button>
+      <button
+        class="btn btn_primary"
+        @click="deleteImage"
+      >
+        刪除
+      </button>
     </div>
   </sign-popup>
 </template>
 
 <style lang="postcss" scoped>
 .signature_image {
-  &_content {
-    @apply
-    h-full
-    overflow-y-auto
-    flex
-    flex-col
-    px-4
-    py-5
-    gap-2
-    items-center;
-  }
   &_add {
-    @apply
-    border-dashed
+    @apply border-dashed
     border-secondary
     border-[1px]
     py-5

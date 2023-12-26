@@ -2,6 +2,6 @@
 
 @layer components {
   .iconScale {
-    @apply cursor-pointer transition-transform duration-500 hover:scale-90;
+    @apply cursor-pointer transition-transform hover:scale-90;
   }
 }
