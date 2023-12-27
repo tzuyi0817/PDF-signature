@@ -2,11 +2,12 @@
 
 ## Description
 
-This is a PDF signature website.
+This is an online instant `PDF signature` website.  
+The signed pdf file will be stored in the `local storage` on the local side.
 
 ## Development
 
-Clone this repository and install dependencies by running `pnpm`(Node.js version is 16.13.2), then:
+Clone this repository and install dependencies by running `pnpm`(Node.js version is v20.9.0), then:
 
 - `pnpm dev`: Run in development mode
 - `pnpm build`: Build in production mode
@@ -79,7 +80,7 @@ src/
 │   │   ├── layout.css
 │   │   ├── mask.css
 │   │   ├── scrollbar.css
-|   │   └── text.css   
+|   │   └── text.css
 │   ├── index.css
 │   └── tailwind.css
 └── types/
