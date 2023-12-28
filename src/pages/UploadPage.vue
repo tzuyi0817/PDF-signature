@@ -6,6 +6,6 @@ import UploadContent from '@/components/upload/UploadContent.vue';
 <template>
   <div class="upload layout">
     <sign-step status="upload" />
-    <upload-content  />
+    <upload-content />
   </div>
 </template>

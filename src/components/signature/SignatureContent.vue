@@ -148,20 +148,20 @@ onMounted(() => {
         </ul>
         <signature-sign
           v-model:isShowSign="isShowSign"
-          @useSignature="addFabric"
+          @use-signature="addFabric"
         />
         <signature-image
           v-model:isShowImage="isShowImage"
-          @useImage="addFabric"
+          @use-image="addFabric"
         />
         <signature-literal
           v-model:isShowLiteral="isShowLiteral"
-          @useLiteral="addFabric"
+          @use-literal="addFabric"
         />
         <signature-page
-          v-model:isShowPage="isShowPage"
-          @usePage="usePage"
           ref="signaturePage"
+          v-model:isShowPage="isShowPage"
+          @use-page="usePage"
         />
       </div>
 
@@ -173,9 +173,9 @@ onMounted(() => {
           >
             <signature-canvas-item
               v-show="currentPage === page"
+              ref="signatureCanvasItem"
               :file="currentPDF"
               :page="page"
-              ref="signatureCanvasItem"
             />
           </template>
         </div>
@@ -183,13 +183,13 @@ onMounted(() => {
     </div>
 
     <sign-step-btn
-      :isNextDisabled="false"
-      @nextStep="toggleNextWarnPopup(true)"
-      @prevStep="toggleWarnPopup(true)"
+      :is-next-disabled="false"
+      @next-step="toggleNextWarnPopup(true)"
+      @prev-step="toggleWarnPopup(true)"
     />
     <sign-popup
-      title="警告"
       v-if="isShowWarnPopup"
+      title="警告"
     >
       <p class="text-center">確定要放棄已編輯的內容?</p>
       <div class="flex justify-between md:justify-evenly">
@@ -209,8 +209,8 @@ onMounted(() => {
     </sign-popup>
 
     <sign-popup
-      title="創建檔案"
       v-if="isShowNextWarnPopup"
+      title="創建檔案"
     >
       <p class="text-center">確定已完成簽署文件?</p>
       <div class="flex justify-between md:justify-evenly">
@@ -229,8 +229,8 @@ onMounted(() => {
       </div>
     </sign-popup>
     <sign-popup
-      title="創建檔案"
       v-if="isShowMergePopup"
+      title="創建檔案"
     >
       <div class="flex flex-col gap-8 items-center py-8">
         <img

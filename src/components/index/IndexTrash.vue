@@ -10,10 +10,20 @@ usePdfStore().filterTrash();
 
 <template>
   <div class="index_trash">
-    <sign-files v-if="trashList.length" type="trash" :list="trashList" />
+    <sign-files
+      v-if="trashList.length"
+      type="trash"
+      :list="trashList"
+    />
 
-    <div v-else class="h-full flex flex-col items-center justify-center gap-[35px]">
-      <img src="@/assets/img/img_trash.svg" alt="" />
+    <div
+      v-else
+      class="h-full flex flex-col items-center justify-center gap-[35px]"
+    >
+      <img
+        src="@/assets/img/img_trash.svg"
+        alt=""
+      />
 
       <div class="text-gray-40 text-center">
         <h5 class="mb-2">沒有任何項目</h5>
@@ -29,8 +39,7 @@ usePdfStore().filterTrash();
 .index_trash {
   @apply relative h-[calc(100%-38px)];
   &_warn {
-    @apply
-  text-danger
+    @apply text-danger
     text-center
     px-5
     py-2

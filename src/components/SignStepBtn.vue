@@ -3,16 +3,19 @@ interface Props {
   isNextDisabled: boolean;
 }
 
-const props = defineProps<Props>();
-const emit = defineEmits(['prevStep', 'nextStep'])
+defineProps<Props>();
+const emit = defineEmits(['prevStep', 'nextStep']);
 </script>
 
 <template>
   <div class="sign_step_btn">
-    <button class="btn" @click="emit('prevStep')">
+    <button
+      class="btn"
+      @click="emit('prevStep')"
+    >
       <span class="text-4xl font-thin">←</span>上一步
     </button>
-    <button 
+    <button
       class="btn btn_primary"
       :disabled="isNextDisabled"
       @click="emit('nextStep')"
@@ -24,8 +27,7 @@ const emit = defineEmits(['prevStep', 'nextStep'])
 
 <style lang="postcss" scoped>
 .sign_step_btn {
-  @apply
-  flex
+  @apply flex
   items-center
   justify-between
   mx-[10px]

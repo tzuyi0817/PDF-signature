@@ -83,15 +83,15 @@ export default function useFabric(id: string) {
 
   function canvasToImage(canvasTemp: HTMLCanvasElement) {
     const scale = 1 / 3;
-  
+
     return new fabric.Image(canvasTemp, {
       scaleX: scale,
       scaleY: scale,
     });
   }
-  
+
   async function drawImage(file: File) {
-    const base64 = await readBlob(file) as string;
+    const base64 = (await readBlob(file)) as string;
     const { setCurrentPDF } = usePdfStore();
     const now = Date.now();
     const PDFId = `${file.name}${now}`;
@@ -109,8 +109,8 @@ export default function useFabric(id: string) {
   function renderImage({ url, scale = 0.5 }: RenderImageArgs) {
     const canvas = fabricMap.get(id);
     if (!canvas) return;
-    fabric.Image.fromURL(url, (image) => {
-      image.scale(scale)
+    fabric.Image.fromURL(url, image => {
+      image.scale(scale);
       canvas.setWidth(image.width! * scale);
       canvas.setHeight(image.height! * scale);
       canvas.setBackgroundImage(image, canvas.renderAll.bind(canvas));
@@ -120,7 +120,7 @@ export default function useFabric(id: string) {
   function addFabric(src: string, position = { x: 100, y: 50 }) {
     const canvas = fabricMap.get(id);
     if (!canvas) return;
-    fabric.Image.fromURL(src, (image) => {
+    fabric.Image.fromURL(src, image => {
       image.top = position.y;
       image.left = position.x;
       image.scaleX = 0.5;
@@ -154,24 +154,24 @@ export default function useFabric(id: string) {
   function setFabric(canvas: fabric.Canvas, fab: fabric.Image | fabric.Text) {
     let icon: fabric.Image | null = null;
 
-    fab.on('selected', async (event) => icon = await createIcon(canvas, event, fab));
-    fab.on('modified', (event) => moveIcon(event, icon));
-    fab.on('scaling', (event) => moveIcon(event, icon));
-    fab.on('moving', (event) => moveIcon(event, icon));
-    fab.on('rotating', (event) => moveIcon(event, icon));
+    fab.on('selected', async event => (icon = await createIcon(canvas, event, fab)));
+    fab.on('modified', event => moveIcon(event, icon));
+    fab.on('scaling', event => moveIcon(event, icon));
+    fab.on('moving', event => moveIcon(event, icon));
+    fab.on('rotating', event => moveIcon(event, icon));
   }
 
   async function createIcon(
     canvas: fabric.Canvas,
     event: fabric.IEvent<Event>,
-    fab: fabric.Image | fabric.Text
+    fab: fabric.Image | fabric.Text,
   ): Promise<fabric.Image> {
     const src = createImageSrc('icon/ic_close_s.svg');
 
     return new Promise(resolve => {
-      fabric.Image.fromURL(src, (icon) => {
+      fabric.Image.fromURL(src, icon => {
         icon.hoverCursor = 'pointer';
-        moveIcon(event, icon)
+        moveIcon(event, icon);
         icon.on('selected', () => {
           canvas.remove(fab);
           deleteIcon(canvas, icon);
@@ -221,5 +221,5 @@ export default function useFabric(id: string) {
     addTextFabric,
     clearActive,
     pages,
-  }
+  };
 }

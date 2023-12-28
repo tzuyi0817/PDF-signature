@@ -10,9 +10,16 @@ const { PDFList } = storeToRefs(usePdfStore());
 
 <template>
   <div class="index_files">
-    <sign-files v-if="PDFList.length" type="file" :list="PDFList" />
+    <sign-files
+      v-if="PDFList.length"
+      type="file"
+      :list="PDFList"
+    />
 
-    <div v-else class="h-full flex flex-col items-center justify-center gap-5">
+    <div
+      v-else
+      class="h-full flex flex-col items-center justify-center gap-5"
+    >
       <img
         src="@/assets/icon/ic_add_dark.svg"
         alt=""

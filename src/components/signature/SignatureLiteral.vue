@@ -11,7 +11,7 @@ interface Props {
   isShowLiteral: boolean;
 }
 
-const props = defineProps<Props>();
+defineProps<Props>();
 const emit = defineEmits(['update:isShowLiteral', 'useLiteral']);
 const currentSelect = ref('');
 const isShowLiteralPopup = ref(false);
@@ -59,9 +59,9 @@ function close() {
 
 <template>
   <signature-popup
-    :isShowPopup="isShowLiteral"
+    :is-show-popup="isShowLiteral"
     title="文字庫"
-    :isDisabled="!currentSelect"
+    :is-disabled="!currentSelect"
     @close="close"
     @use="useLiteral"
   >
@@ -80,11 +80,11 @@ function close() {
       <li
         v-for="literal in literalList"
         :key="literal"
-        @click="selectLiteral(literal)"
         :class="[
           'rounded-[20px] relative w-full flex justify-center cursor-pointer',
           currentSelect === literal ? 'bg-primary opacity-70' : 'bg-white',
         ]"
+        @click="selectLiteral(literal)"
       >
         <p
           class="whitespace-pre-wrap w-full p-3"
@@ -96,8 +96,8 @@ function close() {
         <sign-icon
           v-show="currentSelect === literal"
           name="close_s"
-          @click="toggleWarnPopup(true)"
           class="absolute top-1 right-1 w-10 h-10 text-gray-80 hover:text-gray-60"
+          @click="toggleWarnPopup(true)"
         />
       </li>
     </ul>
@@ -119,12 +119,12 @@ function close() {
   </signature-popup>
 
   <sign-popup
-    title="新增文字"
     v-if="isShowLiteralPopup"
+    title="新增文字"
   >
     <textarea
-      class="input my-5 h-[40dvh] rounded-[20px]"
       v-model="literal"
+      class="input my-5 h-[40dvh] rounded-[20px]"
     ></textarea>
 
     <div class="flex justify-between md:justify-evenly">
@@ -145,8 +145,8 @@ function close() {
   </sign-popup>
 
   <sign-popup
-    title="警告"
     v-if="isShowWarnPopup"
+    title="警告"
   >
     <p class="text-center">確定要刪除此文字?</p>
     <div class="flex justify-between md:justify-evenly">

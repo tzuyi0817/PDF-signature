@@ -3,22 +3,26 @@ interface Props {
   status: 'upload' | 'sign' | 'complete';
 }
 
-const props = defineProps<Props>();
+defineProps<Props>();
 </script>
 
 <template>
   <div class="sign_step">
-    <div :class="[
-      'sign_step_dot',
-      { 'sign_step_dot-light': status === 'upload' },
-      { 'sign_step_dot-complete': status === 'sign' || status === 'complete' },
-    ]"></div>
+    <div
+      :class="[
+        'sign_step_dot',
+        { 'sign_step_dot-light': status === 'upload' },
+        { 'sign_step_dot-complete': status === 'sign' || status === 'complete' },
+      ]"
+    ></div>
     <div :class="['sign_step_line', status === 'sign' || status === 'complete' ? 'bg-primary' : 'bg-gray-40']"></div>
-    <div :class="[
-      'sign_step_dot',
-      { 'sign_step_dot-light': status === 'sign' },
-      { 'sign_step_dot-complete': status === 'complete' },
-    ]"></div>
+    <div
+      :class="[
+        'sign_step_dot',
+        { 'sign_step_dot-light': status === 'sign' },
+        { 'sign_step_dot-complete': status === 'complete' },
+      ]"
+    ></div>
     <div :class="['sign_step_line', status === 'complete' ? 'bg-primary' : 'bg-gray-40']"></div>
     <div :class="['sign_step_dot', { 'sign_step_dot-light': status === 'complete' }]"></div>
     <span :class="['sign_step_text -left-5', status === 'upload' ? 'text-primary' : 'text-gray-40']">上傳檔案</span>

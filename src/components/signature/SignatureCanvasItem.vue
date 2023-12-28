@@ -21,7 +21,7 @@ async function setPDF() {
   createCanvas();
   file.PDFBase64.startsWith('data:image')
     ? renderImage({ url: file.PDFBase64, scale })
-    : await specifyPage({ page: page, PDF: file, scale });
+    : await specifyPage({ page, PDF: file, scale });
 }
 
 function dropImage(event: DragEvent) {

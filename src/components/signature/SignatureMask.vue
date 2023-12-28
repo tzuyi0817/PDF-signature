@@ -3,7 +3,7 @@ interface Props {
   isShowMask: boolean;
 }
 
-const props = defineProps<Props>();
+defineProps<Props>();
 const emit = defineEmits(['close']);
 </script>
 

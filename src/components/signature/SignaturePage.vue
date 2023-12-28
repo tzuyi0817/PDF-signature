@@ -10,7 +10,7 @@ interface Props {
   isShowPage: boolean;
 }
 
-const props = defineProps<Props>();
+defineProps<Props>();
 const emit = defineEmits(['update:isShowPage', 'usePage']);
 const currentPage = ref(1);
 const { currentPDF } = storeToRefs(usePdfStore());
@@ -32,10 +32,10 @@ function close() {
 
 <template>
   <signature-popup
-    :isShowPopup="isShowPage"
+    :is-show-popup="isShowPage"
     title="選擇頁面"
-    :isDisabled="false"
-    customUseBtnName="選擇"
+    :is-disabled="false"
+    custom-use-btn-name="選擇"
     @close="close"
     @use="usePage"
   >
@@ -43,11 +43,11 @@ function close() {
       <li
         v-for="page in currentPDF.pages"
         :key="page"
-        @click="selectPage(page)"
         :class="[
           'rounded-[20px] relative w-full flex justify-center py-3 cursor-pointer overflow-hidden',
           currentPage === page ? 'bg-primary opacity-70' : 'bg-white',
         ]"
+        @click="selectPage(page)"
       >
         <signature-page-item
           :file="currentPDF"

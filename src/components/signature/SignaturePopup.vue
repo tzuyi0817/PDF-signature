@@ -8,7 +8,7 @@ interface Props {
   customUseBtnName?: string;
 }
 
-const props = defineProps<Props>();
+defineProps<Props>();
 const emit = defineEmits(['close', 'use']);
 
 function close() {
@@ -18,7 +18,7 @@ function close() {
 
 <template>
   <signature-mask
-    :isShowMask="isShowPopup"
+    :is-show-mask="isShowPopup"
     @close="close"
   />
   <div :class="['signature_popup z-[1]', isShowPopup ? 'translate-y-0 md:block' : 'translate-y-[100%] md:hidden']">
@@ -54,7 +54,7 @@ function close() {
   w-full
   rounded-t-[40px]
   transition-transform
-  
+
   shadow-inner
   py-6
   px-8

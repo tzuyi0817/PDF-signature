@@ -5,7 +5,7 @@ interface Props {
   currentTab: MenuTab;
 }
 
-const props = defineProps<Props>();
+defineProps<Props>();
 const emit = defineEmits(['update:currentTab']);
 
 function changeTab(tab: MenuTab) {

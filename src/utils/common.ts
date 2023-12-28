@@ -1,4 +1,4 @@
-import { isArray, isObject } from "@/utils/checkType";
+import { isArray, isObject } from '@/utils/checkType';
 
 export function deepClone<T extends Record<any, any>>(obj: T, hash = new WeakMap()): T {
   if (obj instanceof Date || obj instanceof RegExp) return obj;
@@ -24,7 +24,7 @@ export function debounce(fun: Function, time = 500) {
       fun.apply(this, args);
       timer = null;
     }, time);
-  }
+  };
 }
 
 export function sleep(time = 500) {

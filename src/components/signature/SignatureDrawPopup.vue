@@ -89,14 +89,14 @@ function clear() {
 <template>
   <sign-popup
     title="建立簽名檔"
-    @childMounted="setCanvas"
+    @child-mounted="setCanvas"
   >
     <ul class="toolbar">
       <li>
         <sign-icon
           :name="currentTool === 'black' ? 'color_black_h' : 'color_black'"
           class="w-7 h-7"
-          hoverChangeSvg
+          hover-change-svg
           @click="selectTool('black')"
         />
       </li>
@@ -104,7 +104,7 @@ function clear() {
         <sign-icon
           :name="currentTool === 'blue' ? 'color_blue_h' : 'color_blue'"
           class="w-7 h-7"
-          hoverChangeSvg
+          hover-change-svg
           @click="selectTool('blue')"
         />
       </li>
@@ -112,7 +112,7 @@ function clear() {
         <sign-icon
           :name="currentTool === 'red' ? 'color_red_h' : 'color_red'"
           class="w-7 h-7"
-          hoverChangeSvg
+          hover-change-svg
           @click="selectTool('red')"
         />
       </li>
@@ -145,8 +145,8 @@ function clear() {
       </button>
       <button
         class="btn btn_primary"
-        @click="addSignature"
         :disabled="!isDraw"
+        @click="addSignature"
       >
         確定
       </button>

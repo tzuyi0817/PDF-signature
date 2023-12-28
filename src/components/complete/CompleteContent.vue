@@ -91,8 +91,8 @@ function warnConfirm() {
     </button>
 
     <sign-popup
-      title="警告"
       v-if="isShowWarnPopup"
+      title="警告"
     >
       <p class="text-center">{{ warnContent }}</p>
       <div class="flex justify-between md:justify-evenly">
@@ -115,7 +115,7 @@ function warnConfirm() {
 
 <style lang="postcss" scoped>
 .complete_content {
-  @apply flex 
+  @apply flex
   flex-col
   relative
   items-center;

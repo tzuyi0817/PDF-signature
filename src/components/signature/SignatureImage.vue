@@ -11,7 +11,7 @@ interface Props {
   isShowImage: boolean;
 }
 
-const props = defineProps<Props>();
+defineProps<Props>();
 const emit = defineEmits(['update:isShowImage', 'useImage']);
 const currentSelect = ref('');
 const isShowImagePopup = ref(false);
@@ -95,9 +95,9 @@ function close() {
 
 <template>
   <signature-popup
-    :isShowPopup="isShowImage"
+    :is-show-popup="isShowImage"
     title="圖片庫"
-    :isDisabled="!currentSelect"
+    :is-disabled="!currentSelect"
     @close="close"
     @use="useImage"
   >
@@ -116,11 +116,11 @@ function close() {
       <li
         v-for="image in imageList"
         :key="image"
-        @click="selectImage(image)"
         :class="[
           'rounded-[20px] relative w-full flex justify-center cursor-pointer',
           currentSelect === image ? 'bg-primary opacity-70' : 'bg-white',
         ]"
+        @click="selectImage(image)"
       >
         <img
           :src="image"
@@ -131,8 +131,8 @@ function close() {
         <sign-icon
           v-show="currentSelect === image"
           name="close_s"
-          @click="toggleWarnPopup(true)"
           class="absolute top-1 right-1 w-10 h-10 text-gray-80 hover:text-gray-60 drop-shadow-md"
+          @click="toggleWarnPopup(true)"
         />
       </li>
     </ul>
@@ -154,8 +154,8 @@ function close() {
   </signature-popup>
 
   <sign-popup
-    title="新增圖片"
     v-if="isShowImagePopup"
+    title="新增圖片"
   >
     <div
       class="signature_image_add"
@@ -191,8 +191,8 @@ function close() {
   </sign-popup>
 
   <sign-popup
-    title="警告"
     v-if="isShowWarnPopup"
+    title="警告"
   >
     <p class="text-center">確定要刪除此圖片?</p>
     <div class="flex justify-between md:justify-evenly">

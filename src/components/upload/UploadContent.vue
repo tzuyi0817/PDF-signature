@@ -14,7 +14,7 @@ const projectName = ref('');
 const isShowPen = ref(true);
 const { createCanvas, drawPDF, drawImage, pages } = useFabric('canvas');
 const { isShowWarnPopup, SignPopup, goBack, goPage, toggleWarnPopup } = useWarnPopup();
-const { isShowWarnPopup: isShowLoading, SignPopup: loadingPopup, toggleWarnPopup: toggleLoading } = useWarnPopup();
+const { isShowWarnPopup: isShowLoading, SignPopup: loadingPopup } = useWarnPopup();
 
 async function uploadFile(event: Event) {
   const target = event.target as HTMLInputElement;
@@ -110,8 +110,8 @@ onMounted(createCanvas);
         <p>專案名稱</p>
         <label class="w-[90%] relative max-w-[400px]">
           <input
-            type="text"
             v-model.trim="projectName"
+            type="text"
             class="input"
             @focus="focus"
             @blur="blur"
@@ -155,13 +155,13 @@ onMounted(createCanvas);
     </div>
 
     <sign-step-btn
-      :isNextDisabled="isNextDisabled"
-      @nextStep="goPage('signature')"
-      @prevStep="toggleWarnPopup(true)"
+      :is-next-disabled="isNextDisabled"
+      @next-step="goPage('signature')"
+      @prev-step="toggleWarnPopup(true)"
     />
     <sign-popup
-      title="警告"
       v-if="isShowWarnPopup"
+      title="警告"
     >
       <p class="text-center">確定要放棄編輯文件?</p>
       <div class="flex justify-between md:justify-around">

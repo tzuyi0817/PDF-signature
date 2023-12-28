@@ -16,12 +16,10 @@ export default defineStore('pdf_signature_signature', {
     },
     deleteSignature(signature: string) {
       this.signatureList = this.signatureList.filter(sign => sign !== signature);
-    }
+    },
   },
   persist: {
     storage: localStorage,
-    paths: [
-      'signatureList',
-    ],
+    paths: ['signatureList'],
   },
 });

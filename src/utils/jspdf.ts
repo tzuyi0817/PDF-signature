@@ -9,7 +9,7 @@ export function downloadPDF(doc: PDF) {
 
   if (!canvas) return;
   canvas.forEach((image, index) => {
-    PDF.addImage(image, 'png', 0, 0, width, height)
+    PDF.addImage(image, 'png', 0, 0, width, height);
     index !== canvas.length - 1 && PDF.addPage();
   });
   PDF.save(`${name}.pdf`);

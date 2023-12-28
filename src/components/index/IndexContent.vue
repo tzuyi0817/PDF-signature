@@ -17,7 +17,7 @@ const title = computed(() => {
     file: '我的文件',
     archive: '已封存的文件',
     trash: '垃圾桶',
-  }
+  };
   return titleMap[props.currentTab];
 });
 
@@ -26,7 +26,7 @@ const currentCom = computed(() => {
     file: IndexFiles,
     archive: IndexArchives,
     trash: IndexTrash,
-  }
+  };
   return componentMap[props.currentTab];
 });
 </script>
@@ -34,11 +34,11 @@ const currentCom = computed(() => {
 <template>
   <div class="index_content content">
     <img
-        src="@/assets/icon/ic_add_tint.svg"
-        alt=""
-        class="index_content_add iconScale"
-        @click="goPage('upload')"
-      />
+      src="@/assets/icon/ic_add_tint.svg"
+      alt=""
+      class="index_content_add iconScale"
+      @click="goPage('upload')"
+    />
     <h5 class="title">{{ title }}</h5>
 
     <keep-alive>
@@ -50,8 +50,7 @@ const currentCom = computed(() => {
 <style lang="postcss" scoped>
 .index_content {
   &_add {
-    @apply
-    w-[60px]
+    @apply w-[60px]
     h-[60px]
     absolute
     right-3

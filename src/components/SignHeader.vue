@@ -15,12 +15,12 @@ import SignIcon from '@/components/SignIcon.vue';
     <div class="flex items-center gap-2 md:gap-4">
       <sign-icon
         name="help"
-        hoverChangeSvg
+        hover-change-svg
         class="w-6 h-6 md:w-[40px] md:h-[40px]"
       />
       <sign-icon
         name="user"
-        hoverChangeSvg
+        hover-change-svg
         class="w-[30px] h-[30px] md:w-[50px] md:h-[50px]"
       />
     </div>

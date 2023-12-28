@@ -16,12 +16,10 @@ export default defineStore('pdf_signature_literal', {
     },
     deleteLiteral(text: string) {
       this.literalList = this.literalList.filter(literal => literal !== text);
-    }
+    },
   },
   persist: {
     storage: localStorage,
-    paths: [
-      'literalList',
-    ],
+    paths: ['literalList'],
   },
 });

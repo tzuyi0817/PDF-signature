@@ -12,7 +12,7 @@ interface Props {
   isShowSign: boolean;
 }
 
-const props = defineProps<Props>();
+defineProps<Props>();
 const emit = defineEmits(['update:isShowSign', 'useSignature']);
 const currentSelect = ref('');
 const isShowDrawPopup = ref(false);
@@ -52,9 +52,9 @@ function close() {
 
 <template>
   <signature-popup
-    :isShowPopup="isShowSign"
+    :is-show-popup="isShowSign"
     title="簽名檔"
-    :isDisabled="!currentSelect"
+    :is-disabled="!currentSelect"
     @close="close"
     @use="useSignature"
   >
@@ -73,11 +73,11 @@ function close() {
       <li
         v-for="signature in signatureList"
         :key="signature"
-        @click="selectSignature(signature)"
         :class="[
           'rounded-[20px] relative w-full flex justify-center cursor-pointer',
           currentSelect === signature ? 'bg-primary opacity-70' : 'bg-white',
         ]"
+        @click="selectSignature(signature)"
       >
         <img
           :src="signature"
@@ -88,8 +88,8 @@ function close() {
         <sign-icon
           v-show="currentSelect === signature"
           name="close_s"
-          @click="toggleWarnPopup(true)"
           class="absolute top-1 right-1 w-10 h-10 text-gray-80 hover:text-gray-60"
+          @click="toggleWarnPopup(true)"
         />
       </li>
     </ul>
@@ -116,8 +116,8 @@ function close() {
   />
 
   <sign-popup
-    title="警告"
     v-if="isShowWarnPopup"
+    title="警告"
   >
     <p class="text-center">確定要刪除此簽名?</p>
     <div class="flex justify-between">

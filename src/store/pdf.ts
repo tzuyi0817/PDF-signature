@@ -25,9 +25,7 @@ const defaultState: PDFStore = {
 
 export default defineStore('pdf_signature_pdf', {
   state: () => ({ ...defaultState }),
-  getters: {
-
-  },
+  getters: {},
   actions: {
     setCurrentPDF(PDF: PDF) {
       this.currentPDF = PDF;
@@ -69,17 +67,12 @@ export default defineStore('pdf_signature_pdf', {
       const now = Date.now();
 
       this.trashList = this.trashList.filter(({ trashDate }) => {
-        return (now - trashDate!) < MAX_DAY;
+        return now - trashDate! < MAX_DAY;
       });
-    }
+    },
   },
   persist: {
     storage: localStorage,
-    paths: [
-      'currentPDF',
-      'PDFList',
-      'archiveList',
-      'trashList',
-    ],
+    paths: ['currentPDF', 'PDFList', 'archiveList', 'trashList'],
   },
 });

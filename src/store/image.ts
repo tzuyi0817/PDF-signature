@@ -16,12 +16,10 @@ export default defineStore('pdf_signature_image', {
     },
     deleteImage(image: string) {
       this.imageList = this.imageList.filter(img => img !== image);
-    }
+    },
   },
   persist: {
     storage: localStorage,
-    paths: [
-      'imageList',
-    ],
+    paths: ['imageList'],
   },
 });

@@ -70,8 +70,8 @@ function changeShowStatus(status: FileShowStatus) {
         @click="clear"
       />
       <input
-        type="text"
         v-model.trim="keyword"
+        type="text"
         class="input pl-12"
         placeholder="請輸入關鍵字"
         @focus="focus"
@@ -107,12 +107,12 @@ function changeShowStatus(status: FileShowStatus) {
       ]"
     >
       <sign-file
-        v-for="(PDF, index) in search"
-        :key="PDF.PDFId"
-        :file="PDF"
+        v-for="(pdf, index) in search"
+        :key="pdf.PDFId"
+        :file="pdf"
         :index="index"
         :type="type"
-        :isListStatus="isListStatus"
+        :is-list-status="isListStatus"
         :keyword="keyword"
       />
     </ul>

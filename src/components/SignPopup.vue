@@ -5,7 +5,7 @@ interface Props {
   title: string;
 }
 
-const props = defineProps<Props>();
+defineProps<Props>();
 const emit = defineEmits(['childMounted']);
 
 onMounted(() => emit('childMounted'));
@@ -24,8 +24,7 @@ onMounted(() => emit('childMounted'));
 .sign_popup {
   @apply bg-black/50 flex items-center justify-center z-[2];
   &_box {
-    @apply
-    w-[90%]
+    @apply w-[90%]
     max-w-[530px]
     min-h-[261px]
     px-8

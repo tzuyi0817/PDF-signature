@@ -8,10 +8,20 @@ const { archiveList } = storeToRefs(usePdfStore());
 
 <template>
   <div class="index_archives">
-    <sign-files v-if="archiveList.length" type="archive" :list="archiveList" />
+    <sign-files
+      v-if="archiveList.length"
+      type="archive"
+      :list="archiveList"
+    />
 
-    <div v-else class="h-full flex flex-col items-center justify-center gap-[35px]">
-      <img src="@/assets/img/img_archive.svg" alt="" />
+    <div
+      v-else
+      class="h-full flex flex-col items-center justify-center gap-[35px]"
+    >
+      <img
+        src="@/assets/img/img_archive.svg"
+        alt=""
+      />
 
       <div class="text-gray-40 text-center">
         <h5 class="mb-2">沒有任何項目</h5>

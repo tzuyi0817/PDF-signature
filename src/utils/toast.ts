@@ -21,4 +21,4 @@ export default {
     this.msg.value = '';
     this.isShowToast.value = false;
   },
-}
+};

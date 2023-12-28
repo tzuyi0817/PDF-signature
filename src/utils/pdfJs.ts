@@ -20,5 +20,5 @@ export function readBlob(file: File): Promise<FileReader['result']> {
     reader.addEventListener('load', () => resolve(reader.result));
     reader.addEventListener('error', reject);
     reader.readAsDataURL(file);
-  })
+  });
 }

@@ -11,6 +11,4 @@ import SignToast from '@/components/SignToast.vue';
   <sign-toast />
 </template>
 
-<style lang="postcss" scoped>
-
-</style>
+<style lang="postcss" scoped></style>

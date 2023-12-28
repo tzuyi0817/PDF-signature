@@ -16,7 +16,7 @@ interface Props {
 
 const props = defineProps<Props>();
 const isShowMore = ref(false);
-const time = computed(() => {
+const localTime = computed(() => {
   const [date, time] = new Date(props.file.updateDate).toLocaleString('en-GB').split(',');
   const [day, month, year] = date.split('/');
 
@@ -75,7 +75,7 @@ function splitName(name: string) {
   return spiltName.reduce((html, str, index) => {
     if (!str) return html;
 
-    return html + `<span class="${index === 1 ? 'text-primary' : ''}">${str}</span>`;
+    return `${html}<span class="${index === 1 ? 'text-primary' : ''}">${str}</span>`;
   }, '');
 }
 </script>
@@ -133,7 +133,7 @@ function splitName(name: string) {
           class="flex-1"
           v-html="splitName(file.name)"
         ></p>
-        <p :class="['text-gray-40', { 'md:text-black md:w-[236px]': isListStatus }]">{{ time }}</p>
+        <p :class="['text-gray-40', { 'md:text-black md:w-[236px]': isListStatus }]">{{ localTime }}</p>
         <svg
           width="40"
           height="40"

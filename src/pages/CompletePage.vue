@@ -6,6 +6,6 @@ import CompleteContent from '@/components/complete/CompleteContent.vue';
 <template>
   <div class="complete layout">
     <sign-step status="complete" />
-    <complete-content  />
+    <complete-content />
   </div>
 </template>

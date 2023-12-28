@@ -8,22 +8,22 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'index',
-    component: () => import('@/pages/Index.vue')
+    component: () => import('@/pages/IndexPage.vue'),
   },
   {
     path: '/upload',
     name: 'upload',
-    component: () => import('@/pages/Upload.vue')
+    component: () => import('@/pages/UploadPage.vue'),
   },
   {
     path: '/signature',
     name: 'signature',
-    component: () => import('@/pages/Signature.vue')
+    component: () => import('@/pages/SignaturePage.vue'),
   },
   {
     path: '/complete',
     name: 'complete',
-    component: () => import('@/pages/Complete.vue')
+    component: () => import('@/pages/CompletePage.vue'),
   },
 ];
 

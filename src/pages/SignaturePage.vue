@@ -6,6 +6,6 @@ import SignatureContent from '@/components/signature/SignatureContent.vue';
 <template>
   <div class="signature layout">
     <sign-step status="sign" />
-    <signature-content  />
+    <signature-content />
   </div>
 </template>
