@@ -4,8 +4,9 @@ import { usePdfStore } from '@/store';
 import SignStepBtn from '@/components/SignStepBtn.vue';
 import SignIcon from '@/components/SignIcon.vue';
 import useFabric from '@/hooks/useFabric';
-import toast from '@/utils/toast';
 import useWarnPopup from '@/hooks/useWarnPopup';
+import toast from '@/utils/toast';
+import { sleep } from '@/utils/common';
 
 const isNextDisabled = ref(true);
 const fileName = ref('');
@@ -13,6 +14,7 @@ const projectName = ref('');
 const isShowPen = ref(true);
 const { createCanvas, drawPDF, drawImage, pages } = useFabric('canvas');
 const { isShowWarnPopup, SignPopup, goBack, goPage, toggleWarnPopup } = useWarnPopup();
+const { isShowWarnPopup: isShowLoading, SignPopup: loadingPopup, toggleWarnPopup: toggleLoading } = useWarnPopup();
 
 async function uploadFile(event: Event) {
   const target = event.target as HTMLInputElement;
@@ -44,7 +46,9 @@ async function readerFile(files: FileList | null | undefined) {
   }
 
   try {
+    isShowLoading.value = true;
     file.type === 'application/pdf' ? await drawPDF(file) : drawImage(file);
+    await sleep();
     toast.showToast('檔案上傳成功', 'success');
     fileName.value = file.name;
     projectName.value = file.name.replace(regexp, '');
@@ -52,6 +56,7 @@ async function readerFile(files: FileList | null | undefined) {
   } catch {
     toast.showToast('檔案上傳失敗', 'error');
   }
+  isShowLoading.value = false;
 }
 
 function remove() {
@@ -174,6 +179,20 @@ onMounted(createCanvas);
         </button>
       </div>
     </sign-popup>
+    <loading-popup
+      v-if="isShowLoading"
+      title="上傳檔案"
+    >
+      <div class="flex flex-col gap-8 items-center py-8">
+        <img
+          src="@/assets/img/loading.gif"
+          class="w-[60%]"
+          alt="loading gif"
+        />
+
+        <h5 class="text-center text-gray-40">檔案上傳中...</h5>
+      </div>
+    </loading-popup>
   </div>
 </template>
 

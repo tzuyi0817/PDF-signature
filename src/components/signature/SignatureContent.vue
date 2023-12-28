@@ -236,7 +236,7 @@ onMounted(() => {
         <img
           src="@/assets/img/loading.gif"
           class="w-[60%]"
-          alt=""
+          alt="loading gif"
         />
 
         <div

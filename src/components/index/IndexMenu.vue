@@ -62,6 +62,7 @@ function changeTab(tab: MenuTab) {
     transition-colors
     drop-shadow-md
     rounded-t-[100px]
+    hover:bg-white
     md:w-[62px]
     md:h-[56px]
     md:translate-x-1
