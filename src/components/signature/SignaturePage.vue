@@ -39,13 +39,13 @@ function close() {
     @close="close"
     @use="usePage"
   >
-    <ul class="signature_page_content signature_list">
+    <ul class="signature_list">
       <li
         v-for="page in currentPDF.pages"
         :key="page"
         @click="selectPage(page)"
         :class="[
-          'rounded-[20px] relative w-full flex justify-center py-3 cursor-pointer',
+          'rounded-[20px] relative w-full flex justify-center py-3 cursor-pointer overflow-hidden',
           currentPage === page ? 'bg-primary opacity-70' : 'bg-white',
         ]"
       >

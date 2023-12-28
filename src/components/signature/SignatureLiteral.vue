@@ -67,7 +67,7 @@ function close() {
   >
     <ul
       v-if="literalList.length"
-      class="signature_literal_content signature_list"
+      class="signature_list"
     >
       <img
         src="@/assets/icon/ic_add_dark.svg"
@@ -104,7 +104,7 @@ function close() {
 
     <div
       v-else
-      class="signature_literal_content justify-center"
+      class="signature_list justify-center"
     >
       <img
         src="@/assets/icon/ic_add_dark.svg"
@@ -123,7 +123,7 @@ function close() {
     v-if="isShowLiteralPopup"
   >
     <textarea
-      class="input my-5 h-[40vh] rounded-[20px]"
+      class="input my-5 h-[40dvh] rounded-[20px]"
       v-model="literal"
     ></textarea>
 

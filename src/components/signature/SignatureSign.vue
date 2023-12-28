@@ -60,7 +60,7 @@ function close() {
   >
     <ul
       v-if="signatureList.length"
-      class="signature_sign_content signature_list"
+      class="signature_list"
     >
       <img
         src="@/assets/icon/ic_add_dark.svg"
@@ -96,7 +96,7 @@ function close() {
 
     <div
       v-else
-      class="signature_sign_content justify-center"
+      class="signature_list justify-center"
     >
       <img
         src="@/assets/icon/ic_add_dark.svg"

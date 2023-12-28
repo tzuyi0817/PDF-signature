@@ -6,7 +6,7 @@
   }
 
   ::-webkit-scrollbar-track {
-    @apply bg-gray-10;
+    @apply rounded-xl bg-gray-10;
   }
 
   ::-webkit-scrollbar-thumb {

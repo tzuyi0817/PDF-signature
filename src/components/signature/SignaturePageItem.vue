@@ -18,7 +18,7 @@ async function setPDF() {
   const { file, page } = props;
 
   createCanvas();
-  file.PDFBase64.startsWith('data:image') 
+  file.PDFBase64.startsWith('data:image')
     ? renderImage({ url: file.PDFBase64, scale: 0.4 })
     : await specifyPage({ page: page, PDF: file, scale: 0.4 });
 
