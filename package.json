@@ -16,9 +16,11 @@
     "pinia": "^2.0.23",
     "pinia-plugin-persistedstate": "^3.0.0",
     "vue": "^3.2.41",
+    "vue-i18n": "^9.8.0",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
+    "@intlify/unplugin-vue-i18n": "^2.0.0",
     "@types/fabric": "^5.0.0",
     "@types/node": "^20.0.0",
     "@vitejs/plugin-vue": "^5.0.0",
