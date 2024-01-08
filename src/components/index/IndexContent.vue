@@ -14,9 +14,9 @@ const props = defineProps<Props>();
 const { goPage } = useRedirect();
 const title = computed(() => {
   const titleMap = {
-    file: '我的文件',
-    archive: '已封存的文件',
-    trash: '垃圾桶',
+    file: 'my_files',
+    archive: 'archived_files',
+    trash: 'trash_bin',
   };
   return titleMap[props.currentTab];
 });
@@ -39,7 +39,7 @@ const currentCom = computed(() => {
       class="index_content_add iconScale"
       @click="goPage('upload')"
     />
-    <h5 class="title">{{ title }}</h5>
+    <h5 class="title">{{ $t(title) }}</h5>
 
     <keep-alive>
       <component :is="currentCom"></component>

@@ -8,6 +8,12 @@
     src: url('../assets/font/GenJyuuGothic-P.ttf') format('truetype');
   }
 
+  * {
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    user-select: none;
+  }
+
   html {
     font-family: Gen Jyuu Gothic P;
     -webkit-font-smoothing: antialiased;
@@ -16,6 +22,14 @@
 
   body {
     @apply text-base tracking-wider bg-bg overflow-hidden;
+  }
+
+  img {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
   }
 
   h1 {

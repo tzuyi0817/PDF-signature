@@ -73,17 +73,17 @@ function changeShowStatus(status: FileShowStatus) {
         v-model.trim="keyword"
         type="text"
         class="input pl-12"
-        placeholder="請輸入關鍵字"
+        :placeholder="$t('placeholder.keyword')"
         @focus="focus"
         @blur="blur"
       />
     </label>
 
     <div class="hidden md:flex items-end w-full px-4 py-5">
-      <p class="text-sm w-[300px] pl-16">{{ isListStatus ? '建立時間' : '' }}</p>
+      <p class="text-sm w-[300px] pl-16">{{ $t(isListStatus ? 'setup_time' : '') }}</p>
 
       <div class="flex justify-between items-end flex-1">
-        <p class="text-sm">{{ isListStatus ? '專案名稱' : '' }}</p>
+        <p class="text-sm">{{ $t(isListStatus ? 'project_name' : '') }}</p>
         <div class="flex gap-1">
           <sign-icon
             name="list"
@@ -126,8 +126,8 @@ function changeShowStatus(status: FileShowStatus) {
         alt=""
         class="mb-10"
       />
-      <h3 class="text-gray-40 text-center mb-3">找不到任何符合搜尋條件的項目</h3>
-      <p class="text-gray-40 text-center">請嘗試其他搜尋詞</p>
+      <h3 class="text-gray-40 text-center mb-3">{{ $t('prompt.un_found') }}</h3>
+      <p class="text-gray-40 text-center">{{ $t('prompt.try_another') }}</p>
     </div>
   </div>
 </template>

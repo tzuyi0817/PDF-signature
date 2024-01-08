@@ -4,8 +4,9 @@ import zhTW from '@/locales/zh-TW.json';
 
 const i18n = createI18n({
   legacy: import.meta.env.MODE === 'test',
-  locale: navigator.language,
+  locale: localStorage.getItem('pdf-signature-i18n') ?? navigator.language,
   fallbackLocale: 'en-US',
+  allowComposition: true,
   messages: {
     'zh-TW': zhTW,
     'en-US': enUS,

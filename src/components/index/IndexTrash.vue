@@ -26,12 +26,14 @@ usePdfStore().filterTrash();
       />
 
       <div class="text-gray-40 text-center">
-        <h5 class="mb-2">沒有任何項目</h5>
-        <p>刪除的項目會顯示在這裡</p>
+        <h5 class="mb-2">{{ $t('prompt.no_items') }}</h5>
+        <p>{{ $t('prompt.deleted_projects') }}</p>
       </div>
     </div>
 
-    <p class="index_trash_warn">垃圾桶中的項目會在 30 天後永久刪除</p>
+    <div class="absolute w-full flex justify-center left-0 -bottom-6 md:-bottom-3">
+      <p class="index_trash_warn">{{ $t('prompt.trash_shelf_life') }}</p>
+    </div>
   </div>
 </template>
 
@@ -44,17 +46,12 @@ usePdfStore().filterTrash();
     px-5
     py-2
     bg-white
-    whitespace-nowrap
+    w-fit
     border-2
     border-primary
     shadow
     shadow-primary
-    rounded-[50px]
-    absolute
-    left-1/2
-    -translate-x-1/2
-    -bottom-6
-    md:-bottom-3;
+    rounded-[50px];
   }
 }
 </style>

@@ -1,4 +1,19 @@
 {
-  "chinese": "Chinese",
-  "english": "English"
+  "archived_files": "Archived Files",
+  "my_files": "My Files",
+  "placeholder": {
+    "keyword": "Please enter keywords"
+  },
+  "project_name": "Project Name",
+  "prompt": {
+    "archived_projects": "Archived projects will be displayed here",
+    "create_file": "Come and create a new file",
+    "deleted_projects": "Deleted items will be displayed here",
+    "no_items": "No items",
+    "trash_shelf_life": "Items in the Trash will be permanently deleted after 30 days",
+    "try_another": "Please try another search term",
+    "un_found": "No items found matching search criteria"
+  },
+  "setup_time": "Setup Time",
+  "trash_bin": "Trash Bin"
 }

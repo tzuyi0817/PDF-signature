@@ -24,8 +24,8 @@ const { archiveList } = storeToRefs(usePdfStore());
       />
 
       <div class="text-gray-40 text-center">
-        <h5 class="mb-2">沒有任何項目</h5>
-        <p>封存的項目會顯示在這裡</p>
+        <h5 class="mb-2">{{ $t('prompt.no_items') }}</h5>
+        <p>{{ $t('prompt.archived_projects') }}</p>
       </div>
     </div>
   </div>

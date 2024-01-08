@@ -1,4 +1,19 @@
 {
-  "chinese": "中文",
-  "english": "英文"
+  "archived_files": "已封存的文件",
+  "my_files": "我的文件",
+  "placeholder": {
+    "keyword": "請輸入關鍵字"
+  },
+  "project_name": "專案名稱",
+  "prompt": {
+    "archived_projects": "封存的項目會顯示在這裡",
+    "create_file": "快來建立新檔吧",
+    "deleted_projects": "刪除的項目會顯示在這裡",
+    "no_items": "沒有任何項目",
+    "trash_shelf_life": "垃圾桶中的項目會在 30 天後永久刪除",
+    "try_another": "請嘗試其他搜尋詞",
+    "un_found": "找不到任何符合搜尋條件的項目"
+  },
+  "setup_time": "建立時間",
+  "trash_bin": "垃圾桶"
 }

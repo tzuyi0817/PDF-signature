@@ -5,6 +5,7 @@ const { locale } = useI18n();
 
 function changeLocale(code: string) {
   locale.value = code;
+  localStorage.setItem('pdf-signature-i18n', code);
 }
 </script>
 
@@ -23,13 +24,13 @@ function changeLocale(code: string) {
         :class="['btn_small btn_primary', { active: locale === 'zh-TW' }]"
         @click="changeLocale('zh-TW')"
       >
-        {{ $t('chinese') }}
+        中文
       </button>
       <button
         :class="['btn_small btn_primary', { active: locale === 'en-US' }]"
         @click="changeLocale('en-US')"
       >
-        {{ $t('english') }}
+        English
       </button>
     </div>
   </header>
