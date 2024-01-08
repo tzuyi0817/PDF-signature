@@ -14,7 +14,7 @@
     border-transparent
     cursor-pointer
     rounded-[50px]
-    transition-all
+    transition-colors
     gap-2
     highlight
     hover:text-primary
@@ -29,6 +29,23 @@
     }
     &_primary {
       @apply bg-secondary border-primary text-primary hover:text-black hover:bg-primary;
+      &.active {
+        @apply text-black bg-primary;
+      }
+    }
+    &_small {
+      @apply transition-colors 
+      border
+      cursor-pointer
+      rounded-2xl
+      py-1 
+      px-3 
+      font-bold 
+      text-xs 
+      focus:outline-none 
+      md:text-lg 
+      md:px-7 
+      md:border-2;
     }
   }
 }
