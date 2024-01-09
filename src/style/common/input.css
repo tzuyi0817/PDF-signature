@@ -11,6 +11,7 @@
     pr-9
     py-[6px]
     transition-colors
+    caret-primary
     focus:shadow-primary
     focus:shadow
     focus:border-primary

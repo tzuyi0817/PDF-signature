@@ -17,6 +17,7 @@
     transition-colors
     gap-2
     highlight
+    whitespace-nowrap
     hover:text-primary
     disabled:bg-gray-20
     disabled:border-gray-30

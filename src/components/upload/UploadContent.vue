@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { usePdfStore } from '@/store';
 import SignStepBtn from '@/components/SignStepBtn.vue';
 import SignIcon from '@/components/SignIcon.vue';
@@ -12,6 +13,7 @@ const isNextDisabled = ref(true);
 const fileName = ref('');
 const projectName = ref('');
 const isShowPen = ref(true);
+const { t } = useI18n();
 const { createCanvas, drawPDF, drawImage, pages } = useFabric('canvas');
 const { isShowWarnPopup, SignPopup, goBack, goPage, toggleWarnPopup } = useWarnPopup();
 const { isShowWarnPopup: isShowLoading, SignPopup: loadingPopup } = useWarnPopup();
@@ -38,23 +40,23 @@ async function readerFile(files: FileList | null | undefined) {
   const regexp = /.pdf|.png|.jpg|.jpeg/;
 
   if (!regexp.test(file.type)) {
-    return toast.showToast('檔案格式不符', 'error');
+    return toast.showToast(t('prompt.file_format_not_match'), 'error');
   }
 
   if (file.size > MAX_SIZE) {
-    return toast.showToast('檔案大小超過20MB', 'error');
+    return toast.showToast(t('prompt.file_size_exceed'), 'error');
   }
 
   try {
     isShowLoading.value = true;
     file.type === 'application/pdf' ? await drawPDF(file) : drawImage(file);
     await sleep();
-    toast.showToast('檔案上傳成功', 'success');
+    toast.showToast(t('prompt.file_upload_success'), 'success');
     fileName.value = file.name;
     projectName.value = file.name.replace(regexp, '');
     isNextDisabled.value = false;
   } catch {
-    toast.showToast('檔案上傳失敗', 'error');
+    toast.showToast(t('prompt.file_upload_failed'), 'error');
   }
   isShowLoading.value = false;
 }
@@ -84,7 +86,7 @@ onMounted(createCanvas);
 
 <template>
   <div class="upload_content content">
-    <h5 class="title text-center">上傳檔案</h5>
+    <h5 class="title text-center">{{ $t('upload_file') }}</h5>
     <div
       v-show="fileName"
       class="upload_content_box pt-3 md:pt-12"
@@ -103,11 +105,11 @@ onMounted(createCanvas);
           </canvas>
         </div>
         <h5 class="w-full text-ellipsis overflow-hidden whitespace-nowrap text-center">{{ fileName }}</h5>
-        <p class="text-gray-40">{{ pages }}頁</p>
+        <p class="text-gray-40">{{ $t('page', pages) }}</p>
       </div>
 
       <div class="w-full flex flex-col gap-4 items-center">
-        <p>專案名稱</p>
+        <p>{{ $t('project_name') }}</p>
         <label class="w-[90%] relative max-w-[400px]">
           <input
             v-model.trim="projectName"
@@ -145,12 +147,12 @@ onMounted(createCanvas);
           accept="application/pdf, .jpg, .png"
           class="opacity-0 absolute w-[131px] h-[41px] cursor-pointer"
           @change="uploadFile"
-        />選擇檔案
+        />{{ $t('select_file') }}
       </button>
 
       <div class="text-center">
-        <h5 class="text-gray-40 mb-3 hidden md:block">或者將檔案拖曳到這裡</h5>
-        <p class="text-gray-40 px-4 text-center">僅支援 PDF、JPG、PNG 檔案 , 且容量不超過 20MB。</p>
+        <h5 class="text-gray-40 mb-3 hidden md:block">{{ $t('prompt.or_drag_file') }}</h5>
+        <p class="text-gray-40 px-4 text-center">{{ $t('prompt.support_filetype') }}</p>
       </div>
     </div>
 
@@ -161,27 +163,27 @@ onMounted(createCanvas);
     />
     <sign-popup
       v-if="isShowWarnPopup"
-      title="警告"
+      :title="$t('warn')"
     >
-      <p class="text-center">確定要放棄編輯文件?</p>
+      <p class="text-center">{{ $t('prompt.give_up_edit') }}</p>
       <div class="flex justify-between md:justify-around">
         <button
           class="btn btn_base"
           @click="toggleWarnPopup(false)"
         >
-          先不要
+          {{ $t('not_yet') }}
         </button>
         <button
           class="btn btn_primary"
           @click="goBack"
         >
-          放棄
+          {{ $t('give_up') }}
         </button>
       </div>
     </sign-popup>
     <loading-popup
       v-if="isShowLoading"
-      title="上傳檔案"
+      :title="$t('upload_file')"
     >
       <div class="flex flex-col gap-8 items-center py-8">
         <img
@@ -190,7 +192,7 @@ onMounted(createCanvas);
           alt="loading gif"
         />
 
-        <h5 class="text-center text-gray-40">檔案上傳中...</h5>
+        <h5 class="text-center text-gray-40">{{ $t('file_uploading') }}</h5>
       </div>
     </loading-popup>
   </div>

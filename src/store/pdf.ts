@@ -67,7 +67,8 @@ export default defineStore('pdf_signature_pdf', {
       const now = Date.now();
 
       this.trashList = this.trashList.filter(({ trashDate }) => {
-        return now - trashDate! < MAX_DAY;
+        if (!trashDate) return true;
+        return now - trashDate < MAX_DAY;
       });
     },
   },

@@ -108,6 +108,7 @@ src/
 - pina
 - pinia-plugin-persistedstate
 - vue-router
+- vue-i18n
 - pdfjs
 - fabric
 - jspdf

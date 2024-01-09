@@ -25,9 +25,15 @@ defineProps<Props>();
     ></div>
     <div :class="['sign_step_line', status === 'complete' ? 'bg-primary' : 'bg-gray-40']"></div>
     <div :class="['sign_step_dot', { 'sign_step_dot-light': status === 'complete' }]"></div>
-    <span :class="['sign_step_text -left-5', status === 'upload' ? 'text-primary' : 'text-gray-40']">上傳檔案</span>
-    <span :class="['sign_step_text', status === 'sign' ? 'text-primary' : 'text-gray-40']">簽署文件</span>
-    <span :class="['sign_step_text -right-5', status === 'complete' ? 'text-primary' : 'text-gray-40']">簽署完成</span>
+    <span :class="['sign_step_text -left-5', status === 'upload' ? 'text-primary' : 'text-gray-40']">{{
+      $t('upload_file_lower')
+    }}</span>
+    <span :class="['sign_step_text', status === 'sign' ? 'text-primary' : 'text-gray-40']">{{
+      $t('sign_file_lower')
+    }}</span>
+    <span :class="['sign_step_text -right-5', status === 'complete' ? 'text-primary' : 'text-gray-40']">{{
+      $t('sign_completed_lower')
+    }}</span>
   </div>
 </template>
 

@@ -1,19 +1,40 @@
 {
   "archived_files": "已封存的文件",
+  "file_uploading": "檔案上傳中...",
+  "give_up": "放棄",
   "my_files": "我的文件",
+  "next_step": "下一步",
+  "not_yet": "先不要",
+  "page": "{count}頁",
   "placeholder": {
     "keyword": "請輸入關鍵字"
   },
+  "previous": "上一步",
   "project_name": "專案名稱",
   "prompt": {
     "archived_projects": "封存的項目會顯示在這裡",
     "create_file": "快來建立新檔吧",
     "deleted_projects": "刪除的項目會顯示在這裡",
+    "file_format_not_match": "檔案格式不符",
+    "file_upload_failed": "檔案上傳失敗",
+    "file_upload_success": "檔案上傳成功",
+    "file_size_exceed": "檔案大小超過20MB",
+    "give_up_edit": "確定要放棄編輯文件?",
     "no_items": "沒有任何項目",
+    "or_drag_file": "或者將檔案拖曳到這裡",
+    "support_filetype": "僅支援 PDF、JPG、PNG 檔案 , 且容量不超過 20MB。",
     "trash_shelf_life": "垃圾桶中的項目會在 30 天後永久刪除",
     "try_another": "請嘗試其他搜尋詞",
     "un_found": "找不到任何符合搜尋條件的項目"
   },
+  "select_file": "選擇檔案",
   "setup_time": "建立時間",
-  "trash_bin": "垃圾桶"
+  "sign_completed": "簽署完成",
+  "sign_completed_lower": "@.lower:sign_completed",
+  "sign_file": "簽署文件",
+  "sign_file_lower": "@.lower:sign_file",
+  "trash_bin": "垃圾桶",
+  "upload_file": "上傳檔案",
+  "upload_file_lower": "@.lower:upload_file",
+  "warn": "警告"
 }

@@ -1,19 +1,40 @@
 {
   "archived_files": "Archived Files",
+  "file_uploading": "File uploading...",
+  "give_up": "Give up",
   "my_files": "My Files",
+  "next_step": "Next Step",
+  "not_yet": "Not yet",
+  "page": "{count} page | {count} pages",
   "placeholder": {
     "keyword": "Please enter keywords"
   },
+  "previous": "Previous",
   "project_name": "Project Name",
   "prompt": {
     "archived_projects": "Archived projects will be displayed here",
     "create_file": "Come and create a new file",
     "deleted_projects": "Deleted items will be displayed here",
+    "file_format_not_match": "File format does not match",
+    "file_upload_failed": "File upload failed",
+    "file_upload_success": "File uploaded successfully",
+    "file_size_exceed": "File size exceeds 20MB",
+    "give_up_edit": "Are you sure you want to give up editing the file?",
     "no_items": "No items",
+    "or_drag_file": "Or drag the file here",
+    "support_filetype": "Only supports PDF, JPG, and PNG files, and the size does not exceed 20MB.",
     "trash_shelf_life": "Items in the Trash will be permanently deleted after 30 days",
     "try_another": "Please try another search term",
     "un_found": "No items found matching search criteria"
   },
+  "select_file": "Select File",
   "setup_time": "Setup Time",
-  "trash_bin": "Trash Bin"
+  "sign_completed": "Sign Completed",
+  "sign_completed_lower": "@.lower:sign_completed",
+  "sign_file": "Sign File",
+  "sign_file_lower": "@.lower:sign_file",
+  "trash_bin": "Trash Bin",
+  "upload_file": "Upload File",
+  "upload_file_lower": "@.lower:upload_file",
+  "warn": "Warn"
 }

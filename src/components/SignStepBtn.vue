@@ -13,14 +13,14 @@ const emit = defineEmits(['prevStep', 'nextStep']);
       class="btn"
       @click="emit('prevStep')"
     >
-      <span class="text-4xl font-thin">←</span>上一步
+      <span class="text-4xl font-thin">←</span>{{ $t('previous') }}
     </button>
     <button
       class="btn btn_primary"
       :disabled="isNextDisabled"
       @click="emit('nextStep')"
     >
-      下一步<span class="text-4xl font-thin">→</span>
+      {{ $t('next_step') }}<span class="text-4xl font-thin">→</span>
     </button>
   </div>
 </template>

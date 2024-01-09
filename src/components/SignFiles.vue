@@ -80,10 +80,10 @@ function changeShowStatus(status: FileShowStatus) {
     </label>
 
     <div class="hidden md:flex items-end w-full px-4 py-5">
-      <p class="text-sm w-[300px] pl-16">{{ $t(isListStatus ? 'setup_time' : '') }}</p>
+      <p class="text-sm w-[300px] pl-16">{{ isListStatus ? $t('setup_time') : '' }}</p>
 
       <div class="flex justify-between items-end flex-1">
-        <p class="text-sm">{{ $t(isListStatus ? 'project_name' : '') }}</p>
+        <p class="text-sm">{{ isListStatus ? $t('project_name') : '' }}</p>
         <div class="flex gap-1">
           <sign-icon
             name="list"
