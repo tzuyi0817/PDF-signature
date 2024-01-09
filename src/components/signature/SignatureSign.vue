@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
+import { useI18n } from 'vue-i18n';
 import { useSignatureStore } from '@/store';
 import SignaturePopup from '@/components/signature/SignaturePopup.vue';
 import SignatureDrawPopup from '@/components/signature/SignatureDrawPopup.vue';
@@ -17,6 +18,7 @@ const emit = defineEmits(['update:isShowSign', 'useSignature']);
 const currentSelect = ref('');
 const isShowDrawPopup = ref(false);
 const { signatureList } = storeToRefs(useSignatureStore());
+const { t } = useI18n();
 const { isShowWarnPopup, SignPopup, toggleWarnPopup } = useWarnPopup();
 
 function useSignature() {
@@ -30,7 +32,7 @@ function selectSignature(signature: string) {
 
 function deleteSignature() {
   useSignatureStore().deleteSignature(currentSelect.value);
-  toast.showToast('簽名檔刪除成功', 'success');
+  toast.showToast(t('prompt.signature_delete_success'), 'success');
   toggleWarnPopup(false);
   currentSelect.value = '';
 }
@@ -53,7 +55,7 @@ function close() {
 <template>
   <signature-popup
     :is-show-popup="isShowSign"
-    title="簽名檔"
+    :title="$t('signature_file')"
     :is-disabled="!currentSelect"
     @close="close"
     @use="useSignature"
@@ -74,7 +76,7 @@ function close() {
         v-for="signature in signatureList"
         :key="signature"
         :class="[
-          'rounded-[20px] relative w-full flex justify-center cursor-pointer',
+          'rounded-[20px] relative w-full flex justify-center cursor-pointer h-[98px]',
           currentSelect === signature ? 'bg-primary opacity-70' : 'bg-white',
         ]"
         @click="selectSignature(signature)"
@@ -106,7 +108,7 @@ function close() {
         class="iconScale mb-5"
         @click="toggleDrawPopup(true)"
       />
-      <h5 class="text-secondary">新增簽名檔</h5>
+      <h5 class="text-secondary text-center">{{ $t('add_signature_file') }}</h5>
     </div>
   </signature-popup>
 
@@ -117,21 +119,21 @@ function close() {
 
   <sign-popup
     v-if="isShowWarnPopup"
-    title="警告"
+    :title="$t('warn')"
   >
-    <p class="text-center">確定要刪除此簽名?</p>
+    <p class="text-center">{{ $t('prompt.sure_delete_signature') }}</p>
     <div class="flex justify-between">
       <button
         class="btn btn_base"
         @click="toggleWarnPopup(false)"
       >
-        先不要
+        {{ $t('not_yet') }}
       </button>
       <button
         class="btn btn_primary"
         @click="deleteSignature"
       >
-        刪除
+        {{ $t('delete') }}
       </button>
     </div>
   </sign-popup>

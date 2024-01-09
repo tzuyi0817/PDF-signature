@@ -13,7 +13,7 @@ const isNextDisabled = ref(true);
 const fileName = ref('');
 const projectName = ref('');
 const isShowPen = ref(true);
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const { createCanvas, drawPDF, drawImage, pages } = useFabric('canvas');
 const { isShowWarnPopup, SignPopup, goBack, goPage, toggleWarnPopup } = useWarnPopup();
 const { isShowWarnPopup: isShowLoading, SignPopup: loadingPopup } = useWarnPopup();
@@ -152,7 +152,9 @@ onMounted(createCanvas);
 
       <div class="text-center">
         <h5 class="text-gray-40 mb-3 hidden md:block">{{ $t('prompt.or_drag_file') }}</h5>
-        <p class="text-gray-40 px-4 text-center">{{ $t('prompt.support_filetype') }}</p>
+        <p class="text-gray-40 px-4 text-center">
+          {{ $t('prompt.support_filetype', { type: locale === 'zh-TW' ? 'PDF、JPG、PNG' : 'PDF, JPG, and PNG' }) }}
+        </p>
       </div>
     </div>
 

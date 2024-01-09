@@ -31,14 +31,14 @@ function close() {
         class="btn btn_base"
         @click="close"
       >
-        取消
+        {{ $t('cancel') }}
       </button>
       <button
         class="btn btn_primary"
         :disabled="isDisabled"
         @click="emit('use')"
       >
-        {{ customUseBtnName ?? '使用' }}
+        {{ customUseBtnName ?? $t('use') }}
       </button>
     </div>
   </div>
@@ -54,7 +54,6 @@ function close() {
   w-full
   rounded-t-[40px]
   transition-transform
-
   shadow-inner
   py-6
   px-8

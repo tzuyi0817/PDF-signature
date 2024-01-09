@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
+import { useI18n } from 'vue-i18n';
 import { useLiteralStore } from '@/store';
 import SignaturePopup from '@/components/signature/SignaturePopup.vue';
 import SignIcon from '@/components/SignIcon.vue';
@@ -17,6 +18,7 @@ const currentSelect = ref('');
 const isShowLiteralPopup = ref(false);
 const literal = ref('');
 const { literalList } = storeToRefs(useLiteralStore());
+const { t } = useI18n();
 const { isShowWarnPopup, SignPopup, toggleWarnPopup } = useWarnPopup();
 
 function useLiteral() {
@@ -30,14 +32,14 @@ function selectLiteral(text: string) {
 
 function addLiteral() {
   useLiteralStore().addLiteral(literal.value);
-  toast.showToast('文字新增成功', 'success');
+  toast.showToast(t('prompt.text_add_success'), 'success');
   toggleLiteralPopup(false);
   literal.value = '';
 }
 
 function deleteLiteral() {
   useLiteralStore().deleteLiteral(currentSelect.value);
-  toast.showToast('文字刪除成功', 'success');
+  toast.showToast(t('prompt.text_delete_success'), 'success');
   toggleWarnPopup(false);
   currentSelect.value = '';
 }
@@ -60,7 +62,7 @@ function close() {
 <template>
   <signature-popup
     :is-show-popup="isShowLiteral"
-    title="文字庫"
+    :title="$t('text_library')"
     :is-disabled="!currentSelect"
     @close="close"
     @use="useLiteral"
@@ -108,19 +110,19 @@ function close() {
     >
       <img
         src="@/assets/icon/ic_add_dark.svg"
-        alt=""
+        alt="add dark icon"
         width="80"
         height="80"
         class="iconScale mb-5"
         @click="toggleLiteralPopup(true)"
       />
-      <h5 class="text-secondary">新增常用文字</h5>
+      <h5 class="text-secondary text-center">{{ $t('add_commonly_use_text') }}</h5>
     </div>
   </signature-popup>
 
   <sign-popup
     v-if="isShowLiteralPopup"
-    title="新增文字"
+    :title="$t('add_text')"
   >
     <textarea
       v-model="literal"
@@ -132,35 +134,35 @@ function close() {
         class="btn btn_base"
         @click="toggleLiteralPopup(false)"
       >
-        取消
+        {{ $t('cancel') }}
       </button>
       <button
         class="btn btn_primary"
         :disabled="!literal"
         @click="addLiteral"
       >
-        確定
+        {{ $t('confirm') }}
       </button>
     </div>
   </sign-popup>
 
   <sign-popup
     v-if="isShowWarnPopup"
-    title="警告"
+    :title="$t('warn')"
   >
-    <p class="text-center">確定要刪除此文字?</p>
+    <p class="text-center">{{ $t('prompt.sure_delete_text') }}</p>
     <div class="flex justify-between md:justify-evenly">
       <button
         class="btn btn_base"
         @click="toggleWarnPopup(false)"
       >
-        先不要
+        {{ $t('not_yet') }}
       </button>
       <button
         class="btn btn_primary"
         @click="deleteLiteral"
       >
-        刪除
+        {{ $t('delete') }}
       </button>
     </div>
   </sign-popup>

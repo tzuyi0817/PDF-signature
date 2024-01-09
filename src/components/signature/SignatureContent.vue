@@ -107,43 +107,38 @@ onMounted(() => {
 
 <template>
   <div class="signature_content content">
-    <h5 class="title text-center">簽署文件</h5>
+    <h5 class="title text-center">{{ $t('sign_file') }}</h5>
 
     <div class="flex flex-col h-[calc(100%-88px)] md:flex-row">
       <div class="md:border-r-2 md:border-primary md:py-4 md:px-6">
         <ul class="toolbar signature_content_toolbar">
-          <li>
+          <li @click="showSign">
             <sign-icon
               name="sign"
               :class="['w-7 h-7', { 'text-primary': isShowSign }]"
-              @click="showSign"
             />
-            <p>簽名</p>
+            <p>{{ $t('sign') }}</p>
           </li>
-          <li>
+          <li @click="showImage">
             <sign-icon
               name="pic"
               :class="['w-7 h-7', { 'text-primary': isShowImage }]"
-              @click="showImage"
             />
-            <p>圖片</p>
+            <p>{{ $t('picture') }}</p>
           </li>
-          <li>
+          <li @click="showLiteral">
             <sign-icon
               name="text"
               :class="['w-7 h-7', { 'text-primary': isShowLiteral }]"
-              @click="showLiteral"
             />
-            <p>文字</p>
+            <p>{{ $t('text') }}</p>
           </li>
-          <li>
+          <li @click="showPage">
             <sign-icon
               name="page"
               :class="['w-7 h-7', { 'text-primary': isShowPage }]"
-              class="w-7 h-7"
-              @click="showPage"
             />
-            <p>頁數</p>
+            <p>{{ $t('pages') }}</p>
           </li>
         </ul>
         <signature-sign
@@ -290,7 +285,13 @@ onMounted(() => {
     md:h-[calc(100%-40px)];
   }
   &_toolbar {
-    @apply md:my-0;
+    @apply gap-0 mx-2 md:my-0;
+    li {
+      @apply flex flex-col items-center min-w-[52px];
+      &:hover > svg {
+        @apply text-primary;
+      }
+    }
     p {
       @apply hidden text-sm whitespace-nowrap md:block;
     }

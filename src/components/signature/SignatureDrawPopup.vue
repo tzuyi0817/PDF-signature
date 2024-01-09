@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, defineAsyncComponent } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useSignatureStore } from '@/store';
 import SignIcon from '@/components/SignIcon.vue';
 import toast from '@/utils/toast';
@@ -9,6 +10,7 @@ const emit = defineEmits(['close']);
 const canvasDraw = ref<HTMLCanvasElement | null>(null);
 const currentTool = ref('black');
 const isDraw = ref(false);
+const { t } = useI18n();
 const SignPopup = defineAsyncComponent(() => import('@/components/SignPopup.vue'));
 const drawCtx = {
   ctx: null as CanvasRenderingContext2D | null | undefined,
@@ -26,7 +28,7 @@ function addSignature() {
   if (!signature) return;
   useSignatureStore().addSignature(signature);
   emit('close');
-  toast.showToast('簽名檔新增成功', 'success');
+  toast.showToast(t('signature_add_success'), 'success');
 }
 
 function setCanvas() {
@@ -88,7 +90,7 @@ function clear() {
 
 <template>
   <sign-popup
-    title="建立簽名檔"
+    :title="$t('create_signature_file')"
     @child-mounted="setCanvas"
   >
     <ul class="toolbar">
@@ -141,14 +143,14 @@ function clear() {
         class="btn btn_base"
         @click="emit('close')"
       >
-        取消
+        {{ $t('cancel') }}
       </button>
       <button
         class="btn btn_primary"
         :disabled="!isDraw"
         @click="addSignature"
       >
-        確定
+        {{ $t('confirm') }}
       </button>
     </div>
   </sign-popup>

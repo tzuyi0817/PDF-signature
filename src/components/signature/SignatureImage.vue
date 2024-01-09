@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
+import { useI18n } from 'vue-i18n';
 import { useImageStore } from '@/store';
 import SignaturePopup from '@/components/signature/SignaturePopup.vue';
 import SignIcon from '@/components/SignIcon.vue';
@@ -16,6 +17,7 @@ const emit = defineEmits(['update:isShowImage', 'useImage']);
 const currentSelect = ref('');
 const isShowImagePopup = ref(false);
 const { imageList } = storeToRefs(useImageStore());
+const { t, locale } = useI18n();
 const { isShowWarnPopup, SignPopup, toggleWarnPopup } = useWarnPopup();
 
 function useImage() {
@@ -29,7 +31,7 @@ function selectImage(image: string) {
 
 function deleteImage() {
   useImageStore().deleteImage(currentSelect.value);
-  toast.showToast('圖片刪除成功', 'success');
+  toast.showToast(t('prompt.picture_delete_success'), 'success');
   toggleWarnPopup(false);
   currentSelect.value = '';
 }
@@ -60,11 +62,11 @@ async function readerFile(files: FileList | null | undefined) {
   const regexp = /.png|.jpg|.jpeg/;
 
   if (!regexp.test(file.type)) {
-    return toast.showToast('檔案格式不符', 'error');
+    return toast.showToast(t('prompt.file_format_not_match'), 'error');
   }
 
   if (file.size > MAX_SIZE) {
-    return toast.showToast('檔案大小超過20MB', 'error');
+    return toast.showToast(t('prompt.file_size_exceed'), 'error');
   }
 
   try {
@@ -75,10 +77,10 @@ async function readerFile(files: FileList | null | undefined) {
       if (!fileReader.result) return;
       useImageStore().addImage(fileReader.result as string);
       toggleImagePopup(false);
-      toast.showToast('圖片新增成功', 'success');
+      toast.showToast(t('prompt.picture_add_success'), 'success');
     };
   } catch {
-    toast.showToast('圖片上傳失敗', 'error');
+    toast.showToast(t('prompt.picture_upload_failed'), 'error');
   }
 }
 
@@ -96,7 +98,7 @@ function close() {
 <template>
   <signature-popup
     :is-show-popup="isShowImage"
-    title="圖片庫"
+    :title="$t('picture_gallery')"
     :is-disabled="!currentSelect"
     @close="close"
     @use="useImage"
@@ -107,7 +109,7 @@ function close() {
     >
       <img
         src="@/assets/icon/ic_add_dark.svg"
-        alt=""
+        alt="add dark icon"
         width="60"
         height="60"
         class="iconScale mb-3"
@@ -117,15 +119,15 @@ function close() {
         v-for="image in imageList"
         :key="image"
         :class="[
-          'rounded-[20px] relative w-full flex justify-center cursor-pointer',
+          'rounded-[20px] relative w-full flex justify-center cursor-pointer h-[180px]',
           currentSelect === image ? 'bg-primary opacity-70' : 'bg-white',
         ]"
         @click="selectImage(image)"
       >
         <img
           :src="image"
-          alt=""
-          class="object-contain rounded-[20px]"
+          alt="image"
+          class="object-cover rounded-[20px]"
           @dragstart="dragImage"
         />
         <sign-icon
@@ -143,19 +145,19 @@ function close() {
     >
       <img
         src="@/assets/icon/ic_add_dark.svg"
-        alt=""
+        alt="add dark icon"
         width="80"
         height="80"
         class="iconScale mb-5"
         @click="toggleImagePopup(true)"
       />
-      <h5 class="text-secondary">新增圖片</h5>
+      <h5 class="text-secondary text-center">{{ $t('add_picture') }}</h5>
     </div>
   </signature-popup>
 
   <sign-popup
     v-if="isShowImagePopup"
-    title="新增圖片"
+    :title="$t('add_picture')"
   >
     <div
       class="signature_image_add"
@@ -173,12 +175,14 @@ function close() {
           accept="application/.jpg, .png"
           class="opacity-0 absolute w-[131px] h-[41px] cursor-pointer"
           @change="uploadFile"
-        />選擇檔案
+        />{{ $t('select_file') }}
       </button>
 
       <div class="text-center">
-        <h5 class="text-gray-40 mb-3 hidden md:block">或者將檔案拖曳到這裡</h5>
-        <p class="text-gray-40 px-4 text-center">僅支援 JPG、PNG 檔案 , 且容量不超過 20MB。</p>
+        <h5 class="text-gray-40 mb-3 hidden md:block">{{ $t('prompt.or_drag_file') }}</h5>
+        <p class="text-gray-40 px-4 text-center">
+          {{ $t('prompt.support_filetype', { type: locale === 'zh-TW' ? 'JPG、PNG' : 'JPG and PNG' }) }}
+        </p>
       </div>
     </div>
 
@@ -186,27 +190,27 @@ function close() {
       class="btn btn_base"
       @click="toggleImagePopup(false)"
     >
-      取消
+      {{ $t('cancel') }}
     </button>
   </sign-popup>
 
   <sign-popup
     v-if="isShowWarnPopup"
-    title="警告"
+    :title="$t('warn')"
   >
-    <p class="text-center">確定要刪除此圖片?</p>
+    <p class="text-center">{{ $t('prompt.sure_delete_picture') }}</p>
     <div class="flex justify-between md:justify-evenly">
       <button
         class="btn btn_base"
         @click="toggleWarnPopup(false)"
       >
-        先不要
+        {{ $t('not_yet') }}
       </button>
       <button
         class="btn btn_primary"
         @click="deleteImage"
       >
-        刪除
+        {{ $t('delete') }}
       </button>
     </div>
   </sign-popup>

@@ -33,9 +33,9 @@ function close() {
 <template>
   <signature-popup
     :is-show-popup="isShowPage"
-    title="選擇頁面"
+    :title="$t('select_page')"
     :is-disabled="false"
-    custom-use-btn-name="選擇"
+    :custom-use-btn-name="$t('select')"
     @close="close"
     @use="usePage"
   >
