@@ -57,11 +57,16 @@ src/
 │   ├── useFabric.ts
 │   ├── useRedirect.ts
 │   └── useWarnPopup.vue
+└── locales/
+│   ├── en-US.json
+│   └── zh-TW.json
 └── pages/
-│   ├── Complete.vue
-│   ├── Index.vue
-│   ├── Signature.vue
-│   └── Upload.vue
+│   ├── CompletePage.vue
+│   ├── IndexPage.vue
+│   ├── SignaturePage.vue
+│   └── UploadPage.vue
+└── plugins/
+│   └── i18n.ts
 └── router/
 │   └── index.ts
 └── store/
