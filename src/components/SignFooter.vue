@@ -4,7 +4,7 @@
   <div class="sign_footer">
     <img
       src="@/assets/img/bg_decorate.svg"
-      alt=""
+      alt="bg decorate"
     />
   </div>
 </template>

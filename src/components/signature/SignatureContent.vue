@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
+import { useI18n } from 'vue-i18n';
 import { usePdfStore } from '@/store';
 import SignIcon from '@/components/SignIcon.vue';
 import SignStepBtn from '@/components/SignStepBtn.vue';
@@ -23,6 +24,7 @@ const isShowMergePopup = ref(false);
 const isMergeComplete = ref(false);
 const signatureCanvasItem = ref<InstanceType<typeof SignatureCanvasItem> | null>(null);
 const { currentPDF } = storeToRefs(usePdfStore());
+const { t } = useI18n();
 const { isShowWarnPopup, SignPopup, goBack, goPage, toggleWarnPopup } = useWarnPopup();
 
 async function mergeFile() {
@@ -41,11 +43,11 @@ async function mergeFile() {
     addPDF({ ...currentPDF.value, updateDate: Date.now() });
     await sleep(2000);
     toggleMergePopup(false);
-    toast.showToast('檔案建立成功', 'success');
+    toast.showToast(t('prompt.file_created_success'), 'success');
 
     goPage('complete');
   } catch {
-    toast.showToast('操作逾時, 請重新操作', 'error');
+    toast.showToast(t('prompt.operation_timed_out'), 'error');
     toggleMergePopup(false);
   }
 }
@@ -184,48 +186,48 @@ onMounted(() => {
     />
     <sign-popup
       v-if="isShowWarnPopup"
-      title="警告"
+      :title="$t('warn')"
     >
-      <p class="text-center">確定要放棄已編輯的內容?</p>
+      <p class="text-center">{{ $t('prompt.sure_discard_edited_content') }}</p>
       <div class="flex justify-between md:justify-evenly">
         <button
           class="btn btn_base"
           @click="toggleWarnPopup(false)"
         >
-          先不要
+          {{ $t('not_yet') }}
         </button>
         <button
           class="btn btn_primary"
           @click="goBack"
         >
-          放棄
+          {{ $t('give_up') }}
         </button>
       </div>
     </sign-popup>
 
     <sign-popup
       v-if="isShowNextWarnPopup"
-      title="創建檔案"
+      :title="$t('create_file')"
     >
-      <p class="text-center">確定已完成簽署文件?</p>
+      <p class="text-center">{{ $t('prompt.sure_completed_sign') }}</p>
       <div class="flex justify-between md:justify-evenly">
         <button
           class="btn btn_base"
           @click="toggleNextWarnPopup(false)"
         >
-          等一下
+          {{ $t('wait') }}
         </button>
         <button
           class="btn btn_primary"
           @click="mergeFile"
         >
-          確定
+          {{ $t('confirm') }}
         </button>
       </div>
     </sign-popup>
     <sign-popup
       v-if="isShowMergePopup"
-      title="創建檔案"
+      :title="$t('create_file')"
     >
       <div class="flex flex-col gap-8 items-center py-8">
         <img
@@ -238,14 +240,14 @@ onMounted(() => {
           v-if="isMergeComplete"
           class="text-center"
         >
-          <h5 class="text-primary mb-[18px]">檔案已完成</h5>
-          <p class="text-gray-40">完成後畫面自動跳轉, 如無跳轉頁面請按確定按鈕。</p>
+          <h5 class="text-primary mb-[18px]">{{ $t('file_completed') }}</h5>
+          <p class="text-gray-40">{{ $t('prompt.auto_jump_screen') }}</p>
         </div>
         <h5
           v-else
           class="text-center text-gray-40"
         >
-          合併檔案中...
+          {{ $t('merging_files') }}
         </h5>
       </div>
       <div class="flex justify-between md:justify-evenly">
@@ -254,14 +256,14 @@ onMounted(() => {
           class="btn btn_primary w-full"
           @click="goPage('complete')"
         >
-          確定
+          {{ $t('confirm') }}
         </button>
         <button
           v-else
           class="btn btn_base w-full"
           @click="toggleMergePopup(false)"
         >
-          取消
+          {{ $t('cancel') }}
         </button>
       </div>
     </sign-popup>
