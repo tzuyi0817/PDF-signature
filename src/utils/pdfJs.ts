@@ -1,6 +1,7 @@
-import type { PDFDocumentProxy } from '@/types/pdf';
+import * as pdfjsLib from 'pdfjs-dist';
+import * as pdfjsWorker from 'pdfjs-dist/build/pdf.worker.mjs';
 
-window.pdfjsLib.GlobalWorkerOptions.workerSrc = '/PDFjs/pdf.worker.js';
+window.pdfjsWorker = pdfjsWorker;
 
 export async function printPDF(file: File): Promise<string | void> {
   const Base64Prefix = 'data:application/pdf;base64,';
@@ -10,8 +11,8 @@ export async function printPDF(file: File): Promise<string | void> {
   return window.atob(pdf.slice(Base64Prefix.length));
 }
 
-export async function getPDFDocument(data: string): Promise<PDFDocumentProxy> {
-  return await window.pdfjsLib.getDocument({ data }).promise;
+export function getPDFDocument(data: string) {
+  return pdfjsLib.getDocument({ data }).promise;
 }
 
 export function readBlob(file: File): Promise<FileReader['result']> {

@@ -1,3 +1,3 @@
 declare interface Window {
-  pdfjsLib: any;
+  pdfjsWorker: Worker;
 }

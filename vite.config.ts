@@ -4,6 +4,7 @@ import { fileURLToPath, URL } from 'node:url';
 import { dirname, resolve } from 'node:path';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 import vueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
+import topLevelAwait from 'vite-plugin-top-level-await';
 
 export default defineConfig({
   base: './',
@@ -14,6 +15,10 @@ export default defineConfig({
     }),
     vueI18nPlugin({
       include: resolve(dirname(fileURLToPath(import.meta.url)), 'src/locales/**'),
+    }),
+    topLevelAwait({
+      promiseExportName: '__tla',
+      promiseImportName: i => `__tla_${i}`,
     }),
   ],
   server: {
