@@ -36,6 +36,9 @@ async function mergeFile() {
     const { setCurrentPDFCanvas, addPDF } = usePdfStore();
     // @ts-ignore
     const canvas = signatureCanvasItem.value.map(({ canvasDom }) => {
+      // const ctx = canvasDom.getContext('2d');
+
+      // ctx.scale(0.5, 0.5);
       return canvasDom.toDataURL('image/png', 1.0);
     });
 

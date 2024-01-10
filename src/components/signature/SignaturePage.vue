@@ -44,7 +44,7 @@ function close() {
         v-for="page in currentPDF.pages"
         :key="page"
         :class="[
-          'rounded-[20px] relative w-full flex justify-center py-3 cursor-pointer overflow-hidden',
+          'rounded-[20px] relative w-full flex flex-shrink-0 justify-center py-3 cursor-pointer overflow-hidden',
           currentPage === page ? 'bg-primary opacity-70' : 'bg-white',
         ]"
         @click="selectPage(page)"
