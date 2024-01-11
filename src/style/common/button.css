@@ -44,7 +44,7 @@
       font-bold 
       text-xs 
       focus:outline-none 
-      md:text-lg 
+      md:text-base
       md:px-7 
       md:border-2;
     }

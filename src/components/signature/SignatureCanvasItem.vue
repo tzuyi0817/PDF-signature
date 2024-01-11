@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, watch } from 'vue';
 import useFabric from '@/hooks/useFabric';
-import { isDesktop } from '@/utils/common';
 import type { PDF } from '@/types/pdf';
 
 interface Props {
   file: PDF;
   page: number;
+  fileContainerWidth?: number;
 }
 
 const props = defineProps<Props>();
@@ -14,9 +14,10 @@ const canvasDom = ref<HTMLCanvasElement | null>(null);
 const canvasId = `canvas${props.page - 1}`;
 const { createCanvas, specifyPage, addFabric, addTextFabric, renderImage, clearActive } = useFabric(canvasId);
 
-async function setPDF() {
+async function setPDF(width?: number) {
+  const SCALE_BASE = 140;
   const { file, page } = props;
-  const scale = isDesktop() ? 4 : 2;
+  const scale = (width || SCALE_BASE) / SCALE_BASE;
 
   createCanvas();
   file.PDFBase64.startsWith('data:image')
@@ -36,7 +37,7 @@ function dropImage(event: DragEvent) {
   value.startsWith('data:image') ? addFabric(value, position) : addTextFabric(value, position);
 }
 
-onMounted(setPDF);
+watch(() => props.fileContainerWidth, setPDF);
 defineExpose({ addFabric, addTextFabric, clearActive, canvasDom });
 </script>
 

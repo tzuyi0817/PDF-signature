@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, nextTick, onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
 import { usePdfStore } from '@/store';
@@ -10,6 +10,7 @@ import SignatureImage from '@/components/signature/SignatureImage.vue';
 import SignatureLiteral from '@/components/signature/SignatureLiteral.vue';
 import SignatureCanvasItem from '@/components/signature/SignatureCanvasItem.vue';
 import SignaturePage from '@/components/signature/SignaturePage.vue';
+import useResize from '@/hooks/useResize';
 import useWarnPopup from '@/hooks/useWarnPopup';
 import toast from '@/utils/toast';
 import { sleep, isDesktop } from '@/utils/common';
@@ -23,9 +24,13 @@ const isShowNextWarnPopup = ref(false);
 const isShowMergePopup = ref(false);
 const isMergeComplete = ref(false);
 const signatureCanvasItem = ref<InstanceType<typeof SignatureCanvasItem> | null>(null);
+const fileContainerRef = ref<HTMLDivElement | null>(null);
+const fileContainerWidth = ref(0);
 const { currentPDF } = storeToRefs(usePdfStore());
 const { t } = useI18n();
 const { isShowWarnPopup, SignPopup, goBack, goPage, toggleWarnPopup } = useWarnPopup();
+
+useResize(updateFileContainerWidth);
 
 async function mergeFile() {
   toggleNextWarnPopup(false);
@@ -36,9 +41,6 @@ async function mergeFile() {
     const { setCurrentPDFCanvas, addPDF } = usePdfStore();
     // @ts-ignore
     const canvas = signatureCanvasItem.value.map(({ canvasDom }) => {
-      // const ctx = canvasDom.getContext('2d');
-
-      // ctx.scale(0.5, 0.5);
       return canvasDom.toDataURL('image/png', 1.0);
     });
 
@@ -104,7 +106,13 @@ function toggleMergePopup(isOpen: boolean) {
   isShowMergePopup.value = isOpen;
 }
 
+async function updateFileContainerWidth() {
+  await nextTick();
+  fileContainerWidth.value = fileContainerRef.value?.clientWidth ?? 0;
+}
+
 onMounted(() => {
+  updateFileContainerWidth();
   if (!isDesktop()) return;
   isShowSign.value = true;
 });
@@ -165,7 +173,10 @@ onMounted(() => {
         />
       </div>
 
-      <div class="signature_content_file">
+      <div
+        ref="fileContainerRef"
+        class="signature_content_file"
+      >
         <div class="w-fit h-fit relative">
           <template
             v-for="page in currentPDF.pages"
@@ -174,6 +185,7 @@ onMounted(() => {
             <signature-canvas-item
               v-show="currentPage === page"
               ref="signatureCanvasItem"
+              :file-container-width="fileContainerWidth"
               :file="currentPDF"
               :page="page"
             />
