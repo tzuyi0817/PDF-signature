@@ -6,15 +6,16 @@ import type { PDF } from '@/types/pdf';
 interface Props {
   file: PDF;
   page: number;
-  fileContainerWidth?: number;
+  fileContainerWidth: number;
 }
 
 const props = defineProps<Props>();
 const canvasDom = ref<HTMLCanvasElement | null>(null);
 const canvasId = `canvas${props.page - 1}`;
-const { createCanvas, specifyPage, addFabric, addTextFabric, renderImage, clearActive } = useFabric(canvasId);
+const { createCanvas, specifyPage, addFabric, addTextFabric, renderImage, clearActive, deleteCanvas } =
+  useFabric(canvasId);
 
-async function setPDF(width?: number) {
+async function setPDF(width: number) {
   const SCALE_BASE = 140;
   const { file, page } = props;
   const scale = (width || SCALE_BASE) / SCALE_BASE;
@@ -38,7 +39,7 @@ function dropImage(event: DragEvent) {
 }
 
 watch(() => props.fileContainerWidth, setPDF);
-defineExpose({ addFabric, addTextFabric, clearActive, canvasDom });
+defineExpose({ addFabric, addTextFabric, clearActive, deleteCanvas, canvasDom });
 </script>
 
 <template>

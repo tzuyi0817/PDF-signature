@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { usePdfStore } from '@/store';
 import SignStepBtn from '@/components/SignStepBtn.vue';
@@ -14,7 +14,7 @@ const fileName = ref('');
 const projectName = ref('');
 const isShowPen = ref(true);
 const { t, locale } = useI18n();
-const { createCanvas, drawPDF, drawImage, pages } = useFabric('canvas');
+const { createCanvas, drawPDF, drawImage, pages, deleteCanvas } = useFabric('canvas');
 const { isShowWarnPopup, SignPopup, goBack, goPage, toggleWarnPopup } = useWarnPopup();
 const { isShowWarnPopup: isShowLoading, SignPopup: loadingPopup } = useWarnPopup();
 
@@ -82,6 +82,7 @@ function blur() {
 }
 
 onMounted(createCanvas);
+onBeforeUnmount(deleteCanvas);
 </script>
 
 <template>

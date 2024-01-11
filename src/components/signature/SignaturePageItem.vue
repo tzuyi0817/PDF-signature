@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 import useFabric from '@/hooks/useFabric';
 import type { PDF } from '@/types/pdf';
 
@@ -12,7 +12,7 @@ const props = defineProps<Props>();
 const isShowCanvas = ref(false);
 
 const canvasId = `canvas_page_${props.page - 1}`;
-const { createCanvas, specifyPage, renderImage } = useFabric(canvasId);
+const { createCanvas, specifyPage, renderImage, deleteCanvas } = useFabric(canvasId);
 
 async function setPDF() {
   const { file, page } = props;
@@ -26,6 +26,7 @@ async function setPDF() {
 }
 
 onMounted(setPDF);
+onBeforeUnmount(deleteCanvas);
 </script>
 
 <template>

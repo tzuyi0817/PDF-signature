@@ -44,6 +44,8 @@ async function mergeFile() {
       return canvasDom.toDataURL('image/png', 1.0);
     });
 
+    // @ts-ignore
+    signatureCanvasItem.value.forEach(({ deleteCanvas }) => deleteCanvas());
     setCurrentPDFCanvas(canvas);
     addPDF({ ...currentPDF.value, updateDate: Date.now() });
     await sleep(2000);

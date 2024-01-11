@@ -23,9 +23,7 @@ export default function useFabric(id: string) {
   const pages = ref(1);
 
   function createCanvas() {
-    if (fabricMap.has(id)) {
-      return fabricMap.get(id)?.initialize(id);
-    }
+    if (fabricMap.has(id)) return;
     const canvas = new fabric.Canvas(id);
 
     fabricMap.set(id, canvas);
@@ -211,6 +209,13 @@ export default function useFabric(id: string) {
     canvas.discardActiveObject().renderAll();
   }
 
+  function deleteCanvas() {
+    const canvas = fabricMap.get(id);
+    if (!canvas) return;
+    canvas.clear();
+    fabricMap.delete(id);
+  }
+
   return {
     createCanvas,
     drawPDF,
@@ -220,6 +225,7 @@ export default function useFabric(id: string) {
     addFabric,
     addTextFabric,
     clearActive,
+    deleteCanvas,
     pages,
   };
 }
