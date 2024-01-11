@@ -44,7 +44,7 @@ defineExpose({ addFabric, addTextFabric, clearActive, deleteCanvas, canvasDom })
 
 <template>
   <div
-    class="absolute py-5 px-3 md:py-10 md:px-14"
+    class="absolute py-5 px-3 scale-[0.7] origin-top-left md:py-10 md:px-14"
     @dragover.stop.prevent
     @dragenter.stop.prevent
     @drop.stop.prevent="dropImage"

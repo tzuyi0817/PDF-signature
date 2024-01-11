@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, nextTick, onMounted } from 'vue';
+import { ref, nextTick, onMounted, onBeforeUnmount } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
 import { usePdfStore } from '@/store';
@@ -44,14 +44,11 @@ async function mergeFile() {
       return canvasDom.toDataURL('image/png', 1.0);
     });
 
-    // @ts-ignore
-    signatureCanvasItem.value.forEach(({ deleteCanvas }) => deleteCanvas());
     setCurrentPDFCanvas(canvas);
     addPDF({ ...currentPDF.value, updateDate: Date.now() });
     await sleep(2000);
     toggleMergePopup(false);
     toast.showToast(t('prompt.file_created_success'), 'success');
-
     goPage('complete');
   } catch {
     toast.showToast(t('prompt.operation_timed_out'), 'error');
@@ -117,6 +114,11 @@ onMounted(() => {
   updateFileContainerWidth();
   if (!isDesktop()) return;
   isShowSign.value = true;
+});
+
+onBeforeUnmount(() => {
+  // @ts-ignore
+  signatureCanvasItem.value.forEach(({ deleteCanvas }) => deleteCanvas());
 });
 </script>
 
