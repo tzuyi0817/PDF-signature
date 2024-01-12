@@ -42,7 +42,7 @@ function warnConfirm() {
 }
 
 onBeforeUnmount(() => {
-  usePdfStore().clearCurrentPDFCanvas();
+  usePdfStore().clearCurrentPDF();
 });
 </script>
 

@@ -24,7 +24,7 @@ const currentPage = ref(1);
 const isShowNextWarnPopup = ref(false);
 const isShowMergePopup = ref(false);
 const isMergeComplete = ref(false);
-const signatureCanvasItem = ref<InstanceType<typeof SignatureCanvasItem> | null>(null);
+const signatureCanvasItem = ref<InstanceType<typeof SignatureCanvasItem>[] | null>(null);
 const fileContainerRef = ref<HTMLDivElement | null>(null);
 const fileContainerWidth = ref(0);
 const { currentPDF } = storeToRefs(usePdfStore());
@@ -39,10 +39,9 @@ async function mergeFile() {
 
   try {
     if (!signatureCanvasItem.value) return;
-    const { setCurrentPDFCanvas, addPDF, clearCurrentPDF } = usePdfStore();
-    // @ts-ignore
+    const { setCurrentPDFCanvas, addPDF } = usePdfStore();
     const canvas = signatureCanvasItem.value.map(({ canvasDom }) => {
-      return canvasDom.toDataURL('image/png', 1.0);
+      return canvasDom?.toDataURL('image/png', 1.0) ?? '';
     });
 
     await sleep(2000);
@@ -52,7 +51,6 @@ async function mergeFile() {
     }
     setCurrentPDFCanvas(canvas);
     addPDF({ ...currentPDF.value, PDFBase64: '', updateDate: Date.now() });
-    clearCurrentPDF();
     toggleMergePopup(false);
     toast.showToast(t('prompt.file_created_success'), 'success');
     goPage('complete');
@@ -64,8 +62,8 @@ async function mergeFile() {
 
 function addFabric(value: string, type?: string) {
   if (!signatureCanvasItem.value) return;
-  // @ts-ignore
   const proxy = signatureCanvasItem.value.at(currentPage.value - 1);
+  if (!proxy) return;
 
   type === 'text' ? proxy.addTextFabric(value) : proxy.addFabric(value);
 }
@@ -102,8 +100,7 @@ function usePage(page: number) {
 }
 
 function toggleNextWarnPopup(isOpen: boolean) {
-  // @ts-ignore
-  signatureCanvasItem.value.forEach(({ clearActive }) => clearActive());
+  signatureCanvasItem.value?.forEach(({ clearActive }) => clearActive());
   isShowNextWarnPopup.value = isOpen;
 }
 
@@ -133,8 +130,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-  // @ts-ignore
-  signatureCanvasItem.value.forEach(({ deleteCanvas }) => deleteCanvas());
+  signatureCanvasItem.value?.forEach(({ deleteCanvas }) => deleteCanvas());
 });
 </script>
 

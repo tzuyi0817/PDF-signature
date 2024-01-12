@@ -32,12 +32,12 @@ export default defineStore('pdf_signature_pdf', {
     },
     clearCurrentPDF() {
       this.currentPDF = {
-        ...this.currentPDF,
         PDFId: '',
         name: '',
         updateDate: 0,
         PDFBase64: '',
         pages: 0,
+        canvas: [],
       };
     },
     setCurrentPDFName(name: string) {
@@ -45,9 +45,6 @@ export default defineStore('pdf_signature_pdf', {
     },
     setCurrentPDFCanvas(canvas: string[]) {
       this.currentPDF.canvas = canvas;
-    },
-    clearCurrentPDFCanvas() {
-      this.currentPDF.canvas = [];
     },
     addPDF(PDF: PDF) {
       this.PDFList.unshift({ ...PDF });

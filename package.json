@@ -16,7 +16,7 @@
     "pdfjs-dist": "^4.0.379",
     "pinia": "^2.0.23",
     "pinia-plugin-persistedstate": "^3.0.0",
-    "vue": "^3.2.41",
+    "vue": "^3.4.5",
     "vue-i18n": "^9.8.0",
     "vue-router": "^4.1.6"
   },

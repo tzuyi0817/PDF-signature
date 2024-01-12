@@ -184,9 +184,11 @@ export default function useFabric(id: string) {
 
   function moveIcon(event: fabric.IEvent<Event>, icon: fabric.Image | null) {
     if (!icon) return;
-    // @ts-ignore
-    const { oCoords, angle, width, height } = event.transform?.target ?? event.target;
-    const { x, y } = oCoords?.tl!;
+    const target = event.transform?.target ?? event.target;
+    if (!target) return;
+    const { oCoords, angle, width, height } = target;
+    if (!oCoords || !angle || !width || !height) return;
+    const { x, y } = oCoords.tl;
     const offsetX = Math.cos(angle * (Math.PI / 180)) * ((width + 500) / 30);
     const offsetY = Math.sin(angle * (Math.PI / 180)) * ((height + 360) / 30);
 
