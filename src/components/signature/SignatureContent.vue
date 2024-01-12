@@ -19,6 +19,7 @@ const isShowSign = ref(false);
 const isShowImage = ref(false);
 const isShowLiteral = ref(false);
 const isShowPage = ref(false);
+const isCancelMerge = ref(false);
 const currentPage = ref(1);
 const isShowNextWarnPopup = ref(false);
 const isShowMergePopup = ref(false);
@@ -45,6 +46,10 @@ async function mergeFile() {
     });
 
     await sleep(2000);
+    if (isCancelMerge.value) {
+      isCancelMerge.value = false;
+      return;
+    }
     setCurrentPDFCanvas(canvas);
     addPDF({ ...currentPDF.value, PDFBase64: '', updateDate: Date.now() });
     clearCurrentPDF();
@@ -114,6 +119,11 @@ async function updateFileContainerWidth() {
 function giveUpSignature() {
   usePdfStore().clearCurrentPDF();
   goBack();
+}
+
+function cancelMergeFile() {
+  isCancelMerge.value = true;
+  toggleMergePopup(false);
 }
 
 onMounted(() => {
@@ -286,7 +296,7 @@ onBeforeUnmount(() => {
         <button
           v-else
           class="btn btn_base w-full"
-          @click="toggleMergePopup(false)"
+          @click="cancelMergeFile"
         >
           {{ $t('cancel') }}
         </button>
