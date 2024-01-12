@@ -63,13 +63,12 @@ async function readerFile(files: FileList | null | undefined) {
 
 function remove() {
   fileName.value = '';
-  usePdfStore().setCurrentPDF({
-    PDFId: '',
-    name: '',
-    updateDate: 0,
-    PDFBase64: '',
-    pages: 0,
-  });
+  usePdfStore().clearCurrentPDF();
+}
+
+function giveUpUpload() {
+  remove();
+  goBack();
 }
 
 function focus() {
@@ -178,7 +177,7 @@ onBeforeUnmount(deleteCanvas);
         </button>
         <button
           class="btn btn_primary"
-          @click="goBack"
+          @click="giveUpUpload"
         >
           {{ $t('give_up') }}
         </button>

@@ -30,11 +30,24 @@ export default defineStore('pdf_signature_pdf', {
     setCurrentPDF(PDF: PDF) {
       this.currentPDF = PDF;
     },
+    clearCurrentPDF() {
+      this.currentPDF = {
+        ...this.currentPDF,
+        PDFId: '',
+        name: '',
+        updateDate: 0,
+        PDFBase64: '',
+        pages: 0,
+      };
+    },
     setCurrentPDFName(name: string) {
       this.currentPDF.name = name;
     },
     setCurrentPDFCanvas(canvas: string[]) {
       this.currentPDF.canvas = canvas;
+    },
+    clearCurrentPDFCanvas() {
+      this.currentPDF.canvas = [];
     },
     addPDF(PDF: PDF) {
       this.PDFList.unshift({ ...PDF });

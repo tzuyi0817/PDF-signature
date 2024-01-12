@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onBeforeUnmount } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
 import { usePdfStore } from '@/store';
@@ -40,6 +40,10 @@ function warnConfirm() {
   toggleWarnPopup(false);
   !isArchive && goPage('index');
 }
+
+onBeforeUnmount(() => {
+  usePdfStore().clearCurrentPDFCanvas();
+});
 </script>
 
 <template>

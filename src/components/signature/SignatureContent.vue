@@ -38,15 +38,16 @@ async function mergeFile() {
 
   try {
     if (!signatureCanvasItem.value) return;
-    const { setCurrentPDFCanvas, addPDF } = usePdfStore();
+    const { setCurrentPDFCanvas, addPDF, clearCurrentPDF } = usePdfStore();
     // @ts-ignore
     const canvas = signatureCanvasItem.value.map(({ canvasDom }) => {
       return canvasDom.toDataURL('image/png', 1.0);
     });
 
-    setCurrentPDFCanvas(canvas);
-    addPDF({ ...currentPDF.value, updateDate: Date.now() });
     await sleep(2000);
+    setCurrentPDFCanvas(canvas);
+    addPDF({ ...currentPDF.value, PDFBase64: '', updateDate: Date.now() });
+    clearCurrentPDF();
     toggleMergePopup(false);
     toast.showToast(t('prompt.file_created_success'), 'success');
     goPage('complete');
@@ -108,6 +109,11 @@ function toggleMergePopup(isOpen: boolean) {
 async function updateFileContainerWidth() {
   await nextTick();
   fileContainerWidth.value = fileContainerRef.value?.clientWidth ?? 0;
+}
+
+function giveUpSignature() {
+  usePdfStore().clearCurrentPDF();
+  goBack();
 }
 
 onMounted(() => {
@@ -217,7 +223,7 @@ onBeforeUnmount(() => {
         </button>
         <button
           class="btn btn_primary"
-          @click="goBack"
+          @click="giveUpSignature"
         >
           {{ $t('give_up') }}
         </button>
