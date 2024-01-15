@@ -16,18 +16,26 @@ interface RenderImageArgs {
   scale?: number;
 }
 
+interface CreateCloseSvgArgs {
+  canvas: fabric.Canvas;
+  event: fabric.IEvent<Event>;
+  fab: fabric.Image | fabric.Text;
+  stroke?: string;
+  uuid?: number;
+}
+
 const fabricMap = new Map<string, fabric.Canvas>();
-const fabricImagePool = new Set<fabric.Object | fabric.Group>();
 
 export default function useFabric(id: string) {
   const pages = ref(1);
+  let closeSvg: fabric.Object | fabric.Group | null = null;
 
   function createCanvas() {
     if (fabricMap.has(id)) return;
     const canvas = new fabric.Canvas(id);
 
     fabricMap.set(id, canvas);
-    canvas.on('selection:cleared', () => clearPool(canvas));
+    canvas.on('selection:cleared', () => deleteCloseSvg(canvas));
     return canvas;
   }
 
@@ -150,50 +158,52 @@ export default function useFabric(id: string) {
   }
 
   function setFabric(canvas: fabric.Canvas, fab: fabric.Image | fabric.Text) {
-    let closeSvg: fabric.Object | fabric.Group | null = null;
-
-    fab.on('selected', async event => (closeSvg = await createCloseSvg(canvas, event, fab)));
-    fab.on('modified', event => moveCloseSvg(event, closeSvg));
-    fab.on('scaling', event => moveCloseSvg(event, closeSvg));
-    fab.on('moving', event => moveCloseSvg(event, closeSvg));
-    fab.on('rotating', event => moveCloseSvg(event, closeSvg));
+    fab.on('selected', event => createCloseSvg({ canvas, event, fab }));
+    fab.on('modified', event => moveCloseSvg(event));
+    fab.on('scaling', event => moveCloseSvg(event));
+    fab.on('moving', event => moveCloseSvg(event));
+    fab.on('rotating', event => moveCloseSvg(event));
   }
 
-  async function createCloseSvg(
-    canvas: fabric.Canvas,
-    event: fabric.IEvent<Event>,
-    fab: fabric.Image | fabric.Text,
-  ): Promise<fabric.Object | fabric.Group> {
+  async function createCloseSvg({ canvas, event, fab, stroke = '#000', uuid = Date.now() }: CreateCloseSvgArgs) {
+    if (closeSvg?.stroke === `${stroke}-${uuid}`) return;
     const src = createImageSrc('icon/ic_close_s.svg');
 
-    return new Promise(resolve => {
-      fabric.loadSVGFromURL(src, (objects, options) => {
-        const closeSvg = fabric.util.groupSVGElements(objects, options);
+    fabric.loadSVGFromURL(src, (objects, options) => {
+      const svg = fabric.util.groupSVGElements(objects, options);
 
-        closeSvg.hoverCursor = 'pointer';
-        closeSvg.set({ stroke: 'green' });
-        onCloseSvg(closeSvg, canvas, fab);
-        moveCloseSvg(event, closeSvg);
-        clearPool(canvas);
-        canvas.add(closeSvg);
-        fabricImagePool.add(closeSvg);
-        resolve(closeSvg);
+      objects.forEach(object => {
+        object.stroke = stroke;
       });
+      svg.hoverCursor = 'pointer';
+      svg.stroke = `${stroke}-${uuid}`;
+      deleteCloseSvg(canvas);
+      closeSvg = svg;
+      onCloseSvg(canvas, fab, event, uuid);
+      moveCloseSvg(event);
+      canvas.add(svg);
     });
   }
 
-  function onCloseSvg(closeSvg: fabric.Object | fabric.Group, canvas: fabric.Canvas, fab: fabric.Image | fabric.Text) {
-    closeSvg.on('selected', () => {
+  function onCloseSvg(
+    canvas: fabric.Canvas,
+    fab: fabric.Image | fabric.Text,
+    event: fabric.IEvent<Event>,
+    uuid: number,
+  ) {
+    closeSvg?.on('selected', () => {
       canvas.remove(fab);
-      deleteCloseSvg(canvas, closeSvg);
+      deleteCloseSvg(canvas);
     });
-    // closeSvg.on('mouseover', () => {
-    //   console.log({ closeSvg });
-    //   canvas.renderAll();
-    // });
+    closeSvg?.on('mouseover', () => {
+      createCloseSvg({ canvas, event, fab, stroke: '#B7EC5D', uuid });
+    });
+    closeSvg?.on('mouseout', () => {
+      createCloseSvg({ canvas, event, fab, stroke: '#000', uuid });
+    });
   }
 
-  function moveCloseSvg(event: fabric.IEvent<Event>, closeSvg: fabric.Object | fabric.Group | null) {
+  function moveCloseSvg(event: fabric.IEvent<Event>) {
     const target = event.transform?.target ?? event.target;
 
     if (!closeSvg || !target) return;
@@ -208,13 +218,10 @@ export default function useFabric(id: string) {
     closeSvg.left = x - offsetX - 15;
   }
 
-  function deleteCloseSvg(canvas: fabric.Canvas, closeSvg: fabric.Object | fabric.Group) {
+  function deleteCloseSvg(canvas: fabric.Canvas) {
+    if (!closeSvg) return;
     canvas.remove(closeSvg);
-    fabricImagePool.delete(closeSvg);
-  }
-
-  function clearPool(canvas: fabric.Canvas) {
-    fabricImagePool.forEach(image => deleteCloseSvg(canvas, image));
+    closeSvg = null;
   }
 
   function clearActive() {
