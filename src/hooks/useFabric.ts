@@ -17,7 +17,7 @@ interface RenderImageArgs {
 }
 
 const fabricMap = new Map<string, fabric.Canvas>();
-const fabricImagePool = new Set<fabric.Image>();
+const fabricImagePool = new Set<fabric.Object | fabric.Group>();
 
 export default function useFabric(id: string) {
   const pages = ref(1);
@@ -150,59 +150,71 @@ export default function useFabric(id: string) {
   }
 
   function setFabric(canvas: fabric.Canvas, fab: fabric.Image | fabric.Text) {
-    let icon: fabric.Image | null = null;
+    let closeSvg: fabric.Object | fabric.Group | null = null;
 
-    fab.on('selected', async event => (icon = await createIcon(canvas, event, fab)));
-    fab.on('modified', event => moveIcon(event, icon));
-    fab.on('scaling', event => moveIcon(event, icon));
-    fab.on('moving', event => moveIcon(event, icon));
-    fab.on('rotating', event => moveIcon(event, icon));
+    fab.on('selected', async event => (closeSvg = await createCloseSvg(canvas, event, fab)));
+    fab.on('modified', event => moveCloseSvg(event, closeSvg));
+    fab.on('scaling', event => moveCloseSvg(event, closeSvg));
+    fab.on('moving', event => moveCloseSvg(event, closeSvg));
+    fab.on('rotating', event => moveCloseSvg(event, closeSvg));
   }
 
-  async function createIcon(
+  async function createCloseSvg(
     canvas: fabric.Canvas,
     event: fabric.IEvent<Event>,
     fab: fabric.Image | fabric.Text,
-  ): Promise<fabric.Image> {
+  ): Promise<fabric.Object | fabric.Group> {
     const src = createImageSrc('icon/ic_close_s.svg');
 
     return new Promise(resolve => {
-      fabric.Image.fromURL(src, icon => {
-        icon.hoverCursor = 'pointer';
-        moveIcon(event, icon);
-        icon.on('selected', () => {
-          canvas.remove(fab);
-          deleteIcon(canvas, icon);
-        });
+      fabric.loadSVGFromURL(src, (objects, options) => {
+        const closeSvg = fabric.util.groupSVGElements(objects, options);
+
+        closeSvg.hoverCursor = 'pointer';
+        closeSvg.set({ stroke: 'green' });
+        onCloseSvg(closeSvg, canvas, fab);
+        moveCloseSvg(event, closeSvg);
         clearPool(canvas);
-        canvas.add(icon);
-        fabricImagePool.add(icon);
-        resolve(icon);
+        canvas.add(closeSvg);
+        fabricImagePool.add(closeSvg);
+        resolve(closeSvg);
       });
     });
   }
 
-  function moveIcon(event: fabric.IEvent<Event>, icon: fabric.Image | null) {
-    if (!icon) return;
+  function onCloseSvg(closeSvg: fabric.Object | fabric.Group, canvas: fabric.Canvas, fab: fabric.Image | fabric.Text) {
+    closeSvg.on('selected', () => {
+      canvas.remove(fab);
+      deleteCloseSvg(canvas, closeSvg);
+    });
+    // closeSvg.on('mouseover', () => {
+    //   console.log({ closeSvg });
+    //   canvas.renderAll();
+    // });
+  }
+
+  function moveCloseSvg(event: fabric.IEvent<Event>, closeSvg: fabric.Object | fabric.Group | null) {
     const target = event.transform?.target ?? event.target;
-    if (!target) return;
+
+    if (!closeSvg || !target) return;
     const { oCoords, angle, width, height } = target;
-    if (!oCoords || !angle || !width || !height) return;
+
+    if (oCoords === undefined || angle === undefined || width === undefined || height === undefined) return;
     const { x, y } = oCoords.tl;
     const offsetX = Math.cos(angle * (Math.PI / 180)) * ((width + 500) / 30);
     const offsetY = Math.sin(angle * (Math.PI / 180)) * ((height + 360) / 30);
 
-    icon.top = y - offsetY - 15;
-    icon.left = x - offsetX - 15;
+    closeSvg.top = y - offsetY - 15;
+    closeSvg.left = x - offsetX - 15;
   }
 
-  function deleteIcon(canvas: fabric.Canvas, icon: fabric.Image) {
-    canvas.remove(icon);
-    fabricImagePool.delete(icon);
+  function deleteCloseSvg(canvas: fabric.Canvas, closeSvg: fabric.Object | fabric.Group) {
+    canvas.remove(closeSvg);
+    fabricImagePool.delete(closeSvg);
   }
 
   function clearPool(canvas: fabric.Canvas) {
-    fabricImagePool.forEach(image => deleteIcon(canvas, image));
+    fabricImagePool.forEach(image => deleteCloseSvg(canvas, image));
   }
 
   function clearActive() {
