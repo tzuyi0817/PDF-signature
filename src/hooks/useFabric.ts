@@ -216,6 +216,7 @@ export default function useFabric(id: string) {
 
     closeSvg.top = y - offsetY - 15;
     closeSvg.left = x - offsetX - 15;
+    closeSvg.setCoords();
   }
 
   function deleteCloseSvg(canvas: fabric.Canvas) {
