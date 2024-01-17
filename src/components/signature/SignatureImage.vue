@@ -76,6 +76,7 @@ async function readerFile(files: FileList | null | undefined) {
     fileReader.readAsDataURL(file);
     fileReader.onload = () => {
       const { result } = fileReader;
+
       if (!isString(result)) return;
       if (imageList.value.includes(result)) {
         toast.showToast(t('prompt.picture_already_exists'), 'error');

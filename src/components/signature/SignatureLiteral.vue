@@ -31,6 +31,10 @@ function selectLiteral(text: string) {
 }
 
 function addLiteral() {
+  if (literalList.value.includes(literal.value)) {
+    toast.showToast(t('prompt.text_already_exists'), 'error');
+    return;
+  }
   useLiteralStore().addLiteral(literal.value);
   toast.showToast(t('prompt.text_add_success'), 'success');
   toggleLiteralPopup(false);
@@ -73,7 +77,7 @@ function close() {
     >
       <img
         src="@/assets/icon/ic_add_dark.svg"
-        alt=""
+        alt="add dark icon"
         width="60"
         height="60"
         class="iconScale mb-3"
