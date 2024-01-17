@@ -7,6 +7,7 @@ import SignaturePopup from '@/components/signature/SignaturePopup.vue';
 import SignIcon from '@/components/SignIcon.vue';
 import useWarnPopup from '@/hooks/useWarnPopup';
 import toast from '@/utils/toast';
+import { isString } from '@/utils/checkType';
 
 interface Props {
   isShowImage: boolean;
@@ -74,8 +75,13 @@ async function readerFile(files: FileList | null | undefined) {
 
     fileReader.readAsDataURL(file);
     fileReader.onload = () => {
-      if (!fileReader.result) return;
-      useImageStore().addImage(fileReader.result as string);
+      const { result } = fileReader;
+      if (!isString(result)) return;
+      if (imageList.value.includes(result)) {
+        toast.showToast(t('prompt.picture_already_exists'), 'error');
+        return;
+      }
+      useImageStore().addImage(result);
       toggleImagePopup(false);
       toast.showToast(t('prompt.picture_add_success'), 'success');
     };

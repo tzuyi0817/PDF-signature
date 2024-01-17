@@ -42,6 +42,7 @@
     "operation_timed_out": "The operation timed out, please try again",
     "or_drag_file": "Or drag the file here",
     "picture_add_success": "Picture added successfully",
+    "picture_already_exists": "This picture already exists",
     "picture_delete_success": "Picture deleted successfully",
     "picture_upload_failed": "picture upload failed",
     "signature_add_success": "Signature file added successfully",
