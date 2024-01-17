@@ -3,26 +3,7 @@ import { fabric } from 'fabric';
 import { printPDF, getPDFDocument, readBlob } from '@/utils/pdfJs';
 import { usePdfStore } from '@/store';
 import { createImageSrc } from '@/utils/image';
-import type { PDF } from '@/types/pdf';
-
-interface SpecifyPageArgs {
-  page: number;
-  PDF: Omit<PDF, 'pages'> | PDF;
-  scale?: number;
-}
-
-interface RenderImageArgs {
-  url: string;
-  scale?: number;
-}
-
-interface CreateCloseSvgArgs {
-  canvas: fabric.Canvas;
-  event: fabric.IEvent<Event>;
-  fab: fabric.Image | fabric.Text;
-  stroke?: string;
-  uuid?: number;
-}
+import type { TOCoord, SpecifyPageArgs, RenderImageArgs, CreateCloseSvgArgs } from '@/types/fabric';
 
 const fabricMap = new Map<string, fabric.Canvas>();
 
@@ -149,6 +130,8 @@ export default function useFabric(id: string) {
       fontFamily: 'helvetica',
       borderColor: 'black',
       cornerStrokeColor: 'black',
+      scaleX: 0.7,
+      scaleY: 0.7,
       cornerSize: 8,
       selectionBackgroundColor: 'rgba(245, 245, 245, 0.8)',
     });
@@ -207,15 +190,12 @@ export default function useFabric(id: string) {
     const target = event.transform?.target ?? event.target;
 
     if (!closeSvg || !target) return;
-    const { oCoords, angle, width, height } = target;
+    const { oCoords, cornerSize = 1 } = target;
+    if (!oCoords) return;
+    const { x, y } = (oCoords.tl as TOCoord).touchCorner.tl;
 
-    if (oCoords === undefined || angle === undefined || width === undefined || height === undefined) return;
-    const { x, y } = oCoords.tl;
-    const offsetX = Math.cos(angle * (Math.PI / 180)) * ((width + 500) / 30);
-    const offsetY = Math.sin(angle * (Math.PI / 180)) * ((height + 360) / 30);
-
-    closeSvg.top = y - offsetY - 15;
-    closeSvg.left = x - offsetX - 15;
+    closeSvg.top = y - cornerSize * 3;
+    closeSvg.left = x - cornerSize * 3;
     closeSvg.setCoords();
   }
 

@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   fabric:
-    specifier: ^5.2.4
-    version: 5.2.4
+    specifier: ^5.3.0
+    version: 5.3.0
   jspdf:
     specifier: ^2.5.1
     version: 2.5.1
@@ -52,7 +52,7 @@ devDependencies:
     specifier: ^1.6.1
     version: 1.6.1
   '@types/fabric':
-    specifier: ^5.0.0
+    specifier: ^5.3.6
     version: 5.3.6
   '@types/node':
     specifier: ^20.0.0
@@ -1456,6 +1456,7 @@ packages:
 
   /abab@2.0.6:
     resolution: {integrity: sha512-j2afSsaIENvHZN2B8GOpF566vZ5WVk5opAiMTvWgaQT8DkbOqsTfvNAvHoRGU2zzP8cPoqys+xHTRDWW8L+/BA==}
+    deprecated: Use your platform's native atob() and btoa() methods instead
     requiresBuild: true
     dev: false
     optional: true
@@ -1504,15 +1505,6 @@ packages:
     resolution: {integrity: sha512-nc0Axzp/0FILLEVsm4fNwLCwMttvhEI263QtVPQcbpfZZ3ts0hLsZGOpE6czNlid7CJ9MlyH8reXkpsf3YUY4w==}
     engines: {node: '>=0.4.0'}
     hasBin: true
-    dev: true
-
-  /acorn@8.8.1:
-    resolution: {integrity: sha512-7zFpHzhnqYKrkYdUjF1HI1bzd0VygEGX8lFk4k5zVMqHEoES+P+7TKI+EvLO9WVMJ8eekdO0aDEK044xTXwPPA==}
-    engines: {node: '>=0.4.0'}
-    hasBin: true
-    requiresBuild: true
-    dev: false
-    optional: true
 
   /agent-base@6.0.2:
     resolution: {integrity: sha512-RZNwNclF7+MS/8bDg70amg32dyeZGZxiDuQmZxKLAlQjr3jGyLx+4Kkk58UO7D2QdgFIQCovuSuZESne6RG6XQ==}
@@ -2547,6 +2539,7 @@ packages:
   /domexception@4.0.0:
     resolution: {integrity: sha512-A2is4PLG+eeSfoTMA95/s4pvAoSo2mKtiM5jlHkAVewmiO8ISFTFKZjH7UAM1Atli/OT/7JHOrJRJiMKUZKYBw==}
     engines: {node: '>=12'}
+    deprecated: Use your platform's native DOMException instead
     requiresBuild: true
     dependencies:
       webidl-conversions: 7.0.0
@@ -2956,8 +2949,8 @@ packages:
       - supports-color
     dev: true
 
-  /fabric@5.2.4:
-    resolution: {integrity: sha512-3+oLKvsbSJ76/nvPPrQVuUJDp0kOh8i867PpdrOPIHUyN+eLc+9nY3rmzMmDw6ndRm20f/uULv55G8sN01j9+Q==}
+  /fabric@5.3.0:
+    resolution: {integrity: sha512-AVayKuzWoXM5cTn7iD3yNWBlfEa8r1tHaOe2g8NsZrmWKAHjryTxT/j6f9ncRfOWOF0I1Ci1AId3y78cC+GExQ==}
     engines: {node: '>=14.0.0'}
     optionalDependencies:
       canvas: 2.11.2
@@ -3712,7 +3705,7 @@ packages:
         optional: true
     dependencies:
       abab: 2.0.6
-      acorn: 8.8.1
+      acorn: 8.11.2
       acorn-globals: 6.0.0
       canvas: 2.11.2
       cssom: 0.5.0

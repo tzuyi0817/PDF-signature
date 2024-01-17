@@ -11,7 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "fabric": "^5.2.4",
+    "fabric": "^5.3.0",
     "jspdf": "^2.5.1",
     "pdfjs-dist": "^4.0.379",
     "pinia": "^2.0.23",
@@ -23,7 +23,7 @@
   "devDependencies": {
     "@intlify/unplugin-vue-i18n": "^2.0.0",
     "@rushstack/eslint-patch": "^1.6.1",
-    "@types/fabric": "^5.0.0",
+    "@types/fabric": "^5.3.6",
     "@types/node": "^20.0.0",
     "@vitejs/plugin-vue": "^5.0.0",
     "@vue/eslint-config-prettier": "^9.0.0",
