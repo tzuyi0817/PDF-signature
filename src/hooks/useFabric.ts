@@ -2,9 +2,7 @@ import { ref, toRaw } from 'vue';
 import { fabric } from 'fabric';
 import { usePdfStore } from '@/store';
 import { printPDF, getPDFDocument } from '@/utils/pdfJs';
-import { readfile } from '@/utils/reader';
-import { createImageSrc } from '@/utils/image';
-import { isString } from '@/utils/checkType';
+import { createImageSrc, convertToBase64 } from '@/utils/image';
 import type { TOCoord, SpecifyPageArgs, RenderImageArgs, CreateCloseSvgArgs } from '@/types/fabric';
 
 const fabricMap = new Map<string, fabric.Canvas>();
@@ -80,8 +78,7 @@ export default function useFabric(id: string) {
   }
 
   async function drawImage(file: File) {
-    const base64 = await readfile(file);
-    if (!isString(base64)) return;
+    const base64 = await convertToBase64(file);
     const { setCurrentPDF } = usePdfStore();
     const now = Date.now();
     const PDFId = `${file.name}${now}`;

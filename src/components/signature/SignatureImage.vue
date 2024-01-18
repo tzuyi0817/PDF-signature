@@ -8,7 +8,7 @@ import SignIcon from '@/components/SignIcon.vue';
 import useWarnPopup from '@/hooks/useWarnPopup';
 import toast from '@/utils/toast';
 import { convertToBase64 } from '@/utils/image';
-import { isString } from '@/utils/checkType';
+import { checkFile } from '@/utils/reader';
 
 interface Props {
   isShowImage: boolean;
@@ -59,9 +59,11 @@ function dropFile(event: DragEvent) {
 
 async function readerFile(files?: FileList | null) {
   try {
-    const result = await convertToBase64(files);
+    const file = checkFile(files, /.png|.jpg|.jpeg/);
 
-    if (!isString(result)) return;
+    if (!file) return;
+    const result = await convertToBase64(file);
+
     if (imageList.value.includes(result)) {
       toast.showToast(t('prompt.picture_already_exists'), 'error');
       return;
