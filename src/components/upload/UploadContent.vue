@@ -8,6 +8,7 @@ import useFabric from '@/hooks/useFabric';
 import useWarnPopup from '@/hooks/useWarnPopup';
 import toast from '@/utils/toast';
 import { sleep } from '@/utils/common';
+import { checkFile } from '@/utils/reader';
 
 const isNextDisabled = ref(true);
 const fileName = ref('');
@@ -33,21 +34,12 @@ function dropFile(event: DragEvent) {
   readerFile(files);
 }
 
-async function readerFile(files: FileList | null | undefined) {
-  if (!files) return;
-  const MAX_SIZE = 20 * 1024 * 1024;
-  const file = files[0];
-  const regexp = /.pdf|.png|.jpg|.jpeg/;
-
-  if (!regexp.test(file.type)) {
-    return toast.showToast(t('prompt.file_format_not_match'), 'error');
-  }
-
-  if (file.size > MAX_SIZE) {
-    return toast.showToast(t('prompt.file_size_exceed'), 'error');
-  }
-
+async function readerFile(files?: FileList | null) {
   try {
+    const regexp = /.pdf|.png|.jpg|.jpeg/;
+    const file = checkFile(files, regexp);
+
+    if (!file) return;
     isShowLoading.value = true;
     file.type === 'application/pdf' ? await drawPDF(file) : drawImage(file);
     await sleep();

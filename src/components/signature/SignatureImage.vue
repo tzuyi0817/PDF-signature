@@ -7,6 +7,7 @@ import SignaturePopup from '@/components/signature/SignaturePopup.vue';
 import SignIcon from '@/components/SignIcon.vue';
 import useWarnPopup from '@/hooks/useWarnPopup';
 import toast from '@/utils/toast';
+import { convertToBase64 } from '@/utils/image';
 import { isString } from '@/utils/checkType';
 
 interface Props {
@@ -56,36 +57,18 @@ function dropFile(event: DragEvent) {
   readerFile(files);
 }
 
-async function readerFile(files: FileList | null | undefined) {
-  if (!files) return;
-  const MAX_SIZE = 20 * 1024 * 1024;
-  const file = files[0];
-  const regexp = /.png|.jpg|.jpeg/;
-
-  if (!regexp.test(file.type)) {
-    return toast.showToast(t('prompt.file_format_not_match'), 'error');
-  }
-
-  if (file.size > MAX_SIZE) {
-    return toast.showToast(t('prompt.file_size_exceed'), 'error');
-  }
-
+async function readerFile(files?: FileList | null) {
   try {
-    const fileReader = new FileReader();
+    const result = await convertToBase64(files);
 
-    fileReader.readAsDataURL(file);
-    fileReader.onload = () => {
-      const { result } = fileReader;
-
-      if (!isString(result)) return;
-      if (imageList.value.includes(result)) {
-        toast.showToast(t('prompt.picture_already_exists'), 'error');
-        return;
-      }
-      useImageStore().addImage(result);
-      toggleImagePopup(false);
-      toast.showToast(t('prompt.picture_add_success'), 'success');
-    };
+    if (!isString(result)) return;
+    if (imageList.value.includes(result)) {
+      toast.showToast(t('prompt.picture_already_exists'), 'error');
+      return;
+    }
+    useImageStore().addImage(result);
+    toggleImagePopup(false);
+    toast.showToast(t('prompt.picture_add_success'), 'success');
   } catch {
     toast.showToast(t('prompt.picture_upload_failed'), 'error');
   }
