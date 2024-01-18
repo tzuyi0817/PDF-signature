@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, watch, onBeforeUnmount } from 'vue';
 import useFabric from '@/hooks/useFabric';
 import { isDesktop } from '@/utils/common';
 import type { PDF } from '@/types/pdf';
@@ -40,6 +40,7 @@ function dropImage(event: DragEvent) {
 }
 
 watch(() => props.fileContainerWidth, setPDF);
+onBeforeUnmount(deleteCanvas);
 defineExpose({ addFabric, addTextFabric, clearActive, deleteCanvas, canvasDom });
 </script>
 

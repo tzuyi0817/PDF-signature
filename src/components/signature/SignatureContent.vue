@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, nextTick, onMounted, onBeforeUnmount } from 'vue';
+import { ref, nextTick, onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
 import { usePdfStore } from '@/store';
@@ -127,10 +127,6 @@ onMounted(() => {
   updateFileContainerWidth();
   if (!isDesktop()) return;
   isShowSign.value = true;
-});
-
-onBeforeUnmount(() => {
-  signatureCanvasItem.value?.forEach(({ deleteCanvas }) => deleteCanvas());
 });
 </script>
 

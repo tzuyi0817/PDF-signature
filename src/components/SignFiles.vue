@@ -123,7 +123,7 @@ function changeShowStatus(status: FileShowStatus) {
     >
       <img
         src="@/assets/img/img_search.svg"
-        alt=""
+        alt="search icon"
         class="mb-10"
       />
       <h3 class="text-gray-40 text-center mb-3">{{ $t('prompt.un_found') }}</h3>

@@ -3,6 +3,7 @@ import { fabric } from 'fabric';
 import { usePdfStore } from '@/store';
 import { printPDF, getPDFDocument } from '@/utils/pdfJs';
 import { createImageSrc, convertToBase64 } from '@/utils/image';
+import { isDesktop } from '@/utils/common';
 import type { TOCoord, SpecifyPageArgs, RenderImageArgs, CreateCloseSvgArgs } from '@/types/fabric';
 
 const fabricMap = new Map<string, fabric.Canvas>();
@@ -93,7 +94,7 @@ export default function useFabric(id: string) {
     setCurrentPDF({ ...PDF, pages: pages.value });
   }
 
-  function renderImage({ url, scale = 0.5 }: RenderImageArgs) {
+  function renderImage({ url, scale = isDesktop() ? 0.5 : 0.3 }: RenderImageArgs) {
     const canvas = fabricMap.get(id);
     if (!canvas) return;
     fabric.Image.fromURL(url, image => {
