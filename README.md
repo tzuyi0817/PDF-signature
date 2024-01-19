@@ -3,7 +3,9 @@
 ## Description
 
 This is an online instant `PDF signature` website.  
-The signed pdf file will be stored in the `local storage` on the local side.
+The signed pdf file will be stored in the `indexedDB` on the local side.
+
+![image](./public/cover.jpg)
 
 ## Development
 
@@ -53,29 +55,34 @@ src/
 │   ├── SignStep.vue
 │   ├── SignStepBtn.vue
 │   └── SignToast.vue
-└── hooks/
+├── configs/
+│   ├── common.config.ts
+│   └── idb.config.ts
+├── hooks/
 │   ├── useFabric.ts
 │   ├── useRedirect.ts
+│   ├── useResize.ts
 │   └── useWarnPopup.vue
-└── locales/
+├── locales/
 │   ├── en-US.json
 │   └── zh-TW.json
-└── pages/
+├── pages/
 │   ├── CompletePage.vue
 │   ├── IndexPage.vue
 │   ├── SignaturePage.vue
 │   └── UploadPage.vue
-└── plugins/
-│   └── i18n.ts
-└── router/
+├── plugins/
+│   ├── i18n.ts
+│   └── idb.ts
+├── router/
 │   └── index.ts
-└── store/
+├── store/
 │   ├── image.ts
 │   ├── index.ts
 │   ├── literal.ts
 │   ├── pdf.ts
 │   └── signature.ts
-└── style/
+├── style/
 │   ├── common/
 |   │   ├── all.css
 │   │   ├── button.css
@@ -88,15 +95,18 @@ src/
 |   │   └── text.css
 │   ├── index.css
 │   └── tailwind.css
-└── types/
+├── types/
+│   ├── fabric.d.ts
 │   ├── menu.d.ts
 │   └── pdf.d.ts
-└── utils/
+├── utils/
 │   ├── checkType.ts
 │   ├── common.ts
+│   ├── idb.ts
 │   ├── image.ts
 │   ├── jspdf.ts
 │   ├── pdfJs.ts
+│   ├── reader.ts
 │   └── toast.ts
 ├── App.vue
 ├── global.d.ts
@@ -117,3 +127,4 @@ src/
 - pdfjs
 - fabric
 - jspdf
+- idb-keyval
