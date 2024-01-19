@@ -36,14 +36,17 @@ const close = closeToast.bind(toast);
   pl-5
   pr-2
   pointer-events-none
-  w-[300px]
+  whitespace-nowrap
+  text-ellipsis
+  overflow-hidden
+  w-fit
+  max-w-[100vw]
   h-10
   transition-all
   opacity-0
   border-primary
   border-2
   rounded-[50px]
-  md:w-[415px]
   md:-translate-x-[calc(50%+40px)];
   &-show {
     @apply translate-y-0 opacity-100 pointer-events-auto;

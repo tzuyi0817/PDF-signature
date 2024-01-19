@@ -24,7 +24,7 @@ function selectTool(tool: string) {
 }
 
 function addSignature() {
-  const signature = canvasDraw.value?.toDataURL('image/png');
+  const signature = canvasDraw.value?.toDataURL('image/jpeg');
   if (!signature) return;
   useSignatureStore().addSignature(signature);
   emit('close');
