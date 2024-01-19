@@ -1,6 +1,6 @@
 {
   "name": "PDF Signature",
-  "short_name": "PDF Signature",
+  "short_name": "PDF Sign",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#4D4D4D",
