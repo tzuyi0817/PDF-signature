@@ -5,6 +5,7 @@ import { dirname, resolve } from 'node:path';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 import vueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 import topLevelAwait from 'vite-plugin-top-level-await';
+import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
   base: './',
@@ -20,6 +21,7 @@ export default defineConfig({
       promiseExportName: '__tla',
       promiseImportName: i => `__tla_${i}`,
     }),
+    VitePWA({ registerType: 'autoUpdate' }),
   ],
   server: {
     port: 8080,
