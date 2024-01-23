@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { usePdfStore } from '@/store';
+import { usePdfStore, useConfigStore } from '@/store';
 import SignStepBtn from '@/components/SignStepBtn.vue';
 import SignIcon from '@/components/SignIcon.vue';
 import useFabric from '@/hooks/useFabric';
@@ -17,7 +17,7 @@ const isShowPen = ref(true);
 const { t, locale } = useI18n();
 const { createCanvas, drawPDF, drawImage, pages, deleteCanvas } = useFabric('canvas');
 const { isShowWarnPopup, SignPopup, goBack, goPage, toggleWarnPopup } = useWarnPopup();
-const { isShowWarnPopup: isShowLoading, SignPopup: loadingPopup } = useWarnPopup();
+const { toggleLoading } = useConfigStore();
 
 async function uploadFile(event: Event) {
   const target = event.target as HTMLInputElement;
@@ -40,7 +40,7 @@ async function readerFile(files?: FileList | null) {
     const file = checkFile(files, regexp);
 
     if (!file) return;
-    isShowLoading.value = true;
+    toggleLoading({ isShow: true, title: 'upload_file', content: 'file_uploading' });
     file.type === 'application/pdf' ? await drawPDF(file) : drawImage(file);
     await sleep();
     toast.showToast(t('prompt.file_upload_success'), 'success');
@@ -50,7 +50,7 @@ async function readerFile(files?: FileList | null) {
   } catch {
     toast.showToast(t('prompt.file_upload_failed'), 'error');
   }
-  isShowLoading.value = false;
+  toggleLoading({ isShow: false });
 }
 
 function remove() {
@@ -175,20 +175,6 @@ onBeforeUnmount(deleteCanvas);
         </button>
       </div>
     </sign-popup>
-    <loading-popup
-      v-if="isShowLoading"
-      :title="$t('upload_file')"
-    >
-      <div class="flex flex-col gap-8 items-center py-8">
-        <img
-          src="@/assets/img/loading.gif"
-          class="w-[60%]"
-          alt="loading gif"
-        />
-
-        <h5 class="text-center text-gray-40">{{ $t('file_uploading') }}</h5>
-      </div>
-    </loading-popup>
   </div>
 </template>
 
