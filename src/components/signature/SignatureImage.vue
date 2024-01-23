@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
-import { useImageStore } from '@/store';
+import { useImageStore, useConfigStore } from '@/store';
 import SignaturePopup from '@/components/signature/SignaturePopup.vue';
 import SignIcon from '@/components/SignIcon.vue';
 import useWarnPopup from '@/hooks/useWarnPopup';
@@ -21,6 +21,7 @@ const isShowImagePopup = ref(false);
 const { imageList } = storeToRefs(useImageStore());
 const { t, locale } = useI18n();
 const { isShowWarnPopup, SignPopup, toggleWarnPopup } = useWarnPopup();
+const { toggleLoading } = useConfigStore();
 
 function useImage() {
   emit('useImage', currentSelect.value);
@@ -62,6 +63,7 @@ async function readerFile(files?: FileList | null) {
     const file = checkFile(files, /.png|.jpg|.jpeg/);
 
     if (!file) return;
+    toggleLoading({ isShow: true, title: 'upload_file', content: 'file_uploading' });
     const result = await convertToBase64(file);
 
     if (imageList.value.includes(result)) {
@@ -73,6 +75,8 @@ async function readerFile(files?: FileList | null) {
     toast.showToast(t('prompt.picture_add_success'), 'success');
   } catch {
     toast.showToast(t('prompt.picture_upload_failed'), 'error');
+  } finally {
+    toggleLoading({ isShow: false });
   }
 }
 

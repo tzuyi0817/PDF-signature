@@ -49,8 +49,9 @@ async function readerFile(files?: FileList | null) {
     isNextDisabled.value = false;
   } catch {
     toast.showToast(t('prompt.file_upload_failed'), 'error');
+  } finally {
+    toggleLoading({ isShow: false });
   }
-  toggleLoading({ isShow: false });
 }
 
 function remove() {
