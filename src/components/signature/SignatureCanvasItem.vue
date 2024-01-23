@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, onBeforeUnmount } from 'vue';
+import { ref, watch, onBeforeUnmount, nextTick } from 'vue';
 import useFabric from '@/hooks/useFabric';
 import { isDesktop } from '@/utils/common';
 import type { PDF } from '@/types/pdf';
@@ -16,11 +16,14 @@ const canvasId = `canvas${props.page - 1}`;
 const { createCanvas, specifyPage, addFabric, addTextFabric, renderImage, clearActive, deleteCanvas } =
   useFabric(canvasId);
 
+setPDF(props.fileContainerWidth);
+
 async function setPDF(width: number) {
   const SCALE_BASE = 140;
   const { file, page } = props;
   const scale = (width || SCALE_BASE) / SCALE_BASE;
 
+  await nextTick();
   createCanvas();
   file.PDFBase64.startsWith('data:image')
     ? renderImage({ url: file.PDFBase64, scale: isDesktop() ? 2 : 0.7 })

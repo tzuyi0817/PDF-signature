@@ -18,7 +18,7 @@ export default defineStore('pdf_signature_config', {
   state: () => ({ ...defaultState }),
   actions: {
     toggleLoading(loading: PickPartial<Loading, 'title' | 'content'>) {
-      const { isShow = false, title = '', content = '' } = loading;
+      const { isShow, title = '', content = '' } = loading;
 
       this.loading = { isShow, title, content };
     },

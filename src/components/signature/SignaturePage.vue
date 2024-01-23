@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, defineAsyncComponent } from 'vue';
 import { storeToRefs } from 'pinia';
 import { usePdfStore } from '@/store';
 import SignaturePopup from '@/components/signature/SignaturePopup.vue';
-import SignaturePageItem from '@/components/signature/SignaturePageItem.vue';
 import { isDesktop } from '@/utils/common';
 
 interface Props {
@@ -14,6 +13,7 @@ defineProps<Props>();
 const emit = defineEmits(['update:isShowPage', 'usePage']);
 const currentPage = ref(1);
 const { currentPDF } = storeToRefs(usePdfStore());
+const SignaturePageItem = defineAsyncComponent(() => import('@/components/signature/SignaturePageItem.vue'));
 
 function selectPage(page: number) {
   currentPage.value = page;
@@ -49,10 +49,15 @@ function close() {
         ]"
         @click="selectPage(page)"
       >
-        <signature-page-item
-          :file="currentPDF"
-          :page="page"
-        />
+        <suspense>
+          <signature-page-item
+            :file="currentPDF"
+            :page="page"
+          />
+          <template #fallback>
+            <div class="h-28 animate-pulse leading-[112px] text-center">Loading...</div>
+          </template>
+        </suspense>
         <span class="highlight absolute left-4 top-2">{{ `${page}.` }}</span>
         <div
           v-show="currentPage === page"

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, nextTick, onMounted } from 'vue';
+import { ref, nextTick, onMounted, defineAsyncComponent } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
 import { usePdfStore } from '@/store';
@@ -8,13 +8,14 @@ import SignStepBtn from '@/components/SignStepBtn.vue';
 import SignatureSign from '@/components/signature/SignatureSign.vue';
 import SignatureImage from '@/components/signature/SignatureImage.vue';
 import SignatureLiteral from '@/components/signature/SignatureLiteral.vue';
-import SignatureCanvasItem from '@/components/signature/SignatureCanvasItem.vue';
 import SignaturePage from '@/components/signature/SignaturePage.vue';
+import SignatureMergePopup from '@/components/signature/SignatureMergePopup.vue';
 import useResize from '@/hooks/useResize';
 import useWarnPopup from '@/hooks/useWarnPopup';
 import toast from '@/utils/toast';
 import { sleep, isDesktop } from '@/utils/common';
 
+const SignatureCanvasItem = defineAsyncComponent(() => import('@/components/signature/SignatureCanvasItem.vue'));
 const isShowSign = ref(false);
 const isShowImage = ref(false);
 const isShowLiteral = ref(false);
@@ -23,8 +24,7 @@ const isCancelMerge = ref(false);
 const currentPage = ref(1);
 const isShowNextWarnPopup = ref(false);
 const isShowMergePopup = ref(false);
-const isMergeComplete = ref(false);
-const signatureCanvasItem = ref<InstanceType<typeof SignatureCanvasItem>[] | null>(null);
+const signatureCanvasItems = ref<InstanceType<typeof SignatureCanvasItem>[] | null>(null);
 const fileContainerRef = ref<HTMLDivElement | null>(null);
 const fileContainerWidth = ref(0);
 const { currentPDF } = storeToRefs(usePdfStore());
@@ -38,9 +38,9 @@ async function mergeFile() {
   toggleMergePopup(true);
 
   try {
-    if (!signatureCanvasItem.value) return;
+    if (!signatureCanvasItems.value) return;
     const { setCurrentPDFCanvas, addPDF } = usePdfStore();
-    const canvas = signatureCanvasItem.value.map(({ canvasDom }) => {
+    const canvas = signatureCanvasItems.value.map(({ canvasDom }) => {
       return canvasDom?.toDataURL('image/png', 1.0) ?? '';
     });
 
@@ -61,8 +61,8 @@ async function mergeFile() {
 }
 
 function addFabric(value: string, type?: string) {
-  if (!signatureCanvasItem.value) return;
-  const proxy = signatureCanvasItem.value.at(currentPage.value - 1);
+  if (!signatureCanvasItems.value) return;
+  const proxy = signatureCanvasItems.value.at(currentPage.value - 1);
   if (!proxy) return;
 
   type === 'text' ? proxy.addTextFabric(value) : proxy.addFabric(value);
@@ -100,7 +100,7 @@ function usePage(page: number) {
 }
 
 function toggleNextWarnPopup(isOpen: boolean) {
-  signatureCanvasItem.value?.forEach(({ clearActive }) => clearActive());
+  signatureCanvasItems.value?.forEach(({ clearActive }) => clearActive());
   isShowNextWarnPopup.value = isOpen;
 }
 
@@ -189,18 +189,32 @@ onMounted(() => {
         ref="fileContainerRef"
         class="signature_content_file"
       >
-        <div class="w-fit h-fit relative">
+        <div class="relative w-full h-full">
           <template
             v-for="page in currentPDF.pages"
             :key="page"
           >
-            <signature-canvas-item
-              v-show="currentPage === page"
-              ref="signatureCanvasItem"
-              :file-container-width="fileContainerWidth"
-              :file="currentPDF"
-              :page="page"
-            />
+            <suspense>
+              <signature-canvas-item
+                v-show="currentPage === page"
+                ref="signatureCanvasItems"
+                :file-container-width="fileContainerWidth"
+                :file="currentPDF"
+                :page="page"
+              />
+              <template
+                v-if="currentPage === page"
+                #fallback
+              >
+                <div class="w-full h-full flex items-center justify-center animate-pulse">
+                  <img
+                    src="@/assets/logo/logo_lightbg_horizontal.png"
+                    class="animate-bounce w-2/3 max-w-[400px]"
+                    alt="logo"
+                  />
+                </div>
+              </template>
+            </suspense>
           </template>
         </div>
       </div>
@@ -252,48 +266,11 @@ onMounted(() => {
         </button>
       </div>
     </sign-popup>
-    <sign-popup
-      v-if="isShowMergePopup"
-      :title="$t('create_file')"
-    >
-      <div class="flex flex-col gap-8 items-center py-8">
-        <img
-          src="@/assets/img/loading.gif"
-          class="w-[60%]"
-          alt="loading gif"
-        />
 
-        <div
-          v-if="isMergeComplete"
-          class="text-center"
-        >
-          <h5 class="text-primary mb-[18px]">{{ $t('file_completed') }}</h5>
-          <p class="text-gray-40">{{ $t('prompt.auto_jump_screen') }}</p>
-        </div>
-        <h5
-          v-else
-          class="text-center text-gray-40"
-        >
-          {{ $t('merging_files') }}
-        </h5>
-      </div>
-      <div class="flex justify-between md:justify-evenly">
-        <button
-          v-if="isMergeComplete"
-          class="btn btn_primary w-full"
-          @click="goPage('complete')"
-        >
-          {{ $t('confirm') }}
-        </button>
-        <button
-          v-else
-          class="btn btn_base w-full"
-          @click="cancelMergeFile"
-        >
-          {{ $t('cancel') }}
-        </button>
-      </div>
-    </sign-popup>
+    <signature-merge-popup
+      :is-show-merge-popup="isShowMergePopup"
+      :cancel-merge-file="cancelMergeFile"
+    />
   </div>
 </template>
 
