@@ -37,11 +37,11 @@ export default function useFabric(id: string) {
       PDFBase64,
     };
 
-    await specifyPage({ page: 1, PDF });
+    await specifyPage({ page: 1, PDF, scale: 1 });
     setCurrentPDF({ ...PDF, pages: pages.value });
   }
 
-  async function specifyPage({ page, PDF, scale = 1 }: SpecifyPageArgs) {
+  async function specifyPage({ page, PDF, scale }: SpecifyPageArgs) {
     const pdfDoc = await getPDFDocument(PDF.PDFBase64);
     const pdfPage = await toRaw(pdfDoc).getPage(page);
     const viewport = pdfPage.getViewport({ scale });
@@ -64,8 +64,9 @@ export default function useFabric(id: string) {
     if (!canvas) return;
     const image = canvasToImage(canvasTemp);
 
-    canvas.setWidth(image.width! / 3);
-    canvas.setHeight(image.height! / 3);
+    if (!image.width || !image.height) return;
+    canvas.setWidth(image.width / 3);
+    canvas.setHeight(image.height / 3);
     canvas.setBackgroundImage(image, canvas.renderAll.bind(canvas));
   }
 

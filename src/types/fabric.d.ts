@@ -16,7 +16,7 @@ export type TCornerPoint = {
 export interface SpecifyPageArgs {
   page: number;
   PDF: Omit<PDF, 'pages'> | PDF;
-  scale?: number;
+  scale: number;
 }
 
 export interface RenderImageArgs {
