@@ -20,7 +20,7 @@ async function setPDF() {
   createCanvas();
   file.PDFBase64.startsWith('data:image')
     ? renderImage({ url: file.PDFBase64, scale: 0.2 })
-    : await specifyPage({ page, PDF: file, scale: 0.4 });
+    : await specifyPage({ page, PDF: file, scale: 0.3 });
 
   isShowCanvas.value = true;
 }

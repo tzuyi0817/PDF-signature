@@ -41,7 +41,9 @@ async function mergeFile() {
     if (!signatureCanvasItems.value) return;
     const { setCurrentPDFCanvas, addPDF } = usePdfStore();
     const canvas = signatureCanvasItems.value.map(({ canvasDom }) => {
-      return canvasDom?.toDataURL('image/png', 1.0) ?? '';
+      if (!canvasDom) return '';
+
+      return canvasDom.toDataURL('image/png', 1.0);
     });
 
     await sleep(2000);

@@ -4,6 +4,7 @@ import { usePdfStore } from '@/store';
 import { printPDF, getPDFDocument } from '@/utils/pdfJs';
 import { createImageSrc, convertToBase64 } from '@/utils/image';
 import { isDesktop } from '@/utils/common';
+import { CSS_UNITS } from '@/configs/common.config';
 import type { TOCoord, SpecifyPageArgs, RenderImageArgs, CreateCloseSvgArgs } from '@/types/fabric';
 
 const fabricMap = new Map<string, fabric.Canvas>();
@@ -37,7 +38,7 @@ export default function useFabric(id: string) {
       PDFBase64,
     };
 
-    await specifyPage({ page: 1, PDF, scale: 1 });
+    await specifyPage({ page: 1, PDF, scale: 0.8 });
     setCurrentPDF({ ...PDF, pages: pages.value });
   }
 
@@ -46,34 +47,35 @@ export default function useFabric(id: string) {
     const pdfPage = await toRaw(pdfDoc).getPage(page);
     const viewport = pdfPage.getViewport({ scale });
     const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
+    const context = canvas.getContext('2d')!;
+
+    canvas.width = Math.floor(viewport.width * CSS_UNITS);
+    canvas.height = Math.floor(viewport.height * CSS_UNITS);
+    pages.value = pdfDoc.numPages;
     const renderContext = {
-      canvasContext: context!,
+      canvasContext: context,
       viewport,
+      transform: [CSS_UNITS, 0, 0, CSS_UNITS, 0, 0],
     };
     const renderTask = pdfPage.render(renderContext);
 
-    canvas.height = viewport.height;
-    canvas.width = viewport.width;
-    pages.value = pdfDoc.numPages;
     return renderTask.promise.then(() => renderCanvas(canvas));
   }
 
   function renderCanvas(canvasTemp: HTMLCanvasElement) {
     const canvas = fabricMap.get(id);
     if (!canvas) return;
-    const image = canvasToImage(canvasTemp);
+    const scale = 1 / 3;
+    const image = canvasToImage(canvasTemp, scale);
 
     if (!image.width || !image.height) return;
-    canvas.setWidth(image.width / 3);
-    canvas.setHeight(image.height / 3);
+    canvas.setWidth(image.width * scale);
+    canvas.setHeight(image.height * scale);
     canvas.setBackgroundImage(image, canvas.renderAll.bind(canvas));
   }
 
-  function canvasToImage(canvasTemp: HTMLCanvasElement) {
-    const scale = 1 / 3;
-
-    return new fabric.Image(canvasTemp, {
+  function canvasToImage(canvas: HTMLCanvasElement, scale: number) {
+    return new fabric.Image(canvas, {
       scaleX: scale,
       scaleY: scale,
     });

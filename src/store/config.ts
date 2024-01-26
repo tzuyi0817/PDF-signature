@@ -11,16 +11,25 @@ const defaultState: ConfigStore = {
     isShow: false,
     title: '',
     content: '',
+    isProcess: false,
+    completeness: 0,
   },
 };
 
 export default defineStore('pdf_signature_config', {
   state: () => ({ ...defaultState }),
   actions: {
-    toggleLoading(loading: PickPartial<Loading, 'title' | 'content'>) {
-      const { isShow, title = '', content = '' } = loading;
-
-      this.loading = { isShow, title, content };
+    toggleLoading({
+      isShow,
+      title = '',
+      content = '',
+      isProcess = false,
+      completeness = 0,
+    }: PickPartial<Loading, 'title' | 'content' | 'isProcess' | 'completeness'>) {
+      this.loading = { isShow, title, content, isProcess, completeness };
+    },
+    setLoadingCompleteness(completeness: number) {
+      this.loading.completeness = completeness;
     },
   },
 });

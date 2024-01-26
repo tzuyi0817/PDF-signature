@@ -34,3 +34,7 @@ export function sleep(time = 500) {
 export function isDesktop() {
   return window.innerWidth > 768;
 }
+
+export function getDPR() {
+  return window.devicePixelRatio ?? 1;
+}

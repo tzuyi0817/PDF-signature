@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import SignIcon from '@/components/SignIcon.vue';
-import { usePdfStore } from '@/store';
+import { usePdfStore, useConfigStore } from '@/store';
 import { downloadPDF } from '@/utils/jspdf';
 import type { MenuTab } from '@/types/menu';
 import type { PDF } from '@/types/pdf';
@@ -16,6 +16,7 @@ interface Props {
 
 const props = defineProps<Props>();
 const isShowMore = ref(false);
+const { toggleLoading, setLoadingCompleteness } = useConfigStore();
 const localTime = computed(() => {
   const [date, time] = new Date(props.file.updateDate).toLocaleString('en-GB').split(',');
   const [day, month, year] = date.split('/');
@@ -41,9 +42,11 @@ const more = computed(() => {
   return moreMap[props.type];
 });
 
-function download() {
-  downloadPDF(props.file);
+async function download() {
   toggleMore(false);
+  toggleLoading({ isShow: true, title: 'download', content: 'file_downloading', isProcess: true });
+  await downloadPDF(props.file, setLoadingCompleteness);
+  toggleLoading({ isShow: false });
 }
 
 function reductionArchive() {

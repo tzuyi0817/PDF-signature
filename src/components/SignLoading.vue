@@ -19,6 +19,15 @@ const { loading } = storeToRefs(useConfigStore());
       />
 
       <h5 class="text-center text-gray-40">{{ $t(loading.content) }}</h5>
+      <div
+        v-if="loading.isProcess"
+        class="w-[90%] h-2 rounded bg-gray-30"
+      >
+        <div
+          class="h-full bg-primary transition-all rounded"
+          :style="{ width: `${loading.completeness}%` }"
+        ></div>
+      </div>
     </div>
   </sign-popup>
 </template>

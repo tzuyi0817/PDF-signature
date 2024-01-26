@@ -2,7 +2,7 @@
 import { ref, computed, onBeforeUnmount } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
-import { usePdfStore } from '@/store';
+import { usePdfStore, useConfigStore } from '@/store';
 import SignIcon from '@/components/SignIcon.vue';
 import useWarnPopup from '@/hooks/useWarnPopup';
 import { downloadPDF } from '@/utils/jspdf';
@@ -12,6 +12,7 @@ type WarnType = 'archive' | 'trash';
 
 const warnType = ref<WarnType>('archive');
 const { currentPDF } = storeToRefs(usePdfStore());
+const { toggleLoading, setLoadingCompleteness } = useConfigStore();
 const { t } = useI18n();
 const { isShowWarnPopup, SignPopup, goPage, toggleWarnPopup } = useWarnPopup();
 const warnContent = computed(() => {
@@ -22,8 +23,10 @@ const warnContent = computed(() => {
   return contentMap[warnType.value];
 });
 
-function download() {
-  downloadPDF(currentPDF.value);
+async function download() {
+  toggleLoading({ isShow: true, title: 'download', content: 'file_downloading', isProcess: true });
+  await downloadPDF(currentPDF.value, setLoadingCompleteness);
+  toggleLoading({ isShow: false });
 }
 
 function openWarnPopup(type: WarnType) {
