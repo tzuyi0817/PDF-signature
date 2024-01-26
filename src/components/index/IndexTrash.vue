@@ -22,7 +22,7 @@ usePdfStore().filterTrash();
     >
       <img
         src="@/assets/img/img_trash.svg"
-        alt=""
+        alt="trash icon"
       />
 
       <div class="text-gray-40 text-center">

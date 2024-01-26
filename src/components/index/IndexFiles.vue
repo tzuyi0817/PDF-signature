@@ -26,7 +26,7 @@ const { PDFList } = storeToRefs(usePdfStore());
         class="iconScale w-[80px] h-[80] md:w-[136px] md:h-[136px]"
         @click="goPage('upload')"
       />
-      <h2 class="text-center">{{ $t('prompt.create_file') }}</h2>
+      <h3 class="text-center">{{ $t('prompt.create_file') }}</h3>
     </div>
   </div>
 </template>

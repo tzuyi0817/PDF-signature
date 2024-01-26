@@ -20,7 +20,7 @@ const { archiveList } = storeToRefs(usePdfStore());
     >
       <img
         src="@/assets/img/img_archive.svg"
-        alt=""
+        alt="archive icon"
       />
 
       <div class="text-gray-40 text-center">

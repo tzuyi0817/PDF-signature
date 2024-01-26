@@ -3,6 +3,7 @@ import { ref, computed } from 'vue';
 import SignIcon from '@/components/SignIcon.vue';
 import { usePdfStore, useConfigStore } from '@/store';
 import { downloadPDF } from '@/utils/jspdf';
+import useWarnPopup from '@/hooks/useWarnPopup';
 import type { MenuTab } from '@/types/menu';
 import type { PDF } from '@/types/pdf';
 
@@ -16,7 +17,9 @@ interface Props {
 
 const props = defineProps<Props>();
 const isShowMore = ref(false);
+const { addPDF, addArchive, addTrash, deleteArchive, deleteTrash } = usePdfStore();
 const { toggleLoading, setLoadingCompleteness } = useConfigStore();
+const { isShowWarnPopup, SignPopup, toggleWarnPopup } = useWarnPopup();
 const localTime = computed(() => {
   const [date, time] = new Date(props.file.updateDate).toLocaleString('en-GB').split(',');
   const [day, month, year] = date.split('/');
@@ -26,7 +29,6 @@ const localTime = computed(() => {
 
 const more = computed(() => {
   const { file } = props;
-  const { addArchive, addTrash } = usePdfStore();
   const moreMap = {
     file: [
       { icon: 'download', feat: download },
@@ -37,7 +39,16 @@ const more = computed(() => {
       { icon: 'reduction', feat: reductionArchive },
       { icon: 'trash', feat: () => addTrash(file) },
     ],
-    trash: [],
+    trash: [
+      { icon: 'reduction', feat: reductionTrash },
+      {
+        icon: 'trash',
+        feat: () => {
+          toggleMore(false);
+          toggleWarnPopup(true);
+        },
+      },
+    ],
   };
   return moreMap[props.type];
 });
@@ -50,7 +61,6 @@ async function download() {
 }
 
 function reductionArchive() {
-  const { addPDF, deleteArchive } = usePdfStore();
   const { file } = props;
 
   deleteArchive(file.PDFId);
@@ -58,7 +68,6 @@ function reductionArchive() {
 }
 
 function reductionTrash() {
-  const { addPDF, deleteTrash } = usePdfStore();
   const { file } = props;
 
   deleteTrash(file.PDFId);
@@ -175,27 +184,40 @@ function splitName(name: string) {
         </svg>
       </div>
       <ul :class="['flex-row gap-1 hidden justify-center md:flex', { 'mt-4': !isListStatus }]">
-        <template v-if="more.length">
-          <li
-            v-for="effect in more"
-            :key="effect.icon"
-          >
-            <sign-icon
-              :name="effect.icon"
-              class="w-10 h-10"
-              @click="effect.feat"
-            />
-          </li>
-        </template>
-        <sign-icon
-          v-else
-          name="reduction"
-          class="w-10 h-10"
-          @click="reductionTrash"
-        />
+        <li
+          v-for="effect in more"
+          :key="effect.icon"
+        >
+          <sign-icon
+            :name="effect.icon"
+            class="w-10 h-10"
+            @click="effect.feat"
+          />
+        </li>
       </ul>
     </div>
   </li>
+
+  <sign-popup
+    v-if="isShowWarnPopup"
+    :title="$t('warn')"
+  >
+    <p class="text-center">{{ $t('prompt.sure_delete_file') }}</p>
+    <div class="flex justify-between md:justify-evenly">
+      <button
+        class="btn btn_base"
+        @click="toggleWarnPopup(false)"
+      >
+        {{ $t('not_yet') }}
+      </button>
+      <button
+        class="btn btn_primary"
+        @click="deleteTrash(file.PDFId)"
+      >
+        {{ $t('confirm') }}
+      </button>
+    </div>
+  </sign-popup>
 </template>
 
 <style lang="postcss" scoped>
