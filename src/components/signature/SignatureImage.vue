@@ -9,13 +9,14 @@ import useWarnPopup from '@/hooks/useWarnPopup';
 import toast from '@/utils/toast';
 import { convertToBase64 } from '@/utils/image';
 import { checkFile } from '@/utils/reader';
+import type { SignatureTool } from '@/types/menu';
 
 interface Props {
-  isShowImage: boolean;
+  currentTool: SignatureTool | '';
 }
 
 defineProps<Props>();
-const emit = defineEmits(['update:isShowImage', 'useImage']);
+const emit = defineEmits(['update:currentTool', 'useImage']);
 const currentSelect = ref('');
 const isShowImagePopup = ref(false);
 const { imageList } = storeToRefs(useImageStore());
@@ -87,13 +88,13 @@ function dragImage(event: DragEvent) {
 }
 
 function close() {
-  emit('update:isShowImage', false);
+  emit('update:currentTool', '');
 }
 </script>
 
 <template>
   <signature-popup
-    :is-show-popup="isShowImage"
+    :is-show-popup="currentTool === 'image'"
     :title="$t('picture_gallery')"
     :is-disabled="!currentSelect"
     @close="close"

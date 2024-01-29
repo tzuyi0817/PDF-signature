@@ -4,13 +4,14 @@ import { storeToRefs } from 'pinia';
 import { usePdfStore } from '@/store';
 import SignaturePopup from '@/components/signature/SignaturePopup.vue';
 import { isDesktop } from '@/utils/common';
+import type { SignatureTool } from '@/types/menu';
 
 interface Props {
-  isShowPage: boolean;
+  currentTool: SignatureTool | '';
 }
 
 defineProps<Props>();
-const emit = defineEmits(['update:isShowPage', 'usePage']);
+const emit = defineEmits(['update:currentTool', 'usePage']);
 const currentPage = ref(1);
 const { currentPDF } = storeToRefs(usePdfStore());
 const SignaturePageItem = defineAsyncComponent(() => import('@/components/signature/SignaturePageItem.vue'));
@@ -26,13 +27,13 @@ function usePage() {
 }
 
 function close() {
-  emit('update:isShowPage', false);
+  emit('update:currentTool', '');
 }
 </script>
 
 <template>
   <signature-popup
-    :is-show-popup="isShowPage"
+    :is-show-popup="currentTool === 'page'"
     :title="$t('select_page')"
     :is-disabled="false"
     :custom-use-btn-name="$t('select')"

@@ -7,13 +7,14 @@ import SignaturePopup from '@/components/signature/SignaturePopup.vue';
 import SignIcon from '@/components/SignIcon.vue';
 import useWarnPopup from '@/hooks/useWarnPopup';
 import toast from '@/utils/toast';
+import type { SignatureTool } from '@/types/menu';
 
 interface Props {
-  isShowLiteral: boolean;
+  currentTool: SignatureTool | '';
 }
 
 defineProps<Props>();
-const emit = defineEmits(['update:isShowLiteral', 'useLiteral']);
+const emit = defineEmits(['update:currentTool', 'useLiteral']);
 const currentSelect = ref('');
 const isShowLiteralPopup = ref(false);
 const literal = ref('');
@@ -59,13 +60,13 @@ function dragLiteral(event: DragEvent) {
 }
 
 function close() {
-  emit('update:isShowLiteral', false);
+  emit('update:currentTool', '');
 }
 </script>
 
 <template>
   <signature-popup
-    :is-show-popup="isShowLiteral"
+    :is-show-popup="currentTool === 'literal'"
     :title="$t('text_library')"
     :is-disabled="!currentSelect"
     @close="close"

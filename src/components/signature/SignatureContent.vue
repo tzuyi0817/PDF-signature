@@ -3,23 +3,22 @@ import { ref, nextTick, onMounted, defineAsyncComponent } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
 import { usePdfStore } from '@/store';
-import SignIcon from '@/components/SignIcon.vue';
 import SignStepBtn from '@/components/SignStepBtn.vue';
 import SignatureSign from '@/components/signature/SignatureSign.vue';
+import SignatureToolbar from '@/components/signature/SignatureToolbar.vue';
 import SignatureImage from '@/components/signature/SignatureImage.vue';
 import SignatureLiteral from '@/components/signature/SignatureLiteral.vue';
 import SignaturePage from '@/components/signature/SignaturePage.vue';
+import SignatureLoading from '@/components/signature/SignatureLoading.vue';
 import SignatureMergePopup from '@/components/signature/SignatureMergePopup.vue';
 import useResize from '@/hooks/useResize';
 import useWarnPopup from '@/hooks/useWarnPopup';
 import toast from '@/utils/toast';
-import { sleep, isDesktop } from '@/utils/common';
+import { sleep } from '@/utils/common';
+import type { SignatureTool } from '@/types/menu';
 
 const SignatureCanvasItem = defineAsyncComponent(() => import('@/components/signature/SignatureCanvasItem.vue'));
-const isShowSign = ref(false);
-const isShowImage = ref(false);
-const isShowLiteral = ref(false);
-const isShowPage = ref(false);
+const currentTool = ref<SignatureTool | ''>('');
 const isCancelMerge = ref(false);
 const currentPage = ref(1);
 const isShowNextWarnPopup = ref(false);
@@ -53,11 +52,11 @@ async function mergeFile() {
     }
     setCurrentPDFCanvas(canvas);
     addPDF({ ...currentPDF.value, PDFBase64: '', updateDate: Date.now() });
-    toggleMergePopup(false);
     toast.showToast(t('prompt.file_created_success'), 'success');
     goPage('complete');
   } catch {
     toast.showToast(t('prompt.operation_timed_out'), 'error');
+  } finally {
     toggleMergePopup(false);
   }
 }
@@ -68,33 +67,6 @@ function addFabric(value: string, type?: string) {
   if (!proxy) return;
 
   type === 'text' ? proxy.addTextFabric(value) : proxy.addFabric(value);
-}
-
-function showSign() {
-  closeAllPopup();
-  isShowSign.value = true;
-}
-
-function showImage() {
-  closeAllPopup();
-  isShowImage.value = true;
-}
-
-function showLiteral() {
-  closeAllPopup();
-  isShowLiteral.value = true;
-}
-
-function showPage() {
-  closeAllPopup();
-  isShowPage.value = true;
-}
-
-function closeAllPopup() {
-  isShowSign.value = false;
-  isShowImage.value = false;
-  isShowLiteral.value = false;
-  isShowPage.value = false;
 }
 
 function usePage(page: number) {
@@ -125,11 +97,7 @@ function cancelMergeFile() {
   toggleMergePopup(false);
 }
 
-onMounted(() => {
-  updateFileContainerWidth();
-  if (!isDesktop()) return;
-  isShowSign.value = true;
-});
+onMounted(updateFileContainerWidth);
 </script>
 
 <template>
@@ -138,51 +106,21 @@ onMounted(() => {
 
     <div class="flex flex-col h-[calc(100%-88px)] md:flex-row">
       <div class="md:border-r-2 md:border-primary md:py-4 md:px-6">
-        <ul class="toolbar signature_content_toolbar">
-          <li @click="showSign">
-            <sign-icon
-              name="sign"
-              :class="['w-7 h-7', { 'text-primary': isShowSign }]"
-            />
-            <p>{{ $t('sign') }}</p>
-          </li>
-          <li @click="showImage">
-            <sign-icon
-              name="pic"
-              :class="['w-7 h-7', { 'text-primary': isShowImage }]"
-            />
-            <p>{{ $t('picture') }}</p>
-          </li>
-          <li @click="showLiteral">
-            <sign-icon
-              name="text"
-              :class="['w-7 h-7', { 'text-primary': isShowLiteral }]"
-            />
-            <p>{{ $t('text') }}</p>
-          </li>
-          <li @click="showPage">
-            <sign-icon
-              name="page"
-              :class="['w-7 h-7', { 'text-primary': isShowPage }]"
-            />
-            <p>{{ $t('pages') }}</p>
-          </li>
-        </ul>
+        <signature-toolbar v-model:currentTool="currentTool" />
         <signature-sign
-          v-model:isShowSign="isShowSign"
+          v-model:currentTool="currentTool"
           @use-signature="addFabric"
         />
         <signature-image
-          v-model:isShowImage="isShowImage"
+          v-model:currentTool="currentTool"
           @use-image="addFabric"
         />
         <signature-literal
-          v-model:isShowLiteral="isShowLiteral"
+          v-model:currentTool="currentTool"
           @use-literal="addFabric"
         />
         <signature-page
-          ref="signaturePage"
-          v-model:isShowPage="isShowPage"
+          v-model:currentTool="currentTool"
           @use-page="usePage"
         />
       </div>
@@ -208,13 +146,7 @@ onMounted(() => {
                 v-if="currentPage === page"
                 #fallback
               >
-                <div class="w-full h-full flex items-center justify-center animate-pulse">
-                  <img
-                    src="@/assets/logo/logo_lightbg_horizontal.png"
-                    class="animate-bounce w-2/3 max-w-[400px]"
-                    alt="logo"
-                  />
-                </div>
+                <signature-loading />
               </template>
             </suspense>
           </template>
@@ -291,18 +223,6 @@ onMounted(() => {
     md:mx-[5%]
     md:mb-0
     md:h-[calc(100%-40px)];
-  }
-  &_toolbar {
-    @apply gap-0 mx-2 md:my-0;
-    li {
-      @apply flex flex-col items-center min-w-[52px];
-      &:hover > svg {
-        @apply text-primary;
-      }
-    }
-    p {
-      @apply hidden text-sm whitespace-nowrap md:block;
-    }
   }
 }
 </style>

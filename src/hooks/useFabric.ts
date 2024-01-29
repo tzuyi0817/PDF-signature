@@ -23,9 +23,6 @@ export default function useFabric(id: string) {
   }
 
   async function drawPDF(file: File) {
-    const canvas = fabricMap.get(id);
-    if (!canvas) return;
-    canvas.requestRenderAll();
     const PDFBase64 = await printPDF(file);
     if (!PDFBase64) return;
     const { setCurrentPDF } = usePdfStore();

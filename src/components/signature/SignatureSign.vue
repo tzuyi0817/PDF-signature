@@ -8,13 +8,14 @@ import SignatureDrawPopup from '@/components/signature/SignatureDrawPopup.vue';
 import SignIcon from '@/components/SignIcon.vue';
 import useWarnPopup from '@/hooks/useWarnPopup';
 import toast from '@/utils/toast';
+import type { SignatureTool } from '@/types/menu';
 
 interface Props {
-  isShowSign: boolean;
+  currentTool: SignatureTool | '';
 }
 
 defineProps<Props>();
-const emit = defineEmits(['update:isShowSign', 'useSignature']);
+const emit = defineEmits(['update:currentTool', 'useSignature']);
 const currentSelect = ref('');
 const isShowDrawPopup = ref(false);
 const { signatureList } = storeToRefs(useSignatureStore());
@@ -48,13 +49,13 @@ function dragSignature(event: DragEvent) {
 }
 
 function close() {
-  emit('update:isShowSign', false);
+  emit('update:currentTool', '');
 }
 </script>
 
 <template>
   <signature-popup
-    :is-show-popup="isShowSign"
+    :is-show-popup="currentTool === 'sign'"
     :title="$t('signature_file')"
     :is-disabled="!currentSelect"
     @close="close"
