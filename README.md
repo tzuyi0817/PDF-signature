@@ -20,7 +20,6 @@ Clone this repository and install dependencies by running `pnpm`(Node.js version
 ```text
 src/
 ├── assets/
-│   ├── contract/*
 │   ├── font/*
 │   ├── icon/*
 │   ├── img/*
@@ -40,10 +39,15 @@ src/
 │   │   ├── SignatureDrawPopup.vue
 │   │   ├── SignatureImage.vue
 │   │   ├── SignatureLiteral.vue
+│   │   ├── SignatureLoading.vue
+│   │   ├── SignatureMagnifier.vue
 │   │   ├── SignatureMask.vue
+│   │   ├── SignatureMergePopup.vue
 │   │   ├── SignaturePage.vue
+│   │   ├── SignaturePageItem.vue
 │   │   ├── SignaturePopup.vue
-│   │   └── SignatureSign.vue
+│   │   ├── SignatureSign.vue
+│   │   └── SignatureToolbar.vue
 │   ├── upload/
 │   │   └── UploadContent.vue
 │   ├── SignFile.vue
@@ -51,6 +55,7 @@ src/
 │   ├── SignFooter.vue
 │   ├── SignHeader.vue
 │   ├── SignIcon.vue
+│   ├── SignLoading.vue
 │   ├── SignPopup.vue
 │   ├── SignStep.vue
 │   ├── SignStepBtn.vue
@@ -77,6 +82,7 @@ src/
 ├── router/
 │   └── index.ts
 ├── store/
+│   ├── config.ts
 │   ├── image.ts
 │   ├── index.ts
 │   ├── literal.ts
@@ -94,6 +100,7 @@ src/
 │   │   ├── scrollbar.css
 |   │   └── text.css
 │   ├── index.css
+│   ├── signature.css
 │   └── tailwind.css
 ├── types/
 │   ├── fabric.d.ts
