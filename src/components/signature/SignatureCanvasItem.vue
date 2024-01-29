@@ -8,6 +8,7 @@ interface Props {
   file: PDF;
   page: number;
   fileContainerWidth: number;
+  fileZoom: number;
 }
 
 const props = defineProps<Props>();
@@ -49,7 +50,8 @@ defineExpose({ addFabric, addTextFabric, clearActive, deleteCanvas, canvasDom })
 
 <template>
   <div
-    class="absolute py-5 px-3 scale-[0.6] origin-top-left md:py-10 md:px-14"
+    class="absolute py-5 px-3 origin-top-left md:py-10 md:px-14"
+    :style="{ transform: `scale(${props.fileZoom * 0.6})` }"
     @dragover.stop.prevent
     @dragenter.stop.prevent
     @drop.stop.prevent="dropImage"

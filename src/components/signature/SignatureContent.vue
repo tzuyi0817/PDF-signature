@@ -11,6 +11,7 @@ import SignatureLiteral from '@/components/signature/SignatureLiteral.vue';
 import SignaturePage from '@/components/signature/SignaturePage.vue';
 import SignatureLoading from '@/components/signature/SignatureLoading.vue';
 import SignatureMergePopup from '@/components/signature/SignatureMergePopup.vue';
+import SignatureMagnifier from '@/components/signature/SignatureMagnifier.vue';
 import useResize from '@/hooks/useResize';
 import useWarnPopup from '@/hooks/useWarnPopup';
 import toast from '@/utils/toast';
@@ -26,6 +27,7 @@ const isShowMergePopup = ref(false);
 const signatureCanvasItems = ref<InstanceType<typeof SignatureCanvasItem>[] | null>(null);
 const fileContainerRef = ref<HTMLDivElement | null>(null);
 const fileContainerWidth = ref(0);
+const fileZoom = ref(1);
 const { currentPDF } = storeToRefs(usePdfStore());
 const { t } = useI18n();
 const { isShowWarnPopup, SignPopup, goBack, goPage, toggleWarnPopup } = useWarnPopup();
@@ -71,6 +73,7 @@ function addFabric(value: string, type?: string) {
 
 function usePage(page: number) {
   currentPage.value = page;
+  fileContainerRef.value?.scrollTo({ top: 0, left: 0 });
 }
 
 function toggleNextWarnPopup(isOpen: boolean) {
@@ -140,6 +143,7 @@ onMounted(updateFileContainerWidth);
                 ref="signatureCanvasItems"
                 :file-container-width="fileContainerWidth"
                 :file="currentPDF"
+                :file-zoom="fileZoom"
                 :page="page"
               />
               <template
@@ -152,6 +156,7 @@ onMounted(updateFileContainerWidth);
           </template>
         </div>
       </div>
+      <signature-magnifier v-model="fileZoom" />
     </div>
 
     <sign-step-btn

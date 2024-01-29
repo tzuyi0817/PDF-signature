@@ -14,7 +14,7 @@
     border-transparent
     cursor-pointer
     rounded-[50px]
-    transition-colors
+    transition-[color_tranform]
     gap-2
     highlight
     whitespace-nowrap
@@ -35,7 +35,7 @@
       }
     }
     &_small {
-      @apply transition-colors 
+      @apply transition-[color_tranform]
       border
       cursor-pointer
       rounded-2xl
@@ -46,7 +46,14 @@
       focus:outline-none 
       md:text-base
       md:px-7 
-      md:border-2;
+      md:border-2
+      disabled:bg-gray-20
+      disabled:border-gray-20
+      disabled:text-black
+      disabled:cursor-not-allowed;
     }
+  }
+  button:not(:disabled) {
+    @apply active:scale-90;
   }
 }
