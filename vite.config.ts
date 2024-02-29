@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite';
+import { defineConfig, splitVendorChunkPlugin, type Plugin } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { fileURLToPath, URL } from 'node:url';
 import { dirname, resolve } from 'node:path';
@@ -6,6 +6,7 @@ import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 import vueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 import topLevelAwait from 'vite-plugin-top-level-await';
 import { VitePWA } from 'vite-plugin-pwa';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 export default defineConfig({
   base: './',
@@ -22,6 +23,8 @@ export default defineConfig({
       promiseImportName: i => `__tla_${i}`,
     }),
     VitePWA({ registerType: 'autoUpdate' }),
+    splitVendorChunkPlugin(),
+    visualizer({ gzipSize: true }) as unknown as Plugin<any>,
   ],
   server: {
     port: 8080,
@@ -33,6 +36,16 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('src', import.meta.url)),
+    },
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: filepath => {
+          if (filepath.includes('pdf.worker')) return 'pdf.worker';
+          if (filepath.includes('pdf.mjs')) return 'pdf.mjs';
+        },
+      },
     },
   },
 });
