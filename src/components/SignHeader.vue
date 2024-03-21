@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
+import SignIcon from '@/components/SignIcon.vue';
 
 const { locale } = useI18n();
 
@@ -32,6 +33,12 @@ function changeLocale(code: string) {
       >
         English
       </button>
+      <a href="https://github.com/tzuyi0817/PDF-signature">
+        <sign-icon
+          name="github"
+          class="w-6 h-6 md:w-8 md:h-8 text-gray-40 active:scale-90"
+        />
+      </a>
     </div>
   </header>
 </template>

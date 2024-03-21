@@ -27,7 +27,7 @@ const symbolId = computed(() => {
   <svg
     aria-hidden="true"
     :title="symbolId"
-    :class="['cursor-pointer', { 'transition-colors hover:text-primary': !hoverChangeSvg }]"
+    :class="['cursor-pointer', { 'transition-[color_transform] hover:text-primary': !hoverChangeSvg }]"
     @mouseenter="isHover = true"
     @mouseleave="isHover = false"
   >

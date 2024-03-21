@@ -7,6 +7,9 @@ import vueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 import topLevelAwait from 'vite-plugin-top-level-await';
 import { VitePWA } from 'vite-plugin-pwa';
 import { visualizer } from 'rollup-plugin-visualizer';
+import { version } from './package.json';
+
+process.env.VITE_APP_VERSION = version;
 
 export default defineConfig({
   base: './',
@@ -20,7 +23,7 @@ export default defineConfig({
     }),
     topLevelAwait({
       promiseExportName: '__tla',
-      promiseImportName: i => `__tla_${i}`,
+      promiseImportName: (index: number) => `__tla_${index}`,
     }),
     VitePWA({ registerType: 'autoUpdate' }),
     splitVendorChunkPlugin(),
@@ -41,6 +44,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
+        chunkFileNames: 'chunks/[name]-[hash].js',
         manualChunks: filepath => {
           if (filepath.includes('pdf.worker')) return 'pdf.worker';
           if (filepath.includes('pdf.mjs')) return 'pdf.mjs';
