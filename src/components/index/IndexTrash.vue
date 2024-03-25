@@ -9,7 +9,7 @@ usePdfStore().filterTrash();
 </script>
 
 <template>
-  <div class="index_trash">
+  <div class="index_trash index_container">
     <sign-files
       v-if="trashList.length"
       type="trash"
@@ -39,19 +39,19 @@ usePdfStore().filterTrash();
 
 <style lang="postcss" scoped>
 .index_trash {
-  @apply relative h-[calc(100%-38px)];
   &_warn {
     @apply text-danger
     text-center
     px-5
-    py-2
+    py-1
     bg-white
     w-fit
     border-2
     border-primary
     shadow
     shadow-primary
-    rounded-[50px];
+    rounded-[50px]
+    md:py-2;
   }
 }
 </style>

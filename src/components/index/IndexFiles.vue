@@ -9,7 +9,7 @@ const { PDFList } = storeToRefs(usePdfStore());
 </script>
 
 <template>
-  <div class="index_files">
+  <div class="index_files index_container">
     <sign-files
       v-if="PDFList.length"
       type="file"
@@ -30,9 +30,3 @@ const { PDFList } = storeToRefs(usePdfStore());
     </div>
   </div>
 </template>
-
-<style lang="postcss" scoped>
-.index_files {
-  @apply h-[calc(100%-38px)] md:h-[calc(100%-66px)];
-}
-</style>

@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { usePdfStore, useConfigStore } from '@/store';
 import SignStepBtn from '@/components/SignStepBtn.vue';
 import SignIcon from '@/components/SignIcon.vue';
+import SignVersion from '@/components/SignVersion.vue';
 import useFabric from '@/hooks/useFabric';
 import useWarnPopup from '@/hooks/useWarnPopup';
 import toast from '@/utils/toast';
@@ -156,6 +157,7 @@ onBeforeUnmount(deleteCanvas);
       @next-step="goPage('signature')"
       @prev-step="toggleWarnPopup(true)"
     />
+    <sign-version />
     <sign-popup
       v-if="isShowWarnPopup"
       :title="$t('warn')"

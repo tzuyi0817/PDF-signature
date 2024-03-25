@@ -1,0 +1,9 @@
+@import 'tailwindcss/components';
+
+@layer components {
+  .index {
+    &_container {
+      @apply h-[calc(100%-60px)] md:h-[calc(100%-90px)];
+    }
+  }
+}

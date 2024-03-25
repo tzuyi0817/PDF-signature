@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
 import { usePdfStore, useConfigStore } from '@/store';
 import SignIcon from '@/components/SignIcon.vue';
+import SignVersion from '@/components/SignVersion.vue';
 import useWarnPopup from '@/hooks/useWarnPopup';
 import { downloadPDF } from '@/utils/jspdf';
 import toast from '@/utils/toast';
@@ -99,6 +100,7 @@ onBeforeUnmount(() => {
       <span class="text-4xl font-thin">←</span>{{ $t('return_home') }}
     </button>
 
+    <sign-version />
     <sign-popup
       v-if="isShowWarnPopup"
       :title="$t('warn')"

@@ -7,7 +7,7 @@ const { archiveList } = storeToRefs(usePdfStore());
 </script>
 
 <template>
-  <div class="index_archives">
+  <div class="index_archives index_container">
     <sign-files
       v-if="archiveList.length"
       type="archive"
@@ -30,9 +30,3 @@ const { archiveList } = storeToRefs(usePdfStore());
     </div>
   </div>
 </template>
-
-<style lang="postcss" scoped>
-.index_archives {
-  @apply h-[calc(100%-38px)];
-}
-</style>

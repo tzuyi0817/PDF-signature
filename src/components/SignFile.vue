@@ -94,7 +94,7 @@ function splitName(name: string) {
 
 <template>
   <li :class="['sign_file flex flex-col', isListStatus ? 'md:flex-row' : 'md:w-[316px] md:flex-shrink-0 md:h-fit']">
-    <div :class="['transition-all ', isShowMore ? 'opacity-100 z-10' : 'opacity-0 -z-[1]']">
+    <div :class="['transition-all md:hidden', isShowMore ? 'opacity-100 z-10' : 'opacity-0 -z-[1]']">
       <div
         v-if="isShowMore"
         class="mask"

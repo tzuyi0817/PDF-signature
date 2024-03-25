@@ -12,6 +12,7 @@ import SignaturePage from '@/components/signature/SignaturePage.vue';
 import SignatureLoading from '@/components/signature/SignatureLoading.vue';
 import SignatureMergePopup from '@/components/signature/SignatureMergePopup.vue';
 import SignatureMagnifier from '@/components/signature/SignatureMagnifier.vue';
+import SignVersion from '@/components/SignVersion.vue';
 import useResize from '@/hooks/useResize';
 import useWarnPopup from '@/hooks/useWarnPopup';
 import toast from '@/utils/toast';
@@ -164,6 +165,7 @@ onMounted(updateFileContainerWidth);
       @next-step="toggleNextWarnPopup(true)"
       @prev-step="toggleWarnPopup(true)"
     />
+    <sign-version />
     <sign-popup
       v-if="isShowWarnPopup"
       :title="$t('warn')"

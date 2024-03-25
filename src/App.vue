@@ -3,7 +3,6 @@ import SignHeader from '@/components/SignHeader.vue';
 import SignFooter from '@/components/SignFooter.vue';
 import SignLoading from '@/components/SignLoading.vue';
 import SignToast from '@/components/SignToast.vue';
-import SignVersion from '@/components/SignVersion.vue';
 </script>
 
 <template>
@@ -12,7 +11,6 @@ import SignVersion from '@/components/SignVersion.vue';
   <sign-footer />
   <sign-loading />
   <sign-toast />
-  <sign-version />
 </template>
 
 <style lang="postcss" scoped></style>

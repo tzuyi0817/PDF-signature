@@ -3,6 +3,7 @@ import { computed } from 'vue';
 import IndexFiles from '@/components/index/IndexFiles.vue';
 import IndexArchives from '@/components/index/IndexArchives.vue';
 import IndexTrash from '@/components/index/IndexTrash.vue';
+import SignVersion from '@/components/SignVersion.vue';
 import useRedirect from '@/hooks/useRedirect';
 import type { MenuTab } from '@/types/menu';
 
@@ -40,7 +41,7 @@ const currentCom = computed(() => {
       @click="goPage('upload')"
     />
     <h5 class="title">{{ $t(title) }}</h5>
-
+    <sign-version />
     <keep-alive>
       <component :is="currentCom"></component>
     </keep-alive>
