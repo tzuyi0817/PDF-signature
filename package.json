@@ -22,7 +22,7 @@
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
-    "@intlify/unplugin-vue-i18n": "^3.0.0",
+    "@intlify/unplugin-vue-i18n": "^4.0.0",
     "@rushstack/eslint-patch": "^1.6.1",
     "@types/fabric": "^5.3.6",
     "@types/node": "^20.0.0",
