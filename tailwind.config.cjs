@@ -3,10 +3,7 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
 
 module.exports = {
-  content: [
-    './index.html',
-    './src/**/*.{vue,js,ts,jsx,tsx}',
-  ],
+  content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   theme: {
     screens: {
       ...defaultTheme.screens,
@@ -31,20 +28,23 @@ module.exports = {
         'pen-blue': '#0066FF',
         'pen-red': '#f93819',
         gray: {
-          10: "#E6E6E6",
-          20: "#CCCCCC",
-          30: "#B3B3B3",
-          40: "#999999",
-          50: "#808080",
-          60: "#666666",
-          70: "#4D4D4D",
-          80: "#333333",
-          90: "#1A1A1A",
+          10: '#E6E6E6',
+          20: '#CCCCCC',
+          30: '#B3B3B3',
+          40: '#999999',
+          50: '#808080',
+          60: '#666666',
+          70: '#4D4D4D',
+          80: '#333333',
+          90: '#1A1A1A',
         },
+      },
+      transitionTimingFunction: {
+        'in-page': 'cubic-bezier(1, 0.5, 0.8, 1)',
       },
       animation: {},
       keyframes: {},
     },
   },
   plugins: [],
-}
+};

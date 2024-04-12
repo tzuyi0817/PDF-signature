@@ -7,10 +7,30 @@ import SignToast from '@/components/SignToast.vue';
 
 <template>
   <sign-header />
-  <router-view />
+  <router-view v-slot="{ Component }">
+    <transition
+      name="slide-fade"
+      mode="out-in"
+    >
+      <component :is="Component" />
+    </transition>
+  </router-view>
   <sign-footer />
   <sign-loading />
   <sign-toast />
 </template>
 
-<style lang="postcss" scoped></style>
+<style lang="postcss">
+.slide-fade-enter-active {
+  @apply transition-all duration-300 ease-out;
+}
+
+.slide-fade-leave-active {
+  @apply transition-all duration-300 ease-in-page;
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  @apply opacity-0 translate-x-5;
+}
+</style>
