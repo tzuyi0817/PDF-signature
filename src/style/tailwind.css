@@ -21,7 +21,7 @@
   }
 
   body {
-    @apply text-base tracking-wider bg-bg overflow-hidden;
+    @apply text-base tracking-wider bg-bg overflow-hidden w-screen;
   }
 
   img {

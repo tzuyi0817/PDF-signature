@@ -21,6 +21,10 @@ import SignToast from '@/components/SignToast.vue';
 </template>
 
 <style lang="postcss">
+#app {
+  @apply w-full overflow-x-hidden;
+}
+
 .slide-fade-enter-active {
   @apply transition-all duration-300 ease-out;
 }
