@@ -27,7 +27,6 @@ export default [
       globals: {
         ...globals.node,
         ...globals.browser,
-        ...globals.es6,
         defineProps: 'readonly',
         defineEmits: 'readonly',
         defineExpose: 'readonly',

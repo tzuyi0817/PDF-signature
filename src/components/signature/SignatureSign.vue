@@ -10,12 +10,8 @@ import useWarnPopup from '@/hooks/useWarnPopup';
 import toast from '@/utils/toast';
 import type { SignatureTool } from '@/types/menu';
 
-interface Props {
-  currentTool: SignatureTool | '';
-}
-
-defineProps<Props>();
-const emit = defineEmits(['update:currentTool', 'useSignature']);
+const emit = defineEmits(['useSignature']);
+const currentTool = defineModel<SignatureTool | ''>('currentTool');
 const currentSelect = ref('');
 const isShowDrawPopup = ref(false);
 const { signatureList } = storeToRefs(useSignatureStore());
@@ -49,7 +45,7 @@ function dragSignature(event: DragEvent) {
 }
 
 function close() {
-  emit('update:currentTool', '');
+  currentTool.value = '';
 }
 </script>
 

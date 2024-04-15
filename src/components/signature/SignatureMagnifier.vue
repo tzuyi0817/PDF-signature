@@ -1,15 +1,10 @@
 <script setup lang="ts">
-interface Props {
-  modelValue: number;
-}
-
-const props = defineProps<Props>();
-const emit = defineEmits(['update:modelValue']);
+const model = defineModel<number>({ required: true });
 const MAX_ZOOM = 1.5;
 const MIN_ZOOM = 0.5;
 
 function changeZoom(value: number) {
-  emit('update:modelValue', props.modelValue + value);
+  model.value += value;
 }
 </script>
 

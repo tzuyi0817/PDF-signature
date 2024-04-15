@@ -4,15 +4,10 @@ import SignIcon from '@/components/SignIcon.vue';
 import { isDesktop } from '@/utils/common';
 import type { SignatureTool } from '@/types/menu';
 
-interface Props {
-  currentTool: SignatureTool | '';
-}
-
-defineProps<Props>();
-const emit = defineEmits(['update:currentTool']);
+const currentTool = defineModel<SignatureTool | ''>('currentTool');
 
 function selectTool(tool: SignatureTool) {
-  emit('update:currentTool', tool);
+  currentTool.value = tool;
 }
 
 onMounted(() => {

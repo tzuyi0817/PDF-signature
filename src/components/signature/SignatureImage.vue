@@ -11,12 +11,8 @@ import { convertToBase64 } from '@/utils/image';
 import { checkFile } from '@/utils/reader';
 import type { SignatureTool } from '@/types/menu';
 
-interface Props {
-  currentTool: SignatureTool | '';
-}
-
-defineProps<Props>();
-const emit = defineEmits(['update:currentTool', 'useImage']);
+const emit = defineEmits(['useImage']);
+const currentTool = defineModel<SignatureTool | ''>('currentTool');
 const currentSelect = ref('');
 const isShowImagePopup = ref(false);
 const { imageList } = storeToRefs(useImageStore());
@@ -88,7 +84,7 @@ function dragImage(event: DragEvent) {
 }
 
 function close() {
-  emit('update:currentTool', '');
+  currentTool.value = '';
 }
 </script>
 

@@ -9,12 +9,8 @@ import useWarnPopup from '@/hooks/useWarnPopup';
 import toast from '@/utils/toast';
 import type { SignatureTool } from '@/types/menu';
 
-interface Props {
-  currentTool: SignatureTool | '';
-}
-
-defineProps<Props>();
-const emit = defineEmits(['update:currentTool', 'useLiteral']);
+const emit = defineEmits(['useLiteral']);
+const currentTool = defineModel<SignatureTool | ''>('currentTool');
 const currentSelect = ref('');
 const isShowLiteralPopup = ref(false);
 const literal = ref('');
@@ -60,7 +56,7 @@ function dragLiteral(event: DragEvent) {
 }
 
 function close() {
-  emit('update:currentTool', '');
+  currentTool.value = '';
 }
 </script>
 
