@@ -20,6 +20,7 @@ export default [
   ...compat.extends('@vue/eslint-config-typescript/recommended'),
   ...compat.extends('@vue/eslint-config-prettier/skip-formatting'),
   pluginSecurity.configs.recommended,
+  { files: ['**/*.js', '**/*./ts', '**/*.vue'] },
   {
     languageOptions: {
       ecmaVersion: 'latest',

@@ -2,7 +2,8 @@
 
 @layer components {
   .layout {
-    @apply
+    @apply min-h-[100dvh]
+    overflow-hidden
     px-[10px]
     pt-14
     md:flex

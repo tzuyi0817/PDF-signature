@@ -1,15 +1,10 @@
 <script setup lang="ts">
 import type { MenuTab } from '@/types/menu';
 
-interface Props {
-  currentTab: MenuTab;
-}
-
-defineProps<Props>();
-const emit = defineEmits(['update:currentTab']);
+const currentTab = defineModel<MenuTab>('currentTab');
 
 function changeTab(tab: MenuTab) {
-  emit('update:currentTab', tab);
+  currentTab.value = tab;
 }
 </script>
 

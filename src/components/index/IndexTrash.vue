@@ -31,7 +31,7 @@ usePdfStore().filterTrash();
       </div>
     </div>
 
-    <div class="absolute w-full flex justify-center left-0 -bottom-6 md:-bottom-3">
+    <div class="absolute w-full flex justify-center left-0 -bottom-4 md:-bottom-3">
       <p class="index_trash_warn">{{ $t('prompt.trash_shelf_life') }}</p>
     </div>
   </div>
