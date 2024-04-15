@@ -1,6 +1,6 @@
 import { isArray, isObject } from '@/utils/checkType';
 
-export function deepClone<T extends Record<any, any>>(obj: T, hash = new WeakMap()): T {
+export function deepClone<T extends Record<string, unknown>>(obj: T, hash = new WeakMap()): T {
   if (obj instanceof Date || obj instanceof RegExp) return obj;
   if (hash.has(obj)) return hash.get(obj);
 
@@ -15,10 +15,11 @@ export function deepClone<T extends Record<any, any>>(obj: T, hash = new WeakMap
   return clone;
 }
 
-export function debounce(fun: Function, time = 500) {
+export function debounce(fun: unknown, time = 500) {
+  if (typeof fun !== 'function') throw new TypeError('The first argument is not a function.');
   let timer: NodeJS.Timeout | null = null;
 
-  return function (this: () => unknown, ...args: unknown[]) {
+  return function (this: unknown, ...args: unknown[]) {
     timer && clearTimeout(timer);
     timer = setTimeout(() => {
       fun.apply(this, args);

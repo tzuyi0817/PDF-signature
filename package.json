@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
-    "lint": "eslint --ext .js,.ts,.vue --ignore-path .gitignore --fix .",
+    "lint": "eslint --fix .",
     "prepare": "husky install",
     "preview": "vite preview"
   },
@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@intlify/unplugin-vue-i18n": "^4.0.0",
-    "@rushstack/eslint-patch": "^1.6.1",
+    "@rushstack/eslint-patch": "^1.10.2",
     "@types/fabric": "^5.3.6",
     "@types/node": "^20.0.0",
     "@vitejs/plugin-vue": "^5.0.3",
@@ -32,9 +32,9 @@
     "autoprefixer": "^10.4.8",
     "cssnano": "^6.0.2",
     "eslint": "^9.0.0",
-    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-security": "^3.0.0",
-    "eslint-plugin-vue": "^9.19.2",
+    "eslint-plugin-vue": "^9.25.0",
+    "globals": "^15.0.0",
     "postcss": "^8.4.16",
     "postcss-import": "^16.0.0",
     "postcss-nested": "^6.0.0",
