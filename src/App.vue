@@ -22,7 +22,7 @@ import SignToast from '@/components/SignToast.vue';
 
 <style lang="postcss">
 #app {
-  @apply w-full overflow-x-hidden;
+  @apply w-full overflow-hidden;
 }
 
 .slide-fade-enter-active {
