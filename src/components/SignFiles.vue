@@ -63,6 +63,11 @@ function closeEncryptPopup() {
   iShowEncryptPopup.value = false;
   currentFile.value = null;
 }
+
+function deleteFile() {
+  deleteTrash(currentFile.value?.PDFId);
+  closeWarnPopup();
+}
 </script>
 
 <template>
@@ -173,7 +178,7 @@ function closeEncryptPopup() {
         </button>
         <button
           class="btn btn_primary"
-          @click="deleteTrash(currentFile?.PDFId)"
+          @click="deleteFile"
         >
           {{ $t('confirm') }}
         </button>

@@ -47,6 +47,7 @@
     "file_upload_success": "檔案上傳成功",
     "file_size_exceed": "檔案大小超過20MB",
     "give_up_edit": "確定要放棄編輯文件?",
+    "incorrect_password": "密碼輸入錯誤",
     "no_items": "沒有任何項目",
     "operation_timed_out": "操作逾時, 請重新操作",
     "or_drag_file": "或者將檔案拖曳到這裡",
@@ -71,6 +72,7 @@
     "try_another": "請嘗試其他搜尋詞",
     "un_found": "找不到任何符合搜尋條件的項目"
   },
+  "protected_file": "此文件受密碼保護",
   "return_home": "回首頁",
   "select": "選擇",
   "select_file": "選擇檔案",

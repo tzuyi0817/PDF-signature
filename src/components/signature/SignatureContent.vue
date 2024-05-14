@@ -2,7 +2,7 @@
 import { ref, nextTick, onMounted, defineAsyncComponent } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
-import { usePdfStore } from '@/store';
+import { usePdfStore, useConfigStore } from '@/store';
 import SignStepBtn from '@/components/SignStepBtn.vue';
 import SignatureSign from '@/components/signature/SignatureSign.vue';
 import SignatureToolbar from '@/components/signature/SignatureToolbar.vue';
@@ -55,6 +55,7 @@ async function mergeFile() {
     }
     setCurrentPDFCanvas(canvas);
     addPDF({ ...currentPDF.value, PDFBase64: '', updateDate: Date.now() });
+    useConfigStore().updateFilePassword('');
     toast.showToast(t('prompt.file_created_success'), 'success');
     goPage('complete');
   } catch {

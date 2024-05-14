@@ -35,28 +35,36 @@ export default function useFabric(id: string) {
       PDFBase64,
     };
 
-    await specifyPage({ page: 1, PDF, scale: 0.8 });
-    setCurrentPDF({ ...PDF, pages: pages.value });
+    try {
+      await specifyPage({ page: 1, PDF, scale: 0.8 });
+      setCurrentPDF({ ...PDF, pages: pages.value });
+    } catch (error) {
+      return Promise.reject(error);
+    }
   }
 
   async function specifyPage({ page, PDF, scale }: SpecifyPageArgs) {
-    const pdfDoc = await getPDFDocument(PDF.PDFBase64);
-    const pdfPage = await toRaw(pdfDoc).getPage(page);
-    const viewport = pdfPage.getViewport({ scale });
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d')!;
+    try {
+      const pdfDoc = await getPDFDocument(PDF.PDFBase64);
+      const pdfPage = await toRaw(pdfDoc).getPage(page);
+      const viewport = pdfPage.getViewport({ scale });
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d')!;
 
-    canvas.width = Math.floor(viewport.width * CSS_UNITS);
-    canvas.height = Math.floor(viewport.height * CSS_UNITS);
-    pages.value = pdfDoc.numPages;
-    const renderContext = {
-      canvasContext: context,
-      viewport,
-      transform: [CSS_UNITS, 0, 0, CSS_UNITS, 0, 0],
-    };
-    const renderTask = pdfPage.render(renderContext);
+      canvas.width = Math.floor(viewport.width * CSS_UNITS);
+      canvas.height = Math.floor(viewport.height * CSS_UNITS);
+      pages.value = pdfDoc.numPages;
+      const renderContext = {
+        canvasContext: context,
+        viewport,
+        transform: [CSS_UNITS, 0, 0, CSS_UNITS, 0, 0],
+      };
+      const renderTask = pdfPage.render(renderContext);
 
-    return renderTask.promise.then(() => renderCanvas(canvas));
+      return renderTask.promise.then(() => renderCanvas(canvas));
+    } catch (error) {
+      return Promise.reject(error);
+    }
   }
 
   function renderCanvas(canvasTemp: HTMLCanvasElement) {

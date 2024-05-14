@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import { ref, computed, onBeforeUnmount } from 'vue';
+import { ref, computed, defineAsyncComponent, onBeforeUnmount } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
-import { usePdfStore, useConfigStore } from '@/store';
+import { usePdfStore } from '@/store';
 import SignIcon from '@/components/SignIcon.vue';
 import SignVersion from '@/components/SignVersion.vue';
 import useWarnPopup from '@/hooks/useWarnPopup';
-import { downloadPDF } from '@/utils/jspdf';
 import toast from '@/utils/toast';
 
 type WarnType = 'archive' | 'trash';
 
 const warnType = ref<WarnType>('archive');
+const iShowEncryptPopup = ref(false);
 const { currentPDF } = storeToRefs(usePdfStore());
-const { toggleLoading, setLoadingCompleteness } = useConfigStore();
 const { t } = useI18n();
 const { isShowWarnPopup, SignPopup, goPage, toggleWarnPopup } = useWarnPopup();
+const SignEncryption = defineAsyncComponent(() => import('@/components/SignEncryption.vue'));
 const warnContent = computed(() => {
   const contentMap = {
     archive: 'prompt.sure_archive_file',
@@ -23,12 +23,6 @@ const warnContent = computed(() => {
   };
   return contentMap[warnType.value];
 });
-
-async function download() {
-  toggleLoading({ isShow: true, title: 'download', content: 'file_downloading', isProcess: true });
-  await downloadPDF(currentPDF.value, setLoadingCompleteness);
-  toggleLoading({ isShow: false });
-}
 
 function openWarnPopup(type: WarnType) {
   warnType.value = type;
@@ -45,6 +39,10 @@ function warnConfirm() {
   !isArchive && goPage('index');
 }
 
+function toggleEncryptPopup(isShow: boolean) {
+  iShowEncryptPopup.value = isShow;
+}
+
 onBeforeUnmount(() => {
   usePdfStore().clearCurrentPDF();
 });
@@ -59,7 +57,7 @@ onBeforeUnmount(() => {
         <sign-icon
           name="download"
           class="w-9 h-9"
-          @click="download"
+          @click="toggleEncryptPopup(true)"
         />
       </li>
       <li>
@@ -121,6 +119,12 @@ onBeforeUnmount(() => {
         </button>
       </div>
     </sign-popup>
+
+    <sign-encryption
+      v-if="iShowEncryptPopup"
+      :file="currentPDF"
+      @close-encrypt-popup="toggleEncryptPopup(false)"
+    />
   </div>
 </template>
 

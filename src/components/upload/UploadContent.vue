@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, onMounted, defineAsyncComponent, onBeforeUnmount } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { usePdfStore, useConfigStore } from '@/store';
 import SignStepBtn from '@/components/SignStepBtn.vue';
@@ -15,10 +15,14 @@ const isNextDisabled = ref(true);
 const fileName = ref('');
 const projectName = ref('');
 const isShowPen = ref(true);
+const isShowPasswordPopup = ref(false);
 const { t, locale } = useI18n();
 const { createCanvas, drawPDF, drawImage, pages, deleteCanvas } = useFabric('canvas');
 const { isShowWarnPopup, SignPopup, goBack, goPage, toggleWarnPopup } = useWarnPopup();
-const { toggleLoading } = useConfigStore();
+const { toggleLoading, updateFilePassword } = useConfigStore();
+const UploadPassword = defineAsyncComponent(() => import('@/components/upload/UploadPassword.vue'));
+const regexp = /.pdf|.png|.jpg|.jpeg/;
+let currentFile: File | null = null;
 
 async function uploadFile(event: Event) {
   const target = event.target as HTMLInputElement;
@@ -35,12 +39,16 @@ function dropFile(event: DragEvent) {
   readerFile(files);
 }
 
-async function readerFile(files?: FileList | null) {
-  try {
-    const regexp = /.pdf|.png|.jpg|.jpeg/;
-    const file = checkFile(files, regexp);
+function readerFile(files?: FileList | null) {
+  const file = checkFile(files, regexp);
 
-    if (!file) return;
+  if (!file) return;
+  currentFile = file;
+  return renderFile(file);
+}
+
+async function renderFile(file: File) {
+  try {
     toggleLoading({ isShow: true, title: 'upload_file', content: 'file_uploading' });
     file.type === 'application/pdf' ? await drawPDF(file) : drawImage(file);
     await sleep();
@@ -48,16 +56,30 @@ async function readerFile(files?: FileList | null) {
     fileName.value = file.name;
     projectName.value = file.name.replace(regexp, '');
     isNextDisabled.value = false;
-  } catch {
+  } catch (error) {
+    if (`${error}`.includes('PasswordException')) {
+      isShowPasswordPopup.value = true;
+      if (`${error}` !== 'PasswordException: Incorrect Password') return;
+      toast.showToast(t('prompt.incorrect_password'), 'error');
+      updateFilePassword('');
+      return;
+    }
     toast.showToast(t('prompt.file_upload_failed'), 'error');
   } finally {
     toggleLoading({ isShow: false });
   }
 }
 
+function closePasswordPopup(isEnterPassword = false) {
+  isShowPasswordPopup.value = false;
+  if (!isEnterPassword || !currentFile) return;
+  renderFile(currentFile);
+}
+
 function remove() {
   fileName.value = '';
   usePdfStore().clearCurrentPDF();
+  updateFilePassword('');
 }
 
 function giveUpUpload() {
@@ -178,6 +200,11 @@ onBeforeUnmount(deleteCanvas);
         </button>
       </div>
     </sign-popup>
+
+    <upload-password
+      v-if="isShowPasswordPopup"
+      @close-password="closePasswordPopup"
+    />
   </div>
 </template>
 

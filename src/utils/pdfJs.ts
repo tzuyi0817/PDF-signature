@@ -1,5 +1,6 @@
 import * as pdfjsLib from 'pdfjs-dist';
 import * as pdfjsWorker from 'pdfjs-dist/build/pdf.worker.mjs';
+import { useConfigStore } from '@/store';
 import { readfile } from './reader';
 
 window.pdfjsWorker = pdfjsWorker;
@@ -13,5 +14,7 @@ export async function printPDF(file: File): Promise<string | void> {
 }
 
 export function getPDFDocument(data: string) {
-  return pdfjsLib.getDocument({ data }).promise;
+  const { filePassword } = useConfigStore();
+
+  return pdfjsLib.getDocument({ data, password: filePassword }).promise;
 }

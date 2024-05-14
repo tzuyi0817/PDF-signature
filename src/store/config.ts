@@ -4,6 +4,7 @@ import type { PickPartial } from '@/types/common';
 
 interface ConfigStore {
   loading: Loading;
+  filePassword: string;
 }
 
 const defaultState: ConfigStore = {
@@ -14,6 +15,7 @@ const defaultState: ConfigStore = {
     isProcess: false,
     completeness: 0,
   },
+  filePassword: '',
 };
 
 export default defineStore('pdf_signature_config', {
@@ -30,6 +32,9 @@ export default defineStore('pdf_signature_config', {
     },
     setLoadingCompleteness(completeness: number) {
       this.loading.completeness = completeness;
+    },
+    updateFilePassword(password: string) {
+      this.filePassword = password;
     },
   },
 });

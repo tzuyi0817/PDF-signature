@@ -14,10 +14,10 @@ const close = closeToast.bind(toast);
       status === 'success' ? 'bg-primary-dark/90' : 'bg-danger/90',
     ]"
   >
-    <p class="highlight text-white">{{ msg }}</p>
+    <p class="highlight text-white whitespace-nowrap text-ellipsis overflow-hidden">{{ msg }}</p>
     <img
       src="@/assets/icon/ic_close_s_white.svg"
-      class="cursor-pointer"
+      class="cursor-pointer w-10 h-10"
       alt="close toast icon"
       @click="close"
     />
@@ -38,9 +38,6 @@ const close = closeToast.bind(toast);
   pl-5
   pr-2
   pointer-events-none
-  whitespace-nowrap
-  text-ellipsis
-  overflow-hidden
   w-fit
   max-w-[100vw]
   h-10
