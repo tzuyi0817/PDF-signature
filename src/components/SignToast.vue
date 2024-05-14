@@ -17,7 +17,8 @@ const close = closeToast.bind(toast);
     <p class="highlight text-white">{{ msg }}</p>
     <img
       src="@/assets/icon/ic_close_s_white.svg"
-      alt=""
+      class="cursor-pointer"
+      alt="close toast icon"
       @click="close"
     />
   </div>
@@ -26,6 +27,7 @@ const close = closeToast.bind(toast);
 <style lang="postcss" scoped>
 .sign_toast {
   @apply absolute
+  z-10
   top-[50px]
   left-1/2
   -translate-x-1/2

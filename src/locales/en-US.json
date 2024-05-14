@@ -10,6 +10,7 @@
   "create_signature_file": "Create signature file",
   "delete": "Delete",
   "download": "Download",
+  "encryption": "Encryption",
   "file_completed": "File completed",
   "file_downloading": "File downloading...",
   "file_uploading": "File uploading...",
@@ -20,10 +21,14 @@
   "not_yet": "Not yet",
   "page": "{count} page | {count} pages",
   "pages": "Pages",
+  "password_not_match": "Passwords are inconsistent",
+  "password_required": "Password is required",
   "picture": "Picture",
   "picture_gallery": "Picture Gallery",
   "placeholder": {
-    "keyword": "Please enter keywords"
+    "confirm_password": "Please enter password again",
+    "keyword": "Please enter keywords",
+    "password": "Please enter password"
   },
   "previous": "Previous",
   "project_name": "Project Name",
@@ -32,6 +37,7 @@
     "auto_jump_screen": "After completion, the screen will jump automatically. If there is no jump page, please press the confirm button.",
     "create_file": "Come and create a new file",
     "deleted_projects": "Deleted items will be displayed here",
+    "encryption_file": "Set a password to protect your PDF file",
     "file_archived_success": "File archived successfully",
     "file_created_success": "File created successfully",
     "file_delete_success": "File deleted successfully",

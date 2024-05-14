@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import SignIcon from '@/components/SignIcon.vue';
-import { usePdfStore, useConfigStore } from '@/store';
-import { downloadPDF } from '@/utils/jspdf';
-import useWarnPopup from '@/hooks/useWarnPopup';
+import { usePdfStore } from '@/store';
 import type { MenuTab } from '@/types/menu';
 import type { PDF } from '@/types/pdf';
 
@@ -16,10 +14,9 @@ interface Props {
 }
 
 const props = defineProps<Props>();
+const emit = defineEmits(['open-warn-popup', 'open-encrypt-popup']);
 const isShowMore = ref(false);
 const { addPDF, addArchive, addTrash, deleteArchive, deleteTrash } = usePdfStore();
-const { toggleLoading, setLoadingCompleteness } = useConfigStore();
-const { isShowWarnPopup, SignPopup, toggleWarnPopup } = useWarnPopup();
 const localTime = computed(() => {
   const [date, time] = new Date(props.file.updateDate).toLocaleString('en-GB').split(',');
   const [day, month, year] = date.split('/');
@@ -31,47 +28,40 @@ const more = computed(() => {
   const { file } = props;
   const moreMap = {
     file: [
-      { icon: 'download', feat: download },
+      { icon: 'download', feat: () => openEncryptPopup(file) },
       { icon: 'archive', feat: () => addArchive(file) },
       { icon: 'trash', feat: () => addTrash(file) },
     ],
     archive: [
-      { icon: 'reduction', feat: reductionArchive },
+      { icon: 'reduction', feat: () => reductionArchive(file) },
       { icon: 'trash', feat: () => addTrash(file) },
     ],
     trash: [
-      { icon: 'reduction', feat: reductionTrash },
-      {
-        icon: 'trash',
-        feat: () => {
-          toggleMore(false);
-          toggleWarnPopup(true);
-        },
-      },
+      { icon: 'reduction', feat: () => reductionTrash(file) },
+      { icon: 'trash', feat: () => openWarnPopup(file) },
     ],
   };
   return moreMap[props.type];
 });
 
-async function download() {
+function openEncryptPopup(file: PDF) {
   toggleMore(false);
-  toggleLoading({ isShow: true, title: 'download', content: 'file_downloading', isProcess: true });
-  await downloadPDF(props.file, setLoadingCompleteness);
-  toggleLoading({ isShow: false });
+  emit('open-encrypt-popup', file);
 }
 
-function reductionArchive() {
-  const { file } = props;
-
+function reductionArchive(file: PDF) {
   deleteArchive(file.PDFId);
   addPDF(file);
 }
 
-function reductionTrash() {
-  const { file } = props;
-
+function reductionTrash(file: PDF) {
   deleteTrash(file.PDFId);
   addPDF(file);
+}
+
+function openWarnPopup(file: PDF) {
+  toggleMore(false);
+  emit('open-warn-popup', file);
 }
 
 function toggleMore(isOpen: boolean) {
@@ -197,27 +187,6 @@ function splitName(name: string) {
       </ul>
     </div>
   </li>
-
-  <sign-popup
-    v-if="isShowWarnPopup"
-    :title="$t('warn')"
-  >
-    <p class="text-center">{{ $t('prompt.sure_delete_file') }}</p>
-    <div class="flex justify-between md:justify-evenly">
-      <button
-        class="btn btn_base"
-        @click="toggleWarnPopup(false)"
-      >
-        {{ $t('not_yet') }}
-      </button>
-      <button
-        class="btn btn_primary"
-        @click="deleteTrash(file.PDFId)"
-      >
-        {{ $t('confirm') }}
-      </button>
-    </div>
-  </sign-popup>
 </template>
 
 <style lang="postcss" scoped>

@@ -10,6 +10,7 @@
   "create_signature_file": "建立簽名檔",
   "delete": "刪除",
   "download": "下載檔案",
+  "encryption": "加密",
   "file_completed": "檔案已完成",
   "file_downloading": "檔案下載中...",
   "file_uploading": "檔案上傳中...",
@@ -20,10 +21,14 @@
   "not_yet": "先不要",
   "page": "{count}頁",
   "pages": "頁數",
+  "password_not_match": "密碼不一致",
+  "password_required": "密碼為必填",
   "picture": "圖片",
   "picture_gallery": "圖片庫",
   "placeholder": {
-    "keyword": "請輸入關鍵字"
+    "confirm_password": "請再次輸入密碼",
+    "keyword": "請輸入關鍵字",
+    "password": "請輸入密碼"
   },
   "previous": "上一步",
   "project_name": "專案名稱",
@@ -32,6 +37,7 @@
     "auto_jump_screen": "完成後畫面自動跳轉, 如無跳轉頁面請按確定按鈕。",
     "create_file": "快來建立新檔吧",
     "deleted_projects": "刪除的項目會顯示在這裡",
+    "encryption_file": "設置一個密碼來保護你的PDF檔案",
     "file_archived_success": "檔案封存成功",
     "file_created_success": "檔案建立成功",
     "file_delete_success": "檔案刪除成功",

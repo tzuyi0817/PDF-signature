@@ -117,7 +117,8 @@ export default defineStore('pdf_signature_pdf', {
       this.trashList.unshift({ ...PDF, trashDate: Date.now() });
       return this.updateTrashIdb();
     },
-    deleteTrash(id: string) {
+    deleteTrash(id?: string) {
+      if (!id) return;
       this.trashList = this.trashList.filter(({ PDFId }) => id !== PDFId);
       return this.updateTrashIdb();
     },

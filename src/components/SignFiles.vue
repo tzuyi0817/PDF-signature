@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, defineAsyncComponent } from 'vue';
 import SignIcon from '@/components/SignIcon.vue';
 import SignFile from '@/components/SignFile.vue';
+import { usePdfStore } from '@/store';
+import useWarnPopup from '@/hooks/useWarnPopup';
 import type { MenuTab, FileShowStatus } from '@/types/menu';
 import type { PDF } from '@/types/pdf';
 
@@ -14,6 +16,11 @@ const props = defineProps<Props>();
 const keyword = ref('');
 const showStatus = ref<FileShowStatus>('list');
 const searchIconColor = ref('#CCCCCC');
+const iShowEncryptPopup = ref(false);
+const currentFile = ref<PDF | null>(null);
+const { deleteTrash } = usePdfStore();
+const { isShowWarnPopup, SignPopup, toggleWarnPopup } = useWarnPopup();
+const SignEncryption = defineAsyncComponent(() => import('@/components/SignEncryption.vue'));
 const isShowClose = computed(() => keyword.value);
 const isListStatus = computed(() => showStatus.value === 'list');
 const search = computed(() => {
@@ -35,6 +42,26 @@ function clear() {
 
 function changeShowStatus(status: FileShowStatus) {
   showStatus.value = status;
+}
+
+function openWarnPopup(file: PDF) {
+  toggleWarnPopup(true);
+  currentFile.value = file;
+}
+
+function closeWarnPopup() {
+  toggleWarnPopup(false);
+  currentFile.value = null;
+}
+
+function openEncryptPopup(file: PDF) {
+  iShowEncryptPopup.value = true;
+  currentFile.value = file;
+}
+
+function closeEncryptPopup() {
+  iShowEncryptPopup.value = false;
+  currentFile.value = null;
 }
 </script>
 
@@ -114,6 +141,8 @@ function changeShowStatus(status: FileShowStatus) {
         :type="type"
         :is-list-status="isListStatus"
         :keyword="keyword"
+        @open-warn-popup="openWarnPopup"
+        @open-encrypt-popup="openEncryptPopup"
       />
     </ul>
 
@@ -129,6 +158,33 @@ function changeShowStatus(status: FileShowStatus) {
       <h3 class="text-gray-40 text-center mb-3">{{ $t('prompt.un_found') }}</h3>
       <p class="text-gray-40 text-center">{{ $t('prompt.try_another') }}</p>
     </div>
+
+    <sign-popup
+      v-if="isShowWarnPopup"
+      :title="$t('warn')"
+    >
+      <p class="text-center">{{ $t('prompt.sure_delete_file') }}</p>
+      <div class="flex justify-between md:justify-evenly">
+        <button
+          class="btn btn_base"
+          @click="closeWarnPopup"
+        >
+          {{ $t('not_yet') }}
+        </button>
+        <button
+          class="btn btn_primary"
+          @click="deleteTrash(currentFile?.PDFId)"
+        >
+          {{ $t('confirm') }}
+        </button>
+      </div>
+    </sign-popup>
+
+    <sign-encryption
+      v-if="iShowEncryptPopup"
+      :file="currentFile"
+      @close-encrypt-popup="closeEncryptPopup"
+    />
   </div>
 </template>
 
