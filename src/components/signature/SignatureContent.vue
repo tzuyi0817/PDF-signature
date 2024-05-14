@@ -35,34 +35,36 @@ const { isShowWarnPopup, SignPopup, goBack, goPage, toggleWarnPopup } = useWarnP
 
 useResize(updateFileContainerWidth);
 
-async function mergeFile() {
+function mergeFile() {
   toggleNextWarnPopup(false);
   toggleMergePopup(true);
 
-  try {
-    if (!signatureCanvasItems.value) return;
-    const { setCurrentPDFCanvas, addPDF } = usePdfStore();
-    const canvas = signatureCanvasItems.value.map(({ canvasDom }) => {
-      if (!canvasDom) return '';
+  window.requestAnimationFrame(async () => {
+    try {
+      if (!signatureCanvasItems.value) return;
+      const { setCurrentPDFCanvas, addPDF } = usePdfStore();
+      const canvas = signatureCanvasItems.value.map(({ canvasDom }) => {
+        if (!canvasDom) return '';
 
-      return canvasDom.toDataURL('image/png', 1.0);
-    });
+        return canvasDom.toDataURL('image/png', 1.0);
+      });
 
-    await sleep(2000);
-    if (isCancelMerge.value) {
-      isCancelMerge.value = false;
-      return;
+      await sleep(2000);
+      if (isCancelMerge.value) {
+        isCancelMerge.value = false;
+        return;
+      }
+      setCurrentPDFCanvas(canvas);
+      addPDF({ ...currentPDF.value, PDFBase64: '', updateDate: Date.now() });
+      useConfigStore().updateFilePassword('');
+      toast.showToast(t('prompt.file_created_success'), 'success');
+      goPage('complete');
+    } catch {
+      toast.showToast(t('prompt.operation_timed_out'), 'error');
+    } finally {
+      toggleMergePopup(false);
     }
-    setCurrentPDFCanvas(canvas);
-    addPDF({ ...currentPDF.value, PDFBase64: '', updateDate: Date.now() });
-    useConfigStore().updateFilePassword('');
-    toast.showToast(t('prompt.file_created_success'), 'success');
-    goPage('complete');
-  } catch {
-    toast.showToast(t('prompt.operation_timed_out'), 'error');
-  } finally {
-    toggleMergePopup(false);
-  }
+  });
 }
 
 function addFabric(value: string, type?: string) {

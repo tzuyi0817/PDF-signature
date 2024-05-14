@@ -27,7 +27,9 @@ const { loading } = storeToRefs(useConfigStore());
           class="h-full bg-primary transition-all rounded"
           :style="{ width: `${loading.completeness}%` }"
         ></div>
-        <p class="text-center mt-1 text-sm md:text-base">{{ `${$t('download_progress')} ${loading.completeness}%` }}</p>
+        <p class="text-center mt-1 text-sm md:text-base">
+          {{ `${$t('download_progress')} ${Math.floor(loading.completeness)}%` }}
+        </p>
       </div>
     </div>
   </sign-popup>
