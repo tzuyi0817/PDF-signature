@@ -18,7 +18,7 @@ const confirmPassword = ref('');
 const { t } = useI18n();
 const { toggleLoading, setLoadingCompleteness } = useConfigStore();
 
-async function download(isEncrypt: boolean) {
+function download(isEncrypt: boolean) {
   if (isEncrypt && (!password.value || !confirmPassword.value)) {
     toast.showToast(t('password_required'), 'error');
     return;
@@ -28,12 +28,14 @@ async function download(isEncrypt: boolean) {
     return;
   }
   emit('close-encrypt-popup');
-  if (!props.file) return;
-  const userPassword = isEncrypt ? password.value : '';
+  window.requestAnimationFrame(async () => {
+    if (!props.file) return;
+    const userPassword = isEncrypt ? password.value : '';
 
-  toggleLoading({ isShow: true, title: 'download', content: 'file_downloading', isProcess: true });
-  await downloadPDF(props.file, setLoadingCompleteness, userPassword);
-  toggleLoading({ isShow: false });
+    toggleLoading({ isShow: true, title: 'download', content: 'file_downloading', isProcess: true });
+    await downloadPDF(props.file, setLoadingCompleteness, userPassword);
+    toggleLoading({ isShow: false });
+  });
 }
 </script>
 
