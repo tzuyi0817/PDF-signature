@@ -10,6 +10,7 @@
   "create_signature_file": "建立簽名檔",
   "delete": "刪除",
   "download": "下載檔案",
+  "download_progress": "當前下載進度",
   "encryption": "加密",
   "file_completed": "檔案已完成",
   "file_downloading": "檔案下載中...",

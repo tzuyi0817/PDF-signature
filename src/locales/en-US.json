@@ -10,6 +10,7 @@
   "create_signature_file": "Create signature file",
   "delete": "Delete",
   "download": "Download",
+  "download_progress": "Current download progress",
   "encryption": "Encryption",
   "file_completed": "File completed",
   "file_downloading": "File downloading...",
