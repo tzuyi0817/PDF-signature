@@ -7,3 +7,11 @@
 - feat: change page transition
 - feat: support english and chinese language
 - feat: signature files and images are stored in localStorage
+
+## [0.2.0](https://github.com/tzuyi0817/PDF-signature/compare/v0.1.0...v0.2.0) (2024-05-15)
+
+- feat: can open encrypted PDF files
+- feat: when download can set PDF passwords
+- chore: eslint upgrade to flat pattern
+- docs: add MIT LICENSE
+- fix: step progress not shown problem
