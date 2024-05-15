@@ -24,11 +24,13 @@ async function setPDF(width: number) {
   const { file, page } = props;
   const scale = (width || SCALE_BASE) / SCALE_BASE;
 
-  await nextTick();
-  createCanvas();
-  file.PDFBase64.startsWith('data:image')
-    ? renderImage({ url: file.PDFBase64, scale: isDesktop() ? 2 : 0.7 })
-    : await specifyPage({ page, PDF: file, scale });
+  window.requestAnimationFrame(async () => {
+    await nextTick();
+    createCanvas();
+    file.PDFBase64.startsWith('data:image')
+      ? renderImage({ url: file.PDFBase64, scale: isDesktop() ? 2 : 0.7 })
+      : await specifyPage({ page, PDF: file, scale });
+  });
 }
 
 function dropImage(event: DragEvent) {

@@ -35,9 +35,10 @@ const { isShowWarnPopup, SignPopup, goBack, goPage, toggleWarnPopup } = useWarnP
 
 useResize(updateFileContainerWidth);
 
-function mergeFile() {
+async function mergeFile() {
   toggleNextWarnPopup(false);
   toggleMergePopup(true);
+  await sleep();
 
   window.requestAnimationFrame(async () => {
     try {

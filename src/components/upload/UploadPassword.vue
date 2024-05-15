@@ -12,7 +12,7 @@ const { t } = useI18n();
 
 function confirmPassword() {
   if (!password.value) {
-    toast.showToast(t('prompt.password_required'), 'error');
+    toast.showToast(t('password_required'), 'error');
     return;
   }
   useConfigStore().updateFilePassword(password.value);
