@@ -2,10 +2,24 @@
 
 ## Description
 
-This is an online instant `PDF signature` website.  
-The signed pdf file will be stored in the `indexedDB` on the local side.
+This is a web application for `signing PDF` documents online.  
+Users can upload PDF files, sign them online, and download the signed PDF files.  
+The application also supports setting PDF passwords, switching between Chinese and English languages, and storing PDF files in the local `IndexedDB`.  
+Signatures, text, and images are stored in `localStorage` for reuse.
 
 ![image](./public/cover.jpg)
+
+## Features
+
+- Upload PDF files
+- Sign PDF files electronically
+- Download signed PDF files
+- Adjustable signature position and size
+- Set PDF passwords
+- Open encrypted PDF files
+- Support for Chinese and English languages
+- Local storage: Store PDF files in IndexedDB
+- Signatures, text, and images stored in localStorage
 
 ## Development
 
@@ -15,123 +29,29 @@ Clone this repository and install dependencies by running `pnpm`(Node.js version
 - `pnpm build`: Build in production mode
 - `pnpm preview`: Run preview
 
-## Project Files
-
-```text
-src/
-├── assets/
-│   ├── font/*
-│   ├── icon/*
-│   ├── img/*
-│   └── logo/*
-├── components/
-│   ├── complete/
-│   │   └── CompleteContent.vue
-│   ├── index/
-│   │   ├── IndexArchives.vue
-│   │   ├── IndexContent.vue
-│   │   ├── IndexFiles.vue
-│   │   ├── IndexMenu.vue
-│   │   └── IndexTrash.vue
-│   ├── signature/
-│   │   ├── SignatureCanvasItem.vue
-│   │   ├── SignatureContent.vue
-│   │   ├── SignatureDrawPopup.vue
-│   │   ├── SignatureImage.vue
-│   │   ├── SignatureLiteral.vue
-│   │   ├── SignatureLoading.vue
-│   │   ├── SignatureMagnifier.vue
-│   │   ├── SignatureMask.vue
-│   │   ├── SignatureMergePopup.vue
-│   │   ├── SignaturePage.vue
-│   │   ├── SignaturePageItem.vue
-│   │   ├── SignaturePopup.vue
-│   │   ├── SignatureSign.vue
-│   │   └── SignatureToolbar.vue
-│   ├── upload/
-│   │   └── UploadContent.vue
-│   ├── SignFile.vue
-│   ├── SignFiles.vue
-│   ├── SignFooter.vue
-│   ├── SignHeader.vue
-│   ├── SignIcon.vue
-│   ├── SignLoading.vue
-│   ├── SignPopup.vue
-│   ├── SignStep.vue
-│   ├── SignStepBtn.vue
-│   └── SignToast.vue
-├── configs/
-│   ├── common.config.ts
-│   └── idb.config.ts
-├── hooks/
-│   ├── useFabric.ts
-│   ├── useRedirect.ts
-│   ├── useResize.ts
-│   └── useWarnPopup.vue
-├── locales/
-│   ├── en-US.json
-│   └── zh-TW.json
-├── pages/
-│   ├── CompletePage.vue
-│   ├── IndexPage.vue
-│   ├── SignaturePage.vue
-│   └── UploadPage.vue
-├── plugins/
-│   ├── i18n.ts
-│   └── idb.ts
-├── router/
-│   └── index.ts
-├── store/
-│   ├── config.ts
-│   ├── image.ts
-│   ├── index.ts
-│   ├── literal.ts
-│   ├── pdf.ts
-│   └── signature.ts
-├── style/
-│   ├── common/
-|   │   ├── all.css
-│   │   ├── button.css
-│   │   ├── content.css
-│   │   ├── iconScale.css
-│   │   ├── input.css
-│   │   ├── layout.css
-│   │   ├── mask.css
-│   │   ├── scrollbar.css
-|   │   └── text.css
-│   ├── index.css
-│   ├── signature.css
-│   └── tailwind.css
-├── types/
-│   ├── fabric.d.ts
-│   ├── menu.d.ts
-│   └── pdf.d.ts
-├── utils/
-│   ├── checkType.ts
-│   ├── common.ts
-│   ├── idb.ts
-│   ├── image.ts
-│   ├── jspdf.ts
-│   ├── pdfJs.ts
-│   ├── reader.ts
-│   └── toast.ts
-├── App.vue
-├── global.d.ts
-├── vite-env.d.ts
-└── main.ts
-```
-
 ## Use Technology
 
-- vue3
-- typescript
-- tailwindcss
-- vite
-- pina
-- pinia-plugin-persistedstate
-- vue-router
-- vue-i18n
-- pdfjs
-- fabric
-- jspdf
-- idb-keyval
+- Frontend: vue3, typescript, tailwindcss, pinia
+- Environment construction: vite, eslint, prettier
+- PDF Handling: pdfjs-dist, jspdf
+- Signature Drawing: fabric.js
+- Internationalization: vue-i18n
+- Local Storage: idb-keyval
+
+## Usage
+
+1. `Upload PDF File`: Click the upload button to select the PDF file you want to sign. The file will be stored in the local IndexedDB.
+2. `Open Encrypted PDF`: If the PDF file is encrypted, you will be prompted to enter the password to open it.
+3. `Add Signature`: Choose the position on the PDF where you want to add your signature. Signatures, text, and images will be stored in localStorage for reuse.
+4. `Adjust Signature`: Drag and resize the signature as needed.
+5. `Set PDF Password`: After completing the signature, you can set a password to open the PDF.
+6. `Language Switch`: Click the language switch button on the page to toggle between Chinese and English.
+7. `Download Signed PDF`: After signing, click the download button to get the signed PDF file.
+
+## Contribution
+
+Contributions are welcome! If you have any suggestions or improvements, please submit a Pull Request or create an Issue.
+
+## License
+
+This project is licensed under the [MIT](https://opensource.org/licenses/MIT) License - see the [LICENSE]() file for details.
