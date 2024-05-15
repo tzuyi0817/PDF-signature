@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import SignPopup from '@/components/SignPopup.vue';
+import SignPassword from '@/components/SignPassword.vue';
 import { useConfigStore } from '@/store';
 import { downloadPDF } from '@/utils/jspdf';
 import toast from '@/utils/toast';
@@ -43,17 +44,13 @@ function download(isEncrypt: boolean) {
   <SignPopup :title="$t('encryption')">
     <p class="text-center my-5">{{ $t('prompt.encryption_file') }}</p>
     <div class="mb-4 flex flex-col justify-center items-center gap-3">
-      <input
+      <sign-password
         v-model="password"
-        type="password"
-        class="input-password"
-        :placeholder="$t('placeholder.password')"
+        placeholder="placeholder.password"
       />
-      <input
+      <sign-password
         v-model="confirmPassword"
-        type="password"
-        class="input-password"
-        :placeholder="$t('placeholder.confirm_password')"
+        placeholder="placeholder.confirm_password"
       />
     </div>
     <div class="flex justify-between md:justify-evenly">

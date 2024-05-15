@@ -22,12 +22,13 @@
     }
     &-password {
       @apply input-base
-      max-w-96
       rounded-2xl
       text-sm
-      px-3
+      pl-3
+      pr-9
       py-1
-      md:px-4
+      md:pl-4
+      md:pr-10
       md:py-2
       md:rounded-3xl
       md:text-base;

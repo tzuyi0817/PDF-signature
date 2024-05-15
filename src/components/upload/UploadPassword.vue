@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import SignPopup from '@/components/SignPopup.vue';
+import SignPassword from '@/components/SignPassword.vue';
 import { useConfigStore } from '@/store';
 import toast from '@/utils/toast';
 
@@ -22,11 +23,10 @@ function confirmPassword() {
 <template>
   <SignPopup :title="$t('warn')">
     <p class="text-center my-5">{{ $t('prompt.protected_file') }}</p>
-    <input
+    <sign-password
       v-model="password"
-      type="password"
-      class="input-password mx-auto mb-4"
-      :placeholder="$t('placeholder.password')"
+      class="mb-4 mx-auto"
+      placeholder="placeholder.password"
     />
     <div class="flex justify-between md:justify-evenly">
       <button
