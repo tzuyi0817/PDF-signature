@@ -1,0 +1,61 @@
+name: Deploy to Preview
+
+env:
+  VERCEL_ORG_ID: ${{ secrets.ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.PROJECT_ID }}
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  # CI:
+  #   uses: './.github/workflows/ci.yml'
+
+  deploy:
+    # needs: CI
+    runs-on: ubuntu-latest
+    environment: Preview
+    outputs:
+      deploymentUrl: ${{ steps.deploy.outputs.deploymentUrl }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: install Vercel CLI
+        run: pnpm install --global vercel@latest
+
+      - name: pull Vercel environment information
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: build project artifacts
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: deploy project artifacts to Vercel
+        id: deploy
+        run: |
+          vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} > deploy.log
+          echo "deploymentUrl=$(cat deploy.log)" >> $GITHUB_OUTPUT
+
+  comment:
+    needs: deploy
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - name: comment URL to PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "Deployed at ${{ env.DEPLOYMENT_URL }}"
+            })
+        env:
+          DEPLOYMENT_URL: ${{ needs.deploy.outputs.deploymentUrl }}
