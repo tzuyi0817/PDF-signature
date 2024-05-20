@@ -107,6 +107,7 @@ function closeLanguageMenu() {
     md:grid-cols-3
     md:top-[70px]
     md:gap-x-6
+    md:gap-y-1
     md:right-5;
     li {
       @apply px-3 py-2 cursor-pointer rounded hover:bg-primary hover:text-black transition-colors;
