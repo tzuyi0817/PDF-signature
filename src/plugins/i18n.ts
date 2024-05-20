@@ -6,6 +6,7 @@ import zhCN from '@/locales/zh-CN.json';
 import koKR from '@/locales/ko-KR.json';
 import frFR from '@/locales/fr-FR.json';
 import deDE from '@/locales/de-DE.json';
+import esEs from '@/locales/es-ES.json';
 
 const i18n = createI18n({
   legacy: import.meta.env.MODE === 'test',
@@ -20,6 +21,7 @@ const i18n = createI18n({
     'ko-KR': koKR,
     'fr-FR': frFR,
     'de-DE': deDE,
+    'es-ES': esEs,
   },
 });
 
