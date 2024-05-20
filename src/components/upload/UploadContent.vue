@@ -169,7 +169,7 @@ onBeforeUnmount(deleteCanvas);
       <div class="text-center">
         <h5 class="text-gray-40 mb-3 hidden md:block">{{ $t('prompt.or_drag_file') }}</h5>
         <p class="text-gray-40 px-4 text-center">
-          {{ $t('prompt.support_filetype', { type: locale === 'zh-TW' ? 'PDF、JPG、PNG' : 'PDF, JPG, and PNG' }) }}
+          {{ $t('prompt.support_filetype', { type: locale === 'en-US' ? 'PDF, JPG, and PNG' : 'PDF、JPG、PNG' }) }}
         </p>
       </div>
     </div>
