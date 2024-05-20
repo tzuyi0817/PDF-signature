@@ -10,6 +10,7 @@ import esEs from '@/locales/es-ES.json';
 import itIT from '@/locales/it-IT.json';
 import ruRU from '@/locales/ru-RU.json';
 import ptPT from '@/locales/pt-PT.json';
+import nlNL from '@/locales/nl-NL.json';
 
 const i18n = createI18n({
   legacy: import.meta.env.MODE === 'test',
@@ -28,6 +29,7 @@ const i18n = createI18n({
     'it-IT': itIT,
     'ru-RU': ruRU,
     'pt-PT': ptPT,
+    'nl-NL': nlNL,
   },
 });
 
