@@ -13,6 +13,7 @@ import ptPT from '@/locales/pt-PT.json';
 import nlNL from '@/locales/nl-NL.json';
 import svSE from '@/locales/sv-SE.json';
 import noNO from '@/locales/no-NO.json';
+import daDK from '@/locales/da-DK.json';
 
 const i18n = createI18n({
   legacy: import.meta.env.MODE === 'test',
@@ -34,6 +35,7 @@ const i18n = createI18n({
     'nl-NL': nlNL,
     'sv-SE': svSE,
     'no-NO': noNO,
+    'da-DK': daDK,
   },
 });
 
