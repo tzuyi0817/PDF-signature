@@ -2,6 +2,7 @@ import { createI18n } from 'vue-i18n';
 import enUS from '@/locales/en-US.json';
 import zhTW from '@/locales/zh-TW.json';
 import jaJP from '@/locales/ja-JP.json';
+import zhCN from '@/locales/zh-CN.json';
 
 const i18n = createI18n({
   legacy: import.meta.env.MODE === 'test',
@@ -12,6 +13,7 @@ const i18n = createI18n({
     'zh-TW': zhTW,
     'en-US': enUS,
     'ja-JP': jaJP,
+    'zh-CN': zhCN,
   },
 });
 
