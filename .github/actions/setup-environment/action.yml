@@ -40,7 +40,7 @@ runs:
         restore-keys: |
           ${{ runner.os }}-node-modules-
 
-    - name: install Dependencies
+    - name: install dependencies
       if: steps.dependencies-cache.outputs.cache-hit != 'true'
       shell: bash
       run: pnpm install

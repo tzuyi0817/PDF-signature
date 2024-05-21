@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { getIdb, setIdb } from '@/utils/idb';
-import { IDB_KEY } from '@/configs/idb.config';
+import { IDB_KEY } from '@/configs/idb';
 import type { PDF } from '@/types/pdf';
 
 interface PDFStore {
