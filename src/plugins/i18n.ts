@@ -19,6 +19,7 @@ import plPL from '@/locales/pl-PL.json';
 import trTR from '@/locales/tr-TR.json';
 import arSA from '@/locales/ar-SA.json';
 import heIL from '@/locales/he-IL.json';
+import hiIN from '@/locales/hi-IN.json';
 
 const i18n = createI18n({
   legacy: import.meta.env.MODE === 'test',
@@ -46,6 +47,7 @@ const i18n = createI18n({
     'tr-TR': trTR,
     'ar-SA': arSA,
     'he-IL': heIL,
+    'hi-IN': hiIN,
   },
 });
 
