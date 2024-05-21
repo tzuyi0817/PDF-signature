@@ -17,6 +17,7 @@ import daDK from '@/locales/da-DK.json';
 import fiFI from '@/locales/fi-FI.json';
 import plPL from '@/locales/pl-PL.json';
 import trTR from '@/locales/tr-TR.json';
+import arSA from '@/locales/ar-SA.json';
 
 const i18n = createI18n({
   legacy: import.meta.env.MODE === 'test',
@@ -42,6 +43,7 @@ const i18n = createI18n({
     'fi-FI': fiFI,
     'pl-PL': plPL,
     'tr-TR': trTR,
+    'ar-SA': arSA,
   },
 });
 
