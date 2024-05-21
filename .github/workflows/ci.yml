@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: setup environment
-        uses: './.github/actions/setup-environment'
+        uses: tzuyi0817/coding-standards/.github/actions/setup-environment@main
 
       - name: run unit test
         run: pnpm test:unit
