@@ -4,7 +4,7 @@ import { usePdfStore } from '@/store';
 import { printPDF, getPDFDocument } from '@/utils/pdfJs';
 import { createImageSrc, convertToBase64 } from '@/utils/image';
 import { isDesktop } from '@/utils/common';
-import { CSS_UNITS } from '@/configs/common.config';
+import { CSS_UNITS } from '@/configs/common';
 import type { TOCoord, SpecifyPageArgs, RenderImageArgs, CreateCloseSvgArgs } from '@/types/fabric';
 
 const fabricMap = new Map<string, fabric.Canvas>();

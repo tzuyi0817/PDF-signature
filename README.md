@@ -4,7 +4,7 @@
 
 This is a web application for `signing PDF` documents online.  
 Users can upload PDF files, sign them online, and download the signed PDF files.  
-The application also supports setting PDF passwords, switching between Chinese and English languages, and storing PDF files in the local `IndexedDB`.  
+The application also supports setting PDF passwords and storing PDF files in the local `IndexedDB`.  
 Signatures, text, and images are stored in `localStorage` for reuse.
 
 ![image](./public/cover.jpg)
@@ -17,7 +17,7 @@ Signatures, text, and images are stored in `localStorage` for reuse.
 - Adjustable signature position and size
 - Set PDF passwords
 - Open encrypted PDF files
-- Support for Chinese and English languages
+- Support multiple languages
 - Local storage: Store PDF files in IndexedDB
 - Signatures, text, and images stored in localStorage
 
@@ -45,7 +45,7 @@ Clone this repository and install dependencies by running `pnpm`(Node.js version
 3. `Add Signature`: Choose the position on the PDF where you want to add your signature. Signatures, text, and images will be stored in localStorage for reuse.
 4. `Adjust Signature`: Drag and resize the signature as needed.
 5. `Set PDF Password`: After completing the signature, you can set a password to open the PDF.
-6. `Language Switch`: Click the language switch button on the page to toggle between Chinese and English.
+6. `Language Switch`: Select the language in the upper right corner of the header.
 7. `Download Signed PDF`: After signing, click the download button to get the signed PDF file.
 
 ## Contribution
