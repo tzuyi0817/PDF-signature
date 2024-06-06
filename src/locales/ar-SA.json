@@ -11,6 +11,7 @@
   "delete": "حذف",
   "download": "تحميل",
   "download_progress": "تقدم التحميل الحالي",
+  "edit_text": "تحرير النص",
   "encryption": "التشفير",
   "file_completed": "اكتمل الملف",
   "file_downloading": "جاري تحميل الملف...",
@@ -69,6 +70,7 @@
     "text_add_success": "تمت إضافة النص بنجاح",
     "text_already_exists": "هذا النص موجود بالفعل",
     "text_delete_success": "تم حذف النص بنجاح",
+    "text_edit_success": "تم تحرير النص بنجاح",
     "trash_shelf_life": "سيتم حذف العناصر الموجودة في سلة المهملات بشكل دائم بعد 30 يومًا",
     "try_another": "يرجى تجربة مصطلح بحث آخر",
     "un_found": "لم يتم العثور على أي عناصر مطابقة لمعايير البحث"

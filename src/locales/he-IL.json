@@ -11,6 +11,7 @@
   "delete": "מחק",
   "download": "הורד",
   "download_progress": "התקדמות הורדה נוכחית",
+  "edit_text": "ערוך טקסט",
   "encryption": "הצפנה",
   "file_completed": "הקובץ הושלם",
   "file_downloading": "מוריד קובץ...",
@@ -69,6 +70,7 @@
     "text_add_success": "הטקסט נוסף בהצלחה",
     "text_already_exists": "טקסט זה כבר קיים",
     "text_delete_success": "הטקסט נמחק בהצלחה",
+    "text_edit_success": "הטקסט עורך בהצלחה",
     "trash_shelf_life": "פריטים בסל המיחזור יימחקו לצמיתות לאחר 30 ימים",
     "try_another": "אנא נסה מונח חיפוש אחר",
     "un_found": "לא נמצאו פריטים התואמים את הקריטריונים לחיפוש"

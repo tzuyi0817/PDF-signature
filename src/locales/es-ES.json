@@ -11,6 +11,7 @@
   "delete": "Eliminar",
   "download": "Descargar",
   "download_progress": "Progreso de descarga actual",
+  "edit_text": "Editar texto",
   "encryption": "Encriptación",
   "file_completed": "Archivo completado",
   "file_downloading": "Descargando archivo...",
@@ -69,6 +70,7 @@
     "text_add_success": "Texto agregado exitosamente",
     "text_already_exists": "Este texto ya existe",
     "text_delete_success": "Texto eliminado exitosamente",
+    "text_edit_success": "Texto editado exitosamente",
     "trash_shelf_life": "Los elementos en la Papelera serán eliminados permanentemente después de 30 días",
     "try_another": "Por favor, pruebe con otro término de búsqueda",
     "un_found": "No se encontraron elementos que coincidan con los criterios de búsqueda"

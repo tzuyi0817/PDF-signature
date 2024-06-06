@@ -11,6 +11,7 @@
   "delete": "Poista",
   "download": "Lataa",
   "download_progress": "Nykyinen lataus edistyminen",
+  "edit_text": "Muokkaa tekstiä",
   "encryption": "Salakirjoitus",
   "file_completed": "Tiedosto valmis",
   "file_downloading": "Tiedoston lataaminen...",
@@ -69,6 +70,7 @@
     "text_add_success": "Teksti lisätty onnistuneesti",
     "text_already_exists": "Tämä teksti on jo olemassa",
     "text_delete_success": "Teksti poistettu onnistuneesti",
+    "text_edit_success": "Teksti muokattu onnistuneesti",
     "trash_shelf_life": "Roskakorin kohteet poistetaan pysyvästi 30 päivän kuluttua",
     "try_another": "Yritä toista hakusanaa",
     "un_found": "Ei kohteita, jotka vastaavat hakuehtoja"

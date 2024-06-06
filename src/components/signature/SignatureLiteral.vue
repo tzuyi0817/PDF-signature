@@ -14,6 +14,7 @@ const currentTool = defineModel<SignatureTool | ''>('currentTool');
 const currentSelect = ref('');
 const isShowLiteralPopup = ref(false);
 const literal = ref('');
+const isEditing = ref(false);
 const { literalList } = storeToRefs(useLiteralStore());
 const { t } = useI18n();
 const { isShowWarnPopup, SignPopup, toggleWarnPopup } = useWarnPopup();
@@ -35,7 +36,24 @@ function addLiteral() {
   useLiteralStore().addLiteral(literal.value);
   toast.showToast(t('prompt.text_add_success'), 'success');
   toggleLiteralPopup(false);
-  literal.value = '';
+}
+
+function editLiteral() {
+  if (currentSelect.value === literal.value) {
+    toggleLiteralPopup(false);
+    return;
+  }
+  if (literalList.value.includes(literal.value)) {
+    toast.showToast(t('prompt.text_already_exists'), 'error');
+    return;
+  }
+  const { addLiteral: addText, deleteLiteral: deleteText } = useLiteralStore();
+
+  addText(literal.value);
+  deleteText(currentSelect.value);
+  toast.showToast(t('prompt.text_edit_success'), 'success');
+  currentSelect.value = literal.value;
+  toggleLiteralPopup(false);
 }
 
 function deleteLiteral() {
@@ -45,8 +63,10 @@ function deleteLiteral() {
   currentSelect.value = '';
 }
 
-function toggleLiteralPopup(isOpen: boolean) {
+function toggleLiteralPopup(isOpen: boolean, isEdit = false) {
+  isEditing.value = isEdit;
   isShowLiteralPopup.value = isOpen;
+  literal.value = isEdit ? currentSelect.value : '';
 }
 
 function dragLiteral(event: DragEvent) {
@@ -84,24 +104,33 @@ function close() {
         v-for="literal in literalList"
         :key="literal"
         :class="[
-          'rounded-[20px] relative w-full flex justify-center cursor-pointer',
+          'rounded-[20px] relative w-full flex cursor-pointer px-3 py-4',
           currentSelect === literal ? 'bg-primary opacity-70' : 'bg-white',
         ]"
         @click="selectLiteral(literal)"
       >
         <p
-          class="whitespace-pre-wrap w-full p-3"
+          class="whitespace-pre-wrap w-full text-ellipsis overflow-hidden"
           draggable="true"
           @dragstart="dragLiteral"
         >
           {{ literal }}
         </p>
-        <sign-icon
-          v-show="currentSelect === literal"
-          name="close_s"
-          class="absolute top-1 right-1 w-10 h-10 text-gray-80 hover:text-gray-60"
-          @click="toggleWarnPopup(true)"
-        />
+
+        <template v-if="currentSelect === literal">
+          <sign-icon
+            name="close_s"
+            class="absolute top-1 right-1 w-8 h-8 text-gray-80"
+            hover-color="gray-60"
+            @click="toggleWarnPopup(true)"
+          />
+          <sign-icon
+            name="edit"
+            class="absolute top-6 right-1 w-8 h-8 text-gray-80"
+            hover-color="gray-60"
+            @click="toggleLiteralPopup(true, true)"
+          />
+        </template>
       </li>
     </ul>
 
@@ -123,7 +152,7 @@ function close() {
 
   <sign-popup
     v-if="isShowLiteralPopup"
-    :title="$t('add_text')"
+    :title="isEditing ? $t('edit_text') : $t('add_text')"
   >
     <textarea
       v-model="literal"
@@ -140,7 +169,7 @@ function close() {
       <button
         class="btn btn_primary"
         :disabled="!literal"
-        @click="addLiteral"
+        @click="() => (isEditing ? editLiteral() : addLiteral())"
       >
         {{ $t('confirm') }}
       </button>

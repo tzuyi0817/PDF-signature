@@ -11,6 +11,7 @@
   "delete": "Delete",
   "download": "Download",
   "download_progress": "Current download progress",
+  "edit_text": "Edit Text",
   "encryption": "Encryption",
   "file_completed": "File completed",
   "file_downloading": "File downloading...",
@@ -69,6 +70,7 @@
     "text_add_success": "Text added successfully",
     "text_already_exists": "This text already exists",
     "text_delete_success": "Text deleted successfully",
+    "text_edit_success": "Text Edited Successfully",
     "trash_shelf_life": "Items in the Trash will be permanently deleted after 30 days",
     "try_another": "Please try another search term",
     "un_found": "No items found matching search criteria"

@@ -11,6 +11,7 @@
   "delete": "削除",
   "download": "ダウンロード",
   "download_progress": "現在のダウンロード進行状況",
+  "edit_text": "テキストを編集",
   "encryption": "暗号化",
   "file_completed": "ファイル完了",
   "file_downloading": "ファイルをダウンロード中...",
@@ -69,6 +70,7 @@
     "text_add_success": "テキストの追加に成功しました",
     "text_already_exists": "このテキストは既に存在します",
     "text_delete_success": "テキストの削除に成功しました",
+    "text_edit_success": "テキストの編集が成功しました",
     "trash_shelf_life": "ゴミ箱内のアイテムは30日後に完全に削除されます",
     "try_another": "別の検索用語を試してください",
     "un_found": "検索条件に一致するアイテムは見つかりませんでした"

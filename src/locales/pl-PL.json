@@ -11,6 +11,7 @@
   "delete": "Usuń",
   "download": "Pobierz",
   "download_progress": "Aktualny postęp pobierania",
+  "edit_text": "Edytuj tekst",
   "encryption": "Szyfrowanie",
   "file_completed": "Plik ukończony",
   "file_downloading": "Pobieranie pliku...",
@@ -69,6 +70,7 @@
     "text_add_success": "Tekst został pomyślnie dodany",
     "text_already_exists": "Ten tekst już istnieje",
     "text_delete_success": "Tekst został pomyślnie usunięty",
+    "text_edit_success": "Tekst został pomyślnie edytowany",
     "trash_shelf_life": "Elementy w koszu zostaną trwale usunięte po 30 dniach",
     "try_another": "Proszę spróbować innego terminu wyszukiwania",
     "un_found": "Nie znaleziono elementów pasujących do kryteriów wyszukiwania"

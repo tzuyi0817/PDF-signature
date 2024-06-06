@@ -18,8 +18,8 @@ Signatures, text, and images are stored in `localStorage` for reuse.
 - Set PDF passwords
 - Open encrypted PDF files
 - Support multiple languages
-- Local storage: Store PDF files in IndexedDB
-- Signatures, text, and images stored in localStorage
+- Store PDF files in IndexedDB
+- Custom signatures, text and images are stored in localStorage
 
 ## Development
 

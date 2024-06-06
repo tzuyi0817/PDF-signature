@@ -87,7 +87,8 @@ function close() {
         <sign-icon
           v-show="currentSelect === signature"
           name="close_s"
-          class="absolute top-1 right-1 w-10 h-10 text-gray-80 hover:text-gray-60"
+          class="absolute top-1 right-1 w-8 h-8 text-gray-80"
+          hover-color="gray-60"
           @click="toggleWarnPopup(true)"
         />
       </li>

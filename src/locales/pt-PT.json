@@ -11,6 +11,7 @@
   "delete": "Eliminar",
   "download": "Baixar",
   "download_progress": "Progresso de download atual",
+  "edit_text": "Editar texto",
   "encryption": "Criptografia",
   "file_completed": "Arquivo concluído",
   "file_downloading": "Baixando arquivo...",
@@ -69,6 +70,7 @@
     "text_add_success": "Texto adicionado com sucesso",
     "text_already_exists": "Este texto já existe",
     "text_delete_success": "Texto excluído com sucesso",
+    "text_edit_success": "Texto editado com sucesso",
     "trash_shelf_life": "Os itens na Lixeira serão excluídos permanentemente após 30 dias",
     "try_another": "Por favor, tente outra palavra-chave",
     "un_found": "Nenhum item encontrado que corresponda aos critérios de pesquisa"

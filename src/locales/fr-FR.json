@@ -11,6 +11,7 @@
   "delete": "Supprimer",
   "download": "Télécharger",
   "download_progress": "Progression du téléchargement",
+  "edit_text": "Modifier le texte",
   "encryption": "Chiffrement",
   "file_completed": "Fichier terminé",
   "file_downloading": "Téléchargement du fichier...",
@@ -69,6 +70,7 @@
     "text_add_success": "Ajout de texte réussi",
     "text_already_exists": "Ce texte existe déjà",
     "text_delete_success": "Suppression de texte réussie",
+    "text_edit_success": "Texte édité avec succès",
     "trash_shelf_life": "Les éléments de la corbeille seront supprimés définitivement après 30 jours",
     "try_another": "Essayez un autre mot-clé",
     "un_found": "Aucun élément correspondant aux critères de recherche"

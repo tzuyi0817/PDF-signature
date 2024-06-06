@@ -11,6 +11,7 @@
   "delete": "Verwijderen",
   "download": "Downloaden",
   "download_progress": "Huidige downloadvoortgang",
+  "edit_text": "Bewerk tekst",
   "encryption": "Versleuteling",
   "file_completed": "Bestand voltooid",
   "file_downloading": "Bestand downloaden...",
@@ -69,6 +70,7 @@
     "text_add_success": "Tekst succesvol toegevoegd",
     "text_already_exists": "Deze tekst bestaat al",
     "text_delete_success": "Tekst succesvol verwijderd",
+    "text_edit_success": "Tekst succesvol bewerkt",
     "trash_shelf_life": "Items in de Prullenbak worden permanent verwijderd na 30 dagen",
     "try_another": "Probeer een ander zoekwoord",
     "un_found": "Geen items gevonden die overeenkomen met de zoekcriteria"

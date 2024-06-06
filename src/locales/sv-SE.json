@@ -11,6 +11,7 @@
   "delete": "Radera",
   "download": "Ladda ner",
   "download_progress": "Aktuell nedladdningsstatus",
+  "edit_text": "Redigera text",
   "encryption": "Kryptering",
   "file_completed": "Fil klar",
   "file_downloading": "Laddar ner fil...",
@@ -69,6 +70,7 @@
     "text_add_success": "Texten har lagts till",
     "text_already_exists": "Texten finns redan",
     "text_delete_success": "Texten har raderats",
+    "text_edit_success": "Text redigerad framgångsrikt",
     "trash_shelf_life": "Objekt i papperskorgen raderas permanent efter 30 dagar",
     "try_another": "Försök med ett annat sökord",
     "un_found": "Inga objekt hittades som matchar sökkriterierna"

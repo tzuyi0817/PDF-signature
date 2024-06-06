@@ -11,6 +11,7 @@
   "delete": "Slet",
   "download": "Download",
   "download_progress": "Nuværende downloadstatus",
+  "edit_text": "Rediger tekst",
   "encryption": "Kryptering",
   "file_completed": "Fil fuldført",
   "file_downloading": "Downloader fil...",
@@ -69,6 +70,7 @@
     "text_add_success": "Tekst tilføjet med succes",
     "text_already_exists": "Denne tekst findes allerede",
     "text_delete_success": "Tekst slettet med succes",
+    "text_edit_success": "Tekst redigeret med succes",
     "trash_shelf_life": "Elementer i papirkurven slettes permanent efter 30 dage",
     "try_another": "Prøv et andet søgeord",
     "un_found": "Ingen elementer fundet, der matcher søgekriterierne"

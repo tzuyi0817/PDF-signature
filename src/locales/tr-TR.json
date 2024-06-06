@@ -11,6 +11,7 @@
   "delete": "Sil",
   "download": "İndir",
   "download_progress": "Mevcut indirme ilerlemesi",
+  "edit_text": "Metni Düzenle",
   "encryption": "Şifreleme",
   "file_completed": "Dosya tamamlandı",
   "file_downloading": "Dosya indiriliyor...",
@@ -69,6 +70,7 @@
     "text_add_success": "Metin başarıyla eklendi",
     "text_already_exists": "Bu metin zaten mevcut",
     "text_delete_success": "Metin başarıyla silindi",
+    "text_edit_success": "Metin düzenleme başarılı",
     "trash_shelf_life": "Çöp kutusundaki öğeler 30 gün sonra kalıcı olarak silinecektir",
     "try_another": "Lütfen başka bir arama terimi deneyin",
     "un_found": "Arama kriterlerine uyan öğe bulunamadı"

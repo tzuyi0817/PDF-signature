@@ -11,6 +11,7 @@
   "delete": "Elimina",
   "download": "Scarica",
   "download_progress": "Progresso di download attuale",
+  "edit_text": "Modifica testo",
   "encryption": "Crittografia",
   "file_completed": "File completato",
   "file_downloading": "Download del file...",
@@ -69,6 +70,7 @@
     "text_add_success": "Testo aggiunto con successo",
     "text_already_exists": "Questo testo esiste già",
     "text_delete_success": "Testo eliminato con successo",
+    "text_edit_success": "Modifica del testo completata con successo",
     "trash_shelf_life": "Gli elementi nel Cestino verranno eliminati definitivamente dopo 30 giorni",
     "try_another": "Prova un'altra parola chiave",
     "un_found": "Nessun elemento trovato corrispondente ai criteri di ricerca"

@@ -11,6 +11,7 @@
   "delete": "삭제",
   "download": "다운로드",
   "download_progress": "현재 다운로드 진행 상황",
+  "edit_text": "텍스트 편집",
   "encryption": "암호화",
   "file_completed": "파일 완료",
   "file_downloading": "파일 다운로드 중...",
@@ -69,6 +70,7 @@
     "text_add_success": "텍스트 추가 성공",
     "text_already_exists": "이 텍스트는 이미 존재합니다",
     "text_delete_success": "텍스트 삭제 성공",
+    "text_edit_success": "텍스트 편집이 성공적으로 완료되었습니다",
     "trash_shelf_life": "휴지통의 항목은 30일 후에 영구 삭제됩니다",
     "try_another": "다른 검색어를 시도하세요",
     "un_found": "검색 조건에 맞는 항목을 찾을 수 없습니다"

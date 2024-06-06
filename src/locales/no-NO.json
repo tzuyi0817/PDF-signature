@@ -11,6 +11,7 @@
   "delete": "Slett",
   "download": "Last ned",
   "download_progress": "Nedlastingsstatus",
+  "edit_text": "Rediger tekst",
   "encryption": "Kryptering",
   "file_completed": "Fil fullført",
   "file_downloading": "Laster ned fil...",
@@ -69,6 +70,7 @@
     "text_add_success": "Tekst lagt til vellykket",
     "text_already_exists": "Denne teksten finnes allerede",
     "text_delete_success": "Tekst slettet vellykket",
+    "text_edit_success": "Tekst redigert vellykket",
     "trash_shelf_life": "Elementer i papirkurven slettes permanent etter 30 dager",
     "try_another": "Vennligst prøv et annet søkeord",
     "un_found": "Ingen elementer funnet som samsvarer med søkekriteriene"

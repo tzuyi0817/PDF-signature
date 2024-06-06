@@ -11,6 +11,7 @@
   "delete": "删除",
   "download": "下载",
   "download_progress": "当前下载进度",
+  "edit_text": "编辑文本",
   "encryption": "加密",
   "file_completed": "文件完成",
   "file_downloading": "文件下载中...",
@@ -69,6 +70,7 @@
     "text_add_success": "文本添加成功",
     "text_already_exists": "此文本已存在",
     "text_delete_success": "文本删除成功",
+    "text_edit_success": "文本编辑成功",
     "trash_shelf_life": "垃圾箱中的项目将在 30 天后永久删除",
     "try_another": "尝试另一个搜索词",
     "un_found": "未找到符合搜索条件的项目"

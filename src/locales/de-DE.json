@@ -11,6 +11,7 @@
   "delete": "Löschen",
   "download": "Herunterladen",
   "download_progress": "Aktueller Download-Fortschritt",
+  "edit_text": "Text bearbeiten",
   "encryption": "Verschlüsselung",
   "file_completed": "Datei abgeschlossen",
   "file_downloading": "Datei wird heruntergeladen...",
@@ -69,6 +70,7 @@
     "text_add_success": "Text erfolgreich hinzugefügt",
     "text_already_exists": "Dieser Text existiert bereits",
     "text_delete_success": "Text erfolgreich gelöscht",
+    "text_edit_success": "Text erfolgreich bearbeitet",
     "trash_shelf_life": "Elemente im Papierkorb werden nach 30 Tagen endgültig gelöscht",
     "try_another": "Versuchen Sie ein anderes Suchwort",
     "un_found": "Keine den Suchkriterien entsprechenden Elemente gefunden"
