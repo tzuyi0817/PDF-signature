@@ -10,7 +10,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  hoverColor: 'primary',
+  hoverColor: 'hover:text-primary',
   prefix: 'icon',
   color: '#4D4D4D',
   hoverChangeSvg: false,
@@ -23,7 +23,6 @@ const symbolId = computed(() => {
   if (props.hoverChangeSvg && isHover.value && !props.name.includes('_h')) return `${symbol}_h`;
   return symbol;
 });
-const hoverColor = computed(() => `hover:text-${props.hoverColor}`);
 </script>
 
 <template>

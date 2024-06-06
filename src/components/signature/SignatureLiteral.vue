@@ -115,22 +115,21 @@ function close() {
           @dragstart="dragLiteral"
         >
           {{ literal }}
-        </p>
-
-        <template v-if="currentSelect === literal">
           <sign-icon
-            name="close_s"
-            class="absolute top-1 right-1 w-8 h-8 text-gray-80"
-            hover-color="gray-60"
-            @click="toggleWarnPopup(true)"
-          />
-          <sign-icon
+            v-show="currentSelect === literal"
             name="edit"
-            class="absolute top-6 right-1 w-8 h-8 text-gray-80"
-            hover-color="gray-60"
+            class="w-5 h-5 text-gray-80 inline relative scale-150 -top-[2px]"
+            hover-color="hover:text-pen-blue"
             @click="toggleLiteralPopup(true, true)"
           />
-        </template>
+        </p>
+        <sign-icon
+          v-show="currentSelect === literal"
+          name="close_s"
+          class="absolute top-1 right-1 w-8 h-8 text-gray-80"
+          hover-color="hover:text-danger"
+          @click="toggleWarnPopup(true)"
+        />
       </li>
     </ul>
 
