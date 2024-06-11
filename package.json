@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.3.0",
   "type": "module",
-  "packageManager": "pnpm@9.1.4",
+  "packageManager": "pnpm@9.3.0",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
@@ -20,35 +20,35 @@
     "pinia-plugin-persistedstate": "^3.2.1",
     "vue": "^3.4.27",
     "vue-i18n": "^9.13.1",
-    "vue-router": "^4.3.2"
+    "vue-router": "^4.3.3"
   },
   "devDependencies": {
     "@intlify/unplugin-vue-i18n": "^4.0.0",
     "@rushstack/eslint-patch": "^1.10.3",
     "@types/fabric": "^5.3.7",
-    "@types/node": "^20.14.0",
+    "@types/node": "^20.14.2",
     "@vitejs/plugin-vue": "^5.0.5",
     "@vue/eslint-config-prettier": "^9.0.0",
     "@vue/eslint-config-typescript": "^13.0.0",
     "autoprefixer": "^10.4.19",
-    "cssnano": "^7.0.1",
+    "cssnano": "^7.0.2",
     "eslint": "^9.4.0",
     "eslint-plugin-security": "^3.0.0",
     "eslint-plugin-vue": "^9.26.0",
-    "globals": "^15.3.0",
+    "globals": "^15.4.0",
     "postcss": "^8.4.38",
     "postcss-import": "^16.1.0",
     "postcss-nested": "^6.0.1",
     "postcss-nesting": "^12.1.5",
     "postcss-pxtorem": "^6.1.0",
     "rollup-plugin-visualizer": "^5.12.0",
-    "tailwindcss": "^3.4.3",
+    "tailwindcss": "^3.4.4",
     "typescript": "^5.4.5",
-    "vite": "^5.2.12",
+    "vite": "^5.2.13",
     "vite-plugin-pwa": "^0.20.0",
     "vite-plugin-svg-icons": "^2.0.1",
     "vite-plugin-top-level-await": "^1.4.1",
-    "vue-tsc": "^2.0.19"
+    "vue-tsc": "^2.0.21"
   },
   "browserslist": [
     "> 1%",
@@ -68,7 +68,7 @@
   },
   "pnpm": {
     "overrides": {
-      "@typescript-eslint/typescript-estree": "^7.11.0"
+      "@typescript-eslint/typescript-estree": "^7.13.0"
     }
   }
 }
