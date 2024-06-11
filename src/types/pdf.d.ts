@@ -6,4 +6,5 @@ export interface PDF {
   pages: number;
   canvas?: string[];
   trashDate?: number;
+  isUpdate?: boolean;
 }

@@ -18,10 +18,14 @@ async function setPDF() {
   const { file, page } = props;
 
   createCanvas();
-  file.PDFBase64.startsWith('data:image')
-    ? renderImage({ url: file.PDFBase64, scale: 0.2 })
-    : await specifyPage({ page, PDF: file, scale: 0.3 });
+  if (file.PDFBase64.startsWith('data:image') || file.canvas) {
+    const { canvas } = file;
+    const url = canvas ? canvas[page - 1] : file.PDFBase64;
 
+    renderImage({ url, scale: canvas ? 0.05 : 0.2 });
+  } else {
+    await specifyPage({ page, PDF: file, scale: 0.3 });
+  }
   isShowCanvas.value = true;
 }
 

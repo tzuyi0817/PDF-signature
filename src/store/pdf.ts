@@ -19,6 +19,7 @@ const defaultState: PDFStore = {
     pages: 0,
     canvas: [],
     trashDate: 0,
+    isUpdate: false,
   },
   PDFList: [],
   archiveList: [],
@@ -72,8 +73,9 @@ export default defineStore('pdf_signature_pdf', {
       this.PDFList.unshift({ ...PDF });
       return this.updatePDFIdb();
     },
-    updatePDF(id: string, PDF: PDF) {
-      const index = this.PDFList.findIndex(item => item.PDFId === id);
+    updatePDF(PDF: PDF) {
+      const index = this.PDFList.findIndex(item => item.PDFId === PDF.PDFId);
+
       if (index === -1) return;
       this.PDFList[index] = PDF;
       return this.updatePDFIdb();

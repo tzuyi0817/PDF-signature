@@ -27,7 +27,7 @@ export default function useFabric(id: string) {
     if (!PDFBase64) return;
     const { setCurrentPDF } = usePdfStore();
     const now = Date.now();
-    const PDFId = `${file.name}${now}`;
+    const PDFId = `${file.name}-${now}`;
     const PDF = {
       PDFId,
       name: file.name.replace(/.pdf/, ''),

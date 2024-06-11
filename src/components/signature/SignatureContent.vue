@@ -43,7 +43,7 @@ async function mergeFile() {
   window.requestAnimationFrame(async () => {
     try {
       if (!signatureCanvasItems.value) return;
-      const { setCurrentPDFCanvas, addPDF } = usePdfStore();
+      const { setCurrentPDFCanvas, addPDF, updatePDF } = usePdfStore();
       const canvas = signatureCanvasItems.value.map(({ canvasDom }) => {
         if (!canvasDom) return '';
 
@@ -56,7 +56,9 @@ async function mergeFile() {
         return;
       }
       setCurrentPDFCanvas(canvas);
-      addPDF({ ...currentPDF.value, PDFBase64: '', updateDate: Date.now() });
+      const file = { ...currentPDF.value, PDFBase64: '', updateDate: Date.now() };
+
+      file.isUpdate ? updatePDF(file) : addPDF(file);
       useConfigStore().updateFilePassword('');
       toast.showToast(t('prompt.file_created_success'), 'success');
       goPage('complete');

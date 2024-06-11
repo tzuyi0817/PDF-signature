@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, watch, onBeforeUnmount, nextTick } from 'vue';
 import useFabric from '@/hooks/useFabric';
-import { isDesktop } from '@/utils/common';
 import type { PDF } from '@/types/pdf';
 
 interface Props {
@@ -27,9 +26,15 @@ async function setPDF(width: number) {
   window.requestAnimationFrame(async () => {
     await nextTick();
     createCanvas();
-    file.PDFBase64.startsWith('data:image')
-      ? renderImage({ url: file.PDFBase64, scale: isDesktop() ? 2 : 0.7 })
-      : await specifyPage({ page, PDF: file, scale });
+    if (file.PDFBase64.startsWith('data:image') || file.canvas) {
+      const { canvas } = file;
+      const scaleDown = canvas ? 7 : 3;
+      const url = canvas ? canvas[page - 1] : file.PDFBase64;
+
+      renderImage({ url, scale: scale / scaleDown });
+      return;
+    }
+    await specifyPage({ page, PDF: file, scale });
   });
 }
 

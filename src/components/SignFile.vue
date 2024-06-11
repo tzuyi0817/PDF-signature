@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import SignIcon from '@/components/SignIcon.vue';
 import { usePdfStore } from '@/store';
 import type { MenuTab } from '@/types/menu';
@@ -16,7 +17,8 @@ interface Props {
 const props = defineProps<Props>();
 const emit = defineEmits(['open-warn-popup', 'open-encrypt-popup']);
 const isShowMore = ref(false);
-const { addPDF, addArchive, addTrash, deleteArchive, deleteTrash } = usePdfStore();
+const router = useRouter();
+const { addPDF, addArchive, addTrash, deleteArchive, deleteTrash, setCurrentPDF } = usePdfStore();
 const localTime = computed(() => {
   const [date, time] = new Date(props.file.updateDate).toLocaleString('en-GB').split(',');
   const [day, month, year] = date.split('/');
@@ -29,6 +31,7 @@ const more = computed(() => {
   const moreMap = {
     file: [
       { icon: 'download', feat: () => openEncryptPopup(file) },
+      { icon: 'sign', feat: () => editFile(file) },
       { icon: 'archive', feat: () => addArchive(file) },
       { icon: 'trash', feat: () => addTrash(file) },
     ],
@@ -47,6 +50,11 @@ const more = computed(() => {
 function openEncryptPopup(file: PDF) {
   toggleMore(false);
   emit('open-encrypt-popup', file);
+}
+
+function editFile(file: PDF) {
+  setCurrentPDF({ ...file, isUpdate: true });
+  router.push({ name: 'signature' });
 }
 
 function reductionArchive(file: PDF) {
