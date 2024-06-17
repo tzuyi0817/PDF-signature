@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.1](https://github.com/tzuyi0817/PDF-signature/compare/v0.3.0...v0.3.1) (2024-06-17)
+
+### Features
+
+- custom text placed can be edited ([#22](https://github.com/tzuyi0817/PDF-signature/issues/22)) ([15039fb](https://github.com/tzuyi0817/PDF-signature/commit/15039fb2a4e67d5c784823feed18dab122a1bf3d))
+- edit signed PDF ([1391470](https://github.com/tzuyi0817/PDF-signature/commit/1391470e7ba5c7404f5167665f8d3bc0baa546a4))
+
+### Bug Fixes
+
+- sign icon hover ([1ceebef](https://github.com/tzuyi0817/PDF-signature/commit/1ceebef160b2210647bee300f07aa3f59e5e93c8))
+- catch global error ([c15cd7d](https://github.com/tzuyi0817/PDF-signature/commit/c15cd7dcdc5370f1678671cd1dcf6077b0ca371d))
+
 ## [0.3.0](https://github.com/tzuyi0817/PDF-signature/compare/v0.2.0...v0.3.0) (2024-05-21)
 
 ### Features
