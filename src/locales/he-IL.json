@@ -40,6 +40,7 @@
     "create_file": "בואו וצור קובץ חדש",
     "deleted_projects": "פריטים שנמחקו יופיעו כאן",
     "encryption_file": "קבע סיסמה להגנה על קובץ ה-PDF שלך",
+    "error_occurred": "אירעה שגיאה לא ידועה, נא לרענן את הדף ולנסות שוב",
     "file_archived_success": "הקובץ הועבר לארכיון בהצלחה",
     "file_created_success": "הקובץ נוצר בהצלחה",
     "file_delete_success": "הקובץ נמחק בהצלחה",

@@ -40,6 +40,7 @@
     "create_file": "Venha e crie um novo arquivo",
     "deleted_projects": "Itens excluídos serão exibidos aqui",
     "encryption_file": "Defina uma senha para proteger seu arquivo PDF",
+    "error_occurred": "Ocorreu um erro desconhecido. Por favor, atualize a página e tente novamente",
     "file_archived_success": "Arquivo arquivado com sucesso",
     "file_created_success": "Arquivo criado com sucesso",
     "file_delete_success": "Arquivo excluído com sucesso",

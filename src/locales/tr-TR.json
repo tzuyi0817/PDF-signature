@@ -40,6 +40,7 @@
     "create_file": "Gel ve yeni bir dosya oluştur",
     "deleted_projects": "Silinmiş öğeler burada görüntülenecektir",
     "encryption_file": "PDF dosyanızı korumak için bir şifre belirleyin",
+    "error_occurred": "Bilinmeyen bir hata oluştu. Lütfen sayfayı yenileyip tekrar deneyin",
     "file_archived_success": "Dosya başarıyla arşivlendi",
     "file_created_success": "Dosya başarıyla oluşturuldu",
     "file_delete_success": "Dosya başarıyla silindi",

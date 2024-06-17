@@ -40,6 +40,7 @@
     "create_file": "Kom og opret en ny fil",
     "deleted_projects": "Slettede elementer vises her",
     "encryption_file": "Angiv en adgangskode for at beskytte din PDF-fil",
+    "error_occurred": "Der opstod en ukendt fejl, venligst opdater siden og prøv igen",
     "file_archived_success": "Fil arkiveret med succes",
     "file_created_success": "Fil oprettet med succes",
     "file_delete_success": "Fil slettet med succes",

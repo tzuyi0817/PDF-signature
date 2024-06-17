@@ -40,6 +40,7 @@
     "create_file": "새 파일을 만듭니다",
     "deleted_projects": "삭제된 항목은 여기에 표시됩니다",
     "encryption_file": "PDF 파일을 보호할 비밀번호를 설정하세요",
+    "error_occurred": "알 수 없는 오류가 발생했습니다. 페이지를 새로고침한 후 다시 시도해주세요",
     "file_archived_success": "파일 보관 성공",
     "file_created_success": "파일 생성 성공",
     "file_delete_success": "파일 삭제 성공",

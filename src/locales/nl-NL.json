@@ -40,6 +40,7 @@
     "create_file": "Kom en maak een nieuw bestand aan",
     "deleted_projects": "Verwijderde items worden hier weergegeven",
     "encryption_file": "Stel een wachtwoord in om uw PDF-bestand te beschermen",
+    "error_occurred": "Er is een onbekende fout opgetreden. Vernieuw de pagina en probeer opnieuw",
     "file_archived_success": "Bestand succesvol gearchiveerd",
     "file_created_success": "Bestand succesvol aangemaakt",
     "file_delete_success": "Bestand succesvol verwijderd",

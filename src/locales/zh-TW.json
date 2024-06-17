@@ -40,6 +40,7 @@
     "create_file": "快來建立新檔吧",
     "deleted_projects": "刪除的項目會顯示在這裡",
     "encryption_file": "設置一個密碼來保護你的PDF檔案",
+    "error_occurred": "發生未知的錯誤, 請刷新頁面重新嘗試",
     "file_archived_success": "檔案封存成功",
     "file_created_success": "檔案建立成功",
     "file_delete_success": "檔案刪除成功",

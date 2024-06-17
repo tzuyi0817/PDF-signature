@@ -40,6 +40,7 @@
     "create_file": "新しいファイルを作成しましょう",
     "deleted_projects": "削除されたアイテムはここに表示されます",
     "encryption_file": "PDFファイルを保護するためのパスワードを設定します",
+    "error_occurred": "不明なエラーが発生しました。ページをリフレッシュして再試行してください",
     "file_archived_success": "ファイルのアーカイブに成功しました",
     "file_created_success": "ファイルの作成に成功しました",
     "file_delete_success": "ファイルの削除に成功しました",

@@ -40,6 +40,7 @@
     "create_file": "Kom och skapa en ny fil",
     "deleted_projects": "Borttagna objekt visas här",
     "encryption_file": "Ange ett lösenord för att skydda din PDF-fil",
+    "error_occurred": "Ett okänt fel inträffade. Vänligen uppdatera sidan och försök igen",
     "file_archived_success": "Filen har arkiverats",
     "file_created_success": "Filen har skapats",
     "file_delete_success": "Filen har raderats",

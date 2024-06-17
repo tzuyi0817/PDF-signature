@@ -40,6 +40,7 @@
     "create_file": "让我们创建一个新文件",
     "deleted_projects": "已删除的项目将显示在此处",
     "encryption_file": "设置密码以保护 PDF 文件",
+    "error_occurred": "发生未知错误，请刷新页面重新尝试",
     "file_archived_success": "文件成功归档",
     "file_created_success": "文件创建成功",
     "file_delete_success": "文件删除成功",

@@ -40,6 +40,7 @@
     "create_file": "تعال وأنشئ ملفًا جديدًا",
     "deleted_projects": "سيتم عرض العناصر المحذوفة هنا",
     "encryption_file": "تعيين كلمة مرور لحماية ملف PDF الخاص بك",
+    "error_occurred": "حدث خطأ غير معروف، يرجى تحديث الصفحة والمحاولة مرة أخرى",
     "file_archived_success": "تمت أرشفة الملف بنجاح",
     "file_created_success": "تم إنشاء الملف بنجاح",
     "file_delete_success": "تم حذف الملف بنجاح",

@@ -40,6 +40,7 @@
     "create_file": "Przyjdź i utwórz nowy plik",
     "deleted_projects": "Usunięte elementy będą wyświetlane tutaj",
     "encryption_file": "Ustaw hasło, aby chronić plik PDF",
+    "error_occurred": "Wystąpił nieznany błąd. Proszę odświeżyć stronę i spróbować ponownie",
     "file_archived_success": "Plik został pomyślnie zarchiwizowany",
     "file_created_success": "Plik został pomyślnie utworzony",
     "file_delete_success": "Plik został pomyślnie usunięty",

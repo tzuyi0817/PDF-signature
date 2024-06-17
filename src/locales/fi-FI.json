@@ -40,6 +40,7 @@
     "create_file": "Tule ja luo uusi tiedosto",
     "deleted_projects": "Poistetut kohteet näytetään täällä",
     "encryption_file": "Aseta salasana suojataksesi PDF-tiedostosi",
+    "error_occurred": "Tapahtui tuntematon virhe. Päivitä sivu ja yritä uudelleen",
     "file_archived_success": "Tiedosto arkistoitu onnistuneesti",
     "file_created_success": "Tiedosto luotu onnistuneesti",
     "file_delete_success": "Tiedosto poistettu onnistuneesti",
