@@ -12,7 +12,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "fabric": "^5.3.0",
+    "fabric": "^6.0.2",
     "idb-keyval": "^6.2.1",
     "jspdf": "^2.5.1",
     "pdfjs-dist": "^4.3.136",
