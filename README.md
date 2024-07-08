@@ -34,8 +34,8 @@ Clone this repository and install dependencies by running `pnpm`(Node.js version
 
 - Frontend: vue3, typescript, tailwindcss, pinia
 - Environment construction: vite, eslint, prettier
-- PDF Handling: pdfjs-dist, jspdf
-- Signature Drawing: fabric.js
+- PDF Handling: jspdf
+- Signature Drawing: [@component-hook/pdf-canvas](https://github.com/tzuyi0817/component-hook/tree/master/packages/pdf-canvas#readme)
 - Internationalization: vue-i18n
 - Local Storage: idb-keyval
 
