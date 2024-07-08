@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.3.2](https://github.com/tzuyi0817/PDF-signature/compare/v0.3.1...v0.3.2) (2024-07-08)
+
+### Refactors
+
+- Use own component package combining `fabric` and `pdfjs-dist` ([@component-hook/pdf-canvas](https://www.npmjs.com/package/@component-hook/pdf-canvas))
+
 ## [0.3.1](https://github.com/tzuyi0817/PDF-signature/compare/v0.3.0...v0.3.1) (2024-06-17)
 
 ### Features
