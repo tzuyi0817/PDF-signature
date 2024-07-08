@@ -80,7 +80,7 @@ async function readerFile(files?: FileList | null) {
 function dragImage(event: DragEvent) {
   const target = event.target as HTMLImageElement;
 
-  event.dataTransfer?.setData('text/plain', target.src);
+  event.dataTransfer?.setData('image', target.src);
 }
 
 function close() {

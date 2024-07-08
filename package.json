@@ -12,10 +12,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "fabric": "^5.3.0",
+    "@component-hook/pdf-canvas": "^0.1.1",
     "idb-keyval": "^6.2.1",
     "jspdf": "^2.5.1",
-    "pdfjs-dist": "^4.3.136",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
     "vue": "^3.4.31",
@@ -25,7 +24,6 @@
   "devDependencies": {
     "@intlify/unplugin-vue-i18n": "^4.0.0",
     "@rushstack/eslint-patch": "^1.10.3",
-    "@types/fabric": "^5.3.7",
     "@types/node": "^20.14.9",
     "@vitejs/plugin-vue": "^5.0.5",
     "@vue/eslint-config-prettier": "^9.0.0",

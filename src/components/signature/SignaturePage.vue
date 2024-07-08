@@ -10,7 +10,7 @@ const emit = defineEmits(['usePage']);
 const currentTool = defineModel<SignatureTool | ''>('currentTool');
 const currentPage = ref(1);
 const { currentPDF } = storeToRefs(usePdfStore());
-const SignaturePageItem = defineAsyncComponent(() => import('@/components/signature/SignaturePageItem.vue'));
+const SignaturePageItem = defineAsyncComponent(() => import('@component-hook/pdf-canvas'));
 
 function selectPage(page: number) {
   currentPage.value = page;
@@ -49,7 +49,10 @@ function close() {
         <suspense>
           <signature-page-item
             :file="currentPDF"
+            canvas-id="PDF-page-canvas"
             :page="page"
+            canvas-class="border-2 border-gray-20"
+            :file-scale="0.3"
           />
           <template #fallback>
             <div class="h-28 animate-pulse leading-[112px] text-center">Loading...</div>

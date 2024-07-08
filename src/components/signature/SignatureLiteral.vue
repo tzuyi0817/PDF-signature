@@ -72,7 +72,7 @@ function toggleLiteralPopup(isOpen: boolean, isEdit = false) {
 function dragLiteral(event: DragEvent) {
   const target = event.target as HTMLPreElement;
 
-  event.dataTransfer?.setData('text/plain', target.innerText);
+  event.dataTransfer?.setData('text', target.innerText);
 }
 
 function close() {
@@ -107,19 +107,17 @@ function close() {
           'rounded-[20px] relative w-full flex cursor-pointer px-3 py-4',
           currentSelect === literal ? 'bg-primary opacity-70' : 'bg-white',
         ]"
+        draggable="true"
+        @dragstart="dragLiteral"
         @click="selectLiteral(literal)"
       >
-        <p
-          class="whitespace-pre-wrap w-full text-ellipsis overflow-hidden"
-          draggable="true"
-          @dragstart="dragLiteral"
-        >
-          {{ literal }}
+        <p class="whitespace-pre-wrap w-full text-ellipsis overflow-hidden">
+          <span class="inline">{{ literal }}</span>
           <sign-icon
             v-show="currentSelect === literal"
             name="edit"
             class="w-5 h-5 text-gray-80 inline relative scale-150 -top-[2px]"
-            hover-color="hover:text-pen-blue"
+            hover-color="hover:text-green-600"
             @click="toggleLiteralPopup(true, true)"
           />
         </p>

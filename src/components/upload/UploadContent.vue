@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted, defineAsyncComponent, onBeforeUnmount } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useFabric } from '@component-hook/pdf-canvas';
 import { usePdfStore, useConfigStore } from '@/store';
 import SignStepBtn from '@/components/SignStepBtn.vue';
 import SignIcon from '@/components/SignIcon.vue';
 import SignVersion from '@/components/SignVersion.vue';
-import useFabric from '@/hooks/useFabric';
 import useWarnPopup from '@/hooks/useWarnPopup';
 import toast from '@/utils/toast';
 import { sleep } from '@/utils/common';
@@ -16,8 +16,9 @@ const fileName = ref('');
 const projectName = ref('');
 const isShowPen = ref(true);
 const isShowPasswordPopup = ref(false);
+const pages = ref(1);
 const { t, locale } = useI18n();
-const { createCanvas, drawPDF, drawImage, pages, deleteCanvas } = useFabric('canvas');
+const { createCanvas, deleteCanvas, loadFile } = useFabric('canvas');
 const { isShowWarnPopup, SignPopup, goBack, goPage, toggleWarnPopup } = useWarnPopup();
 const { toggleLoading, updateFilePassword } = useConfigStore();
 const UploadPassword = defineAsyncComponent(() => import('@/components/upload/UploadPassword.vue'));
@@ -49,9 +50,16 @@ function readerFile(files?: FileList | null) {
 
 async function renderFile(file: File) {
   try {
+    const { setCurrentPDF } = usePdfStore();
+    const { filePassword } = useConfigStore();
+
     toggleLoading({ isShow: true, title: 'upload_file', content: 'file_uploading' });
-    file.type === 'application/pdf' ? await drawPDF(file) : drawImage(file);
     await sleep();
+    const fileContent = await loadFile(file, filePassword);
+
+    if (!fileContent) throw new Error('File content is empty');
+    setCurrentPDF(fileContent);
+    pages.value = fileContent.pages;
     toast.showToast(t('prompt.file_upload_success'), 'success');
     fileName.value = file.name;
     projectName.value = file.name.replace(regexp, '');

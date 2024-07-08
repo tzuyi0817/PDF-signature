@@ -19,7 +19,7 @@ import toast from '@/utils/toast';
 import { sleep } from '@/utils/common';
 import type { SignatureTool } from '@/types/menu';
 
-const SignatureCanvasItem = defineAsyncComponent(() => import('@/components/signature/SignatureCanvasItem.vue'));
+const SignatureCanvasItem = defineAsyncComponent(() => import('@component-hook/pdf-canvas'));
 const currentTool = ref<SignatureTool | ''>('');
 const isCancelMerge = ref(false);
 const currentPage = ref(1);
@@ -27,13 +27,13 @@ const isShowNextWarnPopup = ref(false);
 const isShowMergePopup = ref(false);
 const signatureCanvasItems = ref<InstanceType<typeof SignatureCanvasItem>[] | null>(null);
 const fileContainerRef = ref<HTMLDivElement | null>(null);
-const fileContainerWidth = ref(0);
+const fileScale = ref(0);
 const fileZoom = ref(1);
 const { currentPDF } = storeToRefs(usePdfStore());
 const { t } = useI18n();
 const { isShowWarnPopup, SignPopup, goBack, goPage, toggleWarnPopup } = useWarnPopup();
 
-useResize(updateFileContainerWidth);
+useResize(updateFileScale);
 
 async function mergeFile() {
   toggleNextWarnPopup(false);
@@ -44,10 +44,10 @@ async function mergeFile() {
     try {
       if (!signatureCanvasItems.value) return;
       const { setCurrentPDFCanvas, addPDF, updatePDF } = usePdfStore();
-      const canvas = signatureCanvasItems.value.map(({ canvasDom }) => {
-        if (!canvasDom) return '';
+      const canvas = signatureCanvasItems.value.map(({ canvasRef }) => {
+        if (!canvasRef) return '';
 
-        return canvasDom.toDataURL('image/png', 1.0);
+        return canvasRef.toDataURL('image/png', 1.0);
       });
 
       await sleep(2000);
@@ -75,7 +75,7 @@ function addFabric(value: string, type?: string) {
   const proxy = signatureCanvasItems.value.at(currentPage.value - 1);
   if (!proxy) return;
 
-  type === 'text' ? proxy.addTextFabric(value) : proxy.addFabric(value);
+  type === 'text' ? proxy.addText(value) : proxy.addImage(value);
 }
 
 function usePage(page: number) {
@@ -92,9 +92,12 @@ function toggleMergePopup(isOpen: boolean) {
   isShowMergePopup.value = isOpen;
 }
 
-async function updateFileContainerWidth() {
+async function updateFileScale() {
   await nextTick();
-  fileContainerWidth.value = fileContainerRef.value?.clientWidth ?? 0;
+  const width = fileContainerRef.value?.clientWidth ?? 0;
+  const SCALE_BASE = 140;
+
+  fileScale.value = (width || SCALE_BASE) / SCALE_BASE;
 }
 
 function giveUpSignature() {
@@ -107,7 +110,7 @@ function cancelMergeFile() {
   toggleMergePopup(false);
 }
 
-onMounted(updateFileContainerWidth);
+onMounted(updateFileScale);
 </script>
 
 <template>
@@ -148,10 +151,13 @@ onMounted(updateFileContainerWidth);
               <signature-canvas-item
                 v-show="currentPage === page"
                 ref="signatureCanvasItems"
-                :file-container-width="fileContainerWidth"
+                class="absolute py-5 px-3 origin-top-left md:py-10 md:px-14"
                 :file="currentPDF"
                 :file-zoom="fileZoom"
+                :file-scale="fileScale"
                 :page="page"
+                :canvas-scale="0.6"
+                is-drop
               />
               <template
                 v-if="currentPage === page"

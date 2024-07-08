@@ -41,7 +41,7 @@ function toggleDrawPopup(isOpen: boolean) {
 function dragSignature(event: DragEvent) {
   const target = event.target as HTMLImageElement;
 
-  event.dataTransfer?.setData('text/plain', target.src);
+  event.dataTransfer?.setData('image', target.src);
 }
 
 function close() {
