@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, defineAsyncComponent } from 'vue';
 import { storeToRefs } from 'pinia';
-import { usePdfStore } from '@/store';
+import { usePdfStore, useConfigStore } from '@/store';
 import SignaturePopup from '@/components/signature/SignaturePopup.vue';
 import { isDesktop } from '@/utils/common';
 import type { SignatureTool } from '@/types/menu';
@@ -10,6 +10,7 @@ const emit = defineEmits(['usePage']);
 const currentTool = defineModel<SignatureTool | ''>('currentTool');
 const currentPage = ref(1);
 const { currentPDF } = storeToRefs(usePdfStore());
+const configStore = useConfigStore();
 const SignaturePageItem = defineAsyncComponent(() => import('@component-hook/pdf-canvas'));
 
 function selectPage(page: number) {
@@ -53,6 +54,7 @@ function close() {
             :page="page"
             canvas-class="border-2 border-gray-20"
             :file-scale="0.3"
+            :password="configStore.filePassword"
           />
           <template #fallback>
             <div class="h-28 animate-pulse leading-[112px] text-center">Loading...</div>

@@ -30,6 +30,7 @@ const fileContainerRef = ref<HTMLDivElement | null>(null);
 const fileScale = ref(0);
 const fileZoom = ref(1);
 const { currentPDF } = storeToRefs(usePdfStore());
+const configStore = useConfigStore();
 const { t } = useI18n();
 const { isShowWarnPopup, SignPopup, goBack, goPage, toggleWarnPopup } = useWarnPopup();
 
@@ -59,7 +60,6 @@ async function mergeFile() {
       const file = { ...currentPDF.value, PDFBase64: '', updateDate: Date.now() };
 
       file.isUpdate ? updatePDF(file) : addPDF(file);
-      useConfigStore().updateFilePassword('');
       toast.showToast(t('prompt.file_created_success'), 'success');
       goPage('complete');
     } catch {
@@ -157,6 +157,7 @@ onMounted(updateFileScale);
                 :file-scale="fileScale"
                 :page="page"
                 :canvas-scale="0.6"
+                :password="configStore.filePassword"
                 is-drop
               />
               <template

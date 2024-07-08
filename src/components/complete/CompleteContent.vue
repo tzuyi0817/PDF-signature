@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref, computed, defineAsyncComponent, onBeforeUnmount } from 'vue';
+import { ref, computed, defineAsyncComponent, onBeforeMount, onBeforeUnmount } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
-import { usePdfStore } from '@/store';
+import { usePdfStore, useConfigStore } from '@/store';
 import SignIcon from '@/components/SignIcon.vue';
 import SignVersion from '@/components/SignVersion.vue';
 import useWarnPopup from '@/hooks/useWarnPopup';
@@ -43,6 +43,7 @@ function toggleEncryptPopup(isShow: boolean) {
   iShowEncryptPopup.value = isShow;
 }
 
+onBeforeMount(() => useConfigStore().updateFilePassword(''));
 onBeforeUnmount(() => {
   usePdfStore().clearCurrentPDF();
 });
