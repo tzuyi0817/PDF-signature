@@ -1,13 +1,27 @@
-# PDF Signature
+<p align="center">
+  <img src="./public/logo.png" height="150">
+</p>
+
+<h1 align="center">PDF Signature</h1>
+
+<p align="center">
+  This is a web application for <code>signing PDF</code> documents online.
+</p>
+
+<p align="center">
+  <img alt="GitHub Release" src="https://img.shields.io/github/v/release/tzuyi0817/PDF-signature?label=%20&color=%23B7EC5D">
+</p>
+
+<br>
+<br>
+
+![image](./public/cover.jpg)
 
 ## Description
 
-This is a web application for `signing PDF` documents online.  
 Users can upload PDF files, sign them online, and download the signed PDF files.  
 The application also supports setting PDF passwords and storing PDF files in the local `IndexedDB`.  
 Signatures, text, and images are stored in `localStorage` for reuse.
-
-![image](./public/cover.jpg)
 
 ## Features
 

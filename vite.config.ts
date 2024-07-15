@@ -45,10 +45,6 @@ export default defineConfig({
     rollupOptions: {
       output: {
         chunkFileNames: 'chunks/[name]-[hash].js',
-        manualChunks: filepath => {
-          if (filepath.includes('pdf.worker')) return 'pdf.worker';
-          if (filepath.includes('pdf.mjs')) return 'pdf.mjs';
-        },
       },
     },
   },

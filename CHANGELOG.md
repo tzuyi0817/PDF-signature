@@ -4,7 +4,7 @@
 
 ### Refactors
 
-- Use own component package combining `fabric` and `pdfjs-dist` ([@component-hook/pdf-canvas](https://www.npmjs.com/package/@component-hook/pdf-canvas))
+- use own component package combining `fabric` and `pdfjs-dist` ([@component-hook/pdf-canvas](https://www.npmjs.com/package/@component-hook/pdf-canvas))
 
 ## [0.3.1](https://github.com/tzuyi0817/PDF-signature/compare/v0.3.0...v0.3.1) (2024-06-17)
 
@@ -22,7 +22,7 @@
 
 ### Features
 
-- Support more languages
+- support more languages
 
 ## [0.2.0](https://github.com/tzuyi0817/PDF-signature/compare/v0.1.0...v0.2.0) (2024-05-15)
 
