@@ -30,7 +30,7 @@
     "@vue/eslint-config-typescript": "^13.0.0",
     "autoprefixer": "^10.4.19",
     "cssnano": "^7.0.4",
-    "eslint": "^9.6.0",
+    "eslint": "^9.7.0",
     "eslint-plugin-security": "^3.0.1",
     "eslint-plugin-vue": "^9.27.0",
     "globals": "^15.8.0",
@@ -66,7 +66,7 @@
   },
   "pnpm": {
     "overrides": {
-      "@typescript-eslint/typescript-estree": "^7.15.0"
+      "@typescript-eslint/typescript-estree": "^7.16.0"
     }
   }
 }
