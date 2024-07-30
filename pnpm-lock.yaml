@@ -52,6 +52,9 @@ importers:
       '@intlify/unplugin-vue-i18n':
         specifier: ^4.0.0
         version: 4.0.0(rollup@2.79.1)(vue-i18n@9.13.1(vue@3.4.34(typescript@5.5.4)))
+      '@playwright/test':
+        specifier: ^1.45.3
+        version: 1.45.3
       '@rushstack/eslint-patch':
         specifier: ^1.10.4
         version: 1.10.4
@@ -76,6 +79,9 @@ importers:
       eslint:
         specifier: ^9.8.0
         version: 9.8.0
+      eslint-plugin-playwright:
+        specifier: ^1.6.2
+        version: 1.6.2(eslint@9.8.0)
       eslint-plugin-security:
         specifier: ^3.0.1
         version: 3.0.1
@@ -1087,6 +1093,11 @@ packages:
   '@pkgr/core@0.1.0':
     resolution: {integrity: sha512-Zwq5OCzuwJC2jwqmpEQt7Ds1DTi6BWSwoGkbb1n9pO3hzb35BoJELx7c0T23iDkBGkh2e7tvOtjF3tr3OaQHDQ==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
+
+  '@playwright/test@1.45.3':
+    resolution: {integrity: sha512-UKF4XsBfy+u3MFWEH44hva1Q8Da28G6RFtR2+5saw+jgAFQV5yYnB1fu68Mz7fO+5GJF3wgwAIs0UelU8TxFrA==}
+    engines: {node: '>=18'}
+    hasBin: true
 
   '@rollup/plugin-babel@5.3.1':
     resolution: {integrity: sha512-WFfdLWU/xVWKeRQnKmIAQULUI7Il0gZnBIH/ZFO069wYIfPu+8zrfp/KMW0atmELoRDq8FbiP3VCss9MhCut7Q==}
@@ -2264,6 +2275,16 @@ packages:
     peerDependencies:
       eslint: '>=7.0.0'
 
+  eslint-plugin-playwright@1.6.2:
+    resolution: {integrity: sha512-mraN4Em3b5jLt01q7qWPyLg0Q5v3KAWfJSlEWwldyUXoa7DSPrBR4k6B6LROLqipsG8ndkwWMdjl1Ffdh15tag==}
+    engines: {node: '>=16.6.0'}
+    peerDependencies:
+      eslint: '>=8.40.0'
+      eslint-plugin-jest: '>=25'
+    peerDependenciesMeta:
+      eslint-plugin-jest:
+        optional: true
+
   eslint-plugin-prettier@5.1.2:
     resolution: {integrity: sha512-dhlpWc9vOwohcWmClFcA+HjlvUpuyynYs0Rf+L/P6/0iQE6vlHW9l5bkfzN62/Stm9fbq8ku46qzde76T1xlSg==}
     engines: {node: ^14.18.0 || >=16.0.0}
@@ -2471,6 +2492,11 @@ packages:
 
   fs.realpath@1.0.0:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
+
+  fsevents@2.3.2:
+    resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
+    engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
+    os: [darwin]
 
   fsevents@2.3.3:
     resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
@@ -3469,6 +3495,16 @@ packages:
 
   pkg-types@1.0.3:
     resolution: {integrity: sha512-nN7pYi0AQqJnoLPC9eHFQ8AcyaixBUOwvqc5TDnIKCMEE6I0y8P7OKA7fPexsXGCGxQDl/cmrLAp26LhcwxZ4A==}
+
+  playwright-core@1.45.3:
+    resolution: {integrity: sha512-+ym0jNbcjikaOwwSZycFbwkWgfruWvYlJfThKYAlImbxUgdWFO2oW70ojPm4OpE4t6TAo2FY/smM+hpVTtkhDA==}
+    engines: {node: '>=18'}
+    hasBin: true
+
+  playwright@1.45.3:
+    resolution: {integrity: sha512-QhVaS+lpluxCaioejDZ95l4Y4jSFCsBvl2UZkpeXlzxmqS+aABr5c82YmfMHrL6x27nvrvykJAFpkzT2eWdJww==}
+    engines: {node: '>=18'}
+    hasBin: true
 
   posix-character-classes@0.1.1:
     resolution: {integrity: sha512-xTgYBc3fuo7Yt7JbiuFxSYGToMoz8fLoE6TC9Wx1P/u+LfeThMOAqmuyECnlBaaJb+u1m9hHiXUEtwW4OzfUJg==}
@@ -5793,6 +5829,10 @@ snapshots:
 
   '@pkgr/core@0.1.0': {}
 
+  '@playwright/test@1.45.3':
+    dependencies:
+      playwright: 1.45.3
+
   '@rollup/plugin-babel@5.3.1(@babel/core@7.24.6)(rollup@2.79.1)':
     dependencies:
       '@babel/core': 7.24.6
@@ -7134,6 +7174,11 @@ snapshots:
     dependencies:
       eslint: 9.8.0
 
+  eslint-plugin-playwright@1.6.2(eslint@9.8.0):
+    dependencies:
+      eslint: 9.8.0
+      globals: 13.24.0
+
   eslint-plugin-prettier@5.1.2(eslint-config-prettier@9.1.0(eslint@9.8.0))(eslint@9.8.0)(prettier@3.2.5):
     dependencies:
       eslint: 9.8.0
@@ -7413,6 +7458,9 @@ snapshots:
     optional: true
 
   fs.realpath@1.0.0: {}
+
+  fsevents@2.3.2:
+    optional: true
 
   fsevents@2.3.3:
     optional: true
@@ -8436,6 +8484,14 @@ snapshots:
       jsonc-parser: 3.2.0
       mlly: 1.4.2
       pathe: 1.1.1
+
+  playwright-core@1.45.3: {}
+
+  playwright@1.45.3:
+    dependencies:
+      playwright-core: 1.45.3
+    optionalDependencies:
+      fsevents: 2.3.2
 
   posix-character-classes@0.1.1: {}
 
