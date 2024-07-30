@@ -1,22 +1,22 @@
-/* eslint-env node */
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-// import '@rushstack/eslint-patch/modern-module-resolution';
 import { FlatCompat } from '@eslint/eslintrc';
-import js from '@eslint/js';
 import globals from 'globals';
+import pluginJs from '@eslint/js';
 import pluginVue from 'eslint-plugin-vue';
 import pluginSecurity from 'eslint-plugin-security';
+import pluginPlaywright from 'eslint-plugin-playwright';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const compat = new FlatCompat({
   baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
+  recommendedConfig: pluginJs.configs.recommended,
 });
 
 export default [
   ...pluginVue.configs['flat/recommended'],
+  pluginJs.configs.recommended,
   ...compat.extends('@vue/eslint-config-typescript/recommended'),
   ...compat.extends('@vue/eslint-config-prettier/skip-formatting'),
   pluginSecurity.configs.recommended,
@@ -57,6 +57,10 @@ export default [
       '@typescript-eslint/no-shadow': 'error',
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '_' }],
     },
+  },
+  {
+    files: ['**/__tests__/e2e/**/*.spec.[jt]s?(x)'],
+    ...pluginPlaywright.configs['flat/recommended'],
   },
   {
     ignores: ['node_modules/*', 'dist/*', 'pnpm-lock.yaml', '.github/*', '*.config.ts', '**/*.d.ts'],
