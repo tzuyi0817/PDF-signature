@@ -12,5 +12,8 @@ jobs:
       - name: setup environment
         uses: tzuyi0817/coding-standards/.github/actions/setup-environment@main
 
-      - name: run unit test
-        run: pnpm test:unit
+      - name: install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: run e2e test
+        run: pnpm test:ci-e2e

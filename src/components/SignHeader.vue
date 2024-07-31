@@ -73,7 +73,11 @@ function closeLanguageMenu() {
         </teleport>
       </div>
 
-      <a href="https://github.com/tzuyi0817/PDF-signature">
+      <a
+        href="https://github.com/tzuyi0817/PDF-signature"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <sign-icon
           name="github"
           class="sign_header_icon text-gray-40"

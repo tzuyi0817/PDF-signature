@@ -25,3 +25,7 @@ dist-ssr
 
 # Visualizer
 stats.html
+
+# Test reports
+test-results
+playwright-report

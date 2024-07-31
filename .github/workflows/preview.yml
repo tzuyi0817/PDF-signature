@@ -9,11 +9,11 @@ on:
     types: [opened, synchronize, reopened]
 
 jobs:
-  # CI:
-  #   uses: './.github/workflows/ci.yml'
+  CI:
+    uses: './.github/workflows/ci.yml'
 
   deploy:
-    # needs: CI
+    needs: CI
     runs-on: ubuntu-latest
     environment: Preview
     outputs:

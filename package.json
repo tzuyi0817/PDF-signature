@@ -11,7 +11,7 @@
     "test:e2e": "playwright test --headed",
     "test:ui-e2e": "playwright test --ui",
     "test:ci-e2e": "playwright test",
-    "test:show-report-e2e": "playwright show-report",
+    "test:show-report": "playwright show-report",
     "prepare": "husky install",
     "preview": "vite preview"
   },
