@@ -1,4 +1,5 @@
 {
+  "id": "/pdf-signature",
   "name": "PDF Signature",
   "short_name": "PDF Sign",
   "start_url": ".",
