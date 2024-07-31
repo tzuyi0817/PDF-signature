@@ -6,6 +6,7 @@
   "packageManager": "pnpm@9.6.0",
   "scripts": {
     "dev": "vite",
+    "dev:e2e": "vite --port 8081",
     "build": "vue-tsc && vite build",
     "lint": "eslint --fix .",
     "test:e2e": "playwright test --headed",
