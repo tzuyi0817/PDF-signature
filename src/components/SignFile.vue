@@ -3,6 +3,7 @@ import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import SignIcon from '@/components/SignIcon.vue';
 import { usePdfStore } from '@/store';
+import { transformTimestamp } from '@/utils/common';
 import type { MenuTab } from '@/types/menu';
 import type { PDF } from '@/types/pdf';
 
@@ -20,10 +21,7 @@ const isShowMore = ref(false);
 const router = useRouter();
 const { addPDF, addArchive, addTrash, deleteArchive, deleteTrash, setCurrentPDF } = usePdfStore();
 const localTime = computed(() => {
-  const [date, time] = new Date(props.file.updateDate).toLocaleString('en-GB').split(',');
-  const [day, month, year] = date.split('/');
-
-  return `${year}-${month}-${day} ${time}`;
+  return transformTimestamp(props.file.updateDate);
 });
 
 const more = computed(() => {
@@ -151,6 +149,7 @@ function splitName(name: string) {
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           :class="['hidden', { 'md:block': isListStatus }]"
+          title="list icon"
         >
           <rect
             x="13"

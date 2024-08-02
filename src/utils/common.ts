@@ -39,3 +39,10 @@ export function isDesktop() {
 export function getDPR() {
   return window.devicePixelRatio ?? 1;
 }
+
+export function transformTimestamp(timestamp: number) {
+  const [date, time] = new Date(timestamp).toLocaleString('en-GB').split(',');
+  const [day, month, year] = date.split('/');
+
+  return `${year}-${month}-${day} ${time}`;
+}

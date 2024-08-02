@@ -80,6 +80,7 @@ function deleteFile() {
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         class="absolute left-1 top-0 transition-colors"
+        title="search icon"
       >
         <circle
           cx="19"
