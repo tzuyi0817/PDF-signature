@@ -26,7 +26,7 @@ export async function createMockFiles(page: Page) {
   await page.addScriptTag({ content: `${importModule}` });
 
   return page.evaluate(async mockFiles => {
-    const usePdfStore = await importModule<UsePdfStore>('/src/store/pdf');
+    const { usePdfStore } = await importModule<UsePdfStore>('/src/store/pdf');
     const { addPDF } = usePdfStore();
 
     mockFiles.forEach(async file => await addPDF(file));
@@ -37,7 +37,7 @@ export async function clearMockFiles(page: Page) {
   await page.addScriptTag({ content: `${importModule}` });
 
   return page.evaluate(async mockFiles => {
-    const usePdfStore = await importModule<UsePdfStore>('/src/store/pdf');
+    const { usePdfStore } = await importModule<UsePdfStore>('/src/store/pdf');
     const { deletePDF } = usePdfStore();
 
     mockFiles.forEach(async file => await deletePDF(file.PDFId));

@@ -4,6 +4,6 @@ import { useImageStore } from '@/store/image';
 import { useLiteralStore } from '@/store/literal';
 import { useConfigStore } from '@/store/config';
 
-export type UsePdfStore = typeof usePdfStore;
+export type UsePdfStore = { usePdfStore: typeof usePdfStore };
 
 export { usePdfStore, useSignatureStore, useImageStore, useLiteralStore, useConfigStore };
