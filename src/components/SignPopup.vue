@@ -15,7 +15,9 @@ onMounted(() => emit('childMounted'));
   <teleport to="body">
     <div class="sign_popup mask">
       <div class="sign_popup_box">
-        <h5 class="border-b-2 border-primary py-1 px-4 text-center font-medium md:pb-4">{{ title }}</h5>
+        <h5 class="border-b-2 border-primary py-1 px-4 text-center font-medium md:pb-4">
+          {{ title }}
+        </h5>
         <slot></slot>
       </div>
     </div>

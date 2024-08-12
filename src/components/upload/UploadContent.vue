@@ -6,8 +6,8 @@ import { usePdfStore, useConfigStore } from '@/store';
 import SignStepBtn from '@/components/SignStepBtn.vue';
 import SignIcon from '@/components/SignIcon.vue';
 import SignVersion from '@/components/SignVersion.vue';
-import useWarnPopup from '@/hooks/useWarnPopup';
-import toast from '@/utils/toast';
+import { useWarnPopup } from '@/hooks/useWarnPopup';
+import { toast } from '@/utils/toast';
 import { sleep } from '@/utils/common';
 import { checkFile } from '@/utils/reader';
 
@@ -110,7 +110,9 @@ onBeforeUnmount(deleteCanvas);
 
 <template>
   <div class="upload_content content">
-    <h5 class="title text-center">{{ $t('upload_file') }}</h5>
+    <h5 class="title text-center">
+      {{ $t('upload_file') }}
+    </h5>
     <div
       v-show="fileName"
       class="upload_content_box pt-3 md:pt-12"
@@ -128,8 +130,12 @@ onBeforeUnmount(deleteCanvas);
           >
           </canvas>
         </div>
-        <h5 class="w-full text-ellipsis overflow-hidden whitespace-nowrap text-center">{{ fileName }}</h5>
-        <p class="text-gray-40">{{ $t('page', pages) }}</p>
+        <h5 class="w-full text-ellipsis overflow-hidden whitespace-nowrap text-center">
+          {{ fileName }}
+        </h5>
+        <p class="text-gray-40">
+          {{ $t('page', pages) }}
+        </p>
       </div>
 
       <div class="w-full flex flex-col gap-4 items-center">
@@ -175,7 +181,9 @@ onBeforeUnmount(deleteCanvas);
       </button>
 
       <div class="text-center">
-        <h5 class="text-gray-40 mb-3 hidden md:block">{{ $t('prompt.or_drag_file') }}</h5>
+        <h5 class="text-gray-40 mb-3 hidden md:block">
+          {{ $t('prompt.or_drag_file') }}
+        </h5>
         <p class="text-gray-40 px-4 text-center">
           {{ $t('prompt.support_filetype', { type: locale === 'en-US' ? 'PDF, JPG, and PNG' : 'PDF、JPG、PNG' }) }}
         </p>
@@ -192,7 +200,9 @@ onBeforeUnmount(deleteCanvas);
       v-if="isShowWarnPopup"
       :title="$t('warn')"
     >
-      <p class="text-center">{{ $t('prompt.give_up_edit') }}</p>
+      <p class="text-center">
+        {{ $t('prompt.give_up_edit') }}
+      </p>
       <div class="flex justify-between md:justify-around">
         <button
           class="btn btn_base"

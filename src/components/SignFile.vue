@@ -16,7 +16,7 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-const emit = defineEmits(['open-warn-popup', 'open-encrypt-popup']);
+const emit = defineEmits(['openWarnPopup', 'openEncryptPopup']);
 const isShowMore = ref(false);
 const router = useRouter();
 const { addPDF, addArchive, addTrash, deleteArchive, deleteTrash, setCurrentPDF } = usePdfStore();
@@ -47,7 +47,7 @@ const more = computed(() => {
 
 function openEncryptPopup(file: PDF) {
   toggleMore(false);
-  emit('open-encrypt-popup', file);
+  emit('openEncryptPopup', file);
 }
 
 function editFile(file: PDF) {
@@ -67,7 +67,7 @@ function reductionTrash(file: PDF) {
 
 function openWarnPopup(file: PDF) {
   toggleMore(false);
-  emit('open-warn-popup', file);
+  emit('openWarnPopup', file);
 }
 
 function toggleMore(isOpen: boolean) {
@@ -141,7 +141,9 @@ function splitName(name: string) {
           class="flex-1"
           v-html="splitName(file.name)"
         ></p>
-        <p :class="['text-gray-40', { 'md:text-black md:w-[236px]': isListStatus }]">{{ localTime }}</p>
+        <p :class="['text-gray-40', { 'md:text-black md:w-[236px]': isListStatus }]">
+          {{ localTime }}
+        </p>
         <svg
           width="40"
           height="40"

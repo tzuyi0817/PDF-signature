@@ -18,7 +18,7 @@ const defaultState: ConfigStore = {
   filePassword: '',
 };
 
-export default defineStore('pdf_signature_config', {
+export const useConfigStore = defineStore('pdf_signature_config', {
   state: () => ({ ...defaultState }),
   actions: {
     toggleLoading({

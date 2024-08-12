@@ -26,13 +26,17 @@ usePdfStore().filterTrash();
       />
 
       <div class="text-gray-40 text-center">
-        <h5 class="mb-2">{{ $t('prompt.no_items') }}</h5>
+        <h5 class="mb-2">
+          {{ $t('prompt.no_items') }}
+        </h5>
         <p>{{ $t('prompt.deleted_projects') }}</p>
       </div>
     </div>
 
     <div class="absolute w-full flex justify-center left-0 -bottom-4 md:-bottom-3">
-      <p class="index_trash_warn">{{ $t('prompt.trash_shelf_life') }}</p>
+      <p class="index_trash_warn">
+        {{ $t('prompt.trash_shelf_life') }}
+      </p>
     </div>
   </div>
 </template>

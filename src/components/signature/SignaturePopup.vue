@@ -22,7 +22,9 @@ function close() {
     @close="close"
   />
   <div :class="['signature_popup z-[1]', isShowPopup ? 'translate-y-0 md:block' : 'translate-y-[100%] md:hidden']">
-    <h5 class="title text-center md:hidden">{{ title }}</h5>
+    <h5 class="title text-center md:hidden">
+      {{ title }}
+    </h5>
     <div class="signature_popup_content">
       <slot></slot>
     </div>

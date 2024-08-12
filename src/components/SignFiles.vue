@@ -3,7 +3,7 @@ import { ref, computed, defineAsyncComponent } from 'vue';
 import SignIcon from '@/components/SignIcon.vue';
 import SignFile from '@/components/SignFile.vue';
 import { usePdfStore } from '@/store';
-import useWarnPopup from '@/hooks/useWarnPopup';
+import { useWarnPopup } from '@/hooks/useWarnPopup';
 import type { MenuTab, FileShowStatus } from '@/types/menu';
 import type { PDF } from '@/types/pdf';
 
@@ -113,10 +113,14 @@ function deleteFile() {
     </label>
 
     <div class="hidden md:flex items-end w-full px-4 py-5">
-      <p class="text-sm w-[300px] pl-16">{{ isListStatus ? $t('setup_time') : '' }}</p>
+      <p class="text-sm w-[300px] pl-16">
+        {{ isListStatus ? $t('setup_time') : '' }}
+      </p>
 
       <div class="flex justify-between items-end flex-1">
-        <p class="text-sm">{{ isListStatus ? $t('project_name') : '' }}</p>
+        <p class="text-sm">
+          {{ isListStatus ? $t('project_name') : '' }}
+        </p>
         <div class="flex gap-1">
           <sign-icon
             name="list"
@@ -161,15 +165,21 @@ function deleteFile() {
         alt="search icon"
         class="mb-10"
       />
-      <h3 class="text-gray-40 text-center mb-3">{{ $t('prompt.un_found') }}</h3>
-      <p class="text-gray-40 text-center">{{ $t('prompt.try_another') }}</p>
+      <h3 class="text-gray-40 text-center mb-3">
+        {{ $t('prompt.un_found') }}
+      </h3>
+      <p class="text-gray-40 text-center">
+        {{ $t('prompt.try_another') }}
+      </p>
     </div>
 
     <sign-popup
       v-if="isShowWarnPopup"
       :title="$t('warn')"
     >
-      <p class="text-center">{{ $t('prompt.sure_delete_file') }}</p>
+      <p class="text-center">
+        {{ $t('prompt.sure_delete_file') }}
+      </p>
       <div class="flex justify-between md:justify-evenly">
         <button
           class="btn btn_base"

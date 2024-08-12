@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import SignPopup from '@/components/SignPopup.vue';
 import { storeToRefs } from 'pinia';
+import SignPopup from '@/components/SignPopup.vue';
 import { useConfigStore } from '@/store';
 
 const { loading } = storeToRefs(useConfigStore());
@@ -18,7 +18,9 @@ const { loading } = storeToRefs(useConfigStore());
         alt="loading gif"
       />
 
-      <h5 class="text-center text-gray-40">{{ $t(loading.content) }}</h5>
+      <h5 class="text-center text-gray-40">
+        {{ $t(loading.content) }}
+      </h5>
       <div
         v-if="loading.isProcess"
         class="w-[90%] h-2 rounded bg-gray-30"

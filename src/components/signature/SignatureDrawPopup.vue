@@ -3,7 +3,7 @@ import { ref, defineAsyncComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useSignatureStore } from '@/store';
 import SignIcon from '@/components/SignIcon.vue';
-import toast from '@/utils/toast';
+import { toast } from '@/utils/toast';
 import { isDesktop } from '@/utils/common';
 
 const emit = defineEmits(['close']);

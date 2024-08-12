@@ -4,9 +4,9 @@ import { useI18n } from 'vue-i18n';
 import SignPopup from '@/components/SignPopup.vue';
 import SignPassword from '@/components/SignPassword.vue';
 import { useConfigStore } from '@/store';
-import toast from '@/utils/toast';
+import { toast } from '@/utils/toast';
 
-const emit = defineEmits(['close-password']);
+const emit = defineEmits(['closePassword']);
 const password = ref('');
 const { t } = useI18n();
 
@@ -16,13 +16,15 @@ function confirmPassword() {
     return;
   }
   useConfigStore().updateFilePassword(password.value);
-  emit('close-password', true);
+  emit('closePassword', true);
 }
 </script>
 
 <template>
   <SignPopup :title="$t('warn')">
-    <p class="text-center my-5">{{ $t('prompt.protected_file') }}</p>
+    <p class="text-center my-5">
+      {{ $t('prompt.protected_file') }}
+    </p>
     <sign-password
       v-model="password"
       class="mb-4 mx-auto"
@@ -31,7 +33,7 @@ function confirmPassword() {
     <div class="flex justify-between md:justify-evenly">
       <button
         class="btn btn_base"
-        @click="emit('close-password')"
+        @click="emit('closePassword')"
       >
         {{ $t('not_yet') }}
       </button>

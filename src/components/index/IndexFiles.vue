@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { usePdfStore } from '@/store';
-import useRedirect from '@/hooks/useRedirect';
+import { useRedirect } from '@/hooks/useRedirect';
 import SignFiles from '@/components/SignFiles.vue';
 
 const { goPage } = useRedirect();
@@ -26,7 +26,9 @@ const { PDFList } = storeToRefs(usePdfStore());
         class="iconScale w-[80px] h-[80] md:w-[136px] md:h-[136px]"
         @click="goPage('upload')"
       />
-      <h3 class="text-center">{{ $t('prompt.create_file') }}</h3>
+      <h3 class="text-center">
+        {{ $t('prompt.create_file') }}
+      </h3>
     </div>
   </div>
 </template>

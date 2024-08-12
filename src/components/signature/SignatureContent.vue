@@ -13,9 +13,9 @@ import SignatureLoading from '@/components/signature/SignatureLoading.vue';
 import SignatureMergePopup from '@/components/signature/SignatureMergePopup.vue';
 import SignatureMagnifier from '@/components/signature/SignatureMagnifier.vue';
 import SignVersion from '@/components/SignVersion.vue';
-import useResize from '@/hooks/useResize';
-import useWarnPopup from '@/hooks/useWarnPopup';
-import toast from '@/utils/toast';
+import { useResize } from '@/hooks/useResize';
+import { useWarnPopup } from '@/hooks/useWarnPopup';
+import { toast } from '@/utils/toast';
 import { sleep } from '@/utils/common';
 import type { SignatureTool } from '@/types/menu';
 
@@ -115,7 +115,9 @@ onMounted(updateFileScale);
 
 <template>
   <div class="signature_content content">
-    <h5 class="title text-center">{{ $t('sign_file') }}</h5>
+    <h5 class="title text-center">
+      {{ $t('sign_file') }}
+    </h5>
 
     <div class="flex flex-col h-[calc(100%-88px)] md:flex-row">
       <div class="md:border-r-2 md:border-primary md:py-4 md:px-6">
@@ -183,7 +185,9 @@ onMounted(updateFileScale);
       v-if="isShowWarnPopup"
       :title="$t('warn')"
     >
-      <p class="text-center">{{ $t('prompt.sure_discard_edited_content') }}</p>
+      <p class="text-center">
+        {{ $t('prompt.sure_discard_edited_content') }}
+      </p>
       <div class="flex justify-between md:justify-evenly">
         <button
           class="btn btn_base"
@@ -204,7 +208,9 @@ onMounted(updateFileScale);
       v-if="isShowNextWarnPopup"
       :title="$t('create_file')"
     >
-      <p class="text-center">{{ $t('prompt.sure_completed_sign') }}</p>
+      <p class="text-center">
+        {{ $t('prompt.sure_completed_sign') }}
+      </p>
       <div class="flex justify-between md:justify-evenly">
         <button
           class="btn btn_base"

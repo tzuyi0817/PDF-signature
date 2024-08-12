@@ -26,7 +26,7 @@ const defaultState: PDFStore = {
   trashList: [],
 };
 
-export default defineStore('pdf_signature_pdf', {
+export const usePdfStore = defineStore('pdf_signature_pdf', {
   state: () => ({ ...defaultState }),
   getters: {},
   actions: {

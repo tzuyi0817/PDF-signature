@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import toast from '@/utils/toast';
+import { toast } from '@/utils/toast';
 
 const { msg, status, isShowToast, closeToast } = toast;
 
@@ -9,7 +9,9 @@ const close = closeToast.bind(toast);
 <template>
   <div :class="['sign_toast_container', { 'sign_toast-show': isShowToast }]">
     <div :class="['sign_toast', status === 'success' ? 'bg-primary-dark/90' : 'bg-danger/90']">
-      <p class="highlight text-white whitespace-nowrap text-ellipsis overflow-hidden w-fit">{{ msg }}</p>
+      <p class="highlight text-white whitespace-nowrap text-ellipsis overflow-hidden w-fit">
+        {{ msg }}
+      </p>
       <img
         src="@/assets/icon/ic_close_s_white.svg"
         class="cursor-pointer w-10 h-10"

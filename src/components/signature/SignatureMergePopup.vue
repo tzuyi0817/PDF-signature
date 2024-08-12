@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-import useWarnPopup from '@/hooks/useWarnPopup';
+import { useWarnPopup } from '@/hooks/useWarnPopup';
 
 interface Props {
   isShowMergePopup: boolean;
@@ -29,8 +29,12 @@ const { SignPopup, goPage } = useWarnPopup();
         v-if="isMergeComplete"
         class="text-center"
       >
-        <h5 class="text-primary mb-[18px]">{{ $t('file_completed') }}</h5>
-        <p class="text-gray-40">{{ $t('prompt.auto_jump_screen') }}</p>
+        <h5 class="text-primary mb-[18px]">
+          {{ $t('file_completed') }}
+        </h5>
+        <p class="text-gray-40">
+          {{ $t('prompt.auto_jump_screen') }}
+        </p>
       </div>
       <h5
         v-else

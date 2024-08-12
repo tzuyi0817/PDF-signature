@@ -1,7 +1,7 @@
 import { onMounted, onBeforeUnmount } from 'vue';
 import { debounce } from '@/utils/common';
 
-function useResize(callback: () => void) {
+export function useResize(callback: () => void) {
   let previousWidth = 0;
   const debounceCallback = debounce(() => {
     if (previousWidth === window.innerWidth) return;
@@ -17,5 +17,3 @@ function useResize(callback: () => void) {
     window.removeEventListener('resize', debounceCallback);
   });
 }
-
-export default useResize;

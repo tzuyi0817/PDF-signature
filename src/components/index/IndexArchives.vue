@@ -24,7 +24,9 @@ const { archiveList } = storeToRefs(usePdfStore());
       />
 
       <div class="text-gray-40 text-center">
-        <h5 class="mb-2">{{ $t('prompt.no_items') }}</h5>
+        <h5 class="mb-2">
+          {{ $t('prompt.no_items') }}
+        </h5>
         <p>{{ $t('prompt.archived_projects') }}</p>
       </div>
     </div>

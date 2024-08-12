@@ -5,8 +5,8 @@ import { useI18n } from 'vue-i18n';
 import { useLiteralStore } from '@/store';
 import SignaturePopup from '@/components/signature/SignaturePopup.vue';
 import SignIcon from '@/components/SignIcon.vue';
-import useWarnPopup from '@/hooks/useWarnPopup';
-import toast from '@/utils/toast';
+import { useWarnPopup } from '@/hooks/useWarnPopup';
+import { toast } from '@/utils/toast';
 import type { SignatureTool } from '@/types/menu';
 
 const emit = defineEmits(['useLiteral']);
@@ -143,7 +143,9 @@ function close() {
         class="iconScale mb-5"
         @click="toggleLiteralPopup(true)"
       />
-      <h5 class="text-secondary text-center">{{ $t('add_commonly_use_text') }}</h5>
+      <h5 class="text-secondary text-center">
+        {{ $t('add_commonly_use_text') }}
+      </h5>
     </div>
   </signature-popup>
 
@@ -177,7 +179,9 @@ function close() {
     v-if="isShowWarnPopup"
     :title="$t('warn')"
   >
-    <p class="text-center">{{ $t('prompt.sure_delete_text') }}</p>
+    <p class="text-center">
+      {{ $t('prompt.sure_delete_text') }}
+    </p>
     <div class="flex justify-between md:justify-evenly">
       <button
         class="btn btn_base"

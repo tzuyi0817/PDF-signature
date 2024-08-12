@@ -5,8 +5,8 @@ import { useI18n } from 'vue-i18n';
 import { usePdfStore, useConfigStore } from '@/store';
 import SignIcon from '@/components/SignIcon.vue';
 import SignVersion from '@/components/SignVersion.vue';
-import useWarnPopup from '@/hooks/useWarnPopup';
-import toast from '@/utils/toast';
+import { useWarnPopup } from '@/hooks/useWarnPopup';
+import { toast } from '@/utils/toast';
 
 type WarnType = 'archive' | 'trash';
 
@@ -51,7 +51,9 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="complete_content content">
-    <h5 class="title text-center w-full">{{ $t('sign_completed') }}</h5>
+    <h5 class="title text-center w-full">
+      {{ $t('sign_completed') }}
+    </h5>
 
     <ul class="toolbar md:absolute md:right-10 md:top-5">
       <li>
@@ -104,7 +106,9 @@ onBeforeUnmount(() => {
       v-if="isShowWarnPopup"
       :title="$t('warn')"
     >
-      <p class="text-center">{{ $t(warnContent) }}</p>
+      <p class="text-center">
+        {{ $t(warnContent) }}
+      </p>
       <div class="flex justify-between md:justify-evenly">
         <button
           class="btn btn_base"

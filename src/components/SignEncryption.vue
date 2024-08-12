@@ -5,7 +5,7 @@ import SignPopup from '@/components/SignPopup.vue';
 import SignPassword from '@/components/SignPassword.vue';
 import { useConfigStore } from '@/store';
 import { downloadPDF } from '@/utils/jspdf';
-import toast from '@/utils/toast';
+import { toast } from '@/utils/toast';
 import type { PDF } from '@/types/pdf';
 
 interface Props {
@@ -13,7 +13,7 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-const emit = defineEmits(['close-encrypt-popup']);
+const emit = defineEmits(['closeEncryptPopup']);
 const password = ref('');
 const confirmPassword = ref('');
 const { t } = useI18n();
@@ -28,7 +28,7 @@ function download(isEncrypt: boolean) {
     toast.showToast(t('password_not_match'), 'error');
     return;
   }
-  emit('close-encrypt-popup');
+  emit('closeEncryptPopup');
   window.requestAnimationFrame(async () => {
     if (!props.file) return;
     const userPassword = isEncrypt ? password.value : '';
@@ -42,7 +42,9 @@ function download(isEncrypt: boolean) {
 
 <template>
   <SignPopup :title="$t('encryption')">
-    <p class="text-center my-5">{{ $t('prompt.encryption_file') }}</p>
+    <p class="text-center my-5">
+      {{ $t('prompt.encryption_file') }}
+    </p>
     <div class="mb-4 flex flex-col justify-center items-center gap-3">
       <sign-password
         v-model="password"

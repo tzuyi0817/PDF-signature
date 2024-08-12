@@ -6,8 +6,8 @@ import { useSignatureStore } from '@/store';
 import SignaturePopup from '@/components/signature/SignaturePopup.vue';
 import SignatureDrawPopup from '@/components/signature/SignatureDrawPopup.vue';
 import SignIcon from '@/components/SignIcon.vue';
-import useWarnPopup from '@/hooks/useWarnPopup';
-import toast from '@/utils/toast';
+import { useWarnPopup } from '@/hooks/useWarnPopup';
+import { toast } from '@/utils/toast';
 import type { SignatureTool } from '@/types/menu';
 
 const emit = defineEmits(['useSignature']);
@@ -106,7 +106,9 @@ function close() {
         class="iconScale mb-5"
         @click="toggleDrawPopup(true)"
       />
-      <h5 class="text-secondary text-center">{{ $t('add_signature_file') }}</h5>
+      <h5 class="text-secondary text-center">
+        {{ $t('add_signature_file') }}
+      </h5>
     </div>
   </signature-popup>
 
@@ -119,7 +121,9 @@ function close() {
     v-if="isShowWarnPopup"
     :title="$t('warn')"
   >
-    <p class="text-center">{{ $t('prompt.sure_delete_signature') }}</p>
+    <p class="text-center">
+      {{ $t('prompt.sure_delete_signature') }}
+    </p>
     <div class="flex justify-between">
       <button
         class="btn btn_base"

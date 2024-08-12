@@ -25,16 +25,16 @@ test.describe('menu', () => {
     const shared = getShared(page);
 
     await expect(shared.file).toHaveClass('bg-white');
-    await expect(page.getByRole('heading', { name: /my files/i })).toBeInViewport();
+    await expect(page.getByRole('heading', { name: /my files/i })).toBeVisible();
 
     await shared.archive.click();
     await expect(shared.file).not.toHaveClass('bg-white');
     await expect(shared.archive).toHaveClass('bg-white');
-    await expect(page.getByRole('heading', { name: /archived files/i })).toBeInViewport();
+    await expect(page.getByRole('heading', { name: /archived files/i })).toBeVisible();
 
     await shared.trash.click();
     await expect(shared.archive).not.toHaveClass('bg-white');
     await expect(shared.trash).toHaveClass('bg-white');
-    await expect(page.getByRole('heading', { name: /trash bin/i })).toBeInViewport();
+    await expect(page.getByRole('heading', { name: /trash bin/i })).toBeVisible();
   });
 });

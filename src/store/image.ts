@@ -8,7 +8,7 @@ const defaultState: ImageStore = {
   imageList: [],
 };
 
-export default defineStore('pdf_signature_image', {
+export const useImageStore = defineStore('pdf_signature_image', {
   state: () => ({ ...defaultState }),
   actions: {
     addImage(image: string) {

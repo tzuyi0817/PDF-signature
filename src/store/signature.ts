@@ -8,7 +8,7 @@ const defaultState: SignatureStore = {
   signatureList: [],
 };
 
-export default defineStore('pdf_signature_signature', {
+export const useSignatureStore = defineStore('pdf_signature_signature', {
   state: () => ({ ...defaultState }),
   actions: {
     addSignature(signature: string) {

@@ -5,8 +5,8 @@ import { useI18n } from 'vue-i18n';
 import { useImageStore, useConfigStore } from '@/store';
 import SignaturePopup from '@/components/signature/SignaturePopup.vue';
 import SignIcon from '@/components/SignIcon.vue';
-import useWarnPopup from '@/hooks/useWarnPopup';
-import toast from '@/utils/toast';
+import { useWarnPopup } from '@/hooks/useWarnPopup';
+import { toast } from '@/utils/toast';
 import { convertToBase64 } from '@/utils/image';
 import { checkFile } from '@/utils/reader';
 import type { SignatureTool } from '@/types/menu';
@@ -145,7 +145,9 @@ function close() {
         class="iconScale mb-5"
         @click="toggleImagePopup(true)"
       />
-      <h5 class="text-secondary text-center">{{ $t('add_picture') }}</h5>
+      <h5 class="text-secondary text-center">
+        {{ $t('add_picture') }}
+      </h5>
     </div>
   </signature-popup>
 
@@ -173,7 +175,9 @@ function close() {
       </button>
 
       <div class="text-center">
-        <h5 class="text-gray-40 mb-3 hidden md:block">{{ $t('prompt.or_drag_file') }}</h5>
+        <h5 class="text-gray-40 mb-3 hidden md:block">
+          {{ $t('prompt.or_drag_file') }}
+        </h5>
         <p class="text-gray-40 px-4 text-center">
           {{ $t('prompt.support_filetype', { type: locale === 'en-US' ? 'JPG and PNG' : 'JPG、PNG' }) }}
         </p>
@@ -192,7 +196,9 @@ function close() {
     v-if="isShowWarnPopup"
     :title="$t('warn')"
   >
-    <p class="text-center">{{ $t('prompt.sure_delete_picture') }}</p>
+    <p class="text-center">
+      {{ $t('prompt.sure_delete_picture') }}
+    </p>
     <div class="flex justify-between md:justify-evenly">
       <button
         class="btn btn_base"

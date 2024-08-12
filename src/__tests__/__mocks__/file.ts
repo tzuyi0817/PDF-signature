@@ -2,15 +2,12 @@ import { type Page } from '@playwright/test';
 import { importModule } from './common';
 import type { UsePdfStore } from '@/store';
 
+const MOCK_BASE64_IMAGE = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABw';
 export const MOCK_FILES = [
   {
     PDFBase64: '',
     PDFId: 'pdf-1722503077985',
-    canvas: [
-      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABw',
-      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABw',
-      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABw',
-    ],
+    canvas: [MOCK_BASE64_IMAGE, MOCK_BASE64_IMAGE, MOCK_BASE64_IMAGE],
     name: '員工福利補助申請作業',
     pages: 3,
     updateDate: 1722503086048,
@@ -18,7 +15,7 @@ export const MOCK_FILES = [
   {
     PDFBase64: '',
     PDFId: 'pdf-1722503018048',
-    canvas: ['data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABw', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABw'],
+    canvas: [MOCK_BASE64_IMAGE, MOCK_BASE64_IMAGE],
     name: '2023行事曆',
     pages: 2,
     updateDate: 1722503025664,

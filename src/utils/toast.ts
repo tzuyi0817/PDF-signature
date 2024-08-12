@@ -1,7 +1,7 @@
 import { ref } from 'vue';
 import { sleep } from './common';
 
-export default {
+export const toast = {
   msg: ref(''),
   status: ref('success'),
   isShowToast: ref(false),

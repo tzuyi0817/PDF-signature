@@ -1,5 +1,5 @@
+import { toast } from './toast';
 import i18n from '@/plugins/i18n';
-import toast from './toast';
 import { MAX_SIZE } from '@/configs/common';
 
 export function checkFile(files: FileList | null | undefined, regexp: RegExp, maxSize = MAX_SIZE) {
