@@ -10,7 +10,4 @@ export default [
     files: ['**/__tests__/e2e/**/*.spec.[jt]s?(x)'],
     ...componentHookPlugin.configs.playwright,
   },
-  {
-    ignores: ['**/vite-env.d.ts'],
-  },
 ];
