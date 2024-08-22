@@ -41,7 +41,10 @@ function download(isEncrypt: boolean) {
 </script>
 
 <template>
-  <SignPopup :title="$t('encryption')">
+  <SignPopup
+    :title="$t('encryption')"
+    @close-popup="$emit('closeEncryptPopup')"
+  >
     <p class="text-center my-5">
       {{ $t('prompt.encryption_file') }}
     </p>

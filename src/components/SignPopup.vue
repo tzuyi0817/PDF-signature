@@ -6,14 +6,17 @@ interface Props {
 }
 
 defineProps<Props>();
-const emit = defineEmits(['childMounted']);
+const emit = defineEmits(['childMounted', 'closePopup']);
 
 onMounted(() => emit('childMounted'));
 </script>
 
 <template>
   <teleport to="body">
-    <div class="sign_popup mask">
+    <div
+      class="sign_popup mask"
+      @click="$emit('closePopup')"
+    >
       <div class="sign_popup_box">
         <h5 class="border-b-2 border-primary py-1 px-4 text-center font-medium md:pb-4">
           {{ title }}
