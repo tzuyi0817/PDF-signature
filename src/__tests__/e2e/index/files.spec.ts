@@ -31,6 +31,7 @@ test.describe('files', () => {
       await expect(page.getByText(/setup time/i)).toBeInViewport();
       await expect(page.getByText(/project name/i)).toBeInViewport();
       await expect(page.getByTitle(/#icon-ic_list/i)).toBeInViewport();
+      await expect(page.getByTitle(/#icon-ic_list/i)).toHaveClass(/text-primary/g);
       await expect(page.getByTitle(/#icon-ic_card/i)).toBeInViewport();
 
       const elements = page.getByTitle(/list icon/i);
@@ -48,6 +49,73 @@ test.describe('files', () => {
 
       await expect(page.getByTitle(/search icon/i)).toBeInViewport();
       await expect(searchbar).toBeInViewport();
+
+      const searchIndex = 0;
+      const searchValue = MOCK_FILES[searchIndex].name.slice(0, 2);
+
+      await searchbar.fill(searchValue);
+
+      for (let index = 0; index < MOCK_FILES.length; index++) {
+        const { name } = MOCK_FILES[index];
+
+        index === searchIndex
+          ? await expect(page.getByText(name)).toBeInViewport()
+          : await expect(page.getByText(name)).not.toBeInViewport();
+      }
+    });
+
+    test('change to card mode', async ({ page }) => {
+      const cardIcon = page.getByTitle(/#icon-ic_card/i);
+
+      await cardIcon.click();
+      await expect(cardIcon).toHaveClass(/text-primary/g);
+      await expect(page.getByText(/setup time/i)).not.toBeInViewport();
+      await expect(page.getByText(/project name/i)).not.toBeInViewport();
+      await expect(page.getByTitle(/list icon/i)).not.toBeInViewport();
+    });
+
+    test('click on the download icon to download file', async ({ page }) => {
+      const { name } = MOCK_FILES[0];
+      const li = page.locator(`li:has-text("${name}")`);
+
+      await li.getByTitle(/#icon-ic_download/i).click();
+      await expect(page.getByRole('heading', { name: /encryption/i })).toBeInViewport();
+      await page.getByRole('button', { name: /not yet/i }).click();
+
+      const download = await page.waitForEvent('download');
+      const regex = new RegExp(`${name}\\.pdf`);
+
+      expect(download.suggestedFilename()).toMatch(regex);
+    });
+
+    test('click on the sign icon to redirect to signature page', async ({ page }) => {
+      const { name } = MOCK_FILES[0];
+      const li = page.locator(`li:has-text("${name}")`);
+
+      await li.getByTitle(/#icon-ic_sign/i).click();
+      await page.waitForURL('http://localhost:8081/signature');
+
+      expect(page.url()).toBe('http://localhost:8081/signature');
+    });
+
+    test('click on the archive icon to move file to archive', async ({ page }) => {
+      const { name } = MOCK_FILES[0];
+      const li = page.locator(`li:has-text("${name}")`);
+
+      await li.getByTitle(/#icon-ic_archive/i).click();
+      await expect(li).not.toBeInViewport();
+      await page.locator('li:has(img[alt="archive icon"])').click();
+      await expect(page.getByText(name)).toBeInViewport();
+    });
+
+    test('click on the trash icon to move file to trash', async ({ page }) => {
+      const { name } = MOCK_FILES[0];
+      const li = page.locator(`li:has-text("${name}")`);
+
+      await li.getByTitle(/#icon-ic_trash/i).click();
+      await expect(li).not.toBeInViewport();
+      await page.locator('li:has(img[alt="trash icon"])').click();
+      await expect(page.getByText(name)).toBeInViewport();
     });
   });
 });

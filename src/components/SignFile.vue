@@ -90,24 +90,25 @@ function splitName(name: string) {
 
 <template>
   <li :class="['sign_file flex flex-col', isListStatus ? 'md:flex-row' : 'md:w-[316px] md:flex-shrink-0 md:h-fit']">
-    <div :class="['transition-all md:hidden', isShowMore ? 'opacity-100 z-10' : 'opacity-0 -z-[1]']">
-      <div
-        v-if="isShowMore"
-        class="mask"
-        @click="toggleMore(false)"
-      ></div>
-      <ul class="sign_file_more bg-white">
-        <li
-          v-for="effect in more"
-          :key="effect.icon"
-        >
-          <sign-icon
-            :name="effect.icon"
-            class="w-10 h-10"
-            @click="effect.feat"
-          />
-        </li>
-      </ul>
+    <div :class="['transition-opacity md:hidden', isShowMore ? 'opacity-100 z-10' : 'opacity-0 -z-[1]']">
+      <template v-if="isShowMore">
+        <div
+          class="mask"
+          @click="toggleMore(false)"
+        ></div>
+        <ul class="sign_file_more bg-white">
+          <li
+            v-for="effect in more"
+            :key="effect.icon"
+          >
+            <sign-icon
+              :name="effect.icon"
+              class="w-10 h-10"
+              @click="effect.feat"
+            />
+          </li>
+        </ul>
+      </template>
     </div>
     <sign-icon
       v-if="more.length"
@@ -145,12 +146,13 @@ function splitName(name: string) {
           {{ localTime }}
         </p>
         <svg
+          v-if="isListStatus"
           width="40"
           height="40"
           viewBox="0 0 40 40"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          :class="['hidden', { 'md:block': isListStatus }]"
+          class="hidden md:block"
           title="list icon"
         >
           <rect
