@@ -51,17 +51,12 @@ test.describe('files', () => {
       await expect(searchbar).toBeInViewport();
 
       const searchIndex = 0;
-      const searchValue = MOCK_FILES[searchIndex].name.slice(0, 2);
+      const { name } = MOCK_FILES[searchIndex];
+      const searchValue = name.slice(0, 2);
 
       await searchbar.fill(searchValue);
-
-      for (let index = 0; index < MOCK_FILES.length; index++) {
-        const { name } = MOCK_FILES[index];
-
-        index === searchIndex
-          ? await expect(page.getByText(name)).toBeInViewport()
-          : await expect(page.getByText(name)).not.toBeInViewport();
-      }
+      await expect(page.getByText(name)).toBeInViewport();
+      await expect(page.getByText(MOCK_FILES[1].name)).not.toBeInViewport();
     });
 
     test('change to card mode', async ({ page }) => {
@@ -74,18 +69,79 @@ test.describe('files', () => {
       await expect(page.getByTitle(/list icon/i)).not.toBeInViewport();
     });
 
-    test('click on the download icon to download file', async ({ page }) => {
+    test.describe('download file feature', () => {
       const { name } = MOCK_FILES[0];
-      const li = page.locator(`li:has-text("${name}")`);
 
-      await li.getByTitle(/#icon-ic_download/i).click();
-      await expect(page.getByRole('heading', { name: /encryption/i })).toBeInViewport();
-      await page.getByRole('button', { name: /not yet/i }).click();
+      test.beforeEach(async ({ page }) => {
+        const li = page.locator(`li:has-text("${name}")`);
 
-      const download = await page.waitForEvent('download');
-      const regex = new RegExp(`${name}\\.pdf`);
+        await li.getByTitle(/#icon-ic_download/i).click();
+      });
 
-      expect(download.suggestedFilename()).toMatch(regex);
+      test('show encryption popup', async ({ page }) => {
+        await expect(page.getByRole('heading', { name: /encryption/i })).toBeInViewport();
+        await expect(page.getByText(/set a password to protect your pdf file/i)).toBeInViewport();
+        await expect(page.getByPlaceholder('Please enter password', { exact: true })).toBeInViewport();
+        await expect(page.getByPlaceholder(/please enter password again/i, { exact: true })).toBeInViewport();
+      });
+
+      test('download file', async ({ page }) => {
+        await page.getByRole('button', { name: /not yet/i }).click();
+
+        const download = await page.waitForEvent('download');
+        const regex = new RegExp(`${name}\\.pdf`);
+
+        expect(download.suggestedFilename()).toMatch(regex);
+      });
+
+      test.describe('download file with encryption', () => {
+        const passwordPlaceholder = 'Please enter password';
+
+        test('click the eye icon to show password', async ({ page }) => {
+          const password = '123456';
+          const passwordInput = page.getByPlaceholder(passwordPlaceholder, { exact: true });
+          const passwordConfirmInput = page.getByPlaceholder(/please enter password again/i, { exact: true });
+
+          await passwordInput.fill(password);
+          await passwordConfirmInput.fill(password);
+
+          const icons = await page.getByTitle(/#icon-ic_eye_closed/i).all();
+
+          icons.reverse();
+          expect(icons.length).toBe(2);
+
+          for (const icon of icons) {
+            await icon.click();
+          }
+          await expect(passwordInput).toHaveAttribute('type', 'text');
+          await expect(passwordConfirmInput).toHaveAttribute('type', 'text');
+        });
+
+        test('without password', async ({ page }) => {
+          await page.getByRole('button', { name: /confirm/i }).click();
+          await expect(page.getByText(/password is required/i)).toBeInViewport();
+        });
+
+        test('with inconsistent password', async ({ page }) => {
+          await page.getByPlaceholder(passwordPlaceholder, { exact: true }).fill('123456');
+          await page.getByPlaceholder(/please enter password again/i, { exact: true }).fill('123');
+          await page.getByRole('button', { name: /confirm/i }).click();
+          await expect(page.getByText(/passwords are inconsistent/i)).toBeInViewport();
+        });
+
+        test('with correct password', async ({ page }) => {
+          const password = '123456';
+
+          await page.getByPlaceholder(passwordPlaceholder, { exact: true }).fill(password);
+          await page.getByPlaceholder(/please enter password again/i, { exact: true }).fill(password);
+          await page.getByRole('button', { name: /confirm/i }).click();
+
+          const download = await page.waitForEvent('download');
+          const regex = new RegExp(`${name}\\.pdf`);
+
+          expect(download.suggestedFilename()).toMatch(regex);
+        });
+      });
     });
 
     test('click on the sign icon to redirect to signature page', async ({ page }) => {
