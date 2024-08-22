@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.3.3](https://github.com/tzuyi0817/PDF-signature/compare/v0.3.2...v0.3.3) (2024-08-22)
+
+### Bug Fixes
+
+- click on the popup make to close encryption popup ([3dbe776](https://github.com/tzuyi0817/PDF-signature/commit/3dbe7766f64e53c293ecaa4393894d2376b5f549))
+
 ## [0.3.2](https://github.com/tzuyi0817/PDF-signature/compare/v0.3.1...v0.3.2) (2024-07-08)
 
 ### Refactors
