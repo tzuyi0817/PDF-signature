@@ -15,15 +15,15 @@ export function deepClone<T extends Record<string, unknown>>(obj: T, hash = new 
   return clone;
 }
 
-export function debounce(fun: unknown, time = 500) {
+export function debounce<T extends (...args: Parameters<T>) => ReturnType<T>>(fun: T, time = 500) {
   if (typeof fun !== 'function') throw new TypeError('The first argument is not a function.');
   let timer: NodeJS.Timeout | null = null;
 
-  return function (this: unknown, ...args: unknown[]) {
+  return function (this: void, ...args: Parameters<T>) {
     timer && clearTimeout(timer);
     timer = setTimeout(() => {
-      fun.apply(this, args);
       timer = null;
+      fun.apply(this, args);
     }, time);
   };
 }
@@ -36,13 +36,29 @@ export function isDesktop() {
   return window.innerWidth > 768;
 }
 
-export function getDPR() {
-  return window.devicePixelRatio ?? 1;
-}
-
 export function transformTimestamp(timestamp: number) {
   const [date, time] = new Date(timestamp).toLocaleString('en-GB').split(',');
   const [day, month, year] = date.split('/');
 
   return `${year}-${month}-${day} ${time}`;
+}
+
+export function monitorDevicePixelRatio(callback: (ratio: number) => void) {
+  let currentRatio = window.devicePixelRatio;
+
+  const mediaQuery = window.matchMedia(`(resolution: ${currentRatio}dppx)`);
+
+  const handleChange = () => {
+    const newRatio = window.devicePixelRatio;
+    if (newRatio !== currentRatio) {
+      currentRatio = newRatio;
+      callback(newRatio);
+    }
+  };
+
+  mediaQuery.addEventListener('change', handleChange);
+
+  return () => {
+    mediaQuery.removeEventListener('change', handleChange);
+  };
 }

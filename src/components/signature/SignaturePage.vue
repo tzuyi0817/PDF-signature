@@ -1,17 +1,19 @@
 <script setup lang="ts">
-import { ref, defineAsyncComponent } from 'vue';
+import { ref, defineAsyncComponent, onBeforeUnmount } from 'vue';
 import { storeToRefs } from 'pinia';
 import { usePdfStore, useConfigStore } from '@/store';
 import SignaturePopup from '@/components/signature/SignaturePopup.vue';
-import { isDesktop } from '@/utils/common';
+import { isDesktop, monitorDevicePixelRatio } from '@/utils/common';
 import type { SignatureTool } from '@/types/menu';
 
 const emit = defineEmits(['usePage']);
 const currentTool = defineModel<SignatureTool | ''>('currentTool');
 const currentPage = ref(1);
+const devicePixelRatio = ref(window.devicePixelRatio);
 const { currentPDF } = storeToRefs(usePdfStore());
 const configStore = useConfigStore();
 const SignaturePageItem = defineAsyncComponent(() => import('@component-hook/pdf-canvas'));
+const stopMonitorDevicePixelRatio = monitorDevicePixelRatio(changeDevicePixelRatio);
 
 function selectPage(page: number) {
   currentPage.value = page;
@@ -26,6 +28,14 @@ function usePage() {
 function close() {
   currentTool.value = '';
 }
+
+function changeDevicePixelRatio() {
+  devicePixelRatio.value = window.devicePixelRatio;
+}
+
+onBeforeUnmount(() => {
+  stopMonitorDevicePixelRatio();
+});
 </script>
 
 <template>
@@ -53,7 +63,7 @@ function close() {
             canvas-id="PDF-page-canvas"
             :page="page"
             canvas-class="border-2 border-gray-20"
-            :file-scale="0.3"
+            :file-scale="devicePixelRatio * 0.3"
             :password="configStore.filePassword"
           />
           <template #fallback>

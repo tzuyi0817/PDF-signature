@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, nextTick, onMounted, defineAsyncComponent } from 'vue';
+import { ref, defineAsyncComponent } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
 import imageCompression from 'browser-image-compression';
@@ -14,7 +14,6 @@ import SignatureLoading from '@/components/signature/SignatureLoading.vue';
 import SignatureMergePopup from '@/components/signature/SignatureMergePopup.vue';
 import SignatureMagnifier from '@/components/signature/SignatureMagnifier.vue';
 import SignVersion from '@/components/SignVersion.vue';
-import { useResize } from '@/hooks/useResize';
 import { useWarnPopup } from '@/hooks/useWarnPopup';
 import { toast } from '@/utils/toast';
 import { sleep } from '@/utils/common';
@@ -29,14 +28,11 @@ const isShowNextWarnPopup = ref(false);
 const isShowMergePopup = ref(false);
 const signatureCanvasItems = ref<InstanceType<typeof SignatureCanvasItem>[] | null>(null);
 const fileContainerRef = ref<HTMLDivElement | null>(null);
-const fileScale = ref(0);
 const fileZoom = ref(1);
 const { currentPDF } = storeToRefs(usePdfStore());
 const configStore = useConfigStore();
 const { t } = useI18n();
 const { isShowWarnPopup, SignPopup, goBack, goPage, toggleWarnPopup } = useWarnPopup();
-
-useResize(updateFileScale);
 
 async function mergeFile() {
   toggleNextWarnPopup(false);
@@ -98,15 +94,6 @@ function toggleMergePopup(isOpen: boolean) {
   isShowMergePopup.value = isOpen;
 }
 
-async function updateFileScale() {
-  await nextTick();
-  // const width = fileContainerRef.value?.clientWidth ?? 0;
-  // const SCALE_BASE = 140;
-
-  // fileScale.value = (width || SCALE_BASE) / SCALE_BASE;
-  fileScale.value = 6.8;
-}
-
 function giveUpSignature() {
   usePdfStore().clearCurrentPDF();
   goBack();
@@ -116,8 +103,6 @@ function cancelMergeFile() {
   isCancelMerge.value = true;
   toggleMergePopup(false);
 }
-
-onMounted(updateFileScale);
 </script>
 
 <template>
@@ -163,7 +148,7 @@ onMounted(updateFileScale);
                 class="absolute py-5 px-3 origin-top-left md:py-10 md:px-14"
                 :file="currentPDF"
                 :file-zoom="fileZoom"
-                :file-scale="fileScale"
+                :file-scale="6.8"
                 :page="page"
                 :canvas-scale="0.6"
                 :password="configStore.filePassword"

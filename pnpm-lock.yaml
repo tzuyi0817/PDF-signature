@@ -12,8 +12,8 @@ importers:
   .:
     dependencies:
       '@component-hook/pdf-canvas':
-        specifier: ^0.1.3-alpha.0
-        version: 0.1.3-alpha.0(vue@3.4.38(typescript@5.5.4))
+        specifier: ^0.1.3-alpha.8
+        version: 0.1.3-alpha.8(vue@3.4.38(typescript@5.5.4))
       browser-image-compression:
         specifier: ^2.0.2
         version: 2.0.2
@@ -806,8 +806,8 @@ packages:
     peerDependencies:
       eslint: ^9.8.0
 
-  '@component-hook/pdf-canvas@0.1.3-alpha.0':
-    resolution: {integrity: sha512-xR98MzwJlq/cA0tvKKfGkmijO4W1hxJ32fDrO4hE+I723bTJIII21vqc9S61oz7wpkxVBc8bFwJxhs6FVWqw0w==}
+  '@component-hook/pdf-canvas@0.1.3-alpha.8':
+    resolution: {integrity: sha512-MsczC8xbYoQvSuVeCH4TBWCHEAiWq7Wz5xn7R9jrCYJj2kx2pIwyiXQRBK6qWrtT/48BSpT1Y5etDmqp3V9rOw==}
     peerDependencies:
       vue: ^3.4.29
 
@@ -5943,7 +5943,7 @@ snapshots:
       - supports-color
       - typescript
 
-  '@component-hook/pdf-canvas@0.1.3-alpha.0(vue@3.4.38(typescript@5.5.4))':
+  '@component-hook/pdf-canvas@0.1.3-alpha.8(vue@3.4.38(typescript@5.5.4))':
     dependencies:
       fabric: 6.3.0
       pdfjs-dist: 4.5.136
