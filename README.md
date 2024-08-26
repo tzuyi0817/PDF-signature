@@ -50,6 +50,7 @@ Clone this repository and install dependencies by running `pnpm`(Node.js version
 - Environment construction: vite, eslint, prettier
 - PDF Handling: jspdf
 - Signature Drawing: [@component-hook/pdf-canvas](https://github.com/tzuyi0817/component-hook/tree/master/packages/pdf-canvas#readme)
+- Compress image: browser-image-compression
 - Internationalization: vue-i18n
 - Local Storage: idb-keyval
 

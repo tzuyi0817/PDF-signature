@@ -31,3 +31,25 @@ function compressImage(image: HTMLImageElement): Promise<string> {
     resolve(canvas.toDataURL('image/jpeg', 0.8));
   });
 }
+
+export function canvasToFile(
+  canvas: HTMLCanvasElement,
+  type = 'image/png',
+  quality = 1,
+  filename = 'image.png',
+): Promise<File> {
+  return new Promise(resolve => {
+    canvas.toBlob(
+      blob => {
+        if (!blob) {
+          throw new Error('Failed to convert canvas to blob');
+        }
+        const file = new File([blob], filename, { type });
+
+        resolve(file);
+      },
+      type,
+      quality,
+    );
+  });
+}

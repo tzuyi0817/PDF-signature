@@ -2,6 +2,7 @@
 import { ref, nextTick, onMounted, defineAsyncComponent } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
+import imageCompression from 'browser-image-compression';
 import { usePdfStore, useConfigStore } from '@/store';
 import SignStepBtn from '@/components/SignStepBtn.vue';
 import SignatureSign from '@/components/signature/SignatureSign.vue';
@@ -17,6 +18,7 @@ import { useResize } from '@/hooks/useResize';
 import { useWarnPopup } from '@/hooks/useWarnPopup';
 import { toast } from '@/utils/toast';
 import { sleep } from '@/utils/common';
+import { canvasToFile } from '@/utils/image';
 import type { SignatureTool } from '@/types/menu';
 
 const SignatureCanvasItem = defineAsyncComponent(() => import('@component-hook/pdf-canvas'));
@@ -45,13 +47,17 @@ async function mergeFile() {
     try {
       if (!signatureCanvasItems.value) return;
       const { setCurrentPDFCanvas, addPDF, updatePDF } = usePdfStore();
-      const canvas = signatureCanvasItems.value.map(({ canvasRef }) => {
+      const compressPromises = signatureCanvasItems.value.map(async ({ canvasRef }) => {
         if (!canvasRef) return '';
+        const imageFile = await canvasToFile(canvasRef);
 
-        return canvasRef.toDataURL('image/png', 1.0);
+        return imageCompression(imageFile, { useWebWorker: true });
       });
 
-      await sleep(2000);
+      const compressedBlobs = await Promise.all(compressPromises);
+      const blobToBase64Promises = compressedBlobs.map(blob => blob && imageCompression.getDataUrlFromFile(blob));
+      const canvas = await Promise.all(blobToBase64Promises);
+
       if (isCancelMerge.value) {
         isCancelMerge.value = false;
         return;
@@ -94,10 +100,11 @@ function toggleMergePopup(isOpen: boolean) {
 
 async function updateFileScale() {
   await nextTick();
-  const width = fileContainerRef.value?.clientWidth ?? 0;
-  const SCALE_BASE = 140;
+  // const width = fileContainerRef.value?.clientWidth ?? 0;
+  // const SCALE_BASE = 140;
 
-  fileScale.value = (width || SCALE_BASE) / SCALE_BASE;
+  // fileScale.value = (width || SCALE_BASE) / SCALE_BASE;
+  fileScale.value = 6.8;
 }
 
 function giveUpSignature() {

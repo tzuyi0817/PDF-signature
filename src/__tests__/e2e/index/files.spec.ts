@@ -50,8 +50,7 @@ test.describe('files', () => {
       await expect(page.getByTitle(/search icon/i)).toBeInViewport();
       await expect(searchbar).toBeInViewport();
 
-      const searchIndex = 0;
-      const { name } = MOCK_FILES[searchIndex];
+      const { name } = MOCK_FILES[0];
       const searchValue = name.slice(0, 2);
 
       await searchbar.fill(searchValue);
@@ -89,9 +88,8 @@ test.describe('files', () => {
         await page.getByRole('button', { name: /not yet/i }).click();
 
         const download = await page.waitForEvent('download');
-        const regex = new RegExp(`${name}\\.pdf`);
 
-        expect(download.suggestedFilename()).toMatch(regex);
+        expect(download.suggestedFilename()).toMatch(`${name}.pdf`);
       });
 
       test.describe('download file with encryption', () => {
@@ -137,9 +135,8 @@ test.describe('files', () => {
           await page.getByRole('button', { name: /confirm/i }).click();
 
           const download = await page.waitForEvent('download');
-          const regex = new RegExp(`${name}\\.pdf`);
 
-          expect(download.suggestedFilename()).toMatch(regex);
+          expect(download.suggestedFilename()).toMatch(`${name}.pdf`);
         });
       });
     });
