@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.3.4](https://github.com/tzuyi0817/PDF-signature/compare/v0.3.3...v0.3.4) (2024-08-28)
+
+### Refactors
+
+- compress base64 image change to use browser-image-compression ([15b8921](https://github.com/tzuyi0817/PDF-signature/commit/15b8921e30ccaa688d67628a565ff32074598cbd))
+
 ## [0.3.3](https://github.com/tzuyi0817/PDF-signature/compare/v0.3.2...v0.3.3) (2024-08-22)
 
 ### Bug Fixes
