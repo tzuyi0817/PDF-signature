@@ -13,7 +13,7 @@
     "test:ui-e2e": "playwright test --ui",
     "test:ci-e2e": "playwright test",
     "test:show-report": "playwright show-report",
-    "prepare": "husky install",
+    "prepare": "husky",
     "preview": "vite preview"
   },
   "dependencies": {
