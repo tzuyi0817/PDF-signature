@@ -4,6 +4,7 @@ export default [
   ...componentHookPlugin.configs.basic,
   ...componentHookPlugin.configs.vue,
   ...componentHookPlugin.configs.markdown,
+  componentHookPlugin.configs.prettier,
   componentHookPlugin.configs.sonarjs,
   componentHookPlugin.configs.security,
   {

@@ -67,9 +67,7 @@ onBeforeUnmount(() => {
             :password="configStore.filePassword"
           />
           <template #fallback>
-            <div class="h-28 animate-pulse leading-[112px] text-center">
-              Loading...
-            </div>
+            <div class="h-28 animate-pulse leading-[112px] text-center">Loading...</div>
           </template>
         </suspense>
         <span class="highlight absolute left-4 top-2">{{ `${page}.` }}</span>
