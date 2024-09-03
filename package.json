@@ -7,8 +7,9 @@
   "scripts": {
     "dev": "vite",
     "dev:e2e": "vite --port 8081",
-    "build": "vue-tsc && vite build",
+    "build": "typecheck && vite build",
     "lint": "eslint --fix .",
+    "typecheck": "vue-tsc --noEmit",
     "test:e2e": "playwright test --headed",
     "test:ui-e2e": "playwright test --ui",
     "test:ci-e2e": "playwright test",
@@ -42,6 +43,7 @@
     "postcss-nested": "^6.2.0",
     "postcss-nesting": "^13.0.0",
     "postcss-pxtorem": "^6.1.0",
+    "prettier": "^3.3.3",
     "rollup-plugin-visualizer": "^5.12.0",
     "tailwindcss": "^3.4.10",
     "typescript": "^5.5.4",
@@ -56,11 +58,6 @@
     "last 2 versions",
     "not dead"
   ],
-  "lint-staged": {
-    "*.{ts,js,vue}": [
-      "pnpm lint"
-    ]
-  },
   "optionalDependencies": {
     "@commitlint/cli": "^19.4.1",
     "@commitlint/config-conventional": "^19.4.1",
