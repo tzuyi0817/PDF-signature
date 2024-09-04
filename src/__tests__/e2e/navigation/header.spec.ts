@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { sleep } from '@/utils/common';
 import { I18N_MAP } from '@/configs/common';
 
 test.describe('header', () => {
@@ -30,13 +31,13 @@ test.describe('header', () => {
     }
   });
 
-  test('click global icon should be change the language', async ({ page }) => {
+  test('should change the language', async ({ page }) => {
     const globalIcon = page.getByTitle(/#icon-ic_global/i);
 
     await globalIcon.hover();
     await page.getByText(/繁體中文/).click();
     await expect(page.getByText('我的文件')).toBeVisible();
-
+    await sleep();
     await globalIcon.hover();
     await page.getByText(/日本語/).click();
     await expect(page.getByText('私のファイル')).toBeVisible();
