@@ -32,7 +32,7 @@ async function openLanguageMenu() {
 function closeLanguageMenu() {
   closeMenuTimer = setTimeout(() => {
     isShowLanguageMenu.value = false;
-  }, 300);
+  }, 150);
 }
 
 function onTransitionEnd(event: TransitionEvent) {
