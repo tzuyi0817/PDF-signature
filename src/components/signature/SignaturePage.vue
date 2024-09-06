@@ -17,7 +17,8 @@ const stopMonitorDevicePixelRatio = monitorDevicePixelRatio(changeDevicePixelRat
 
 function selectPage(page: number) {
   currentPage.value = page;
-  isDesktop() && emit('usePage', currentPage.value);
+  if (!isDesktop()) return;
+  emit('usePage', currentPage.value);
 }
 
 function usePage() {

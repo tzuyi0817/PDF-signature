@@ -61,7 +61,11 @@ async function mergeFile() {
       setCurrentPDFCanvas(canvas);
       const file = { ...currentPDF.value, PDFBase64: '', updateDate: Date.now() };
 
-      file.isUpdate ? updatePDF(file) : addPDF(file);
+      if (file.isUpdate) {
+        updatePDF(file);
+      } else {
+        addPDF(file);
+      }
       toast.showToast(t('prompt.file_created_success'), 'success');
       goPage('complete');
     } catch {
@@ -75,9 +79,13 @@ async function mergeFile() {
 function addFabric(value: string, type?: string) {
   if (!signatureCanvasItems.value) return;
   const proxy = signatureCanvasItems.value.at(currentPage.value - 1);
-  if (!proxy) return;
 
-  type === 'text' ? proxy.addText(value) : proxy.addImage(value);
+  if (!proxy) return;
+  if (type === 'text') {
+    proxy.addText(value);
+    return;
+  }
+  proxy.addImage(value);
 }
 
 function usePage(page: number) {
@@ -113,21 +121,21 @@ function cancelMergeFile() {
 
     <div class="flex flex-col h-[calc(100%-88px)] md:flex-row">
       <div class="md:border-r-2 md:border-primary md:py-4 md:px-6">
-        <signature-toolbar v-model:currentTool="currentTool" />
+        <signature-toolbar v-model:current-tool="currentTool" />
         <signature-sign
-          v-model:currentTool="currentTool"
+          v-model:current-tool="currentTool"
           @use-signature="addFabric"
         />
         <signature-image
-          v-model:currentTool="currentTool"
+          v-model:current-tool="currentTool"
           @use-image="addFabric"
         />
         <signature-literal
-          v-model:currentTool="currentTool"
+          v-model:current-tool="currentTool"
           @use-literal="addFabric"
         />
         <signature-page
-          v-model:currentTool="currentTool"
+          v-model:current-tool="currentTool"
           @use-page="usePage"
         />
       </div>

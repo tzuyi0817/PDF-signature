@@ -33,10 +33,16 @@ function warnConfirm() {
   const { addArchive, addTrash } = usePdfStore();
   const isArchive = warnType.value === 'archive';
 
-  isArchive ? addArchive(currentPDF.value) : addTrash(currentPDF.value);
+  if (isArchive) {
+    addArchive(currentPDF.value);
+  } else {
+    addTrash(currentPDF.value);
+  }
   toast.showToast(t(isArchive ? 'prompt.file_archived_success' : 'prompt.file_delete_success'), 'success');
   toggleWarnPopup(false);
-  !isArchive && goPage('index');
+
+  if (isArchive) return;
+  goPage('index');
 }
 
 function toggleEncryptPopup(isShow: boolean) {

@@ -9,7 +9,7 @@ const currentTab = ref<MenuTab>('file');
 
 <template>
   <div class="index layout">
-    <index-menu v-model:currentTab="currentTab" />
+    <index-menu v-model:current-tab="currentTab" />
     <index-content :current-tab="currentTab" />
   </div>
 </template>

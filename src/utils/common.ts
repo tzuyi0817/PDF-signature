@@ -20,7 +20,9 @@ export function debounce<T extends (...args: Parameters<T>) => ReturnType<T>>(fu
   let timer: NodeJS.Timeout | null = null;
 
   return function (this: void, ...args: Parameters<T>) {
-    timer && clearTimeout(timer);
+    if (timer) {
+      clearTimeout(timer);
+    }
     timer = setTimeout(() => {
       timer = null;
       fun.apply(this, args);

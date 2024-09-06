@@ -70,6 +70,7 @@ test.describe('files', () => {
 
     test.describe('download file feature', () => {
       const { name } = MOCK_FILES[0];
+      const inputPasswordPlaceholder = 'Please enter password';
 
       test.beforeEach(async ({ page }) => {
         const li = page.locator(`li:has-text("${name}")`);
@@ -92,52 +93,48 @@ test.describe('files', () => {
         expect(download.suggestedFilename()).toMatch(`${name}.pdf`);
       });
 
-      test.describe('download file with encryption', () => {
-        const passwordPlaceholder = 'Please enter password';
+      test('click the eye icon to show password', async ({ page }) => {
+        const fakePassword = '123456';
+        const passwordInput = page.getByPlaceholder(inputPasswordPlaceholder, { exact: true });
+        const passwordConfirmInput = page.getByPlaceholder(/please enter password again/i, { exact: true });
 
-        test('click the eye icon to show password', async ({ page }) => {
-          const password = '123456';
-          const passwordInput = page.getByPlaceholder(passwordPlaceholder, { exact: true });
-          const passwordConfirmInput = page.getByPlaceholder(/please enter password again/i, { exact: true });
+        await passwordInput.fill(fakePassword);
+        await passwordConfirmInput.fill(fakePassword);
 
-          await passwordInput.fill(password);
-          await passwordConfirmInput.fill(password);
+        const icons = await page.getByTitle(/#icon-ic_eye_closed/i).all();
 
-          const icons = await page.getByTitle(/#icon-ic_eye_closed/i).all();
+        icons.reverse();
+        expect(icons.length).toBe(2);
 
-          icons.reverse();
-          expect(icons.length).toBe(2);
+        for (const icon of icons) {
+          await icon.click();
+        }
+        await expect(passwordInput).toHaveAttribute('type', 'text');
+        await expect(passwordConfirmInput).toHaveAttribute('type', 'text');
+      });
 
-          for (const icon of icons) {
-            await icon.click();
-          }
-          await expect(passwordInput).toHaveAttribute('type', 'text');
-          await expect(passwordConfirmInput).toHaveAttribute('type', 'text');
-        });
+      test('without password', async ({ page }) => {
+        await page.getByRole('button', { name: /confirm/i }).click();
+        await expect(page.getByText(/password is required/i)).toBeInViewport();
+      });
 
-        test('without password', async ({ page }) => {
-          await page.getByRole('button', { name: /confirm/i }).click();
-          await expect(page.getByText(/password is required/i)).toBeInViewport();
-        });
+      test('with inconsistent password', async ({ page }) => {
+        await page.getByPlaceholder(inputPasswordPlaceholder, { exact: true }).fill('123456');
+        await page.getByPlaceholder(/please enter password again/i, { exact: true }).fill('123');
+        await page.getByRole('button', { name: /confirm/i }).click();
+        await expect(page.getByText(/passwords are inconsistent/i)).toBeInViewport();
+      });
 
-        test('with inconsistent password', async ({ page }) => {
-          await page.getByPlaceholder(passwordPlaceholder, { exact: true }).fill('123456');
-          await page.getByPlaceholder(/please enter password again/i, { exact: true }).fill('123');
-          await page.getByRole('button', { name: /confirm/i }).click();
-          await expect(page.getByText(/passwords are inconsistent/i)).toBeInViewport();
-        });
+      test('with correct password', async ({ page }) => {
+        const fakePassword = '123456';
 
-        test('with correct password', async ({ page }) => {
-          const password = '123456';
+        await page.getByPlaceholder(inputPasswordPlaceholder, { exact: true }).fill(fakePassword);
+        await page.getByPlaceholder(/please enter password again/i, { exact: true }).fill(fakePassword);
+        await page.getByRole('button', { name: /confirm/i }).click();
 
-          await page.getByPlaceholder(passwordPlaceholder, { exact: true }).fill(password);
-          await page.getByPlaceholder(/please enter password again/i, { exact: true }).fill(password);
-          await page.getByRole('button', { name: /confirm/i }).click();
+        const download = await page.waitForEvent('download');
 
-          const download = await page.waitForEvent('download');
-
-          expect(download.suggestedFilename()).toMatch(`${name}.pdf`);
-        });
+        expect(download.suggestedFilename()).toMatch(`${name}.pdf`);
       });
     });
 

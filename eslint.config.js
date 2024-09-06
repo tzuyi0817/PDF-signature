@@ -5,13 +5,10 @@ export default [
   ...componentHookPlugin.configs.vue,
   ...componentHookPlugin.configs.markdown,
   componentHookPlugin.configs.prettier,
-  componentHookPlugin.configs.sonarjs,
+  ...componentHookPlugin.configs.sonarjs,
   componentHookPlugin.configs.security,
   {
     files: ['**/__tests__/e2e/**/*.spec.[jt]s?(x)'],
     ...componentHookPlugin.configs.playwright,
-  },
-  {
-    ignores: ['playwright-report'],
   },
 ];

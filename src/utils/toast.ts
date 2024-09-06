@@ -8,7 +8,9 @@ export const toast = {
   timer: null as NodeJS.Timeout | null,
   transitionDuration: 150,
   showToast(msg: string, status: 'success' | 'error', time = 1800) {
-    this.timer && clearTimeout(this.timer);
+    if (this.timer) {
+      clearTimeout(this.timer);
+    }
     this.msg.value = msg;
     this.status.value = status;
     this.isShowToast.value = true;
@@ -18,7 +20,9 @@ export const toast = {
     }, time);
   },
   async closeToast() {
-    this.timer && clearTimeout(this.timer);
+    if (this.timer) {
+      clearTimeout(this.timer);
+    }
     this.timer = null;
     this.isShowToast.value = false;
     await sleep(this.transitionDuration);
