@@ -4,13 +4,31 @@ import { toast } from '@/utils/toast';
 
 export default {
   install(app: App) {
-    app.config.errorHandler = (err, vm, info) => {
-      const { t } = i18n.global;
-
-      console.error('Global error handling:', err);
+    app.config.errorHandler = (error, vm, info) => {
+      console.error('Global error handling:', error);
       console.error('The error occurred in:', vm);
       console.error('The error message:', info);
-      toast.showToast(t('prompt.error_occurred'), 'error');
+
+      errorHandler();
     };
+
+    window.onerror = function (message, source, lineno, colno, error) {
+      console.error('Error caught:', { message, source, lineno, colno, error });
+
+      errorHandler();
+      return true; // Return true to prevent errors from continuing to be output on the console
+    };
+
+    window.addEventListener('unhandledrejection', event => {
+      console.error('Catch errors thrown by unhandled Promise', event.reason);
+
+      errorHandler();
+    });
+
+    function errorHandler() {
+      const { t } = i18n.global;
+
+      toast.showToast(t('prompt.error_occurred'), 'error');
+    }
   },
 };
