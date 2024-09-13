@@ -20,6 +20,6 @@ export const useLiteralStore = defineStore('pdf_signature_literal', {
   },
   persist: {
     storage: localStorage,
-    paths: ['literalList'],
+    pick: ['literalList'],
   },
 });

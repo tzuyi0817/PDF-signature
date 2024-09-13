@@ -20,6 +20,6 @@ export const useSignatureStore = defineStore('pdf_signature_signature', {
   },
   persist: {
     storage: localStorage,
-    paths: ['signatureList'],
+    pick: ['signatureList'],
   },
 });
