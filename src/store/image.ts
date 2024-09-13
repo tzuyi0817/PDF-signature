@@ -20,6 +20,6 @@ export const useImageStore = defineStore('pdf_signature_image', {
   },
   persist: {
     storage: localStorage,
-    paths: ['imageList'],
+    pick: ['imageList'],
   },
 });
