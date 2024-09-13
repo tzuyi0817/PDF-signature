@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, defineAsyncComponent } from 'vue';
+import { ref, defineAsyncComponent, useTemplateRef } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
 import imageCompression from 'browser-image-compression';
@@ -27,7 +27,7 @@ const currentPage = ref(1);
 const isShowNextWarnPopup = ref(false);
 const isShowMergePopup = ref(false);
 const signatureCanvasItems = ref<InstanceType<typeof SignatureCanvasItem>[] | null>(null);
-const fileContainerRef = ref<HTMLDivElement | null>(null);
+const fileContainerRef = useTemplateRef<HTMLDivElement>('fileContainer');
 const fileZoom = ref(1);
 const { currentPDF } = storeToRefs(usePdfStore());
 const configStore = useConfigStore();
@@ -141,7 +141,7 @@ function cancelMergeFile() {
       </div>
 
       <div
-        ref="fileContainerRef"
+        ref="fileContainer"
         class="signature_content_file"
       >
         <div class="relative w-full h-full">
