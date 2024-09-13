@@ -12,7 +12,7 @@ interface Props {
   list: PDF[];
 }
 
-const props = defineProps<Props>();
+const { list } = defineProps<Props>();
 const keyword = ref('');
 const showStatus = ref<FileShowStatus>('list');
 const searchIconColor = ref('#CCCCCC');
@@ -25,7 +25,7 @@ const isShowClose = computed(() => keyword.value);
 const isListStatus = computed(() => showStatus.value === 'list');
 const search = computed(() => {
   const target = keyword.value.toLowerCase();
-  return props.list.filter(({ name }) => name.toLowerCase().includes(target));
+  return list.filter(({ name }) => name.toLowerCase().includes(target));
 });
 
 function focus() {

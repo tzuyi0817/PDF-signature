@@ -12,7 +12,7 @@ interface Props {
   file: PDF | null;
 }
 
-const props = defineProps<Props>();
+const { file } = defineProps<Props>();
 const emit = defineEmits(['closeEncryptPopup']);
 const password = ref('');
 const confirmPassword = ref('');
@@ -30,11 +30,11 @@ function download(isEncrypt: boolean) {
   }
   emit('closeEncryptPopup');
   window.requestAnimationFrame(async () => {
-    if (!props.file) return;
+    if (!file) return;
     const userPassword = isEncrypt ? password.value : '';
 
     toggleLoading({ isShow: true, title: 'download', content: 'file_downloading', isProcess: true });
-    await downloadPDF(props.file, setLoadingCompleteness, userPassword);
+    await downloadPDF(file, setLoadingCompleteness, userPassword);
     toggleLoading({ isShow: false });
   });
 }

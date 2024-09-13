@@ -9,18 +9,19 @@ interface Props {
   hoverChangeSvg?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  hoverColor: 'hover:text-primary',
-  prefix: 'icon',
-  color: '#4D4D4D',
-  hoverChangeSvg: false,
-});
+const {
+  name,
+  hoverColor = 'hover:text-primary',
+  prefix = 'icon',
+  color = '#4D4D4D',
+  hoverChangeSvg = false,
+} = defineProps<Props>();
 
 const isHover = ref(false);
 const symbolId = computed(() => {
-  const symbol = `#${props.prefix}-ic_${props.name}`;
+  const symbol = `#${prefix}-ic_${name}`;
 
-  if (props.hoverChangeSvg && isHover.value && !props.name.includes('_h')) return `${symbol}_h`;
+  if (hoverChangeSvg && isHover.value && !name.includes('_h')) return `${symbol}_h`;
   return symbol;
 });
 </script>

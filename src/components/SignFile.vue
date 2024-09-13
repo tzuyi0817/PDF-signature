@@ -15,57 +15,56 @@ interface Props {
   keyword: string;
 }
 
-const props = defineProps<Props>();
+const { file, type, keyword } = defineProps<Props>();
 const emit = defineEmits(['openWarnPopup', 'openEncryptPopup']);
 const isShowMore = ref(false);
 const router = useRouter();
 const { addPDF, addArchive, addTrash, deleteArchive, deleteTrash, setCurrentPDF } = usePdfStore();
 const localTime = computed(() => {
-  return transformTimestamp(props.file.updateDate);
+  return transformTimestamp(file.updateDate);
 });
 
 const more = computed(() => {
-  const { file } = props;
   const moreMap = {
     file: [
-      { icon: 'download', feat: () => openEncryptPopup(file) },
-      { icon: 'sign', feat: () => editFile(file) },
+      { icon: 'download', feat: () => openEncryptPopup() },
+      { icon: 'sign', feat: () => editFile() },
       { icon: 'archive', feat: () => addArchive(file) },
       { icon: 'trash', feat: () => addTrash(file) },
     ],
     archive: [
-      { icon: 'reduction', feat: () => reductionArchive(file) },
+      { icon: 'reduction', feat: () => reductionArchive() },
       { icon: 'trash', feat: () => addTrash(file) },
     ],
     trash: [
-      { icon: 'reduction', feat: () => reductionTrash(file) },
-      { icon: 'trash', feat: () => openWarnPopup(file) },
+      { icon: 'reduction', feat: () => reductionTrash() },
+      { icon: 'trash', feat: () => openWarnPopup() },
     ],
   };
-  return moreMap[props.type];
+  return moreMap[type];
 });
 
-function openEncryptPopup(file: PDF) {
+function openEncryptPopup() {
   toggleMore(false);
   emit('openEncryptPopup', file);
 }
 
-function editFile(file: PDF) {
+function editFile() {
   setCurrentPDF({ ...file, isUpdate: true });
   router.push({ name: 'signature' });
 }
 
-function reductionArchive(file: PDF) {
+function reductionArchive() {
   deleteArchive(file.PDFId);
   addPDF(file);
 }
 
-function reductionTrash(file: PDF) {
+function reductionTrash() {
   deleteTrash(file.PDFId);
   addPDF(file);
 }
 
-function openWarnPopup(file: PDF) {
+function openWarnPopup() {
   toggleMore(false);
   emit('openWarnPopup', file);
 }
@@ -75,7 +74,6 @@ function toggleMore(isOpen: boolean) {
 }
 
 function splitName(name: string) {
-  const { keyword } = props;
   const start = name.toLowerCase().indexOf(keyword.toLowerCase());
   const end = start + keyword.length;
   const spiltName = [name.slice(0, start), name.slice(start, end), name.slice(end)];

@@ -11,7 +11,7 @@ interface Props {
   currentTab: MenuTab;
 }
 
-const props = defineProps<Props>();
+const { currentTab } = defineProps<Props>();
 const { goPage } = useRedirect();
 const title = computed(() => {
   const titleMap = {
@@ -19,7 +19,7 @@ const title = computed(() => {
     archive: 'archived_files',
     trash: 'trash_bin',
   };
-  return titleMap[props.currentTab];
+  return titleMap[currentTab];
 });
 
 const currentCom = computed(() => {
@@ -28,7 +28,7 @@ const currentCom = computed(() => {
     archive: IndexArchives,
     trash: IndexTrash,
   };
-  return componentMap[props.currentTab];
+  return componentMap[currentTab];
 });
 </script>
 
