@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.5](https://github.com/tzuyi0817/PDF-signature/compare/v0.3.4...v0.3.5) (2024-09-16)
+
+### Features
+
+- preload font ([eaa0922](https://github.com/tzuyi0817/PDF-signature/commit/eaa092243a1c55b4b733e5b823e8fe313a8a81af))
+- loading screen ([0c092ed](https://github.com/tzuyi0817/PDF-signature/commit/0c092edf5300dd8cdfb6aff8309f49b7a4681513))
+
+### Refactors
+
+- optimize language popup interactive experience ([f8ada89](https://github.com/tzuyi0817/PDF-signature/commit/f8ada89a372422a7e5b673db48fa424846ce9535))
+- global error handling ([2e400d6](https://github.com/tzuyi0817/PDF-signature/commit/2e400d610e2ac2884738c4d52821f67b20f5e716))
+
 ## [0.3.4](https://github.com/tzuyi0817/PDF-signature/compare/v0.3.3...v0.3.4) (2024-08-28)
 
 ### Refactors
