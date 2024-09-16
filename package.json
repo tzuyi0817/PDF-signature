@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@component-hook/eslint-plugin": "0.1.4-alpha.3",
-    "@intlify/unplugin-vue-i18n": "^4.0.0",
+    "@intlify/unplugin-vue-i18n": "^5.0.0",
     "@playwright/test": "^1.47.0",
     "@types/node": "^20.16.5",
     "@vitejs/plugin-vue": "^5.1.3",
