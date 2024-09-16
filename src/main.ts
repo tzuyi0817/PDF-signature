@@ -10,6 +10,7 @@ import router from '@/router';
 import errorHandlerPlugin from '@/plugins/errorHandler';
 import i18NPlugin from '@/plugins/i18n';
 import idbPlugin from '@/plugins/idb';
+import preloadPlugin from '@/plugins/preload';
 
 const app = createApp(App);
 const pinia = createPinia();
@@ -19,5 +20,6 @@ app.use(pinia);
 app.use(router);
 app.use(idbPlugin);
 app.use(i18NPlugin);
+app.use(preloadPlugin);
 app.use(errorHandlerPlugin);
 app.mount('#app');

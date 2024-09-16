@@ -3,11 +3,6 @@
 @tailwind utilities;
 
 @layer base {
-  @font-face {
-    font-family: 'Gen Jyuu Gothic P';
-    src: url('../assets/font/GenJyuuGothic-P.woff2') format('woff2');
-  }
-
   * {
     -ms-touch-action: manipulation;
     touch-action: manipulation;
@@ -15,7 +10,6 @@
   }
 
   html {
-    font-family: Gen Jyuu Gothic P;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
