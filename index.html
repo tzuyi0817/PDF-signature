@@ -44,7 +44,6 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, viewport-fit=cover, user-scalable=0"
     />
-    <title>PDF Signature</title>
     <meta
       name="description"
       content="This is an online instant PDF signature website."
@@ -109,8 +108,88 @@
       name="twitter:image:height"
       content="600"
     />
+
+    <title>PDF Signature</title>
+
+    <style>
+      #loading-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 100px;
+        justify-content: center;
+        align-items: center;
+        background-color: #242424;
+        z-index: 9999;
+      }
+
+      #loading-screen-logo {
+        animation: spin 1.2s alternate infinite;
+      }
+
+      #loading-screen-alphabet {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      #loading-screen-alphabet > li {
+        font-family: monospace;
+        list-style: none;
+        font-size: 1.5rem;
+        color: #b7ec5d;
+        animation: beat 0.5s calc(var(--i) * 0.16s) alternate infinite;
+      }
+
+      @keyframes spin {
+        from {
+          transform: rotate3d(0, 0, 0, 0deg) scale(1.1);
+        }
+        to {
+          transform: rotate3d(0, 1, 0, 360deg) scale(0.75);
+        }
+      }
+
+      @keyframes beat {
+        from {
+          transform: scale(1.25);
+        }
+        to {
+          transform: translateY(-5rem) scaleX(1);
+        }
+      }
+    </style>
   </head>
+
   <body>
+    <div id="loading-screen">
+      <img
+        id="loading-screen-logo"
+        src="logo.png"
+        width="150"
+        alt="PDF Signature Logo"
+      />
+
+      <ul id="loading-screen-alphabet">
+        <li style="--i: 0">P</li>
+        <li style="--i: 1">D</li>
+        <li style="--i: 2">F</li>
+        <li style="--i: 3">-</li>
+        <li style="--i: 4">S</li>
+        <li style="--i: 5">I</li>
+        <li style="--i: 6">G</li>
+        <li style="--i: 7">N</li>
+        <li style="--i: 8">A</li>
+        <li style="--i: 9">T</li>
+        <li style="--i: 10">U</li>
+        <li style="--i: 11">R</li>
+        <li style="--i: 12">E</li>
+      </ul>
+    </div>
+
     <div id="app"></div>
     <script
       type="module"
