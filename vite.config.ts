@@ -45,6 +45,11 @@ export default defineConfig({
     rollupOptions: {
       output: {
         chunkFileNames: 'chunks/[name]-[hash].js',
+        manualChunks: filepath => {
+          if (filepath.includes('@component-hook/pdf-canvas')) {
+            return '@component-hook/pdf-canvas';
+          }
+        },
       },
     },
   },
