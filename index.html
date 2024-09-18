@@ -128,12 +128,15 @@
       }
 
       #loading-screen-logo {
-        animation: spin 1.2s alternate infinite;
+        animation: spin 2.8s infinite;
       }
 
       #loading-screen-alphabet {
         display: flex;
         gap: 0.5rem;
+        margin-block-start: 0;
+        margin-block-end: 0;
+        padding-inline-start: 0;
       }
 
       #loading-screen-alphabet > li {
@@ -145,11 +148,14 @@
       }
 
       @keyframes spin {
-        from {
-          transform: rotate3d(0, 0, 0, 0deg) scale(1.1);
+        0% {
+          transform: rotate3d(0, 1, 0, 0deg) scale(1.1);
         }
-        to {
+        50% {
           transform: rotate3d(0, 1, 0, 360deg) scale(0.75);
+        }
+        100% {
+          transform: rotate3d(0, 1, 0, 720deg) scale(1.1);
         }
       }
 

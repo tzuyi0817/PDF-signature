@@ -1,4 +1,8 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import Index from '@/pages/IndexPage.vue';
+import Upload from '@/pages/UploadPage.vue';
+import Signature from '@/pages/SignaturePage.vue';
+import Complete from '@/pages/CompletePage.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -8,22 +12,22 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'index',
-    component: () => import('@/pages/IndexPage.vue'),
+    component: Index,
   },
   {
     path: '/upload',
     name: 'upload',
-    component: () => import('@/pages/UploadPage.vue'),
+    component: Upload,
   },
   {
     path: '/signature',
     name: 'signature',
-    component: () => import('@/pages/SignaturePage.vue'),
+    component: Signature,
   },
   {
     path: '/complete',
     name: 'complete',
-    component: () => import('@/pages/CompletePage.vue'),
+    component: Complete,
   },
 ];
 
