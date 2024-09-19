@@ -123,7 +123,7 @@
         gap: 100px;
         justify-content: center;
         align-items: center;
-        background-color: #242424;
+        background: linear-gradient(145deg, #0d0d0d, #1a1a1a 20%, #4f4f4f 50%, #1a1a1a 80%, #000000);
         z-index: 9999;
       }
 
@@ -147,6 +147,14 @@
         animation: beat 0.5s calc(var(--i) * 0.16s) alternate infinite;
       }
 
+      #loading-reload {
+        display: none;
+        position: absolute;
+        bottom: 20%;
+        width: 100%;
+        justify-content: center;
+      }
+
       @keyframes spin {
         0% {
           transform: rotate3d(0, 1, 0, 0deg) scale(1.1);
@@ -164,7 +172,7 @@
           transform: scale(1.25);
         }
         to {
-          transform: translateY(-5rem) scaleX(1);
+          transform: translateY(-5rem) scale(1);
         }
       }
     </style>
@@ -194,6 +202,8 @@
         <li style="--i: 11">R</li>
         <li style="--i: 12">E</li>
       </ul>
+
+      <div id="loading-reload"></div>
     </div>
 
     <div id="app"></div>

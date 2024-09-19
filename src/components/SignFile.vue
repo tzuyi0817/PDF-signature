@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import SignIcon from '@/components/SignIcon.vue';
+import SvgList from '@/components/svg/SvgList.vue';
 import { usePdfStore } from '@/store';
 import { transformTimestamp } from '@/utils/common';
 import type { MenuTab } from '@/types/menu';
@@ -143,44 +144,8 @@ function splitName(name: string) {
         <p :class="['text-gray-40', { 'md:text-black md:w-[236px]': isListStatus }]">
           {{ localTime }}
         </p>
-        <svg
-          v-if="isListStatus"
-          width="40"
-          height="40"
-          viewBox="0 0 40 40"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          class="hidden md:block"
-          title="list icon"
-        >
-          <rect
-            x="13"
-            y="12"
-            width="14"
-            height="16"
-            rx="2"
-            stroke="#4D4D4D"
-            stroke-width="2"
-          />
-          <path
-            d="M17 16H23"
-            stroke="#4D4D4D"
-            stroke-width="2"
-            stroke-linecap="round"
-          />
-          <path
-            d="M17 20H23"
-            stroke="#4D4D4D"
-            stroke-width="2"
-            stroke-linecap="round"
-          />
-          <path
-            d="M17 24H21"
-            stroke="#4D4D4D"
-            stroke-width="2"
-            stroke-linecap="round"
-          />
-        </svg>
+
+        <svg-list v-if="isListStatus" />
       </div>
       <ul :class="['flex-row gap-1 hidden justify-center md:flex', { 'mt-4': !isListStatus }]">
         <li
@@ -215,10 +180,12 @@ function splitName(name: string) {
   &_more {
     @apply absolute right-2 top-2 flex flex-col gap-4 px-3 py-5 border-2 border-primary shadow-primary shadow rounded-[20px];
   }
-  &:hover > .sign_file_content > div > svg {
-    rect,
-    path {
-      @apply stroke-primary;
+  &:hover > .sign_file_content {
+    :deep(svg) {
+      rect,
+      path {
+        @apply stroke-primary;
+      }
     }
   }
   &_content {

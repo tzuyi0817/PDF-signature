@@ -2,6 +2,7 @@
 import { ref, computed, defineAsyncComponent } from 'vue';
 import SignIcon from '@/components/SignIcon.vue';
 import SignFile from '@/components/SignFile.vue';
+import SvgSearch from '@/components/svg/SvgSearch.vue';
 import { usePdfStore } from '@/store';
 import { useWarnPopup } from '@/hooks/useWarnPopup';
 import type { MenuTab, FileShowStatus } from '@/types/menu';
@@ -73,29 +74,7 @@ function deleteFile() {
 <template>
   <div class="sign_files">
     <label class="w-[90%] relative m-3 max-w-[400px] md:absolute md:-top-16">
-      <svg
-        width="40"
-        height="40"
-        viewBox="0 0 40 40"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        class="absolute left-1 top-0 transition-colors"
-        title="search icon"
-      >
-        <circle
-          cx="19"
-          cy="19"
-          r="8.75"
-          :stroke="searchIconColor"
-          stroke-width="2.5"
-        />
-        <path
-          d="M25 26L30 31"
-          :stroke="searchIconColor"
-          stroke-width="2.5"
-          stroke-linecap="round"
-        />
-      </svg>
+      <svg-search :color="searchIconColor" />
       <sign-icon
         v-show="isShowClose"
         name="close_s"

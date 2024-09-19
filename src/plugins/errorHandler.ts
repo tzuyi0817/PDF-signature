@@ -27,8 +27,12 @@ export default {
 
     function errorHandler() {
       const { t } = i18n.global;
+      const reloadBtn = document.getElementById('loading-reload');
 
       toast.showToast(t('prompt.error_occurred'), 'error');
+
+      if (!reloadBtn) return;
+      reloadBtn.style.display = 'flex';
     }
   },
 };
