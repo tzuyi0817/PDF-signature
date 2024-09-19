@@ -200,7 +200,7 @@ function splitName(name: string) {
 
 <style lang="postcss" scoped>
 .sign_file {
-  @apply border-[2px]
+  @apply border-2
   relative
   border-secondary-tint
   p-4
@@ -213,19 +213,7 @@ function splitName(name: string) {
   md:hover:border-primary
   md:hover:bg-gradient-to-b from-white to-primary/30;
   &_more {
-    @apply absolute
-    right-2
-    top-2
-    flex
-    flex-col
-    gap-4
-    px-3
-    py-5
-    border-2
-    border-primary
-    shadow-primary
-    shadow
-    rounded-[20px];
+    @apply absolute right-2 top-2 flex flex-col gap-4 px-3 py-5 border-2 border-primary shadow-primary shadow rounded-[20px];
   }
   &:hover > .sign_file_content > div > svg {
     rect,
