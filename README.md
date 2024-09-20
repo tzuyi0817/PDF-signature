@@ -72,6 +72,7 @@ Clone this repository and install dependencies by running `pnpm`(Node.js version
 6. `Language Switch`: Select the language in the upper right corner of the header.
 7. `Download Signed PDF`: After signing, click the download button to get the signed PDF file.
 8. `Edit Signed PDF`: After signing, click the edit button to edit the signed PDF file.
+9. `Batch Operation`: Batch archive, delete and reduction files
 
 ## Contribution
 

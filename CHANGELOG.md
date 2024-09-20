@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.4.0](https://github.com/tzuyi0817/PDF-signature/compare/v0.3.5...v0.4.0) (2024-09-20)
+
+### Features
+
+- batch archive, delete and reduction files
+
+### Refactors
+
+- preload plugin ([2de6cd5](https://github.com/tzuyi0817/PDF-signature/commit/2de6cd50be81893812d2457e968494c22a40f8f4))
+
 ## [0.3.5](https://github.com/tzuyi0817/PDF-signature/compare/v0.3.4...v0.3.5) (2024-09-16)
 
 ### Features
