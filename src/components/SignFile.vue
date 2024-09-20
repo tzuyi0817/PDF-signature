@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import SignIcon from '@/components/SignIcon.vue';
 import SvgList from '@/components/svg/SvgList.vue';
@@ -14,13 +14,16 @@ interface Props {
   type: MenuTab;
   isListStatus: boolean;
   keyword: string;
+  isSelectAll: boolean | 'mixed';
 }
 
-const { file, type, keyword } = defineProps<Props>();
-const emit = defineEmits(['openWarnPopup', 'openEncryptPopup']);
+const { file, type, keyword, isSelectAll } = defineProps<Props>();
+const emit = defineEmits(['openWarnPopup', 'openEncryptPopup', 'selectFile']);
 const isShowMore = ref(false);
+const isSelected = ref(false);
 const router = useRouter();
 const { addPDF, addArchive, addTrash, deleteArchive, deleteTrash, setCurrentPDF } = usePdfStore();
+
 const localTime = computed(() => {
   return transformTimestamp(file.updateDate);
 });
@@ -85,15 +88,35 @@ function splitName(name: string) {
     return `${html}<span class="${index === 1 ? 'text-primary' : ''}">${str}</span>`;
   }, '');
 }
+
+function selectFile() {
+  isSelected.value = !isSelected.value;
+  emit('selectFile', file, isSelected.value);
+}
+
+watch(
+  () => isSelectAll,
+  isSelect => {
+    if (isSelect === 'mixed') return;
+    isSelected.value = isSelect;
+  },
+);
 </script>
 
 <template>
-  <li :class="['sign_file flex flex-col', isListStatus ? 'md:flex-row' : 'md:w-[316px] md:flex-shrink-0 md:h-fit']">
+  <li
+    :class="[
+      'sign_file flex flex-col',
+      isListStatus ? 'md:flex-row' : 'md:w-[316px] md:flex-shrink-0 md:h-fit',
+      { active: isSelected },
+    ]"
+    @click="selectFile"
+  >
     <div :class="['transition-opacity md:hidden', isShowMore ? 'opacity-100 z-10' : 'opacity-0 -z-[1]']">
       <template v-if="isShowMore">
         <div
           class="mask"
-          @click="toggleMore(false)"
+          @click.stop="toggleMore(false)"
         ></div>
         <ul class="sign_file_more bg-white">
           <li
@@ -103,7 +126,7 @@ function splitName(name: string) {
             <sign-icon
               :name="effect.icon"
               class="w-10 h-10"
-              @click="effect.feat"
+              @click.stop="effect.feat"
             />
           </li>
         </ul>
@@ -113,13 +136,13 @@ function splitName(name: string) {
       v-if="more.length"
       name="more"
       :class="`absolute w-10 h-10 right-2 top-1 ${isShowMore ? 'opacity-0' : 'opacity-100'} md:hidden`"
-      @click="toggleMore(true)"
+      @click.stop="toggleMore(true)"
     />
     <sign-icon
       v-else
       name="reduction"
       class="absolute w-10 h-10 right-2 top-1 md:hidden"
-      @click="reductionTrash"
+      @click.stop="reductionTrash"
     />
 
     <div :class="['w-1/3 h-[150px] flex items-center justify-center', { 'md:hidden': isListStatus }]">
@@ -155,7 +178,7 @@ function splitName(name: string) {
           <sign-icon
             :name="effect.icon"
             class="w-10 h-10"
-            @click="effect.feat"
+            @click.stop="effect.feat"
           />
         </li>
       </ul>
@@ -175,8 +198,11 @@ function splitName(name: string) {
   mb-6
   transition-all
   justify-center
-  md:hover:border-primary
+  cursor-pointer
   md:hover:bg-gradient-to-b from-white to-primary/30;
+  &.active {
+    @apply border-primary bg-gradient-to-b from-white to-primary/30;
+  }
   &_more {
     @apply absolute right-2 top-2 flex flex-col gap-4 px-3 py-5 border-2 border-primary shadow-primary shadow rounded-[20px];
   }

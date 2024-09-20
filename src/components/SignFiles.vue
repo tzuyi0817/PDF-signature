@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref, computed, defineAsyncComponent } from 'vue';
+import IndexSearch from '@/components/index/IndexSearch.vue';
 import SignIcon from '@/components/SignIcon.vue';
 import SignFile from '@/components/SignFile.vue';
-import SvgSearch from '@/components/svg/SvgSearch.vue';
 import Checkbox from '@/components/common/Checkbox.vue';
+import BatchOperation from '@/components/common/BatchOperation.vue';
 import { usePdfStore } from '@/store';
 import { useWarnPopup } from '@/hooks/useWarnPopup';
 import type { MenuTab, FileShowStatus } from '@/types/menu';
@@ -17,32 +18,21 @@ interface Props {
 const { list } = defineProps<Props>();
 const keyword = ref('');
 const showStatus = ref<FileShowStatus>('list');
-const searchIconColor = ref('#CCCCCC');
 const iShowEncryptPopup = ref(false);
-const isSelectAll = ref(false);
+const isSelectAll = ref<boolean | 'mixed'>(false);
 const currentFile = ref<PDF | null>(null);
+const batch = new Set<PDF>();
 const { deleteTrash } = usePdfStore();
 const { isShowWarnPopup, SignPopup, toggleWarnPopup } = useWarnPopup();
+
 const SignEncryption = defineAsyncComponent(() => import('@/components/SignEncryption.vue'));
-const isShowClose = computed(() => keyword.value);
 const isListStatus = computed(() => showStatus.value === 'list');
+const isShowThread = computed(() => isListStatus.value && isSelectAll.value === false);
 const search = computed(() => {
   const target = keyword.value.toLowerCase();
 
   return list.filter(({ name }) => name.toLowerCase().includes(target));
 });
-
-function focus() {
-  searchIconColor.value = '#B7EC5D';
-}
-
-function blur() {
-  searchIconColor.value = '#CCCCCC';
-}
-
-function clear() {
-  keyword.value = '';
-}
 
 function changeShowStatus(status: FileShowStatus) {
   showStatus.value = status;
@@ -72,44 +62,64 @@ function deleteFile() {
   deleteTrash(currentFile.value?.PDFId);
   closeWarnPopup();
 }
+
+function selectFile(file: PDF, isSelected: boolean) {
+  if (isSelected) {
+    batch.add(file);
+  } else {
+    batch.delete(file);
+  }
+
+  if (batch.size === 0) {
+    isSelectAll.value = false;
+    return;
+  }
+  isSelectAll.value = batch.size === list.length ? true : 'mixed';
+}
+
+function onCheckboxChange() {
+  if (!isSelectAll.value) {
+    batch.clear();
+    return;
+  }
+
+  list.forEach(file => batch.add(file));
+}
 </script>
 
 <template>
   <div class="sign_files">
-    <label class="w-[90%] relative m-3 max-w-[400px] md:absolute md:-top-16">
-      <svg-search :color="searchIconColor" />
-      <sign-icon
-        v-show="isShowClose"
-        name="close_s"
-        class="absolute right-1 top-0 w-10 h-10"
-        @click="clear"
-      />
-      <input
-        v-model.trim="keyword"
-        type="text"
-        class="input pl-12"
-        :placeholder="$t('placeholder.keyword')"
-        @focus="focus"
-        @blur="blur"
-      />
-    </label>
+    <index-search v-model="keyword" />
 
     <div class="hidden md:flex items-end w-full px-4 py-5">
-      <div class="w-[300px] flex items-center pl-7 gap-5">
-        <checkbox v-model="isSelectAll" />
-        <p :class="['text-sm', { 'opacity-0': !isListStatus }]">
-          {{ $t('setup_time') }}
+      <div class="w-[300px] flex items-center pl-6 gap-5 h-6">
+        <div
+          class="w-7 h-8 flex items-center justify-center hover:bg-gray-50/15 cursor-pointer transition-colors rounded"
+        >
+          <checkbox
+            v-model="isSelectAll"
+            @change="onCheckboxChange"
+          />
+        </div>
+
+        <batch-operation
+          v-if="isSelectAll"
+          :type
+        />
+
+        <p :class="['text-sm', { 'opacity-0': isSelectAll }]">
+          {{ isShowThread ? $t('setup_time') : $t('batch_operation') }}
         </p>
       </div>
 
       <div class="flex justify-between items-end flex-1">
-        <p :class="['text-sm', { 'opacity-0': !isListStatus }]">
+        <p :class="['text-sm h-6', { 'opacity-0': !isShowThread }]">
           {{ $t('project_name') }}
         </p>
         <div class="flex gap-1">
           <sign-icon
             name="list"
-            :class="['w-10 h-10', { 'text-primary': showStatus === 'list' }]"
+            :class="['w-10 h-10', { 'text-primary': isListStatus }]"
             @click="changeShowStatus('list')"
           />
           <sign-icon
@@ -132,12 +142,14 @@ function deleteFile() {
         v-for="(pdf, index) in search"
         :key="pdf.PDFId"
         :file="pdf"
-        :index="index"
-        :type="type"
-        :is-list-status="isListStatus"
-        :keyword="keyword"
+        :index
+        :type
+        :is-list-status
+        :keyword
+        :is-select-all
         @open-warn-popup="openWarnPopup"
         @open-encrypt-popup="openEncryptPopup"
+        @select-file="selectFile"
       />
     </ul>
 
@@ -147,7 +159,7 @@ function deleteFile() {
     >
       <img
         src="@/assets/img/img_search.svg"
-        alt="search icon"
+        alt="Search Icon"
         class="mb-10"
       />
       <h3 class="text-gray-40 text-center mb-3">

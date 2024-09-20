@@ -36,7 +36,7 @@ const currentCom = computed(() => {
   <div class="index_content content">
     <img
       src="@/assets/icon/ic_add_tint.svg"
-      alt=""
+      alt="Add File Svg"
       class="index_content_add iconScale"
       @click="goPage('upload')"
     />
@@ -44,6 +44,7 @@ const currentCom = computed(() => {
       {{ $t(title) }}
     </h5>
     <sign-version />
+
     <keep-alive>
       <component :is="currentCom" />
     </keep-alive>
@@ -53,15 +54,7 @@ const currentCom = computed(() => {
 <style lang="postcss" scoped>
 .index_content {
   &_add {
-    @apply w-[60px]
-    h-[60px]
-    absolute
-    right-3
-    -top-8
-    md:w-20
-    md:h-20
-    md:-right-10
-    md:top-10;
+    @apply w-[60px] h-[60px] absolute right-3 -top-8 md:w-20 md:h-20 md:-right-10 md:top-10;
   }
 }
 </style>
