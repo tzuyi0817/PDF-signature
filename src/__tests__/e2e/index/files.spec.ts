@@ -64,7 +64,7 @@ test.describe('files', () => {
       await cardIcon.click();
       await expect(cardIcon).toHaveClass(/text-primary/g);
       await expect(page.getByText(/setup time/i)).not.toBeInViewport();
-      await expect(page.getByText(/project name/i)).not.toBeInViewport();
+      await expect(page.getByText(/project name/i)).toHaveClass(/opacity-0/);
       await expect(page.getByTitle(/list icon/i)).not.toBeInViewport();
     });
 
