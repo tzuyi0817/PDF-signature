@@ -3,6 +3,7 @@ import { ref, computed, defineAsyncComponent } from 'vue';
 import SignIcon from '@/components/SignIcon.vue';
 import SignFile from '@/components/SignFile.vue';
 import SvgSearch from '@/components/svg/SvgSearch.vue';
+import Checkbox from '@/components/common/Checkbox.vue';
 import { usePdfStore } from '@/store';
 import { useWarnPopup } from '@/hooks/useWarnPopup';
 import type { MenuTab, FileShowStatus } from '@/types/menu';
@@ -18,6 +19,7 @@ const keyword = ref('');
 const showStatus = ref<FileShowStatus>('list');
 const searchIconColor = ref('#CCCCCC');
 const iShowEncryptPopup = ref(false);
+const isSelectAll = ref(false);
 const currentFile = ref<PDF | null>(null);
 const { deleteTrash } = usePdfStore();
 const { isShowWarnPopup, SignPopup, toggleWarnPopup } = useWarnPopup();
@@ -26,6 +28,7 @@ const isShowClose = computed(() => keyword.value);
 const isListStatus = computed(() => showStatus.value === 'list');
 const search = computed(() => {
   const target = keyword.value.toLowerCase();
+
   return list.filter(({ name }) => name.toLowerCase().includes(target));
 });
 
@@ -92,13 +95,16 @@ function deleteFile() {
     </label>
 
     <div class="hidden md:flex items-end w-full px-4 py-5">
-      <p class="text-sm w-[300px] pl-16">
-        {{ isListStatus ? $t('setup_time') : '' }}
-      </p>
+      <div class="w-[300px] flex items-center pl-7 gap-5">
+        <checkbox v-model="isSelectAll" />
+        <p :class="['text-sm', { 'opacity-0': !isListStatus }]">
+          {{ $t('setup_time') }}
+        </p>
+      </div>
 
       <div class="flex justify-between items-end flex-1">
-        <p class="text-sm">
-          {{ isListStatus ? $t('project_name') : '' }}
+        <p :class="['text-sm', { 'opacity-0': !isListStatus }]">
+          {{ $t('project_name') }}
         </p>
         <div class="flex gap-1">
           <sign-icon
