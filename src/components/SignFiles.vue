@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, defineAsyncComponent } from 'vue';
+import { ref, computed, defineAsyncComponent, nextTick, onActivated } from 'vue';
 import IndexSearch from '@/components/index/IndexSearch.vue';
 import SignIcon from '@/components/SignIcon.vue';
 import SignFile from '@/components/SignFile.vue';
@@ -22,7 +22,7 @@ const iShowEncryptPopup = ref(false);
 const isSelectAll = ref<boolean | 'mixed'>(false);
 const currentFile = ref<PDF | null>(null);
 const batch = new Set<PDF>();
-const { deleteTrash } = usePdfStore();
+const { deleteTrash, batchDeleteTrash } = usePdfStore();
 const { isShowWarnPopup, SignPopup, toggleWarnPopup } = useWarnPopup();
 
 const SignEncryption = defineAsyncComponent(() => import('@/components/SignEncryption.vue'));
@@ -38,8 +38,10 @@ function changeShowStatus(status: FileShowStatus) {
   showStatus.value = status;
 }
 
-function openWarnPopup(file: PDF) {
+function openWarnPopup(file?: PDF) {
   toggleWarnPopup(true);
+
+  if (!file) return;
   currentFile.value = file;
 }
 
@@ -59,7 +61,13 @@ function closeEncryptPopup() {
 }
 
 function deleteFile() {
-  deleteTrash(currentFile.value?.PDFId);
+  if (currentFile.value) {
+    deleteTrash(currentFile.value.PDFId);
+    selectFile(currentFile.value, false);
+  } else {
+    batchDeleteTrash(batch);
+    clearBatch();
+  }
   closeWarnPopup();
 }
 
@@ -69,12 +77,7 @@ function selectFile(file: PDF, isSelected: boolean) {
   } else {
     batch.delete(file);
   }
-
-  if (batch.size === 0) {
-    isSelectAll.value = false;
-    return;
-  }
-  isSelectAll.value = batch.size === list.length ? true : 'mixed';
+  updateSelectAll();
 }
 
 function onCheckboxChange() {
@@ -82,9 +85,25 @@ function onCheckboxChange() {
     batch.clear();
     return;
   }
-
   list.forEach(file => batch.add(file));
 }
+
+function clearBatch() {
+  batch.clear();
+  updateSelectAll();
+}
+
+async function updateSelectAll() {
+  await nextTick();
+
+  if (!batch.size) {
+    isSelectAll.value = false;
+    return;
+  }
+  isSelectAll.value = batch.size === list.length ? true : 'mixed';
+}
+
+onActivated(updateSelectAll);
 </script>
 
 <template>
@@ -105,6 +124,9 @@ function onCheckboxChange() {
         <batch-operation
           v-if="isSelectAll"
           :type
+          :batch
+          @clear-batch="clearBatch"
+          @open-warn-popup="openWarnPopup"
         />
 
         <p :class="['text-sm', { 'opacity-0': isSelectAll }]">

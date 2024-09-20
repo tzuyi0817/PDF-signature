@@ -33,12 +33,12 @@ const more = computed(() => {
     file: [
       { icon: 'download', feat: () => openEncryptPopup() },
       { icon: 'sign', feat: () => editFile() },
-      { icon: 'archive', feat: () => addArchive(file) },
-      { icon: 'trash', feat: () => addTrash(file) },
+      { icon: 'archive', feat: () => moveToArchive() },
+      { icon: 'trash', feat: () => moveToTrash() },
     ],
     archive: [
       { icon: 'reduction', feat: () => reductionArchive() },
-      { icon: 'trash', feat: () => addTrash(file) },
+      { icon: 'trash', feat: () => moveToTrash() },
     ],
     trash: [
       { icon: 'reduction', feat: () => reductionTrash() },
@@ -58,13 +58,25 @@ function editFile() {
   router.push({ name: 'signature' });
 }
 
+function moveToArchive() {
+  addArchive(file);
+  emit('selectFile', file, false);
+}
+
+function moveToTrash() {
+  addTrash(file, type);
+  emit('selectFile', file, false);
+}
+
 function reductionArchive() {
   deleteArchive(file.PDFId);
+  emit('selectFile', file, false);
   addPDF(file);
 }
 
 function reductionTrash() {
   deleteTrash(file.PDFId);
+  emit('selectFile', file, false);
   addPDF(file);
 }
 

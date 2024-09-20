@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { getIdb, setIdb } from '@/utils/idb';
 import { IDB_KEY } from '@/configs/idb';
+import type { MenuTab } from '@/types/menu';
 import type { PDF } from '@/types/pdf';
 
 interface PDFStore {
@@ -99,9 +100,23 @@ export const usePdfStore = defineStore('pdf_signature_pdf', {
       this.archiveList.unshift(PDF);
       return this.updateArchiveIdb();
     },
+    batchAddArchive(PDFList: Set<PDF>) {
+      for (const PDF of PDFList) {
+        this.PDFList = this.PDFList.filter(({ PDFId }) => PDF.PDFId !== PDFId);
+        this.archiveList.unshift(PDF);
+      }
+      return Promise.all([this.updatePDFIdb(), this.updateArchiveIdb()]);
+    },
     deleteArchive(id: string) {
       this.archiveList = this.archiveList.filter(({ PDFId }) => id !== PDFId);
       return this.updateArchiveIdb();
+    },
+    batchReductionArchive(PDFList: Set<PDF>) {
+      for (const PDF of PDFList) {
+        this.archiveList = this.archiveList.filter(({ PDFId }) => PDF.PDFId !== PDFId);
+        this.PDFList.unshift(PDF);
+      }
+      return Promise.all([this.updatePDFIdb(), this.updateArchiveIdb()]);
     },
     updateArchiveIdb() {
       return setIdb(IDB_KEY.ARCHIVE_LIST, this.archiveList);
@@ -113,16 +128,41 @@ export const usePdfStore = defineStore('pdf_signature_pdf', {
       if (!trashList) return;
       this.trashList = trashList;
     },
-    addTrash(PDF: PDF) {
-      this.deletePDF(PDF.PDFId);
-      this.deleteArchive(PDF.PDFId);
+    addTrash(PDF: PDF, type?: MenuTab) {
+      if (!type || type === 'file') this.deletePDF(PDF.PDFId);
+      if (!type || type === 'archive') this.deleteArchive(PDF.PDFId);
       this.trashList.unshift({ ...PDF, trashDate: Date.now() });
       return this.updateTrashIdb();
+    },
+    batchAddTrash(PDFList: Set<PDF>, type: MenuTab) {
+      for (const PDF of PDFList) {
+        if (type === 'file') {
+          this.PDFList = this.PDFList.filter(({ PDFId }) => PDF.PDFId !== PDFId);
+        }
+        if (type === 'archive') {
+          this.archiveList = this.archiveList.filter(({ PDFId }) => PDF.PDFId !== PDFId);
+        }
+        this.trashList.unshift({ ...PDF, trashDate: Date.now() });
+      }
+      return Promise.all([this.updatePDFIdb(), this.updateArchiveIdb(), this.updateTrashIdb()]);
     },
     deleteTrash(id?: string) {
       if (!id) return;
       this.trashList = this.trashList.filter(({ PDFId }) => id !== PDFId);
       return this.updateTrashIdb();
+    },
+    batchDeleteTrash(PDFList: Set<PDF>) {
+      for (const PDF of PDFList) {
+        this.trashList = this.trashList.filter(({ PDFId }) => PDF.PDFId !== PDFId);
+      }
+      return this.updateTrashIdb();
+    },
+    batchReductionTrash(PDFList: Set<PDF>) {
+      for (const PDF of PDFList) {
+        this.trashList = this.trashList.filter(({ PDFId }) => PDF.PDFId !== PDFId);
+        this.PDFList.unshift(PDF);
+      }
+      return Promise.all([this.updatePDFIdb(), this.updateTrashIdb()]);
     },
     filterTrash() {
       const MAX_DAY = 30 * 24 * 60 * 60 * 1000;
