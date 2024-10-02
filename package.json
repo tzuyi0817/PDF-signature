@@ -22,9 +22,9 @@
     "browser-image-compression": "^2.0.2",
     "idb-keyval": "^6.2.1",
     "jspdf": "^2.5.2",
-    "pinia": "^2.2.2",
+    "pinia": "^2.2.4",
     "pinia-plugin-persistedstate": "^4.0.2",
-    "vue": "^3.5.8",
+    "vue": "^3.5.10",
     "vue-i18n": "^10.0.3",
     "vue-router": "^4.4.5"
   },
@@ -32,12 +32,12 @@
     "@component-hook/eslint-plugin": "0.1.4",
     "@intlify/unplugin-vue-i18n": "^5.2.0",
     "@playwright/test": "^1.47.2",
-    "@types/node": "^20.16.6",
+    "@types/node": "^20.16.10",
     "@vitejs/plugin-vue": "^5.1.4",
     "autoprefixer": "^10.4.20",
     "cssnano": "^7.0.6",
     "eslint": "^9.11.1",
-    "globals": "^15.9.0",
+    "globals": "^15.10.0",
     "postcss": "^8.4.47",
     "postcss-import": "^16.1.0",
     "postcss-nested": "^6.2.0",
@@ -47,7 +47,7 @@
     "rollup-plugin-visualizer": "^5.12.0",
     "tailwindcss": "^3.4.13",
     "typescript": "^5.6.2",
-    "vite": "^5.4.7",
+    "vite": "^5.4.8",
     "vite-plugin-pwa": "^0.20.5",
     "vite-plugin-svg-icons": "^2.0.1",
     "vite-plugin-top-level-await": "^1.4.4",
@@ -66,7 +66,7 @@
   },
   "pnpm": {
     "overrides": {
-      "@typescript-eslint/typescript-estree": "^8.7.0"
+      "@typescript-eslint/typescript-estree": "^8.8.0"
     }
   }
 }
