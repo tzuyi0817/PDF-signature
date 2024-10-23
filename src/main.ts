@@ -7,7 +7,7 @@ import '@/style/index.css';
 import '@/style/tailwind.css';
 import App from '@/App.vue';
 import router from '@/router';
-import errorHandlerPlugin from '@/plugins/errorHandler';
+import errorHandlerPlugin from '@/plugins/error-handler';
 import i18NPlugin from '@/plugins/i18n';
 import preloadPlugin from '@/plugins/preload';
 

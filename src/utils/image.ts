@@ -8,14 +8,14 @@ export function convertToBase64(file: File): Promise<string> {
     const image = new Image();
 
     image.src = blobURL;
-    image.onload = async () => {
+    image.addEventListener('load', async () => {
       window.URL.revokeObjectURL(blobURL);
       resolve(await compressImage(image));
-    };
-    image.onerror = error => {
+    });
+    image.addEventListener('error', error => {
       window.URL.revokeObjectURL(blobURL);
       reject(error);
-    };
+    });
   });
 }
 

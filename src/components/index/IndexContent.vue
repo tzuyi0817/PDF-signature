@@ -4,7 +4,7 @@ import IndexFiles from '@/components/index/IndexFiles.vue';
 import IndexArchives from '@/components/index/IndexArchives.vue';
 import IndexTrash from '@/components/index/IndexTrash.vue';
 import SignVersion from '@/components/SignVersion.vue';
-import { useRedirect } from '@/hooks/useRedirect';
+import { useRedirect } from '@/hooks/use-redirect';
 import type { MenuTab } from '@/types/menu';
 
 interface Props {

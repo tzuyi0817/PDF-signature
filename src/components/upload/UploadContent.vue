@@ -6,7 +6,7 @@ import { usePdfStore, useConfigStore } from '@/store';
 import SignStepBtn from '@/components/SignStepBtn.vue';
 import SignIcon from '@/components/SignIcon.vue';
 import SignVersion from '@/components/SignVersion.vue';
-import { useWarnPopup } from '@/hooks/useWarnPopup';
+import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { toast } from '@/utils/toast';
 import { sleep } from '@/utils/common';
 import { checkFile } from '@/utils/reader';

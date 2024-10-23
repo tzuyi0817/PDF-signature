@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n';
 import { useLiteralStore } from '@/store';
 import SignaturePopup from '@/components/signature/SignaturePopup.vue';
 import SignIcon from '@/components/SignIcon.vue';
-import { useWarnPopup } from '@/hooks/useWarnPopup';
+import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { toast } from '@/utils/toast';
 import type { SignatureTool } from '@/types/menu';
 
@@ -72,7 +72,7 @@ function toggleLiteralPopup(isOpen: boolean, isEdit = false) {
 function dragLiteral(event: DragEvent) {
   const target = event.target as HTMLPreElement;
 
-  event.dataTransfer?.setData('text', target.innerText);
+  event.dataTransfer?.setData('text', target.textContent ?? '');
 }
 
 function close() {

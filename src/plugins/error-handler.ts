@@ -12,27 +12,27 @@ export default {
       errorHandler();
     };
 
-    window.onerror = function (message, source, lineno, colno, error) {
-      console.error('Error caught:', { message, source, lineno, colno, error });
+    window.addEventListener('error', ({ message, filename, lineno, colno, error }) => {
+      console.error('Error caught:', { message, filename, lineno, colno, error });
 
       errorHandler();
       return true; // Return true to prevent errors from continuing to be output on the console
-    };
+    });
 
     window.addEventListener('unhandledrejection', event => {
       console.error('Catch errors thrown by unhandled Promise', event.reason);
 
       errorHandler();
     });
-
-    function errorHandler() {
-      const { t } = i18n.global;
-      const reloadBtn = document.getElementById('loading-reload');
-
-      toast.showToast(t('prompt.error_occurred'), 'error');
-
-      if (!reloadBtn) return;
-      reloadBtn.style.display = 'flex';
-    }
   },
 };
+
+function errorHandler() {
+  const { t } = i18n.global;
+  const reloadBtn = document.querySelector('#loading-reload');
+
+  toast.showToast(t('prompt.error_occurred'), 'error');
+
+  if (!reloadBtn || !(reloadBtn instanceof HTMLElement)) return;
+  reloadBtn.style.display = 'flex';
+}

@@ -1,5 +1,5 @@
 import { ref, defineAsyncComponent } from 'vue';
-import { useRedirect } from '@/hooks/useRedirect';
+import { useRedirect } from '@/hooks/use-redirect';
 
 export function useWarnPopup() {
   const isShowWarnPopup = ref(false);

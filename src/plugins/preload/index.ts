@@ -12,8 +12,8 @@ export default {
 };
 
 function closeLoadingScreen() {
-  const loadingScreen = document.getElementById('loading-screen');
+  const loadingScreen = document.querySelector('#loading-screen');
 
-  if (!loadingScreen) return;
+  if (!loadingScreen || !(loadingScreen instanceof HTMLElement)) return;
   loadingScreen.style.display = 'none';
 }

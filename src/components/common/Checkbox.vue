@@ -17,9 +17,9 @@ function onclick() {
 
 <template>
   <label
+    :id
     :class="['checkbox-container', { checked: checked === true, mixed: checked === 'mixed' }]"
     :aria-checked="checked"
-    :id
     role="checkbox"
     @click="onclick"
   >

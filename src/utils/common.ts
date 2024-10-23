@@ -1,4 +1,4 @@
-import { isArray, isObject } from '@/utils/checkType';
+import { isArray, isObject } from '@/utils/check-type';
 
 export function deepClone<T extends Record<string, unknown>>(obj: T, hash = new WeakMap()): T {
   if (obj instanceof Date || obj instanceof RegExp) return obj;

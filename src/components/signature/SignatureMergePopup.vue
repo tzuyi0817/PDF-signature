@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { useWarnPopup } from '@/hooks/useWarnPopup';
+import { useWarnPopup } from '@/hooks/use-warn-popup';
 
 interface Props {
   isShowMergePopup: boolean;

@@ -6,7 +6,7 @@ import { useSignatureStore } from '@/store';
 import SignaturePopup from '@/components/signature/SignaturePopup.vue';
 import SignatureDrawPopup from '@/components/signature/SignatureDrawPopup.vue';
 import SignIcon from '@/components/SignIcon.vue';
-import { useWarnPopup } from '@/hooks/useWarnPopup';
+import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { toast } from '@/utils/toast';
 import type { SignatureTool } from '@/types/menu';
 

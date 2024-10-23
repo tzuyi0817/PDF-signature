@@ -29,7 +29,7 @@
     "vue-router": "^4.4.5"
   },
   "devDependencies": {
-    "@component-hook/eslint-plugin": "0.1.5",
+    "@component-hook/eslint-plugin": "^0.1.6-alpha.0",
     "@intlify/unplugin-vue-i18n": "^5.2.0",
     "@playwright/test": "^1.48.1",
     "@types/node": "^20.16.13",

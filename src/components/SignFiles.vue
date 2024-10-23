@@ -6,7 +6,7 @@ import SignFile from '@/components/SignFile.vue';
 import Checkbox from '@/components/common/Checkbox.vue';
 import BatchOperation from '@/components/common/BatchOperation.vue';
 import { usePdfStore } from '@/store';
-import { useWarnPopup } from '@/hooks/useWarnPopup';
+import { useWarnPopup } from '@/hooks/use-warn-popup';
 import type { MenuTab, FileShowStatus } from '@/types/menu';
 import type { PDF } from '@/types/pdf';
 
