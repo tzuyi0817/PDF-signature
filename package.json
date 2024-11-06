@@ -32,7 +32,7 @@
     "@component-hook/eslint-plugin": "^0.1.6",
     "@intlify/unplugin-vue-i18n": "^5.2.0",
     "@playwright/test": "^1.48.2",
-    "@types/node": "^20.17.5",
+    "@types/node": "^22.9.0",
     "@vitejs/plugin-vue": "^5.1.4",
     "autoprefixer": "^10.4.20",
     "cssnano": "^7.0.6",

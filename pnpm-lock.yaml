@@ -41,7 +41,7 @@ importers:
     optionalDependencies:
       '@commitlint/cli':
         specifier: ^19.5.0
-        version: 19.5.0(@types/node@20.17.5)(typescript@5.6.3)
+        version: 19.5.0(@types/node@22.9.0)(typescript@5.6.3)
       '@commitlint/config-conventional':
         specifier: ^19.5.0
         version: 19.5.0
@@ -62,11 +62,11 @@ importers:
         specifier: ^1.48.2
         version: 1.48.2
       '@types/node':
-        specifier: ^20.17.5
-        version: 20.17.5
+        specifier: ^22.9.0
+        version: 22.9.0
       '@vitejs/plugin-vue':
         specifier: ^5.1.4
-        version: 5.1.4(vite@5.4.10(@types/node@20.17.5)(terser@5.31.0))(vue@3.5.12(typescript@5.6.3))
+        version: 5.1.4(vite@5.4.10(@types/node@22.9.0)(terser@5.31.0))(vue@3.5.12(typescript@5.6.3))
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.47)
@@ -108,16 +108,16 @@ importers:
         version: 5.6.3
       vite:
         specifier: ^5.4.10
-        version: 5.4.10(@types/node@20.17.5)(terser@5.31.0)
+        version: 5.4.10(@types/node@22.9.0)(terser@5.31.0)
       vite-plugin-pwa:
         specifier: ^0.20.5
-        version: 0.20.5(vite@5.4.10(@types/node@20.17.5)(terser@5.31.0))(workbox-build@7.1.0)(workbox-window@7.1.0)
+        version: 0.20.5(vite@5.4.10(@types/node@22.9.0)(terser@5.31.0))(workbox-build@7.1.0)(workbox-window@7.1.0)
       vite-plugin-svg-icons:
         specifier: ^2.0.1
-        version: 2.0.1(vite@5.4.10(@types/node@20.17.5)(terser@5.31.0))
+        version: 2.0.1(vite@5.4.10(@types/node@22.9.0)(terser@5.31.0))
       vite-plugin-top-level-await:
         specifier: ^1.4.4
-        version: 1.4.4(rollup@2.79.1)(vite@5.4.10(@types/node@20.17.5)(terser@5.31.0))
+        version: 1.4.4(rollup@2.79.1)(vite@5.4.10(@types/node@22.9.0)(terser@5.31.0))
       vue-tsc:
         specifier: ^2.1.10
         version: 2.1.10(typescript@5.6.3)
@@ -1466,8 +1466,8 @@ packages:
   '@types/mdast@3.0.15':
     resolution: {integrity: sha512-LnwD+mUEfxWMa1QpDraczIn6k0Ee3SMicuYSSzS6ZYl2gKS09EClnJYGd8Du6rfc5r/GZEk5o1mRb8TaTj03sQ==}
 
-  '@types/node@20.17.5':
-    resolution: {integrity: sha512-n8FYY/pRxu496441gIcAQFZPKXbhsd6VZygcq+PTSZ75eMh/Ke0hCAROdUa21qiFqKNsPPYic46yXDO1JGiPBQ==}
+  '@types/node@22.9.0':
+    resolution: {integrity: sha512-vuyHg81vvWA1Z1ELfvLko2c8f34gyA0zaic0+Rllc5lbCnbSyuvb2Oxpm6TAUAC/2xZN3QGqxBNggD1nNR2AfQ==}
 
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
@@ -5066,8 +5066,8 @@ packages:
   unctx@2.3.1:
     resolution: {integrity: sha512-PhKke8ZYauiqh3FEMVNm7ljvzQiph0Mt3GBRve03IJm7ukfaON2OBK795tLwhbyfzknuRRkW0+Ze+CQUmzOZ+A==}
 
-  undici-types@6.19.6:
-    resolution: {integrity: sha512-e/vggGopEfTKSvj4ihnOLTsqhrKRN3LeO6qSN/GxohhuRv8qH9bNQ4B8W7e/vFL+0XTnmHPB4/kegunZGA4Org==}
+  undici-types@6.19.8:
+    resolution: {integrity: sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==}
 
   unicode-canonical-property-names-ecmascript@2.0.0:
     resolution: {integrity: sha512-yY5PpDlfVIU5+y/BSCxAJRBIS1Zc2dDG3Ujq+sR0U+JjUevW2JhocOF+soROYDSaAezOzOKuyyixhD6mBknSmQ==}
@@ -6338,11 +6338,11 @@ snapshots:
       '@babel/helper-validator-identifier': 7.25.7
       to-fast-properties: 2.0.0
 
-  '@commitlint/cli@19.5.0(@types/node@20.17.5)(typescript@5.6.3)':
+  '@commitlint/cli@19.5.0(@types/node@22.9.0)(typescript@5.6.3)':
     dependencies:
       '@commitlint/format': 19.5.0
       '@commitlint/lint': 19.5.0
-      '@commitlint/load': 19.5.0(@types/node@20.17.5)(typescript@5.6.3)
+      '@commitlint/load': 19.5.0(@types/node@22.9.0)(typescript@5.6.3)
       '@commitlint/read': 19.5.0
       '@commitlint/types': 19.5.0
       tinyexec: 0.3.0
@@ -6397,7 +6397,7 @@ snapshots:
       '@commitlint/types': 19.5.0
     optional: true
 
-  '@commitlint/load@19.5.0(@types/node@20.17.5)(typescript@5.6.3)':
+  '@commitlint/load@19.5.0(@types/node@22.9.0)(typescript@5.6.3)':
     dependencies:
       '@commitlint/config-validator': 19.5.0
       '@commitlint/execute-rule': 19.5.0
@@ -6405,7 +6405,7 @@ snapshots:
       '@commitlint/types': 19.5.0
       chalk: 5.3.0
       cosmiconfig: 9.0.0(typescript@5.6.3)
-      cosmiconfig-typescript-loader: 5.0.0(@types/node@20.17.5)(cosmiconfig@9.0.0(typescript@5.6.3))(typescript@5.6.3)
+      cosmiconfig-typescript-loader: 5.0.0(@types/node@22.9.0)(cosmiconfig@9.0.0(typescript@5.6.3))(typescript@5.6.3)
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       lodash.uniq: 4.5.0
@@ -7005,7 +7005,7 @@ snapshots:
 
   '@types/conventional-commits-parser@5.0.0':
     dependencies:
-      '@types/node': 20.17.5
+      '@types/node': 22.9.0
     optional: true
 
   '@types/estree@0.0.39': {}
@@ -7022,9 +7022,9 @@ snapshots:
     dependencies:
       '@types/unist': 2.0.10
 
-  '@types/node@20.17.5':
+  '@types/node@22.9.0':
     dependencies:
-      undici-types: 6.19.6
+      undici-types: 6.19.8
 
   '@types/normalize-package-data@2.4.4': {}
 
@@ -7037,7 +7037,7 @@ snapshots:
 
   '@types/svgo@2.6.4':
     dependencies:
-      '@types/node': 20.17.5
+      '@types/node': 22.9.0
 
   '@types/trusted-types@2.0.7': {}
 
@@ -7234,9 +7234,9 @@ snapshots:
       '@typescript-eslint/types': 8.12.2
       eslint-visitor-keys: 3.4.3
 
-  '@vitejs/plugin-vue@5.1.4(vite@5.4.10(@types/node@20.17.5)(terser@5.31.0))(vue@3.5.12(typescript@5.6.3))':
+  '@vitejs/plugin-vue@5.1.4(vite@5.4.10(@types/node@22.9.0)(terser@5.31.0))(vue@3.5.12(typescript@5.6.3))':
     dependencies:
-      vite: 5.4.10(@types/node@20.17.5)(terser@5.31.0)
+      vite: 5.4.10(@types/node@22.9.0)(terser@5.31.0)
       vue: 3.5.12(typescript@5.6.3)
 
   '@volar/language-core@2.4.8':
@@ -7878,9 +7878,9 @@ snapshots:
       object-assign: 4.1.1
       vary: 1.1.2
 
-  cosmiconfig-typescript-loader@5.0.0(@types/node@20.17.5)(cosmiconfig@9.0.0(typescript@5.6.3))(typescript@5.6.3):
+  cosmiconfig-typescript-loader@5.0.0(@types/node@22.9.0)(cosmiconfig@9.0.0(typescript@5.6.3))(typescript@5.6.3):
     dependencies:
-      '@types/node': 20.17.5
+      '@types/node': 22.9.0
       cosmiconfig: 9.0.0(typescript@5.6.3)
       jiti: 1.21.6
       typescript: 5.6.3
@@ -11209,7 +11209,7 @@ snapshots:
     transitivePeerDependencies:
       - webpack-sources
 
-  undici-types@6.19.6: {}
+  undici-types@6.19.8: {}
 
   unicode-canonical-property-names-ecmascript@2.0.0: {}
 
@@ -11340,18 +11340,18 @@ snapshots:
 
   vary@1.1.2: {}
 
-  vite-plugin-pwa@0.20.5(vite@5.4.10(@types/node@20.17.5)(terser@5.31.0))(workbox-build@7.1.0)(workbox-window@7.1.0):
+  vite-plugin-pwa@0.20.5(vite@5.4.10(@types/node@22.9.0)(terser@5.31.0))(workbox-build@7.1.0)(workbox-window@7.1.0):
     dependencies:
       debug: 4.3.6
       pretty-bytes: 6.1.1
       tinyglobby: 0.2.0
-      vite: 5.4.10(@types/node@20.17.5)(terser@5.31.0)
+      vite: 5.4.10(@types/node@22.9.0)(terser@5.31.0)
       workbox-build: 7.1.0
       workbox-window: 7.1.0
     transitivePeerDependencies:
       - supports-color
 
-  vite-plugin-svg-icons@2.0.1(vite@5.4.10(@types/node@20.17.5)(terser@5.31.0)):
+  vite-plugin-svg-icons@2.0.1(vite@5.4.10(@types/node@22.9.0)(terser@5.31.0)):
     dependencies:
       '@types/svgo': 2.6.4
       cors: 2.8.5
@@ -11361,27 +11361,27 @@ snapshots:
       pathe: 0.2.0
       svg-baker: 1.7.0
       svgo: 2.8.0
-      vite: 5.4.10(@types/node@20.17.5)(terser@5.31.0)
+      vite: 5.4.10(@types/node@22.9.0)(terser@5.31.0)
     transitivePeerDependencies:
       - supports-color
 
-  vite-plugin-top-level-await@1.4.4(rollup@2.79.1)(vite@5.4.10(@types/node@20.17.5)(terser@5.31.0)):
+  vite-plugin-top-level-await@1.4.4(rollup@2.79.1)(vite@5.4.10(@types/node@22.9.0)(terser@5.31.0)):
     dependencies:
       '@rollup/plugin-virtual': 3.0.2(rollup@2.79.1)
       '@swc/core': 1.7.0
       uuid: 10.0.0
-      vite: 5.4.10(@types/node@20.17.5)(terser@5.31.0)
+      vite: 5.4.10(@types/node@22.9.0)(terser@5.31.0)
     transitivePeerDependencies:
       - '@swc/helpers'
       - rollup
 
-  vite@5.4.10(@types/node@20.17.5)(terser@5.31.0):
+  vite@5.4.10(@types/node@22.9.0)(terser@5.31.0):
     dependencies:
       esbuild: 0.21.5
       postcss: 8.4.47
       rollup: 4.21.1
     optionalDependencies:
-      '@types/node': 20.17.5
+      '@types/node': 22.9.0
       fsevents: 2.3.3
       terser: 5.31.0
 
