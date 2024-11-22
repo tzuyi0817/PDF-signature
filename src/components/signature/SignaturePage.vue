@@ -12,7 +12,7 @@ const currentPage = ref(1);
 const devicePixelRatio = ref(window.devicePixelRatio);
 const { currentPDF } = storeToRefs(usePdfStore());
 const configStore = useConfigStore();
-const SignaturePageItem = defineAsyncComponent(() => import('@component-hook/pdf-canvas'));
+const SignaturePageItem = defineAsyncComponent(() => import('@component-hook/pdf-canvas/vue'));
 const stopMonitorDevicePixelRatio = monitorDevicePixelRatio(changeDevicePixelRatio);
 
 function selectPage(page: number) {
