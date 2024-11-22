@@ -20,7 +20,7 @@ import { sleep } from '@/utils/common';
 import { canvasToFile } from '@/utils/image';
 import type { SignatureTool } from '@/types/menu';
 
-const SignatureCanvasItem = defineAsyncComponent(() => import('@component-hook/pdf-canvas'));
+const SignatureCanvasItem = defineAsyncComponent(() => import('@component-hook/pdf-canvas/vue'));
 const currentTool = ref<SignatureTool | ''>('');
 const isCancelMerge = ref(false);
 const currentPage = ref(1);
