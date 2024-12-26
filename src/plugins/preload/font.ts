@@ -1,4 +1,4 @@
-export function setupFont(name: string, file: string) {
+export function preloadFont(name: string, file: string) {
   const fontFace = new FontFace(name, `url(/font/${file})`);
 
   return fontFace.load().then(font => {

@@ -1,9 +1,9 @@
-import { setupFont } from './font';
-import { setupLocalFiles } from './local';
+import { preloadFont } from './font';
+import { preloadStorage, preloadImages } from './local';
 
 export default {
   install() {
-    const preloads = [setupFont('Gen Jyuu Gothic P', 'GenJyuuGothic-P.woff2'), setupLocalFiles()];
+    const preloads = [preloadFont('Gen Jyuu Gothic P', 'GenJyuuGothic-P.woff2'), preloadStorage(), preloadImages()];
 
     Promise.all(preloads).then(() => {
       closeLoadingScreen();
