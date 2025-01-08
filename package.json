@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.4.0",
   "type": "module",
-  "packageManager": "pnpm@9.15.2",
+  "packageManager": "pnpm@9.15.3",
   "scripts": {
     "dev": "vite",
     "dev:e2e": "vite --port 8081",
@@ -32,7 +32,7 @@
     "@component-hook/eslint-plugin": "^0.2.4",
     "@intlify/unplugin-vue-i18n": "^6.0.3",
     "@playwright/test": "^1.49.1",
-    "@types/node": "^22.10.3",
+    "@types/node": "^22.10.5",
     "@vitejs/plugin-vue": "^5.2.1",
     "autoprefixer": "^10.4.20",
     "cssnano": "^7.0.6",
@@ -46,7 +46,7 @@
     "prettier": "^3.4.2",
     "rollup-plugin-visualizer": "^5.13.1",
     "tailwindcss": "^3.4.17",
-    "typescript": "^5.7.2",
+    "typescript": "^5.7.3",
     "vite": "^5.4.11",
     "vite-plugin-pwa": "^0.21.1",
     "vite-plugin-svg-icons": "^2.0.1",
@@ -66,7 +66,7 @@
   },
   "pnpm": {
     "overrides": {
-      "@typescript-eslint/typescript-estree": "^8.19.0"
+      "@typescript-eslint/typescript-estree": "^8.19.1"
     }
   }
 }
