@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.4.0",
   "type": "module",
-  "packageManager": "pnpm@9.15.3",
+  "packageManager": "pnpm@9.15.4",
   "scripts": {
     "dev": "vite",
     "dev:e2e": "vite --port 8081",
@@ -18,7 +18,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@component-hook/pdf-canvas": "^0.2.4",
+    "@component-hook/pdf-canvas": "^0.2.5",
     "browser-image-compression": "^2.0.2",
     "idb-keyval": "^6.2.1",
     "jspdf": "^2.5.2",
@@ -29,16 +29,16 @@
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
-    "@component-hook/eslint-plugin": "^0.2.4",
+    "@component-hook/eslint-plugin": "^0.2.5",
     "@intlify/unplugin-vue-i18n": "^6.0.3",
     "@playwright/test": "^1.49.1",
-    "@types/node": "^22.10.5",
+    "@types/node": "^22.10.7",
     "@vitejs/plugin-vue": "^5.2.1",
     "autoprefixer": "^10.4.20",
     "cssnano": "^7.0.6",
-    "eslint": "^9.17.0",
+    "eslint": "^9.18.0",
     "globals": "^15.14.0",
-    "postcss": "^8.4.49",
+    "postcss": "^8.5.1",
     "postcss-import": "^16.1.0",
     "postcss-nested": "^7.0.2",
     "postcss-nesting": "^13.0.1",
@@ -62,11 +62,11 @@
     "@commitlint/cli": "^19.6.1",
     "@commitlint/config-conventional": "^19.6.0",
     "husky": "^9.1.7",
-    "lint-staged": "^15.3.0"
+    "lint-staged": "^15.4.1"
   },
   "pnpm": {
     "overrides": {
-      "@typescript-eslint/typescript-estree": "^8.19.1"
+      "@typescript-eslint/typescript-estree": "^8.20.0"
     }
   }
 }
