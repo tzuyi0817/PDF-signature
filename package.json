@@ -18,7 +18,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@component-hook/pdf-canvas": "^0.2.5",
+    "@component-hook/pdf-canvas": "^1.0.1",
     "browser-image-compression": "^2.0.2",
     "idb-keyval": "^6.2.1",
     "jspdf": "^2.5.2",
