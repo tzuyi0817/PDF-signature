@@ -1,9 +1,6 @@
-@import 'tailwindcss/components';
-
-@layer components {
-  .signature {
-    &_list {
-      @apply h-[calc(100%-16px)]
+.signature {
+  &_list {
+    @apply h-[calc(100%-16px)]
       overflow-y-auto
       flex
       flex-col
@@ -13,6 +10,5 @@
       py-3
       gap-2
       items-center;
-    }
   }
 }

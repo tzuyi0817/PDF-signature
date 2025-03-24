@@ -1,48 +1,36 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
-@layer base {
-  * {
-    -ms-touch-action: manipulation;
-    touch-action: manipulation;
-    user-select: none;
-  }
+@theme {
+  --color-bg: '#4D4D4D';
 
-  html {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
+  --color-primary: '#B7EC5D';
+  --color-primary-dark: '#648D1E';
+  --color-primary-frame: 'rgba(183, 236, 93, 0.3)';
+  --color-primary-linear: 'rgb(183, 236, 93)';
 
-  body {
-    @apply text-base tracking-wider bg-bg overflow-hidden w-screen;
-  }
+  --color-secondary: '#4D4D4D';
+  --color-secondary-dark: '#222222';
+  --color-secondary-tint: '#f5f5f5';
 
-  img {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-  }
+  --color-success: '#B7EC5D';
+  --color-success-dark: '#648D1E';
+  --color-success-tint: '#D9FF99';
 
-  h1 {
-    @apply text-[32px] leading-tight font-bold md:text-[56px];
-  }
+  --color-danger: '#F93819';
+  --color-danger-dark: '#A01600';
+  --color-danger-tint: '#FFA394';
 
-  h2 {
-    @apply text-[28px] leading-tight font-bold md:text-[44px];
-  }
+  --color-pen-black: '#000000';
+  --color-pen-blue: '#0066FF';
+  --color-pen-red: '#f93819';
 
-  h3 {
-    @apply text-2xl md:text-[32px] font-bold md:leading-tight;
-  }
-
-  h4 {
-    @apply text-xl md:text-[28px] font-bold md:leading-tight;
-  }
-
-  h5 {
-    @apply text-lg font-bold md:text-2xl;
-  }
+  --color-gray-10: '#E6E6E6';
+  --color-gray-20: '#CCCCCC';
+  --color-gray-30: '#B3B3B3';
+  --color-gray-40: '#999999';
+  --color-gray-50: '#808080';
+  --color-gray-60: '#666666';
+  --color-gray-70: '#4D4D4D';
+  --color-gray-80: '#333333';
+  --color-gray-90: '#1A1A1A';
 }

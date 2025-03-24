@@ -1,16 +1,14 @@
-@import 'tailwindcss/components';
 @import './text.css';
 
-@layer components {
-  .input {
-    @apply input-base
+.input {
+  @apply /* input-base */
     rounded-[50px]
     pl-6
     pr-9
     py-[6px]
     focus:pr-6;
-    &-base {
-      @apply w-full
+  &-base {
+    @apply w-full
       border-2
       transition-colors
       border-gray-20
@@ -19,9 +17,9 @@
       focus:shadow
       focus:border-primary
       focus:outline-primary;
-    }
-    &-password {
-      @apply input-base
+  }
+  &-password {
+    @apply /* input-base */
       rounded-2xl
       text-sm
       pl-3
@@ -32,6 +30,5 @@
       md:py-2
       md:rounded-3xl
       md:text-base;
-    }
   }
 }
