@@ -1,8 +1,5 @@
-@import 'tailwindcss/components';
-
-@layer components {
-  .layout {
-    @apply min-h-[100dvh]
+.layout {
+  @apply min-h-[100dvh]
     px-[10px]
     pt-14
     md:flex
@@ -11,5 +8,4 @@
     md:pt-0
     md:translate-y-[120px]
     md:-translate-x-[40px];
-  }
 }

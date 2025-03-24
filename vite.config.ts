@@ -2,19 +2,21 @@ import { fileURLToPath, URL } from 'node:url';
 import { dirname, resolve } from 'node:path';
 import { defineConfig, splitVendorChunkPlugin, type Plugin } from 'vite';
 import vue from '@vitejs/plugin-vue';
+import tailwindcss from '@tailwindcss/vite';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 import vueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 import topLevelAwait from 'vite-plugin-top-level-await';
 import { VitePWA } from 'vite-plugin-pwa';
 import { visualizer } from 'rollup-plugin-visualizer';
-import { version } from './package.json';
+import packageJson from './package.json' with { type: 'json' };
 
-process.env.VITE_APP_VERSION = version;
+process.env.VITE_APP_VERSION = packageJson.version;
 
 export default defineConfig({
   base: './',
   plugins: [
     vue(),
+    tailwindcss(),
     createSvgIconsPlugin({
       iconDirs: [resolve(process.cwd(), 'src/assets/icon')],
     }),

@@ -1,8 +1,5 @@
-@import 'tailwindcss/components';
-
-@layer components {
-  .content {
-    @apply w-full
+.content {
+  @apply w-full
     h-[calc(100dvh-120px)]
     bg-white
     p-3
@@ -13,17 +10,16 @@
     md:py-4
     md:w-[75%]
     md:h-[calc(100dvh-175px)];
+}
+.toolbar {
+  @apply m-4 flex justify-center items-center gap-6;
+  li {
+    @apply cursor-pointer;
   }
-  .toolbar {
-    @apply m-4 flex justify-center items-center gap-6;
-    li {
-      @apply cursor-pointer;
-    }
-    img {
-      @apply w-7 md:w-9;
-    }
+  img {
+    @apply w-7 md:w-9;
   }
-  .title {
-    @apply border-b-2 border-primary py-1 px-4 md:py-4;
-  }
+}
+.title {
+  @apply border-b-2 border-primary py-1 px-4 md:py-4;
 }
