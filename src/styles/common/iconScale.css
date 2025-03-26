@@ -1,0 +1,10 @@
+@layer components {
+  .iconScale {
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  .iconScale:hover {
+    transform: scale(0.9);
+  }
+}

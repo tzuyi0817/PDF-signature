@@ -1,0 +1,57 @@
+@layer components {
+  .content {
+    width: 100%;
+    height: calc(100dvh - 120px);
+    background-color: white;
+    padding: 0.75rem;
+    box-shadow:
+      inset 0px 2px 4px rgba(135, 135, 135, 0.35),
+      inset 0px 5px 8px rgba(215, 215, 215, 0.3),
+      inset 0px -2px 4px rgba(135, 135, 135, 0.65),
+      inset 0px -6px 6px rgba(215, 215, 215, 0.55);
+    position: relative;
+    border-radius: 20px;
+  }
+
+  @media (min-width: 768px) {
+    .content {
+      padding: 1rem 1.75rem;
+      width: 75%;
+      height: calc(100dvh - 175px);
+    }
+  }
+
+  .toolbar {
+    margin: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .toolbar li {
+    cursor: pointer;
+  }
+
+  .toolbar img {
+    width: 1.75rem;
+  }
+
+  @media (min-width: 768px) {
+    .toolbar img {
+      width: 2.25rem;
+    }
+  }
+
+  .title {
+    border-bottom: 2px solid var(--color-primary);
+    padding: 0.25rem 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .title {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+  }
+}
