@@ -98,7 +98,7 @@ function close() {
   >
     <ul
       v-if="imageList.length"
-      class="signature_list"
+      class="signature-list"
     >
       <img
         src="@/assets/icon/ic_add_dark.svg"
@@ -135,7 +135,7 @@ function close() {
 
     <div
       v-else
-      class="signature_list justify-center"
+      class="signature-list justify-center"
     >
       <img
         src="@/assets/icon/ic_add_dark.svg"
@@ -165,7 +165,7 @@ function close() {
         src="@/assets/img/img_photo.svg"
         alt=""
       />
-      <button class="btn btn_primary">
+      <button class="btn btn-primary">
         <input
           type="file"
           accept="application/.jpg, .png"
@@ -185,7 +185,7 @@ function close() {
     </div>
 
     <button
-      class="btn btn_base"
+      class="btn btn-base"
       @click="toggleImagePopup(false)"
     >
       {{ $t('cancel') }}
@@ -201,13 +201,13 @@ function close() {
     </p>
     <div class="flex justify-between md:justify-evenly">
       <button
-        class="btn btn_base"
+        class="btn btn-base"
         @click="toggleWarnPopup(false)"
       >
         {{ $t('not_yet') }}
       </button>
       <button
-        class="btn btn_primary"
+        class="btn btn-primary"
         @click="deleteImage"
       >
         {{ $t('delete') }}

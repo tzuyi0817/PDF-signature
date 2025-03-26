@@ -32,13 +32,13 @@ function confirmPassword() {
     />
     <div class="flex justify-between md:justify-evenly">
       <button
-        class="btn btn_base"
+        class="btn btn-base"
         @click="emit('closePassword')"
       >
         {{ $t('not_yet') }}
       </button>
       <button
-        class="btn btn_primary"
+        class="btn btn-primary"
         @click="confirmPassword"
       >
         {{ $t('confirm') }}

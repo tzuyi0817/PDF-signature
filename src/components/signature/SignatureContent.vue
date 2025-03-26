@@ -190,13 +190,13 @@ function cancelMergeFile() {
       </p>
       <div class="flex justify-between md:justify-evenly">
         <button
-          class="btn btn_base"
+          class="btn btn-base"
           @click="toggleWarnPopup(false)"
         >
           {{ $t('not_yet') }}
         </button>
         <button
-          class="btn btn_primary"
+          class="btn btn-primary"
           @click="giveUpSignature"
         >
           {{ $t('give_up') }}
@@ -213,13 +213,13 @@ function cancelMergeFile() {
       </p>
       <div class="flex justify-between md:justify-evenly">
         <button
-          class="btn btn_base"
+          class="btn btn-base"
           @click="toggleNextWarnPopup(false)"
         >
           {{ $t('wait') }}
         </button>
         <button
-          class="btn btn_primary"
+          class="btn btn-primary"
           @click="mergeFile"
         >
           {{ $t('confirm') }}

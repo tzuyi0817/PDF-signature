@@ -33,11 +33,11 @@ const currentCom = computed(() => {
 </script>
 
 <template>
-  <div class="index_content content">
+  <div class="index-content content">
     <img
       src="@/assets/icon/ic_add_tint.svg"
       alt="Add File Svg"
-      class="index_content_add iconScale"
+      class="index-content-add iconScale"
       @click="goPage('upload')"
     />
     <h5 class="title">
@@ -51,10 +51,21 @@ const currentCom = computed(() => {
   </div>
 </template>
 
-<style lang="postcss" scoped>
-.index_content {
-  &_add {
-    @apply w-[60px] h-[60px] absolute right-3 -top-8 md:w-20 md:h-20 md:-right-10 md:top-10;
+<style lang="css" scoped>
+.index-content-add {
+  width: 60px;
+  height: 60px;
+  position: absolute;
+  right: 12px;
+  top: -32px;
+}
+
+@media (min-width: 768px) {
+  .index-content-add {
+    width: 80px;
+    height: 80px;
+    right: -40px;
+    top: 40px;
   }
 }
 </style>

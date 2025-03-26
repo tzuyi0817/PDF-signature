@@ -16,7 +16,7 @@ const emit = defineEmits(['prevStep', 'nextStep']);
       <span class="text-4xl font-thin">←</span>{{ $t('previous') }}
     </button>
     <button
-      class="btn btn_primary"
+      class="btn btn-primary"
       :disabled="isNextDisabled"
       @click="emit('nextStep')"
     >

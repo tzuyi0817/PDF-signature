@@ -1,5 +1,9 @@
-.index {
-  &_container {
-    @apply h-[calc(100%-60px)] md:h-[calc(100%-90px)];
+.index-container {
+  height: calc(100% - 60px);
+}
+
+@media (min-width: 768px) {
+  .index-container {
+    height: calc(100% - 90px);
   }
 }

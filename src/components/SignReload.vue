@@ -7,7 +7,7 @@ function reload() {
 <template>
   <teleport to="#loading-reload">
     <button
-      class="btn btn_primary w-fit max-w-[560px] mx-2 h-fit whitespace-normal break-words"
+      class="btn btn-primary w-fit max-w-[560px] mx-2 h-fit whitespace-normal break-words"
       @click="reload"
     >
       {{ $t('prompt.error_occurred') }}

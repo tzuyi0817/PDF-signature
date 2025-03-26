@@ -100,7 +100,7 @@ onBeforeUnmount(() => {
     </div>
 
     <button
-      class="btn btn_primary md:absolute md:left-10 md:top-7"
+      class="btn btn-primary md:absolute md:left-10 md:top-7"
       :disabled="false"
       @click="goPage('index')"
     >
@@ -117,13 +117,13 @@ onBeforeUnmount(() => {
       </p>
       <div class="flex justify-between md:justify-evenly">
         <button
-          class="btn btn_base"
+          class="btn btn-base"
           @click="toggleWarnPopup(false)"
         >
           {{ $t('not_yet') }}
         </button>
         <button
-          class="btn btn_primary"
+          class="btn btn-primary"
           @click="warnConfirm"
         >
           {{ $t('confirm') }}

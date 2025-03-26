@@ -30,13 +30,13 @@ function close() {
     </div>
     <div class="flex justify-center gap-5 md:hidden">
       <button
-        class="btn btn_base"
+        class="btn btn-base"
         @click="close"
       >
         {{ $t('cancel') }}
       </button>
       <button
-        class="btn btn_primary"
+        class="btn btn-primary"
         :disabled="isDisabled"
         @click="emit('use')"
       >

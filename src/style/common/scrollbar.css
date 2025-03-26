@@ -1,11 +1,19 @@
 ::-webkit-scrollbar {
-  @apply w-1.5 h-1.5;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply rounded-xl bg-gray-10;
+  background-color: var(--color-gray-10);
+  border-radius: 12px;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply rounded-xl bg-gray-20 cursor-pointer hover:bg-gray-30;
+  background-color: var(--color-gray-20);
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-gray-30);
 }

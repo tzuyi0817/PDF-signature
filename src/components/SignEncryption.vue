@@ -60,13 +60,13 @@ function download(isEncrypt: boolean) {
     </div>
     <div class="flex justify-between md:justify-evenly">
       <button
-        class="btn btn_base"
+        class="btn btn-base"
         @click="() => download(false)"
       >
         {{ $t('not_yet') }}
       </button>
       <button
-        class="btn btn_primary"
+        class="btn btn-primary"
         @click="() => download(true)"
       >
         {{ $t('confirm') }}

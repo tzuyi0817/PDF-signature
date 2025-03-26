@@ -9,9 +9,14 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* body {
-  @apply text-base tracking-wider bg-bg overflow-hidden w-screen;
-} */
+body {
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: var(--tracking-wider);
+  background-color: var(--color-bg);
+  width: 100vw;
+  overflow: hidden;
+}
 
 img {
   -webkit-touch-callout: none;
@@ -21,22 +26,53 @@ img {
   user-select: none;
 }
 
-/* h1 {
-  @apply text-[32px] leading-tight font-bold md:text-[56px];
+h1 {
+  font-size: 32px;
+  line-height: 1.25;
+  font-weight: 700;
 }
 
 h2 {
-  @apply text-[28px] leading-tight font-bold md:text-[44px];
+  font-size: 28px;
+  line-height: 1.25;
+  font-weight: 700;
 }
 
 h3 {
-  @apply text-2xl md:text-[32px] font-bold md:leading-tight;
+  font-size: 24px;
+  font-weight: 700;
 }
 
 h4 {
-  @apply text-xl md:text-[28px] font-bold md:leading-tight;
+  font-size: 20px;
+  font-weight: 700;
 }
 
 h5 {
-  @apply text-lg font-bold md:text-2xl;
-} */
+  font-size: 18px;
+  font-weight: 700;
+}
+
+@media (min-width: 768px) {
+  h1 {
+    font-size: 56px;
+  }
+
+  h2 {
+    font-size: 44px;
+  }
+
+  h3 {
+    font-size: 32px;
+    line-height: 1.25;
+  }
+
+  h4 {
+    font-size: 28px;
+    line-height: 1.25;
+  }
+
+  h5 {
+    font-size: 24px;
+  }
+}
