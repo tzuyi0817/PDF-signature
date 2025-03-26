@@ -3,7 +3,7 @@ import { createPinia } from 'pinia';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import 'virtual:svg-icons-register';
 
-import '@/style/index.css';
+import '@/styles/index.css';
 import App from '@/App.vue';
 import router from '@/router';
 import errorHandlerPlugin from '@/plugins/error-handler';

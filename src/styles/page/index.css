@@ -1,0 +1,11 @@
+@layer components {
+  .index-container {
+    height: calc(100% - 60px);
+  }
+
+  @media (min-width: 768px) {
+    .index-container {
+      height: calc(100% - 90px);
+    }
+  }
+}

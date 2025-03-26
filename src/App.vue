@@ -24,19 +24,21 @@ import SignReload from '@/components/SignReload.vue';
 
 <style lang="postcss">
 #app {
-  @apply w-full overflow-hidden;
+  width: 100%;
+  overflow: hidden;
 }
 
 .slide-fade-enter-active {
-  @apply transition-all duration-300 ease-out;
+  transition: all 300ms ease-out;
 }
 
 .slide-fade-leave-active {
-  @apply transition-all duration-300 ease-in-page;
+  transition: all 300ms var(--ease-in-page);
 }
 
 .slide-fade-enter-from,
 .slide-fade-leave-to {
-  @apply opacity-0 translate-x-5;
+  opacity: 0;
+  transform: translateX(20px);
 }
 </style>

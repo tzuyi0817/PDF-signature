@@ -107,7 +107,7 @@ onActivated(updateSelectAll);
 </script>
 
 <template>
-  <div class="sign_files">
+  <div class="sign-files">
     <index-search v-model="keyword" />
 
     <div class="hidden md:flex items-end w-full px-4 py-5">
@@ -223,8 +223,14 @@ onActivated(updateSelectAll);
   </div>
 </template>
 
-<style lang="postcss" scoped>
-.sign_files {
-  @apply w-full flex flex-col items-center h-full relative justify-center;
+<style lang="css" scoped>
+.sign-files {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 </style>

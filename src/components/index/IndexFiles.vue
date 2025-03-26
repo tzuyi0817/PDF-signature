@@ -9,7 +9,7 @@ const { PDFList } = storeToRefs(usePdfStore());
 </script>
 
 <template>
-  <div class="index_files index-container">
+  <div class="index-files index-container">
     <sign-files
       v-if="PDFList.length"
       type="file"
