@@ -201,13 +201,13 @@ onActivated(updateSelectAll);
       </p>
       <div class="flex justify-between md:justify-evenly">
         <button
-          class="btn btn_base"
+          class="btn btn-base"
           @click="closeWarnPopup"
         >
           {{ $t('not_yet') }}
         </button>
         <button
-          class="btn btn_primary"
+          class="btn btn-primary"
           @click="deleteFile"
         >
           {{ $t('confirm') }}

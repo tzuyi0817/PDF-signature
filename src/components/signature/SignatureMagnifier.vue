@@ -11,14 +11,14 @@ function changeZoom(value: number) {
 <template>
   <div class="signature_magnifier">
     <button
-      class="btn_small btn_primary"
+      class="btn-small btn-primary"
       :disabled="modelValue >= MAX_ZOOM"
       @click="changeZoom(0.1)"
     >
       ➕
     </button>
     <button
-      class="btn_small btn_primary"
+      class="btn-small btn-primary"
       :disabled="modelValue <= MIN_ZOOM"
       @click="changeZoom(-0.1)"
     >
@@ -30,7 +30,7 @@ function changeZoom(value: number) {
 <style lang="postcss" scoped>
 .signature_magnifier {
   @apply absolute bottom-[106px] right-10 flex gap-[2px] md:bottom-20 md:right-[calc(5%+45px)] md:gap-1;
-  .btn_small {
+  .btn-small {
     @apply text-transparent;
     text-shadow: 0 0 0 #b7ec5d;
     &:hover {

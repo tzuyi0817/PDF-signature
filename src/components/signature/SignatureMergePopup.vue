@@ -46,14 +46,14 @@ const { SignPopup, goPage } = useWarnPopup();
     <div class="flex justify-between md:justify-evenly">
       <button
         v-if="isMergeComplete"
-        class="btn btn_primary w-full"
+        class="btn btn-primary w-full"
         @click="goPage('complete')"
       >
         {{ $t('confirm') }}
       </button>
       <button
         v-else
-        class="btn btn_base w-full"
+        class="btn btn-base w-full"
         @click="cancelMergeFile"
       >
         {{ $t('cancel') }}

@@ -1,56 +1,90 @@
-@import './text.css';
-
 .btn {
-  @apply min-w-[131px]
-    h-[41px]
-    py-2
-    px-7
-    flex
-    items-center
-    justify-center
-    border-2
-    border-transparent
-    cursor-pointer
-    rounded-[50px]
-    transition-[color_tranform]
-    gap-2
-    /* highlight */
-    whitespace-nowrap
-    hover:text-primary
-    disabled:bg-gray-20
-    disabled:border-gray-30
-    disabled:text-gray-50
-    disabled:hover:text-gray-50
-    disabled:hover:bg-gray-20
-    disabled:cursor-not-allowed;
-  &_base {
-    @apply border-gray-50 text-gray-50 hover:text-primary hover:bg-gray-50;
-  }
-  &_primary {
-    @apply bg-secondary border-primary text-primary hover:text-black hover:bg-primary;
-    &.active {
-      @apply text-black bg-primary;
-    }
-  }
-  &_small {
-    @apply transition-[color_tranform]
-      border
-      cursor-pointer
-      rounded-2xl
-      py-1 
-      px-3 
-      font-bold 
-      text-xs 
-      focus:outline-none 
-      md:text-base
-      md:px-7 
-      md:border-2
-      disabled:bg-gray-20
-      disabled:border-gray-20
-      disabled:text-black
-      disabled:cursor-not-allowed;
+  min-width: 131px;
+  height: 41px;
+  padding: 0.5rem 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid transparent;
+  cursor: pointer;
+  border-radius: 50px;
+  transition:
+    color 0.2s,
+    background-color 0.2s,
+    transform 0.2s;
+  gap: 0.5rem;
+  white-space: nowrap;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.btn:hover {
+  color: var(--color-primary);
+}
+
+.btn:disabled {
+  background-color: var(--color-gray-20);
+  border-color: var(--color-gray-30);
+  color: var(--color-gray-50);
+  cursor: not-allowed;
+}
+
+.btn:disabled:hover {
+  color: var(--color-gray-50);
+  background-color: var(--color-gray-20);
+}
+
+.btn-base {
+  border: 1px solid var(--color-gray-50);
+  color: var(--color-gray-50);
+}
+
+.btn-base:hover {
+  color: var(--color-primary);
+  background-color: var(--color-gray-50);
+}
+
+.btn-primary {
+  background-color: var(--color-secondary);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.btn_primary:hover {
+  color: black;
+  background-color: var(--color-primary);
+}
+
+.btn_primary.active {
+  color: black;
+  background-color: var(--color-primary);
+}
+
+.btn-small {
+  border: 1px solid;
+  cursor: pointer;
+  border-radius: 1rem;
+  padding: 4px 12px;
+  font-weight: 700;
+  font-size: 0.75rem;
+  outline: none;
+}
+
+@media (min-width: 768px) {
+  .btn-small {
+    font-size: 1rem;
+    padding: 4px 28px;
+    border-width: 2px;
   }
 }
-button:not(:disabled) {
-  @apply active:scale-90;
+
+.btn-small:disabled {
+  background-color: var(--color-gray-20);
+  border-color: var(--color-gray-20);
+  color: black;
+  cursor: not-allowed;
+}
+
+button:not(:disabled):active {
+  transform: scale(0.9);
 }

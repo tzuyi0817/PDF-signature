@@ -1,11 +1,16 @@
 .layout {
-  @apply min-h-[100dvh]
-    px-[10px]
-    pt-14
-    md:flex
-    md:flex-row
-    md:justify-center
-    md:pt-0
-    md:translate-y-[120px]
-    md:-translate-x-[40px];
+  min-height: 100dvh;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 3.5rem;
+}
+
+@media (min-width: 768px) {
+  .layout {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding-top: 0;
+    transform: translateY(120px) translateX(-40px);
+  }
 }

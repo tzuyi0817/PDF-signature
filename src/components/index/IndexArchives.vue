@@ -7,7 +7,7 @@ const { archiveList } = storeToRefs(usePdfStore());
 </script>
 
 <template>
-  <div class="index_archives index_container">
+  <div class="index_archives index-container">
     <sign-files
       v-if="archiveList.length"
       type="archive"

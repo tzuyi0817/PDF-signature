@@ -90,7 +90,7 @@ function close() {
   >
     <ul
       v-if="literalList.length"
-      class="signature_list"
+      class="signature-list"
     >
       <img
         src="@/assets/icon/ic_add_dark.svg"
@@ -133,7 +133,7 @@ function close() {
 
     <div
       v-else
-      class="signature_list justify-center"
+      class="signature-list justify-center"
     >
       <img
         src="@/assets/icon/ic_add_dark.svg"
@@ -160,13 +160,13 @@ function close() {
 
     <div class="flex justify-between md:justify-evenly">
       <button
-        class="btn btn_base"
+        class="btn btn-base"
         @click="toggleLiteralPopup(false)"
       >
         {{ $t('cancel') }}
       </button>
       <button
-        class="btn btn_primary"
+        class="btn btn-primary"
         :disabled="!literal"
         @click="() => (isEditing ? editLiteral() : addLiteral())"
       >
@@ -184,13 +184,13 @@ function close() {
     </p>
     <div class="flex justify-between md:justify-evenly">
       <button
-        class="btn btn_base"
+        class="btn btn-base"
         @click="toggleWarnPopup(false)"
       >
         {{ $t('not_yet') }}
       </button>
       <button
-        class="btn btn_primary"
+        class="btn btn-primary"
         @click="deleteLiteral"
       >
         {{ $t('delete') }}

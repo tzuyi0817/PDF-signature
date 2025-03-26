@@ -1,3 +1,8 @@
 .iconScale {
-  @apply cursor-pointer transition-transform hover:scale-90;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.iconScale:hover {
+  transform: scale(0.9);
 }

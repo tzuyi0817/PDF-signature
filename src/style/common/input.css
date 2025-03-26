@@ -1,34 +1,42 @@
-@import './text.css';
+.input,
+.input-password {
+  width: 100%;
+  border: 2px solid var(--color-gray-20);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+  caret-color: var(--color-primary);
+}
+
+.input:focus,
+.input-password:focus {
+  box-shadow:
+    0 1px 3px 0 var(var(--color-primary), rgb(0 0 0 / 0.1)),
+    0 1px 2px -1px var(var(--color-primary) rgb(0 0 0 / 0.1));
+  border-color: var(--color-primary);
+  outline-color: var(--color-primary);
+}
 
 .input {
-  @apply /* input-base */
-    rounded-[50px]
-    pl-6
-    pr-9
-    py-[6px]
-    focus:pr-6;
-  &-base {
-    @apply w-full
-      border-2
-      transition-colors
-      border-gray-20
-      caret-primary
-      focus:shadow-primary
-      focus:shadow
-      focus:border-primary
-      focus:outline-primary;
-  }
-  &-password {
-    @apply /* input-base */
-      rounded-2xl
-      text-sm
-      pl-3
-      pr-9
-      py-1
-      md:pl-4
-      md:pr-10
-      md:py-2
-      md:rounded-3xl
-      md:text-base;
+  border-radius: 50px;
+  padding: 6px 2.25rem 6px 1.5rem;
+}
+
+.input:focus {
+  padding-right: 1.5rem;
+}
+
+.input-password {
+  border-radius: 1rem;
+  font-size: 0.875rem;
+  padding: 0.25rem 2.25rem 0.25rem 0.75rem;
+}
+
+@media (width >= 48rem /* 768px */) {
+  .input-password {
+    border-radius: 1.5rem;
+    line-height: 1.5;
+    font-size: 1rem;
+    padding: 0.5rem 2.5rem 0.5rem 1rem;
   }
 }

@@ -9,7 +9,7 @@ usePdfStore().filterTrash();
 </script>
 
 <template>
-  <div class="index_trash index_container">
+  <div class="index_trash index-container">
     <sign-files
       v-if="trashList.length"
       type="trash"

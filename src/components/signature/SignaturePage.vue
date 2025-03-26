@@ -48,7 +48,7 @@ onBeforeUnmount(() => {
     @close="close"
     @use="usePage"
   >
-    <ul class="signature_list">
+    <ul class="signature-list">
       <li
         v-for="page in currentPDF.pages"
         :key="page"

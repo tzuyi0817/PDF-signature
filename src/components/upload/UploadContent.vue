@@ -171,7 +171,7 @@ onBeforeUnmount(deleteCanvas);
         src="@/assets/img/img_photo.svg"
         alt="photo icon"
       />
-      <button class="btn btn_primary">
+      <button class="btn btn-primary">
         <input
           type="file"
           accept="application/pdf, .jpg, .png"
@@ -205,13 +205,13 @@ onBeforeUnmount(deleteCanvas);
       </p>
       <div class="flex justify-between md:justify-around">
         <button
-          class="btn btn_base"
+          class="btn btn-base"
           @click="toggleWarnPopup(false)"
         >
           {{ $t('not_yet') }}
         </button>
         <button
-          class="btn btn_primary"
+          class="btn btn-primary"
           @click="giveUpUpload"
         >
           {{ $t('give_up') }}

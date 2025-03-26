@@ -59,7 +59,7 @@ function close() {
   >
     <ul
       v-if="signatureList.length"
-      class="signature_list"
+      class="signature-list"
     >
       <img
         src="@/assets/icon/ic_add_dark.svg"
@@ -96,7 +96,7 @@ function close() {
 
     <div
       v-else
-      class="signature_list justify-center"
+      class="signature-list justify-center"
     >
       <img
         src="@/assets/icon/ic_add_dark.svg"
@@ -126,13 +126,13 @@ function close() {
     </p>
     <div class="flex justify-between">
       <button
-        class="btn btn_base"
+        class="btn btn-base"
         @click="toggleWarnPopup(false)"
       >
         {{ $t('not_yet') }}
       </button>
       <button
-        class="btn btn_primary"
+        class="btn btn-primary"
         @click="deleteSignature"
       >
         {{ $t('delete') }}

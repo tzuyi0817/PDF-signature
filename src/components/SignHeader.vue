@@ -43,7 +43,7 @@ function onTransitionEnd(event: TransitionEvent) {
 </script>
 
 <template>
-  <header class="sign_header">
+  <header class="sign-header">
     <router-link to="/">
       <img
         src="@/assets/logo/logo_darkbg_horizontal.png"
@@ -60,23 +60,23 @@ function onTransitionEnd(event: TransitionEvent) {
       >
         <sign-icon
           name="global"
-          class="sign_header_icon text-gray-40 mt-0.5"
+          class="sign-header-icon text-gray-40 mt-0.5"
         />
 
         <div
           v-if="isDisplayLanguageMenu"
-          :class="['sign_header_menu_arrow sign_header_transition', { 'opacity-0 scale-y-0': !isShowLanguageMenu }]"
+          :class="['sign-header-menu-arrow sign-header-transition', { 'opacity-0 scale-y-0': !isShowLanguageMenu }]"
         ></div>
 
         <teleport to="body">
           <div
             v-if="isDisplayLanguageMenu"
-            :class="['sign_header_menu sign_header_transition', { 'scale-y-0 opacity-0': !isShowLanguageMenu }]"
+            :class="['sign-header-menu sign-header-transition', { 'scale-y-0 opacity-0': !isShowLanguageMenu }]"
             @transitionend="onTransitionEnd"
             @mouseover="openLanguageMenu"
             @mouseleave="closeLanguageMenu"
           >
-            <ul class="sign_header_language">
+            <ul class="sign-header-language">
               <li
                 v-for="(name, language) in I18N_MAP"
                 :key="language"
@@ -97,34 +97,106 @@ function onTransitionEnd(event: TransitionEvent) {
       >
         <sign-icon
           name="github"
-          class="sign_header_icon text-gray-40"
+          class="sign-header-icon text-gray-40"
         />
       </a>
     </div>
   </header>
 </template>
 
-<style lang="postcss" scoped>
-.sign_header {
-  @apply fixed w-full flex justify-between items-center bg-black p-2 md:p-4;
-  &_icon {
-    @apply w-6 h-6 md:w-8 md:h-8 active:scale-90;
+<style lang="css" scoped>
+.sign-header {
+  position: fixed;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: black;
+  padding: 0.5rem;
+}
+
+.sign-header-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.sign-header-icon:active {
+  transform: scale(0.9);
+}
+
+.sign-header-menu {
+  position: fixed;
+  height: fit-content;
+  padding: 0.5rem;
+  background-color: white;
+  box-shadow:
+    0 4px 6px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1)),
+    0 2px 4px -2px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
+  border-radius: 0.5rem;
+  top: 3rem;
+  right: 0.75rem;
+  transform-origin: top;
+}
+
+.sign-header-menu-arrow {
+  position: absolute;
+  bottom: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 8px;
+  border-color: transparent;
+  border-bottom-color: white;
+  transform-origin: bottom;
+  clip-path: inset(0 0 1.5px 0);
+}
+
+.sign-header-language {
+  max-height: 50dvh;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.sign-header-language li {
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  border-radius: 0.25rem;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+}
+
+.sign-header-language li:hover {
+  background-color: var(--color-primary);
+  color: black;
+}
+
+.sign-header-transition {
+  transition:
+    transform 0.3s,
+    opacity 0.3s;
+}
+
+@media (min-width: 768px) {
+  .sign-header {
+    padding: 1rem;
   }
-  &_menu {
-    @apply fixed h-fit px-2 py-2 bg-white shadow-md rounded-lg top-12 right-3 origin-top md:top-[70px] md:right-5;
-    &_arrow {
-      @apply absolute -bottom-4 left-1/2 -translate-x-1/2 border-8 border-transparent border-b-white origin-bottom;
-      clip-path: inset(0 0 1.5px 0);
-    }
+
+  .sign-header-icon {
+    width: 2rem;
+    height: 2rem;
   }
-  &_language {
-    @apply max-h-[50dvh] px-2 overflow-y-auto overflow-x-hidden md:grid md:grid-cols-3 md:gap-x-6 md:gap-y-1;
-    li {
-      @apply px-3 py-2 cursor-pointer rounded hover:bg-primary hover:text-black transition-colors;
-    }
+
+  .sign-header-menu {
+    top: 70px;
+    right: 1.25rem;
   }
-  &_transition {
-    @apply transition-[transform_opacity] duration-300;
+
+  .sign-header-language {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.25rem 1.5rem;
   }
 }
 </style>
