@@ -1,5 +1,5 @@
 <template>
-  <div class="sign_footer">
+  <div class="sign-footer">
     <img
       src="@/assets/img/bg_decorate.svg"
       alt="background decorate"
@@ -7,11 +7,19 @@
   </div>
 </template>
 
-<style lang="postcss" scoped>
-.sign_footer {
-  @apply fixed bottom-0 w-[350vw] -z-[1];
+<style lang="css" scoped>
+.sign-footer {
+  position: fixed;
+  bottom: 0;
+  width: 350vw;
+  z-index: -1;
+
   img {
-    @apply -translate-x-[100vw] md:translate-x-0;
+    transform: translateX(-100vw);
+
+    @media (min-width: 768px) {
+      transform: translateX(0);
+    }
   }
 }
 </style>
