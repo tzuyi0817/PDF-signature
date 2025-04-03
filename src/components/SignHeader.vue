@@ -36,7 +36,7 @@ function closeLanguageMenu() {
 }
 
 function onTransitionEnd(event: TransitionEvent) {
-  if (event.propertyName !== 'transform' || isShowLanguageMenu.value) return;
+  if (event.propertyName !== 'scale' || isShowLanguageMenu.value) return;
   isDisplayLanguageMenu.value = false;
   isClosingMenu = false;
 }
@@ -174,7 +174,7 @@ function onTransitionEnd(event: TransitionEvent) {
 
 .sign-header-transition {
   transition:
-    transform 0.3s,
+    scale 0.3s,
     opacity 0.3s;
 }
 

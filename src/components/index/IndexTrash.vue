@@ -34,7 +34,7 @@ usePdfStore().filterTrash();
     </div>
 
     <div class="absolute w-full flex justify-center left-0 -bottom-4 md:-bottom-3">
-      <p class="index-trash-warn">
+      <p class="index-trash-warn shadow shadow-primary">
         {{ $t('prompt.trash_shelf_life') }}
       </p>
     </div>
@@ -49,9 +49,6 @@ usePdfStore().filterTrash();
   background-color: var(--color-white);
   width: fit-content;
   border: 2px solid var(--color-primary);
-  box-shadow:
-    0 1px 3px 0 var(--color-primary, rgb(0 0 0 / 0.1)),
-    0 1px 2px -1px var(--color-primary rgb(0 0 0 / 0.1));
   border-radius: 50px;
 }
 
