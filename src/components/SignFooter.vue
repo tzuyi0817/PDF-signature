@@ -16,10 +16,12 @@
 
   img {
     transform: translateX(-100vw);
+  }
+}
 
-    @media (min-width: 768px) {
-      transform: translateX(0);
-    }
+@media (min-width: 768px) {
+  .sign-footer img {
+    transform: translateX(0);
   }
 }
 </style>
