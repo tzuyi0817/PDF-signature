@@ -7,8 +7,8 @@ const close = closeToast.bind(toast);
 </script>
 
 <template>
-  <div :class="['sign_toast_container', { 'sign_toast-show': isShowToast }]">
-    <div :class="['sign_toast', status === 'success' ? 'bg-primary-dark/90' : 'bg-danger/90']">
+  <div :class="['sign-toast-container', { 'sign-toast-show': isShowToast }]">
+    <div :class="['sign-toast', status === 'success' ? 'bg-primary-dark/90' : 'bg-danger/90']">
       <p class="highlight text-white whitespace-nowrap text-ellipsis overflow-hidden w-fit">
         {{ msg }}
       </p>
@@ -22,28 +22,41 @@ const close = closeToast.bind(toast);
   </div>
 </template>
 
-<style lang="postcss" scoped>
-.sign_toast {
-  @apply items-center
-  justify-between
-  mx-auto
-  flex
-  pl-5
-  pr-2
-  md:pl-6
-  md:pr-3
-  md:py-6
-  w-fit
-  max-w-[90%]
-  h-10
-  border-primary
-  border-2
-  rounded-[50px];
-  &_container {
-    @apply absolute z-10 top-[50px] translate-y-10 pointer-events-none w-full transition-all opacity-0;
+<style lang="css" scoped>
+.sign-toast {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 auto;
+  padding-left: 1.25rem;
+  padding-right: 0.5rem;
+  width: fit-content;
+  max-width: 90%;
+  height: 2.5rem;
+  border: 2px solid var(--color-primary);
+  border-radius: 50px;
+}
+
+@media (min-width: 768px) {
+  .sign-toast {
+    padding: 1.5rem 0.75rem 1.5rem 15rem;
   }
-  &-show {
-    @apply translate-y-0 opacity-100 pointer-events-auto;
-  }
+}
+
+.sign-toast-container {
+  position: absolute;
+  z-index: 10;
+  top: 50px;
+  transform: translateY(40px);
+  pointer-events: none;
+  width: 100%;
+  transition: all 150ms ease-in-out;
+  opacity: 0;
+}
+
+.sign-toast-show {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
 }
 </style>
