@@ -115,7 +115,7 @@ onBeforeUnmount(deleteCanvas);
     </h5>
     <div
       v-show="fileName"
-      class="upload-content-box pt-3 md:pt-12"
+      class="upload-content-box"
     >
       <div class="flex flex-col gap-2 items-center w-full h-fit">
         <div class="relative h-fit">
@@ -229,7 +229,7 @@ onBeforeUnmount(deleteCanvas);
 <style lang="css" scoped>
 .upload-content-box {
   margin: 20px 0;
-  padding: 0 10px;
+  padding: 12px 10px;
   border-radius: 20px;
   display: flex;
   flex-direction: column;
@@ -238,5 +238,11 @@ onBeforeUnmount(deleteCanvas);
   overflow-y: auto;
   width: 100%;
   height: calc(100% - 128px);
+}
+
+@media (min-width: 768px) {
+  .upload-content-box {
+    padding: 48px 10px;
+  }
 }
 </style>
