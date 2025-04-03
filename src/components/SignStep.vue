@@ -7,53 +7,101 @@ defineProps<Props>();
 </script>
 
 <template>
-  <div class="sign_step">
+  <div class="sign-step">
     <div
       :class="[
-        'sign_step_dot',
-        { 'sign_step_dot-light': status === 'upload' },
-        { 'sign_step_dot-complete': status === 'sign' || status === 'complete' },
+        'sign-step-dot',
+        { 'sign-step-dot-light': status === 'upload' },
+        { 'sign-step-dot-complete': status === 'sign' || status === 'complete' },
       ]"
     ></div>
-    <div :class="['sign_step_line', status === 'sign' || status === 'complete' ? 'bg-primary' : 'bg-gray-40']"></div>
+    <div :class="['sign-step-line', status === 'sign' || status === 'complete' ? 'bg-primary' : 'bg-gray-40']"></div>
     <div
       :class="[
-        'sign_step_dot',
-        { 'sign_step_dot-light': status === 'sign' },
-        { 'sign_step_dot-complete': status === 'complete' },
+        'sign-step-dot',
+        { 'sign-step-dot-light': status === 'sign' },
+        { 'sign-step-dot-complete': status === 'complete' },
       ]"
     ></div>
-    <div :class="['sign_step_line', status === 'complete' ? 'bg-primary' : 'bg-gray-40']"></div>
-    <div :class="['sign_step_dot', { 'sign_step_dot-light': status === 'complete' }]"></div>
-    <span :class="['sign_step_text -left-5', status === 'upload' ? 'text-primary' : 'text-gray-40']">{{
+    <div :class="['sign-step-line', status === 'complete' ? 'bg-primary' : 'bg-gray-40']"></div>
+    <div :class="['sign-step-dot', { 'sign-step-dot-light': status === 'complete' }]"></div>
+    <span :class="['sign-step-text -left-5', status === 'upload' ? 'text-primary' : 'text-gray-40']">{{
       $t('upload_file_lower')
     }}</span>
-    <span :class="['sign_step_text', status === 'sign' ? 'text-primary' : 'text-gray-40']">{{
+    <span :class="['sign-step-text', status === 'sign' ? 'text-primary' : 'text-gray-40']">{{
       $t('sign_file_lower')
     }}</span>
-    <span :class="['sign_step_text -right-5', status === 'complete' ? 'text-primary' : 'text-gray-40']">{{
+    <span :class="['sign-step-text -right-5', status === 'complete' ? 'text-primary' : 'text-gray-40']">{{
       $t('sign_completed_lower')
     }}</span>
   </div>
 </template>
 
-<style lang="postcss" scoped>
-.sign_step {
-  @apply relative flex py-[15px] items-center justify-center md:fixed md:-top-28 md:left-1/2 md:-translate-x-1/2;
-  &_dot {
-    @apply box-border w-[10px] h-[10px] bg-black border-2 border-gray-40 rounded-full md:w-4 md:h-4;
-    &-light {
-      @apply border-primary shadow-[0px_0px_0px_4px_rgba(183,236,93,0.5)];
-    }
-    &-complete {
-      @apply border-primary bg-primary;
-    }
+<style lang="css" scoped>
+.sign-step {
+  position: relative;
+  display: flex;
+  padding: 15px 0;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .sign-step {
+    position: fixed;
+    top: -7rem;
+    left: 50%;
+    transform: translateX(-50%);
   }
-  &_line {
-    @apply w-[90px] h-[2px] md:w-[210px];
+}
+
+.sign-step-dot {
+  box-sizing: border-box;
+  width: 10px;
+  height: 10px;
+  background-color: black;
+  border: 2px solid var(--color-gray-40);
+  border-radius: 50%;
+}
+
+@media (min-width: 768px) {
+  .sign-step-dot {
+    width: 1rem;
+    height: 1rem;
   }
-  &_text {
-    @apply hidden absolute text-sm top-10 md:block;
+}
+
+.sign-step-dot-light {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(183, 236, 93, 0.5);
+}
+
+.sign-step-dot-complete {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary);
+}
+
+.sign-step-line {
+  width: 90px;
+  height: 2px;
+}
+
+@media (min-width: 768px) {
+  .sign-step-line {
+    width: 210px;
+  }
+}
+
+.sign-step-text {
+  display: none;
+  position: absolute;
+  font-size: 14px;
+  top: 40px;
+}
+
+@media (min-width: 768px) {
+  .sign-step-text {
+    display: block;
   }
 }
 </style>

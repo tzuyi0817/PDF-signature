@@ -109,13 +109,13 @@ onBeforeUnmount(deleteCanvas);
 </script>
 
 <template>
-  <div class="upload_content content">
+  <div class="upload-content content">
     <h5 class="title text-center">
       {{ $t('upload_file') }}
     </h5>
     <div
       v-show="fileName"
-      class="upload_content_box pt-3 md:pt-12"
+      class="upload-content-box pt-3 md:pt-12"
     >
       <div class="flex flex-col gap-2 items-center w-full h-fit">
         <div class="relative h-fit">
@@ -162,7 +162,7 @@ onBeforeUnmount(deleteCanvas);
 
     <div
       v-if="!fileName"
-      class="upload_content_box border-dashed border-secondary border-[1px] justify-center"
+      class="upload-content-box border-dashed border-secondary border-[1px] justify-center"
       @dragover.stop.prevent
       @dragenter.stop.prevent
       @drop.stop.prevent="dropFile"
@@ -226,19 +226,17 @@ onBeforeUnmount(deleteCanvas);
   </div>
 </template>
 
-<style lang="postcss" scoped>
-.upload_content {
-  &_box {
-    @apply my-5
-    px-[10px]
-    rounded-[20px]
-    flex
-    flex-col
-    items-center
-    gap-7
-    overflow-y-auto
-    w-full
-    h-[calc(100%-128px)];
-  }
+<style lang="css" scoped>
+.upload-content-box {
+  margin: 20px 0;
+  padding: 0 10px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  overflow-y: auto;
+  width: 100%;
+  height: calc(100% - 128px);
 }
 </style>

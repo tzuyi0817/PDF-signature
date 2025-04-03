@@ -8,7 +8,7 @@ const emit = defineEmits(['prevStep', 'nextStep']);
 </script>
 
 <template>
-  <div class="sign_step_btn">
+  <div class="sign-step-btn">
     <button
       class="btn"
       @click="emit('prevStep')"
@@ -25,15 +25,20 @@ const emit = defineEmits(['prevStep', 'nextStep']);
   </div>
 </template>
 
-<style lang="postcss" scoped>
-.sign_step_btn {
-  @apply flex
-  items-center
-  justify-between
-  mx-[10px]
-  md:absolute
-  md:top-6
-  md:left-5
-  md:w-[calc(100%-70px)];
+<style lang="css" scoped>
+.sign-step-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 10px;
+}
+
+@media (min-width: 768px) {
+  .sign-step-btn {
+    position: absolute;
+    top: 24px;
+    left: 20px;
+    width: calc(100% - 70px);
+  }
 }
 </style>
