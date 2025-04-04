@@ -96,6 +96,7 @@ defineProps<Props>();
   display: none;
   position: absolute;
   font-size: 14px;
+  line-height: 1.25rem;
   top: 40px;
 }
 

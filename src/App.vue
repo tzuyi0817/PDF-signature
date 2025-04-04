@@ -22,7 +22,7 @@ import SignReload from '@/components/SignReload.vue';
   <sign-reload />
 </template>
 
-<style lang="postcss">
+<style lang="css">
 #app {
   width: 100%;
   overflow: hidden;
@@ -40,5 +40,12 @@ import SignReload from '@/components/SignReload.vue';
 .slide-fade-leave-to {
   opacity: 0;
   transform: translateX(20px);
+}
+
+@media (min-width: 768px) {
+  .slide-fade-enter-from,
+  .slide-fade-leave-to {
+    transform: translate(20px, 120px);
+  }
 }
 </style>

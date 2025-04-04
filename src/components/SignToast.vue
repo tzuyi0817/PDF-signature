@@ -39,7 +39,7 @@ const close = closeToast.bind(toast);
 
 @media (min-width: 768px) {
   .sign-toast {
-    padding: 1.5rem 0.75rem 1.5rem 15rem;
+    padding: 1.5rem 0.75rem 1.5rem 1.5rem;
   }
 }
 

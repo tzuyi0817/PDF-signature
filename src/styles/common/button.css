@@ -19,6 +19,13 @@
     font-weight: bold;
   }
 
+  @media (min-width: 768px) {
+    .btn {
+      font-size: 1.125rem;
+      line-height: 1.75rem;
+    }
+  }
+
   .btn:hover {
     color: var(--color-primary);
   }
@@ -51,18 +58,19 @@
     color: var(--color-primary);
   }
 
-  .btn_primary:hover {
+  .btn-primary:hover {
     color: black;
     background-color: var(--color-primary);
   }
 
-  .btn_primary.active {
+  .btn-primary.active {
     color: black;
     background-color: var(--color-primary);
   }
 
   .btn-small {
-    border: 1px solid;
+    border-width: 1px;
+    border-style: solid;
     cursor: pointer;
     border-radius: 1rem;
     padding: 4px 12px;
@@ -74,8 +82,8 @@
   @media (min-width: 768px) {
     .btn-small {
       font-size: 1rem;
-      padding: 4px 28px;
       border-width: 2px;
+      padding: 4px 28px;
     }
   }
 

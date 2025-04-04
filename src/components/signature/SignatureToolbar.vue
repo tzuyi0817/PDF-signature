@@ -62,13 +62,14 @@ onMounted(() => {
   min-width: 52px;
 }
 
-.signature-toolbar li:hover {
+.signature-toolbar li:hover > svg {
   color: var(--color-primary);
 }
 
 .signature-toolbar p {
   display: none;
   font-size: 14px;
+  line-height: 1.25rem;
   white-space: nowrap;
 }
 
