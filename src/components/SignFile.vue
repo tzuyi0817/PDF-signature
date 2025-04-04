@@ -118,7 +118,7 @@ watch(
 <template>
   <li
     :class="[
-      'sign_file flex flex-col',
+      'sign-file flex flex-col',
       isListStatus ? 'md:flex-row' : 'md:w-[316px] md:flex-shrink-0 md:h-fit',
       { active: isSelected },
     ]"
@@ -130,7 +130,7 @@ watch(
           class="mask"
           @click.stop="toggleMore(false)"
         ></div>
-        <ul class="sign_file_more bg-white">
+        <ul class="sign-file-more bg-white">
           <li
             v-for="effect in more"
             :key="effect.icon"
@@ -167,7 +167,7 @@ watch(
 
     <div
       :class="[
-        'sign_file_content flex-col mt-4 text-center',
+        'sign-file-content flex-col mt-4 text-center',
         { 'md:mt-0 md:flex-row md:items-center md:w-full md:text-start': isListStatus },
       ]"
     >
@@ -198,36 +198,55 @@ watch(
   </li>
 </template>
 
-<style lang="postcss" scoped>
-.sign_file {
-  @apply border-2
-  relative
-  border-secondary-tint
-  p-4
-  items-center
-  rounded-[20px]
-  shadow-[0px_2px_6px_rgba(0,0,0,0.12),0px_2px_10px_rgba(0,0,0,0.08),inset_0px_-2px_4px_rgba(215,215,215,0.5)]
-  mb-6
-  transition-all
-  justify-center
-  cursor-pointer
-  md:hover:bg-gradient-to-b from-white to-primary/30;
-  &.active {
-    @apply border-primary bg-gradient-to-b from-white to-primary/30;
+<style lang="css" scoped>
+.sign-file {
+  position: relative;
+  border: 2px solid var(--color-secondary-tint);
+  padding: 16px;
+  border-radius: 20px;
+  box-shadow:
+    0px 2px 6px rgba(0, 0, 0, 0.12),
+    0px 2px 10px rgba(0, 0, 0, 0.08),
+    inset 0px -2px 4px rgba(215, 215, 215, 0.5);
+  margin-bottom: 24px;
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .sign-file:hover {
+    background: linear-gradient(to bottom, white, rgba(183, 236, 93, 0.3));
   }
-  &_more {
-    @apply absolute right-2 top-2 flex flex-col gap-4 px-3 py-5 border-2 border-primary shadow-primary shadow rounded-[20px];
-  }
-  &:hover > .sign_file_content {
-    :deep(svg) {
-      rect,
-      path {
-        @apply stroke-primary;
-      }
-    }
-  }
-  &_content {
-    @apply flex gap-1 transition-all;
-  }
+}
+
+.sign-file.active {
+  border-color: var(--color-primary);
+  background: linear-gradient(to bottom, white, rgba(183, 236, 93, 0.3));
+}
+
+.sign-file-more {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px 12px;
+  border: 2px solid var(--color-primary);
+  box-shadow: 0 1px 3px 0 var(--color-primary);
+  border-radius: 20px;
+}
+
+.sign-file:hover > .sign-file-content:deep(svg) rect,
+path {
+  stroke: var(--color-primary);
+}
+
+.sign-file-content {
+  display: flex;
+  gap: 4px;
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 </style>
