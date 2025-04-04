@@ -27,38 +27,50 @@ function onclick() {
   </label>
 </template>
 
-<style lang="postcss" scoped>
+<style lang="css" scoped>
 .checkbox-container {
-  @apply relative cursor-pointer select-none w-4 h-4;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  width: 16px;
+  height: 16px;
+}
 
-  &.checked,
-  &.mixed {
-    .checkmark {
-      @apply after:opacity-100;
-    }
-  }
+.checkbox-container .checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--color-gray-50);
+  border-radius: 2px;
+}
 
-  &.checked {
-    .checkmark {
-      &:after {
-        @apply rotate-45 border-r-2 border-b-2 w-1.5 h-2.5 top-0 left-[3px];
-      }
-    }
-  }
+.checkbox-container .checkmark::after {
+  content: '';
+  opacity: 0;
+  position: absolute;
+  transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  border-color: var(--color-gray-50);
+  border-style: solid;
+}
 
-  &.mixed {
-    .checkmark {
-      &:after {
-        @apply border-t-2 w-2 top-[5px] left-0.5;
-      }
-    }
-  }
+.checkbox-container.checked .checkmark::after {
+  opacity: 1;
+  rotate: 45deg;
+  border-right-width: 2px;
+  border-bottom-width: 2px;
+  width: 6px;
+  height: 10px;
+  top: 0;
+  left: 3px;
+}
 
-  .checkmark {
-    @apply absolute top-0 left-0 w-4 h-4 border-2 border-gray-50 rounded-sm;
-    &:after {
-      @apply opacity-0 absolute content-[''] border-gray-50 transition-[opacity];
-    }
-  }
+.checkbox-container.mixed .checkmark::after {
+  opacity: 1;
+  border-top-width: 2px;
+  width: 8px;
+  top: 5px;
+  left: 2px;
 }
 </style>

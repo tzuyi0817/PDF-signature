@@ -56,7 +56,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="complete_content content">
+  <div class="complete-content content">
     <h5 class="title text-center w-full">
       {{ $t('sign_completed') }}
     </h5>
@@ -85,7 +85,7 @@ onBeforeUnmount(() => {
       </li>
     </ul>
 
-    <div class="complete_content_file">
+    <div class="complete-content-file">
       <div class="w-fit h-fit py-5 px-3 scale-150 origin-top-left flex flex-col gap-5 md:scale-100 md:py-10 md:px-14">
         <template
           v-for="canvas in currentPDF.canvas"
@@ -139,23 +139,28 @@ onBeforeUnmount(() => {
   </div>
 </template>
 
-<style lang="postcss" scoped>
-.complete_content {
-  @apply flex
-  flex-col
-  relative
-  items-center;
-  &_file {
-    @apply mb-5
-    bg-gray-30
-    border-2
-    border-gray-30
-    overflow-auto
-    w-[calc(100%-20px)]
-    h-[calc(100%-178px)]
-    max-w-[842px]
-    md:mt-6
-    md:h-[calc(100%-110px)];
+<style lang="css" scoped>
+.complete-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.complete-content-file {
+  margin-bottom: 20px;
+  background-color: var(--color-gray-30);
+  border: 2px solid var(--color-gray-30);
+  overflow: auto;
+  width: calc(100% - 20px);
+  height: calc(100% - 178px);
+  max-width: 842px;
+}
+
+@media (min-width: 768px) {
+  .complete-content-file {
+    margin-top: 24px;
+    height: calc(100% - 110px);
   }
 }
 </style>
