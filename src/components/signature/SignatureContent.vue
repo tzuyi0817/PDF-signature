@@ -114,7 +114,7 @@ function cancelMergeFile() {
 </script>
 
 <template>
-  <div class="signature_content content">
+  <div class="signature-content content">
     <h5 class="title text-center">
       {{ $t('sign_file') }}
     </h5>
@@ -142,7 +142,7 @@ function cancelMergeFile() {
 
       <div
         ref="fileContainer"
-        class="signature_content_file"
+        class="signature-content-file"
       >
         <div class="relative w-full h-full">
           <template
@@ -234,21 +234,20 @@ function cancelMergeFile() {
   </div>
 </template>
 
-<style lang="postcss" scoped>
-.signature_content {
-  &_file {
-    @apply mx-[10px]
-    mb-7
-    bg-gray-30
-    border-2
-    border-gray-30
-    overflow-auto
-    w-[calc(100%-20px)]
-    h-full
-    md:mt-6
-    md:mx-[5%]
-    md:mb-0
-    md:h-[calc(100%-40px)];
+<style lang="css" scoped>
+.signature-content-file {
+  margin: 0 10px 28px;
+  background-color: var(--color-gray-30);
+  border: 2px solid var(--color-gray-30);
+  overflow: auto;
+  width: calc(100% - 20px);
+  height: 100%;
+}
+
+@media (min-width: 768px) {
+  .signature-content-file {
+    margin: 24px 5% 0;
+    height: calc(100% - 40px);
   }
 }
 </style>

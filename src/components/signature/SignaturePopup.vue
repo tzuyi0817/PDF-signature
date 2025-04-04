@@ -21,11 +21,11 @@ function close() {
     :is-show-mask="isShowPopup"
     @close="close"
   />
-  <div :class="['signature_popup z-[1]', isShowPopup ? 'translate-y-0 md:block' : 'translate-y-[100%] md:hidden']">
+  <div :class="['signature-popup z-[1]', isShowPopup ? 'translate-y-0 md:block' : 'translate-y-[100%] md:hidden']">
     <h5 class="title text-center md:hidden">
       {{ title }}
     </h5>
-    <div class="signature_popup_content">
+    <div class="signature-popup-content">
       <slot></slot>
     </div>
     <div class="flex justify-center gap-5 md:hidden">
@@ -46,37 +46,45 @@ function close() {
   </div>
 </template>
 
-<style lang="postcss" scoped>
-.signature_popup {
-  @apply fixed
-  bottom-0
-  left-0
-  h-[70%]
-  bg-white
-  w-full
-  rounded-t-[40px]
-  transition-transform
-  shadow-inner
-  py-6
-  px-8
-  md:absolute
-  md:-translate-y-12
-  md:w-[236px]
-  md:h-[calc(100%-210px)]
-  md:py-0
-  md:px-0
-  md:bg-secondary-tint
-  md:rounded-b-[40px]
-  md:translate-x-11;
-  &_content {
-    @apply my-6
-    h-[calc(100%-128px)]
-    w-full
-    bg-secondary-tint
-    rounded-[20px]
-    overflow-y-auto
-    md:my-0
-    md:h-full;
+<style lang="css" scoped>
+.signature-popup {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 70%;
+  background-color: var(--color-white);
+  width: 100%;
+  border-radius: 40px 40px 0 0;
+  transition: translate 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+  padding: 24px 32px;
+}
+
+@media (min-width: 768px) {
+  .signature-popup {
+    position: absolute;
+    transform: translate(44px, -48px);
+    width: 236px;
+    height: calc(100% - 210px);
+    padding: 0;
+    background-color: var(--color-secondary-tint);
+    border-radius: 40px;
+  }
+}
+
+.signature-popup-content {
+  margin: 24px 0;
+  height: calc(100% - 128px);
+  width: 100%;
+  background-color: var(--color-secondary-tint);
+  border-radius: 20px;
+  overflow-y: auto;
+}
+
+@media (min-width: 768px) {
+  .signature-popup-content {
+    margin: 0;
+    height: 100%;
   }
 }
 </style>

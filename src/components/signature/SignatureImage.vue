@@ -156,7 +156,7 @@ function close() {
     :title="$t('add_picture')"
   >
     <div
-      class="signature_image_add"
+      class="signature-image-add"
       @dragover.stop.prevent
       @dragenter.stop.prevent
       @drop.stop.prevent="dropFile"
@@ -217,19 +217,15 @@ function close() {
 </template>
 
 <style lang="postcss" scoped>
-.signature_image {
-  &_add {
-    @apply border-dashed
-    border-secondary
-    border-[1px]
-    py-5
-    my-5
-    rounded-[20px]
-    flex
-    flex-col
-    justify-center
-    gap-6
-    items-center;
-  }
+.signature-image-add {
+  border: 1px dashed var(--color-secondary);
+  padding: 20px 0;
+  margin: 20px 0;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
 }
 </style>

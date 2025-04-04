@@ -17,7 +17,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <ul class="toolbar signature_toolbar">
+  <ul class="toolbar signature-toolbar">
     <li @click="selectTool('sign')">
       <sign-icon
         name="sign"
@@ -49,19 +49,36 @@ onMounted(() => {
   </ul>
 </template>
 
-<style lang="postcss" scoped>
-.signature {
-  &_toolbar {
-    @apply gap-0 mx-2 md:my-0;
-    li {
-      @apply flex flex-col items-center min-w-[52px];
-      &:hover > svg {
-        @apply text-primary;
-      }
-    }
-    p {
-      @apply hidden text-sm whitespace-nowrap md:block;
-    }
+<style lang="css" scoped>
+.signature-toolbar {
+  gap: 0;
+  margin: 1rem 0.5rem;
+}
+
+.signature-toolbar li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 52px;
+}
+
+.signature-toolbar li:hover {
+  color: var(--color-primary);
+}
+
+.signature-toolbar p {
+  display: none;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+@media (min-width: 768px) {
+  .signature-toolbar {
+    margin: 0 0.5rem;
+  }
+
+  .signature-toolbar p {
+    display: block;
   }
 }
 </style>
