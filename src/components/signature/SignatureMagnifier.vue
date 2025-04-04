@@ -9,7 +9,7 @@ function changeZoom(value: number) {
 </script>
 
 <template>
-  <div class="signature_magnifier">
+  <div class="signature-magnifier">
     <button
       class="btn-small btn-primary"
       :disabled="modelValue >= MAX_ZOOM"
@@ -27,18 +27,33 @@ function changeZoom(value: number) {
   </div>
 </template>
 
-<style lang="postcss" scoped>
-.signature_magnifier {
-  @apply absolute bottom-[106px] right-10 flex gap-[2px] md:bottom-20 md:right-[calc(5%+45px)] md:gap-1;
-  .btn-small {
-    @apply text-transparent;
-    text-shadow: 0 0 0 #b7ec5d;
-    &:hover {
-      text-shadow: 0 0 0 #000;
-    }
-    &:disabled {
-      text-shadow: 0 0 0 #808080;
-    }
+<style lang="css" scoped>
+.signature-magnifier {
+  position: absolute;
+  bottom: 106px;
+  right: 40px;
+  display: flex;
+  gap: 2px;
+}
+
+@media (min-width: 768px) {
+  .signature-magnifier {
+    bottom: 80px;
+    right: calc(5% + 45px);
+    gap: 4px;
   }
+}
+
+.signature-magnifier .btn-small {
+  text-shadow: 0 0 0 #b7ec5d;
+  color: transparent;
+}
+
+.signature-magnifier .btn-small:hover {
+  text-shadow: 0 0 0 #000;
+}
+
+.signature-magnifier .btn-small:disabled {
+  text-shadow: 0 0 0 #808080;
 }
 </style>
