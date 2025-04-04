@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, defineAsyncComponent, onBeforeUnmount } from 'vue';
+import { ref, computed, onMounted, defineAsyncComponent, onBeforeUnmount } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useFabric } from '@component-hook/pdf-canvas/vue';
 import { usePdfStore, useConfigStore } from '@/store';
@@ -11,7 +11,6 @@ import { toast } from '@/utils/toast';
 import { sleep } from '@/utils/common';
 import { checkFile } from '@/utils/reader';
 
-const isNextDisabled = ref(true);
 const fileName = ref('');
 const projectName = ref('');
 const isShowPen = ref(true);
@@ -24,6 +23,8 @@ const { toggleLoading, updateFilePassword } = useConfigStore();
 const UploadPassword = defineAsyncComponent(() => import('@/components/upload/UploadPassword.vue'));
 const regexp = /.pdf|.png|.jpg|.jpeg/;
 let currentFile: File | null = null;
+
+const isNextDisabled = computed(() => !fileName.value);
 
 async function uploadFile(event: Event) {
   const target = event.target as HTMLInputElement;
@@ -63,7 +64,6 @@ async function renderFile(file: File) {
     toast.showToast(t('prompt.file_upload_success'), 'success');
     fileName.value = file.name;
     projectName.value = file.name.replace(regexp, '');
-    isNextDisabled.value = false;
   } catch (error) {
     if (`${error}`.includes('PasswordException')) {
       isShowPasswordPopup.value = true;
