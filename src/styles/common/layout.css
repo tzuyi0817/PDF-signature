@@ -12,7 +12,7 @@
       flex-direction: row;
       justify-content: center;
       padding-top: 0;
-      transform: translateY(120px) translateX(-40px);
+      transform: translate(-40px, 120px);
     }
   }
 }

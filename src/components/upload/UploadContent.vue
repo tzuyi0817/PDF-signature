@@ -115,7 +115,7 @@ onBeforeUnmount(deleteCanvas);
     </h5>
     <div
       v-show="fileName"
-      class="upload-content-box"
+      class="upload-content-box h-[calc(100%-128px)] w-full my-5"
     >
       <div class="flex flex-col gap-2 items-center w-full h-fit">
         <div class="relative h-fit">
@@ -162,31 +162,35 @@ onBeforeUnmount(deleteCanvas);
 
     <div
       v-if="!fileName"
-      class="upload-content-box border-dashed border-secondary border-[1px] justify-center"
-      @dragover.stop.prevent
-      @dragenter.stop.prevent
-      @drop.stop.prevent="dropFile"
+      class="border-dashed border-secondary border rounded-[20px] my-5 p-3 h-[calc(100%-128px)] w-full"
     >
-      <img
-        src="@/assets/img/img_photo.svg"
-        alt="photo icon"
-      />
-      <button class="btn btn-primary">
-        <input
-          type="file"
-          accept="application/pdf, .jpg, .png"
-          class="opacity-0 absolute w-[131px] h-[41px] cursor-pointer"
-          @change="uploadFile"
-        />{{ $t('select_file') }}
-      </button>
+      <div
+        class="upload-content-box justify-center h-full w-full"
+        @dragover.stop.prevent
+        @dragenter.stop.prevent
+        @drop.stop.prevent="dropFile"
+      >
+        <img
+          src="@/assets/img/img_photo.svg"
+          alt="photo icon"
+        />
+        <button class="btn btn-primary">
+          <input
+            type="file"
+            accept="application/pdf, .jpg, .png"
+            class="opacity-0 absolute w-[131px] h-[41px] cursor-pointer"
+            @change="uploadFile"
+          />{{ $t('select_file') }}
+        </button>
 
-      <div class="text-center">
-        <h5 class="text-gray-40 mb-3 hidden md:block">
-          {{ $t('prompt.or_drag_file') }}
-        </h5>
-        <p class="text-gray-40 px-4 text-center">
-          {{ $t('prompt.support_filetype', { type: locale === 'en-US' ? 'PDF, JPG, and PNG' : 'PDF、JPG、PNG' }) }}
-        </p>
+        <div class="text-center">
+          <h5 class="text-gray-40 mb-3 hidden md:block">
+            {{ $t('prompt.or_drag_file') }}
+          </h5>
+          <p class="text-gray-40 px-4 text-center">
+            {{ $t('prompt.support_filetype', { type: locale === 'en-US' ? 'PDF, JPG, and PNG' : 'PDF、JPG、PNG' }) }}
+          </p>
+        </div>
       </div>
     </div>
 
@@ -228,16 +232,12 @@ onBeforeUnmount(deleteCanvas);
 
 <style lang="css" scoped>
 .upload-content-box {
-  margin: 20px 0;
   padding: 12px 10px;
-  border-radius: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 28px;
   overflow-y: auto;
-  width: 100%;
-  height: calc(100% - 128px);
 }
 
 @media (min-width: 768px) {
