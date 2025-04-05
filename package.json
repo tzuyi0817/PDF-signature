@@ -1,7 +1,7 @@
 {
   "name": "pdf-signature",
   "private": true,
-  "version": "0.4.0",
+  "version": "0.4.1",
   "type": "module",
   "packageManager": "pnpm@10.5.2",
   "scripts": {
@@ -18,7 +18,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@component-hook/pdf-canvas": "^1.0.1",
+    "@component-hook/pdf-canvas": "^1.0.4",
     "browser-image-compression": "^2.0.2",
     "idb-keyval": "^6.2.1",
     "jspdf": "^2.5.2",

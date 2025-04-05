@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, defineAsyncComponent, onBeforeUnmount } from 'vue';
+import { ref, computed, onMounted, onBeforeUnmount, defineAsyncComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useFabric } from '@component-hook/pdf-canvas/vue';
 import { usePdfStore, useConfigStore } from '@/store';

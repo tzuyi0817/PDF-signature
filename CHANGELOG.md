@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.4.1](https://github.com/tzuyi0817/PDF-signature/compare/v0.4.0...v0.4.1) (2025-04-05)
+
+### Refactors
+
+- refactors CSS framework to `tailwindcss` v4
+
 ## [0.4.0](https://github.com/tzuyi0817/PDF-signature/compare/v0.3.5...v0.4.0) (2024-09-20)
 
 ### Features

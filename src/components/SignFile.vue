@@ -239,8 +239,8 @@ watch(
   border-radius: 20px;
 }
 
-.sign-file:hover > .sign-file-content:deep(svg) rect,
-path {
+.sign-file:hover .sign-file-content:deep(svg rect),
+.sign-file:hover .sign-file-content:deep(svg path) {
   stroke: var(--color-primary);
 }
 
