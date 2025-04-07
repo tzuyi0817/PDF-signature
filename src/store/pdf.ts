@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { getIdb, setIdb } from '@/utils/idb';
-import { IDB_KEY } from '@/configs/idb';
+import { IDB_KEY } from '@/constants/idb';
 import type { MenuTab } from '@/types/menu';
 import type { PDF } from '@/types/pdf';
 

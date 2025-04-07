@@ -1,9 +1,21 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import SignHeader from '@/components/SignHeader.vue';
 import SignFooter from '@/components/SignFooter.vue';
 import SignLoading from '@/components/SignLoading.vue';
 import SignToast from '@/components/SignToast.vue';
 import SignReload from '@/components/SignReload.vue';
+import { emitRouteEvent } from '@/router/events';
+
+const router = useRouter();
+const routeCurrent = ref<string>('');
+const routePrevious = ref<string>('');
+
+router.beforeEach((to, from) => {
+  routeCurrent.value = String(to.name);
+  routePrevious.value = String(from.name);
+});
 </script>
 
 <template>
@@ -12,6 +24,12 @@ import SignReload from '@/components/SignReload.vue';
     <transition
       name="slide-fade"
       mode="out-in"
+      @before-enter="emitRouteEvent('onBeforeEnter', routeCurrent)"
+      @enter="emitRouteEvent('onEnter', routeCurrent)"
+      @after-enter="emitRouteEvent('onAfterEnter', routeCurrent)"
+      @before-leave="emitRouteEvent('onBeforeLeave', routePrevious)"
+      @leave="emitRouteEvent('onLeave', routePrevious)"
+      @after-leave="emitRouteEvent('onAfterLeave', routePrevious)"
     >
       <component :is="Component" />
     </transition>

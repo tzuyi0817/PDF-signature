@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import SignIcon from '@/components/SignIcon.vue';
 import { sleep } from '@/utils/common';
-import { I18N_MAP } from '@/configs/common';
+import { I18N_MAP } from '@/constants/common';
 
 const isShowLanguageMenu = ref(false);
 const isDisplayLanguageMenu = ref(false);
