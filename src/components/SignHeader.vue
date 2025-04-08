@@ -11,10 +11,11 @@ const { locale } = useI18n();
 let closeMenuTimer: NodeJS.Timeout | null = null;
 let isClosingMenu = false;
 
-function changeLocale(code: string) {
+async function changeLocale(code: string) {
   locale.value = code;
   localStorage.setItem('pdf-signature-i18n', code);
   isClosingMenu = true;
+  await sleep(0);
   isShowLanguageMenu.value = false;
 }
 
