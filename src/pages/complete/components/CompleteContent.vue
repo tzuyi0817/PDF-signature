@@ -42,7 +42,7 @@ function warnConfirm() {
   toggleWarnPopup(false);
 
   if (isArchive) return;
-  goPage('index');
+  goPage('home');
 }
 
 function toggleEncryptPopup(isShow: boolean) {
@@ -102,7 +102,7 @@ onBeforeUnmount(() => {
     <button
       class="btn btn-primary md:absolute md:left-10 md:top-7"
       :disabled="false"
-      @click="goPage('index')"
+      @click="goPage('home')"
     >
       <span class="text-4xl font-thin">←</span>{{ $t('return_home') }}
     </button>

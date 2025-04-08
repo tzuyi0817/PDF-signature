@@ -3,6 +3,7 @@ import { ref, defineAsyncComponent, onBeforeUnmount } from 'vue';
 import { storeToRefs } from 'pinia';
 import SignaturePopup from './SignaturePopup.vue';
 import { usePdfStore, useConfigStore } from '@/store';
+import { useLoadCanvas } from '@/hooks/use-load-canvas';
 import { isDesktop, monitorDevicePixelRatio } from '@/utils/common';
 import type { SignatureTool } from '@/types/menu';
 
@@ -12,6 +13,7 @@ const currentPage = ref(1);
 const devicePixelRatio = ref(window.devicePixelRatio);
 const { currentPDF } = storeToRefs(usePdfStore());
 const configStore = useConfigStore();
+const { loadedState, handleCanvasLoaded } = useLoadCanvas(currentPDF);
 const SignaturePageItem = defineAsyncComponent(() => import('@component-hook/pdf-canvas/vue'));
 const stopMonitorDevicePixelRatio = monitorDevicePixelRatio(changeDevicePixelRatio);
 
@@ -53,24 +55,30 @@ onBeforeUnmount(() => {
         v-for="page in currentPDF.pages"
         :key="page"
         :class="[
-          'rounded-[20px] relative w-full flex flex-shrink-0 justify-center py-3 cursor-pointer overflow-hidden',
+          'rounded-[20px] relative w-full flex flex-shrink-0 justify-center py-3 cursor-pointer overflow-hidden min-h-32',
           currentPage === page ? 'bg-primary opacity-70' : 'bg-white',
         ]"
         @click="selectPage(page)"
       >
-        <suspense>
-          <signature-page-item
-            :file="currentPDF"
-            canvas-id="PDF-page-canvas"
-            :page="page"
-            canvas-class="border-2 border-gray-20"
-            :file-scale="devicePixelRatio * 0.3"
-            :password="configStore.filePassword"
-          />
-          <template #fallback>
-            <div class="h-28 animate-pulse leading-[112px] text-center">Loading...</div>
-          </template>
-        </suspense>
+        <signature-page-item
+          v-if="loadedState[page - 1]"
+          class="pointer-events-none"
+          :file="currentPDF"
+          canvas-id="PDF-page-canvas"
+          :page="page"
+          canvas-class="border-2 border-gray-20"
+          :file-scale="devicePixelRatio * 0.3"
+          :password="configStore.filePassword"
+          @loaded="handleCanvasLoaded(page)"
+        />
+
+        <div
+          v-if="!loadedState[page]"
+          class="absolute h-28 animate-pulse leading-[112px] text-center"
+        >
+          Loading...
+        </div>
+
         <span class="highlight absolute left-4 top-2">{{ `${page}.` }}</span>
         <div
           v-show="currentPage === page"

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 interface Props {
-  isNextDisabled: boolean;
+  isPrevDisabled?: boolean;
+  isNextDisabled?: boolean;
 }
 
 defineProps<Props>();
@@ -11,6 +12,7 @@ const emit = defineEmits(['prevStep', 'nextStep']);
   <div class="sign-step-btn">
     <button
       class="btn"
+      :disabled="isPrevDisabled"
       @click="emit('prevStep')"
     >
       <span class="text-4xl font-thin">←</span>{{ $t('previous') }}

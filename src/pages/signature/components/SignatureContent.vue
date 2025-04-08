@@ -16,6 +16,7 @@ import SignStepBtn from '@/components/SignStepBtn.vue';
 import { usePdfStore, useConfigStore } from '@/store';
 import SignVersion from '@/components/SignVersion.vue';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
+import { useLoadCanvas } from '@/hooks/use-load-canvas';
 import { toast } from '@/utils/toast';
 import { sleep } from '@/utils/common';
 import { canvasToFile } from '@/utils/image';
@@ -34,6 +35,7 @@ const { currentPDF } = storeToRefs(usePdfStore());
 const configStore = useConfigStore();
 const { t } = useI18n();
 const { isShowWarnPopup, SignPopup, goBack, goPage, toggleWarnPopup } = useWarnPopup();
+const { loadedState, isCompleted, handleCanvasLoaded } = useLoadCanvas(currentPDF);
 let isGiveUpSignature = false;
 
 async function mergeFile() {
@@ -123,8 +125,16 @@ onAfterRouteLeave(() => {
 
 <template>
   <div class="signature-content content">
-    <h5 class="title text-center">
+    <h5
+      class="title text-center"
+      :class="{ 'animate-pulse': !isCompleted }"
+    >
       {{ $t('sign_file') }}
+      <span
+        v-if="!isCompleted"
+        class="text-xs text-gray-60 md:text-sm"
+        >({{ $t('file_uploading') }})</span
+      >
     </h5>
 
     <div class="flex flex-col h-[calc(100%-88px)] md:flex-row">
@@ -157,7 +167,7 @@ onAfterRouteLeave(() => {
             v-for="page in currentPDF.pages"
             :key="page"
           >
-            <suspense>
+            <template v-if="loadedState[page - 1]">
               <signature-canvas-item
                 v-show="currentPage === page"
                 ref="signatureCanvasItems"
@@ -170,22 +180,23 @@ onAfterRouteLeave(() => {
                 :password="configStore.filePassword"
                 is-drop
                 :on-destroy="onAfterRouteLeave"
+                @loaded="handleCanvasLoaded(page)"
               />
-              <template
-                v-if="currentPage === page"
-                #fallback
-              >
-                <signature-loading />
-              </template>
-            </suspense>
+            </template>
           </template>
+
+          <signature-loading
+            v-if="!loadedState[currentPage]"
+            class="absolute"
+          />
         </div>
       </div>
       <signature-magnifier v-model="fileZoom" />
     </div>
 
     <sign-step-btn
-      :is-next-disabled="false"
+      :is-prev-disabled="!isCompleted"
+      :is-next-disabled="!isCompleted"
       @next-step="toggleNextWarnPopup(true)"
       @prev-step="toggleWarnPopup(true)"
     />
