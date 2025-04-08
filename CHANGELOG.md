@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.4.2](https://github.com/tzuyi0817/PDF-signature/compare/v0.4.1...v0.4.2) (2024-04-08)
+
+### Features
+
+- adjust the way to load multiple canvases ([02abf7d](https://github.com/tzuyi0817/PDF-signature/commit/02abf7d1a9dc077351b890a0df1ae02f215e023e))
+
+### Bug Fixes
+
+- language menu interaction on mobile ([a23b3c2](https://github.com/tzuyi0817/PDF-signature/commit/a23b3c21a3c8bd8134e27a931415cfea671c33b4))
+- adjust the timing of clearing the canvas ([f958bd3](https://github.com/tzuyi0817/PDF-signature/commit/f958bd32479457bacf6f051374a3fb7534f4f7dc))
+
 ## [0.4.1](https://github.com/tzuyi0817/PDF-signature/compare/v0.4.0...v0.4.1) (2025-04-05)
 
 ### Refactors
