@@ -22,7 +22,9 @@ class RouteEvent {
 
     if (callbacks) {
       callbacks.add(callback);
-    } else this.#events.set(key, new Set([callback]));
+    } else {
+      this.#events.set(key, new Set([callback]));
+    }
   }
 
   unsubscribe<T>(key: EventKey, callback: Handler<T>) {

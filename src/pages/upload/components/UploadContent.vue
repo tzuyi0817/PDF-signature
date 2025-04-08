@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeUnmount, defineAsyncComponent } from 'vue';
+import { ref, computed, onMounted, defineAsyncComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useFabric } from '@component-hook/pdf-canvas/vue';
+import { onAfterRouteLeave } from '@/router';
 import { usePdfStore, useConfigStore } from '@/store';
 import SignStepBtn from '@/components/SignStepBtn.vue';
 import SignIcon from '@/components/SignIcon.vue';
@@ -105,7 +106,7 @@ function blur() {
 }
 
 onMounted(createCanvas);
-onBeforeUnmount(deleteCanvas);
+onAfterRouteLeave(deleteCanvas);
 </script>
 
 <template>

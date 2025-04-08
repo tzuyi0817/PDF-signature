@@ -11,6 +11,7 @@ import SignaturePage from './SignaturePage.vue';
 import SignatureLoading from './SignatureLoading.vue';
 import SignatureMergePopup from './SignatureMergePopup.vue';
 import SignatureMagnifier from './SignatureMagnifier.vue';
+import { onAfterRouteLeave } from '@/router';
 import SignStepBtn from '@/components/SignStepBtn.vue';
 import { usePdfStore, useConfigStore } from '@/store';
 import SignVersion from '@/components/SignVersion.vue';
@@ -33,6 +34,7 @@ const { currentPDF } = storeToRefs(usePdfStore());
 const configStore = useConfigStore();
 const { t } = useI18n();
 const { isShowWarnPopup, SignPopup, goBack, goPage, toggleWarnPopup } = useWarnPopup();
+let isGiveUpSignature = false;
 
 async function mergeFile() {
   toggleNextWarnPopup(false);
@@ -103,7 +105,7 @@ function toggleMergePopup(isOpen: boolean) {
 }
 
 function giveUpSignature() {
-  usePdfStore().clearCurrentPDF();
+  isGiveUpSignature = true;
   goBack();
 }
 
@@ -111,6 +113,12 @@ function cancelMergeFile() {
   isCancelMerge.value = true;
   toggleMergePopup(false);
 }
+
+onAfterRouteLeave(() => {
+  if (!isGiveUpSignature) return;
+
+  usePdfStore().clearCurrentPDF();
+});
 </script>
 
 <template>
@@ -161,6 +169,7 @@ function cancelMergeFile() {
                 :canvas-scale="0.6"
                 :password="configStore.filePassword"
                 is-drop
+                :on-destroy="onAfterRouteLeave"
               />
               <template
                 v-if="currentPage === page"

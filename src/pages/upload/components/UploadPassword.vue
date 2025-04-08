@@ -21,7 +21,7 @@ function confirmPassword() {
 </script>
 
 <template>
-  <SignPopup :title="$t('warn')">
+  <sign-popup :title="$t('warn')">
     <p class="text-center my-5">
       {{ $t('prompt.protected_file') }}
     </p>
@@ -44,5 +44,5 @@ function confirmPassword() {
         {{ $t('confirm') }}
       </button>
     </div>
-  </SignPopup>
+  </sign-popup>
 </template>
