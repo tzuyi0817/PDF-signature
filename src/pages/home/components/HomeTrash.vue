@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
+import HomeSignFiles from './HomeSignFiles.vue';
 import { usePdfStore } from '@/store';
-import SignFiles from '@/components/SignFiles.vue';
 
 const { trashList } = storeToRefs(usePdfStore());
 
@@ -10,7 +10,7 @@ usePdfStore().filterTrash();
 
 <template>
   <div class="index-trash index-container">
-    <sign-files
+    <home-sign-files
       v-if="trashList.length"
       type="trash"
       :list="trashList"

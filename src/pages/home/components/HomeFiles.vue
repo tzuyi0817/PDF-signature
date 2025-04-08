@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
+import HomeSignFiles from './HomeSignFiles.vue';
 import { usePdfStore } from '@/store';
 import { useRedirect } from '@/hooks/use-redirect';
-import SignFiles from '@/components/SignFiles.vue';
 
 const { goPage } = useRedirect();
 const { PDFList } = storeToRefs(usePdfStore());
@@ -10,7 +10,7 @@ const { PDFList } = storeToRefs(usePdfStore());
 
 <template>
   <div class="index-files index-container">
-    <sign-files
+    <home-sign-files
       v-if="PDFList.length"
       type="file"
       :list="PDFList"

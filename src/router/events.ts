@@ -10,11 +10,6 @@ type EventKey = `${RouterEventKey}-${string}`;
 class RouteEvent {
   #events = new Map<EventKey, Set<Handler<any>>>();
 
-  static checkCallback<T>(callback: Handler<T>) {
-    if (typeof callback === 'function') return;
-    throw new Error(`${typeof callback} is not a valid argument for subscribe method, expected a function instead`);
-  }
-
   publish(key: EventKey) {
     if (!this.#events.has(key)) return;
     const callbacks = this.#events.get(key);
@@ -23,7 +18,6 @@ class RouteEvent {
   }
 
   subscribe<T>(key: EventKey, callback: Handler<T>) {
-    RouteEvent.checkCallback(callback);
     const callbacks = this.#events.get(key);
 
     if (callbacks) {
@@ -32,7 +26,6 @@ class RouteEvent {
   }
 
   unsubscribe<T>(key: EventKey, callback: Handler<T>) {
-    RouteEvent.checkCallback(callback);
     const callbacks = this.#events.get(key);
 
     callbacks?.delete(callback);

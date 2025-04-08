@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, defineAsyncComponent, onBeforeUnmount } from 'vue';
 import { storeToRefs } from 'pinia';
+import SignaturePopup from './SignaturePopup.vue';
 import { usePdfStore, useConfigStore } from '@/store';
-import SignaturePopup from '@/components/signature/SignaturePopup.vue';
 import { isDesktop, monitorDevicePixelRatio } from '@/utils/common';
 import type { SignatureTool } from '@/types/menu';
 

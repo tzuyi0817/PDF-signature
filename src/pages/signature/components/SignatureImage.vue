@@ -2,8 +2,8 @@
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
+import SignaturePopup from './SignaturePopup.vue';
 import { useImageStore, useConfigStore } from '@/store';
-import SignaturePopup from '@/components/signature/SignaturePopup.vue';
 import SignIcon from '@/components/SignIcon.vue';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { toast } from '@/utils/toast';

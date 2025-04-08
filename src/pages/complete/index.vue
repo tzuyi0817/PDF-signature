@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import CompleteContent from './components/CompleteContent.vue';
 import SignStep from '@/components/SignStep.vue';
-import CompleteContent from '@/components/complete/CompleteContent.vue';
 </script>
 
 <template>

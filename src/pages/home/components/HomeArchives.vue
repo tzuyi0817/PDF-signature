@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
+import HomeSignFiles from './HomeSignFiles.vue';
 import { usePdfStore } from '@/store';
-import SignFiles from '@/components/SignFiles.vue';
 
 const { archiveList } = storeToRefs(usePdfStore());
 </script>
 
 <template>
   <div class="index-archives index-container">
-    <sign-files
+    <home-sign-files
       v-if="archiveList.length"
       type="archive"
       :list="archiveList"

@@ -20,7 +20,7 @@ const { t, locale } = useI18n();
 const { createCanvas, deleteCanvas, loadFile } = useFabric('canvas');
 const { isShowWarnPopup, SignPopup, goBack, goPage, toggleWarnPopup } = useWarnPopup();
 const { toggleLoading, updateFilePassword } = useConfigStore();
-const UploadPassword = defineAsyncComponent(() => import('@/components/upload/UploadPassword.vue'));
+const UploadPassword = defineAsyncComponent(() => import('./UploadPassword.vue'));
 const regexp = /.pdf|.png|.jpg|.jpeg/;
 let currentFile: File | null = null;
 

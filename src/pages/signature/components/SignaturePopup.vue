@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import SignatureMask from '@/components/signature/SignatureMask.vue';
+import SignatureMask from './SignatureMask.vue';
 
 interface Props {
   isShowPopup: boolean;

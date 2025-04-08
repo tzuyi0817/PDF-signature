@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import IndexFiles from '@/components/index/IndexFiles.vue';
-import IndexArchives from '@/components/index/IndexArchives.vue';
-import IndexTrash from '@/components/index/IndexTrash.vue';
+import HomeFiles from './HomeFiles.vue';
+import HomeArchives from './HomeArchives.vue';
+import HomeTrash from './HomeTrash.vue';
 import SignVersion from '@/components/SignVersion.vue';
 import { useRedirect } from '@/hooks/use-redirect';
 import type { MenuTab } from '@/types/menu';
@@ -24,9 +24,9 @@ const title = computed(() => {
 
 const currentCom = computed(() => {
   const componentMap = {
-    file: IndexFiles,
-    archive: IndexArchives,
-    trash: IndexTrash,
+    file: HomeFiles,
+    archive: HomeArchives,
+    trash: HomeTrash,
   };
   return componentMap[currentTab];
 });

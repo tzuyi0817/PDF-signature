@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
-import Index from '@/pages/IndexPage.vue';
-import Upload from '@/pages/UploadPage.vue';
-import Signature from '@/pages/SignaturePage.vue';
-import Complete from '@/pages/CompletePage.vue';
+import Home from '@/pages/home/index.vue';
+import Upload from '@/pages/upload/index.vue';
+import Signature from '@/pages/signature/index.vue';
+import Complete from '@/pages/complete/index.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -11,8 +11,8 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/',
-    name: 'index',
-    component: Index,
+    name: 'home',
+    component: Home,
   },
   {
     path: '/upload',

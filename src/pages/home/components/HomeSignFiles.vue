@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, defineAsyncComponent, nextTick, onActivated } from 'vue';
-import IndexSearch from '@/components/index/IndexSearch.vue';
+import HomeSearch from './HomeSearch.vue';
 import SignIcon from '@/components/SignIcon.vue';
 import SignFile from '@/components/SignFile.vue';
 import Checkbox from '@/components/common/Checkbox.vue';
@@ -108,7 +108,7 @@ onActivated(updateSelectAll);
 
 <template>
   <div class="sign-files">
-    <index-search v-model="keyword" />
+    <home-search v-model="keyword" />
 
     <div class="hidden md:flex items-end w-full px-4 py-5">
       <div class="w-[300px] flex items-center pl-6 gap-5 h-6">
