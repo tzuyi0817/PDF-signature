@@ -178,6 +178,7 @@ onAfterRouteLeave(() => {
                 :page="page"
                 :canvas-scale="0.6"
                 :password="configStore.filePassword"
+                :drop-image-options="{ scaleX: 1, scaleY: 1 }"
                 is-drop
                 :on-destroy="onAfterRouteLeave"
                 @loaded="handleCanvasLoaded(page)"
