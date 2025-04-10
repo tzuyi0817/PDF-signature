@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.4.3](https://github.com/tzuyi0817/PDF-signature/compare/v0.4.2...v0.4.3) (2024-04-10)
+
+### Features
+
+- adjust the offset passed in by drop ([c8d8119](https://github.com/tzuyi0817/PDF-signature/commit/c8d8119151dcf24cddd9d467877fdfa5e79a8819))
+- canvas edge scrolling ([f774f75](https://github.com/tzuyi0817/PDF-signature/commit/f774f7551992e689daa1cc6bc622aa67458a2be6))
+
+### Bug Fixes
+
+- screen freezing due to reload canvas ([c2c5de7](https://github.com/tzuyi0817/PDF-signature/commit/c2c5de788242834f05595bb7e7b8a9a2c5725e30))
+
 ## [0.4.2](https://github.com/tzuyi0817/PDF-signature/compare/v0.4.1...v0.4.2) (2024-04-08)
 
 ### Features
