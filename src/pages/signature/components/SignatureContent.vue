@@ -29,14 +29,19 @@ const isCancelMerge = ref(false);
 const currentPage = ref(1);
 const isShowNextWarnPopup = ref(false);
 const isShowMergePopup = ref(false);
-const signatureCanvasItems = ref<InstanceType<typeof SignatureCanvasItem>[] | null>(null);
 const fileContainerRef = useTemplateRef<HTMLDivElement>('fileContainer');
 const fileZoom = ref(1);
 const { currentPDF } = storeToRefs(usePdfStore());
 const configStore = useConfigStore();
 const { t } = useI18n();
 const { isShowWarnPopup, SignPopup, goBack, goPage, toggleWarnPopup } = useWarnPopup();
-const { loadedState, isCompleted, handleCanvasLoaded } = useLoadCanvas(currentPDF);
+const {
+  canvasItems: signatureCanvasItems,
+  loadedState,
+  isCompleted,
+  handleCanvasLoaded,
+  handleCanvasReload,
+} = useLoadCanvas(currentPDF);
 const edgeThreshold = 20;
 let isGiveUpSignature = false;
 let isPointerDown = false;
@@ -251,8 +256,10 @@ onAfterRouteLeave(() => {
                 :canvas-scale="0.6"
                 :password="configStore.filePassword"
                 is-drop
+                manual-reload
                 :on-destroy="onAfterRouteLeave"
                 @loaded="handleCanvasLoaded(page)"
+                @reload="handleCanvasReload"
                 @pointer-down="handlePointerDown"
                 @pointer-move="handlePointerMove"
                 @pointer-up="handlePointerUp"

@@ -13,7 +13,7 @@ const currentPage = ref(1);
 const devicePixelRatio = ref(window.devicePixelRatio);
 const { currentPDF } = storeToRefs(usePdfStore());
 const configStore = useConfigStore();
-const { loadedState, handleCanvasLoaded } = useLoadCanvas(currentPDF);
+const { loadedState, canvasItems, handleCanvasLoaded, handleCanvasReload } = useLoadCanvas(currentPDF);
 const SignaturePageItem = defineAsyncComponent(() => import('@component-hook/pdf-canvas/vue'));
 const stopMonitorDevicePixelRatio = monitorDevicePixelRatio(changeDevicePixelRatio);
 
@@ -62,6 +62,7 @@ onBeforeUnmount(() => {
       >
         <signature-page-item
           v-if="loadedState[page - 1]"
+          ref="canvasItems"
           class="pointer-events-none"
           :file="currentPDF"
           canvas-id="PDF-page-canvas"
@@ -69,7 +70,9 @@ onBeforeUnmount(() => {
           :canvas-class="loadedState[page] ? 'border-2 border-gray-20' : undefined"
           :file-scale="devicePixelRatio * 0.3"
           :password="configStore.filePassword"
+          manual-reload
           @loaded="handleCanvasLoaded(page)"
+          @reload="handleCanvasReload"
         />
 
         <div
