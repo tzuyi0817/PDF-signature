@@ -3,6 +3,7 @@ import { ref, defineAsyncComponent, useTemplateRef } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
 import imageCompression from 'browser-image-compression';
+import type { FabricPointerEvent } from '@component-hook/pdf-canvas/vue';
 import SignatureSign from './SignatureSign.vue';
 import SignatureToolbar from './SignatureToolbar.vue';
 import SignatureImage from './SignatureImage.vue';
@@ -18,7 +19,7 @@ import SignVersion from '@/components/SignVersion.vue';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { useLoadCanvas } from '@/hooks/use-load-canvas';
 import { toast } from '@/utils/toast';
-import { sleep } from '@/utils/common';
+import { sleep, throttle } from '@/utils/common';
 import { canvasToFile } from '@/utils/image';
 import type { SignatureTool } from '@/types/menu';
 
@@ -36,7 +37,10 @@ const configStore = useConfigStore();
 const { t } = useI18n();
 const { isShowWarnPopup, SignPopup, goBack, goPage, toggleWarnPopup } = useWarnPopup();
 const { loadedState, isCompleted, handleCanvasLoaded } = useLoadCanvas(currentPDF);
+const edgeThreshold = 20;
 let isGiveUpSignature = false;
+let isPointerDown = false;
+let requestFrame: number | null = null;
 
 async function mergeFile() {
   toggleNextWarnPopup(false);
@@ -94,7 +98,13 @@ function addFabric(value: string, type?: string) {
 
 function usePage(page: number) {
   currentPage.value = page;
-  fileContainerRef.value?.scrollTo({ top: 0, left: 0 });
+  scrollTo({ top: 0, left: 0 });
+}
+
+function scrollTo(options: ScrollToOptions) {
+  if (!fileContainerRef.value) return;
+
+  fileContainerRef.value.scrollTo(options);
 }
 
 function toggleNextWarnPopup(isOpen: boolean) {
@@ -114,6 +124,60 @@ function giveUpSignature() {
 function cancelMergeFile() {
   isCancelMerge.value = true;
   toggleMergePopup(false);
+}
+
+function handlePointerDown() {
+  isPointerDown = true;
+}
+
+function scrollToPerFrame(offsetX: number, offsetY: number) {
+  if (!fileContainerRef.value) return;
+  const { scrollTop, scrollLeft, scrollHeight, scrollWidth, clientHeight, clientWidth } = fileContainerRef.value;
+  const top = scrollTop + offsetY;
+  const left = scrollLeft + offsetX;
+
+  if (top < 0 || left < 0 || top + clientHeight > scrollHeight || left + clientWidth > scrollWidth) {
+    if (requestFrame) {
+      cancelAnimationFrame(requestFrame);
+    }
+
+    requestFrame = null;
+    return;
+  }
+
+  requestFrame = requestAnimationFrame(() => {
+    scrollTo({ top, left });
+    scrollToPerFrame(offsetX, offsetY);
+  });
+}
+
+function handlePointerMove(event: FabricPointerEvent) {
+  if (!isPointerDown || !fileContainerRef.value || requestFrame) return;
+  const { clientX, clientY } = event.e.touches?.[0] ?? event.e;
+  const { isAtTopEdge, isAtBottomEdge, isAtLeftEdge, isAtRightEdge } = isPointerAtViewportEdge(clientX, clientY);
+  const offsetX = isAtLeftEdge || isAtRightEdge ? (isAtLeftEdge ? -1 : 1) * edgeThreshold : 0;
+  const offsetY = isAtTopEdge || isAtBottomEdge ? (isAtTopEdge ? -1 : 1) * edgeThreshold : 0;
+
+  if (!offsetX && !offsetY) return;
+
+  requestFrame = window.requestAnimationFrame(() => {
+    scrollToPerFrame(offsetX, offsetY);
+  });
+}
+
+function isPointerAtViewportEdge(clientX: number, clientY: number) {
+  if (!fileContainerRef.value) return {};
+  const { top, bottom, left, right } = fileContainerRef.value.getBoundingClientRect();
+  const isAtTopEdge = clientY <= top + edgeThreshold;
+  const isAtBottomEdge = clientY >= bottom - edgeThreshold;
+  const isAtLeftEdge = clientX <= left + edgeThreshold;
+  const isAtRightEdge = clientX >= right - edgeThreshold;
+
+  return { isAtTopEdge, isAtBottomEdge, isAtLeftEdge, isAtRightEdge };
+}
+
+function handlePointerUp() {
+  isPointerDown = false;
 }
 
 onAfterRouteLeave(() => {
@@ -178,10 +242,12 @@ onAfterRouteLeave(() => {
                 :page="page"
                 :canvas-scale="0.6"
                 :password="configStore.filePassword"
-                :drop-image-options="{ scaleX: 1, scaleY: 1 }"
                 is-drop
                 :on-destroy="onAfterRouteLeave"
                 @loaded="handleCanvasLoaded(page)"
+                @pointer-down="handlePointerDown"
+                @pointer-move="handlePointerMove"
+                @pointer-up="handlePointerUp"
               />
             </template>
           </template>

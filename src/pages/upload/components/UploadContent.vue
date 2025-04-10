@@ -18,7 +18,7 @@ const isShowPen = ref(true);
 const isShowPasswordPopup = ref(false);
 const pages = ref(1);
 const { t, locale } = useI18n();
-const { createCanvas, deleteCanvas, loadFile } = useFabric('canvas');
+const { createCanvas, deleteCanvas, loadFile } = useFabric({ id: 'canvas' });
 const { isShowWarnPopup, SignPopup, goBack, goPage, toggleWarnPopup } = useWarnPopup();
 const { toggleLoading, updateFilePassword } = useConfigStore();
 const UploadPassword = defineAsyncComponent(() => import('./UploadPassword.vue'));

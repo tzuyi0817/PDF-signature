@@ -30,6 +30,20 @@ export function debounce<T extends (...args: Parameters<T>) => ReturnType<T>>(fu
   };
 }
 
+export function throttle<T extends (...args: Parameters<T>) => ReturnType<T>>(fun: T, time = 500) {
+  if (typeof fun !== 'function') throw new TypeError('The first argument is not a function.');
+  let lastTime = 0;
+
+  return function (this: void, ...args: Parameters<T>) {
+    const now = Date.now();
+
+    if (now - lastTime < time) return;
+
+    fun.apply(this, args);
+    lastTime = now;
+  };
+}
+
 export function sleep(time = 500) {
   return new Promise(resolve => setTimeout(resolve, time));
 }
