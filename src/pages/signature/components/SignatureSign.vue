@@ -39,12 +39,12 @@ function toggleDrawPopup(isOpen: boolean) {
 }
 
 function dragSignature(event: DragEvent) {
-  const { offsetX, offsetY } = event;
   const { src, offsetHeight, offsetWidth } = event.target as HTMLImageElement;
+  const offsetX = event.offsetX / offsetWidth;
+  const offsetY = event.offsetY / offsetHeight;
 
   event.dataTransfer?.setData('text/uri-list', src);
   event.dataTransfer?.setData('custom/offset', JSON.stringify({ offsetX, offsetY }));
-  event.dataTransfer?.setData('custom/size', JSON.stringify({ width: offsetWidth, height: offsetHeight }));
 }
 
 function close() {

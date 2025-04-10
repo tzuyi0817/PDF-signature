@@ -19,7 +19,7 @@ import SignVersion from '@/components/SignVersion.vue';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { useLoadCanvas } from '@/hooks/use-load-canvas';
 import { toast } from '@/utils/toast';
-import { sleep, throttle } from '@/utils/common';
+import { sleep } from '@/utils/common';
 import { canvasToFile } from '@/utils/image';
 import type { SignatureTool } from '@/types/menu';
 
@@ -153,10 +153,18 @@ function scrollToPerFrame(offsetX: number, offsetY: number) {
 
 function handlePointerMove(event: FabricPointerEvent) {
   if (!isPointerDown || !fileContainerRef.value || requestFrame) return;
-  const { clientX, clientY } = event.e.touches?.[0] ?? event.e;
+  const { clientX, clientY } = event.e instanceof TouchEvent ? event.e.touches[0] : event.e;
   const { isAtTopEdge, isAtBottomEdge, isAtLeftEdge, isAtRightEdge } = isPointerAtViewportEdge(clientX, clientY);
-  const offsetX = isAtLeftEdge || isAtRightEdge ? (isAtLeftEdge ? -1 : 1) * edgeThreshold : 0;
-  const offsetY = isAtTopEdge || isAtBottomEdge ? (isAtTopEdge ? -1 : 1) * edgeThreshold : 0;
+  let offsetX = 0;
+  let offsetY = 0;
+
+  if (isAtLeftEdge || isAtRightEdge) {
+    offsetX = (isAtLeftEdge ? -1 : 1) * edgeThreshold;
+  }
+
+  if (isAtTopEdge || isAtBottomEdge) {
+    offsetY = (isAtTopEdge ? -1 : 1) * edgeThreshold;
+  }
 
   if (!offsetX && !offsetY) return;
 

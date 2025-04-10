@@ -70,10 +70,11 @@ function toggleLiteralPopup(isOpen: boolean, isEdit = false) {
 }
 
 function dragLiteral(event: DragEvent) {
-  const { offsetX, offsetY } = event;
-  const target = event.target as HTMLParagraphElement;
+  const { textContent, offsetHeight, offsetWidth } = event.target as HTMLParagraphElement;
+  const offsetX = event.offsetX / offsetWidth;
+  const offsetY = event.offsetY / offsetHeight;
 
-  event.dataTransfer?.setData('text/plain', target.textContent ?? '');
+  event.dataTransfer?.setData('text/plain', textContent ?? '');
   event.dataTransfer?.setData('custom/offset', JSON.stringify({ offsetX, offsetY }));
 }
 
