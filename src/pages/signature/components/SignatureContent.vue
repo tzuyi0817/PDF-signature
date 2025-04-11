@@ -134,67 +134,79 @@ function handlePointerDown() {
   isPointerDown = true;
 }
 
-function scrollToPerFrame(offsetX: number, offsetY: number) {
+function cancelScrollToPerFrame() {
+  if (!requestFrame) return;
+
+  cancelAnimationFrame(requestFrame);
+  requestFrame = null;
+}
+
+function scrollToPerFrame(offsetX: number, offsetY: number, fabric: FabricPointerEvent['target']) {
   if (!fileContainerRef.value) return;
   const { scrollTop, scrollLeft, scrollHeight, scrollWidth, clientHeight, clientWidth } = fileContainerRef.value;
   const top = scrollTop + offsetY;
   const left = scrollLeft + offsetX;
 
   if (top < 0 || left < 0 || top + clientHeight > scrollHeight || left + clientWidth > scrollWidth) {
-    if (requestFrame) {
-      cancelAnimationFrame(requestFrame);
-    }
-
-    requestFrame = null;
+    cancelScrollToPerFrame();
     return;
   }
 
   requestFrame = requestAnimationFrame(() => {
     scrollTo({ top, left });
-    scrollToPerFrame(offsetX, offsetY);
+    updateFabricCoords(offsetX, offsetY, fabric);
+    scrollToPerFrame(offsetX, offsetY, fabric);
   });
+}
+
+function updateFabricCoords(offsetX: number, offsetY: number, fabric: FabricPointerEvent['target']) {
+  if (!fabric) return;
+
+  fabric.left += offsetX * fabric.borderScaleFactor;
+  fabric.top += offsetY * fabric.borderScaleFactor;
+  fabric.setCoords();
+  fabric.canvas?.renderAll();
 }
 
 function handlePointerMove(event: FabricPointerEvent) {
   if (!isPointerDown || !fileContainerRef.value) return;
   const { clientX, clientY } = event.e instanceof TouchEvent ? event.e.touches[0] : event.e;
-  const { isAtTopEdge, isAtBottomEdge, isAtLeftEdge, isAtRightEdge } = isPointerAtViewportEdge(clientX, clientY);
+  const isAtEdge = isPointerAtViewportEdge(clientX, clientY);
   const moveStep = 5;
   let offsetX = 0;
   let offsetY = 0;
 
-  if (requestFrame) {
-    cancelAnimationFrame(requestFrame);
-    requestFrame = null;
+  cancelScrollToPerFrame();
+
+  if (isAtEdge?.left || isAtEdge?.right) {
+    offsetX = (isAtEdge.left ? -1 : 1) * moveStep;
   }
 
-  if (isAtLeftEdge || isAtRightEdge) {
-    offsetX = (isAtLeftEdge ? -1 : 1) * moveStep;
-  }
-
-  if (isAtTopEdge || isAtBottomEdge) {
-    offsetY = (isAtTopEdge ? -1 : 1) * moveStep;
+  if (isAtEdge?.top || isAtEdge?.bottom) {
+    offsetY = (isAtEdge.top ? -1 : 1) * moveStep;
   }
 
   if (!offsetX && !offsetY) return;
 
   requestFrame = window.requestAnimationFrame(() => {
-    scrollToPerFrame(offsetX, offsetY);
+    scrollToPerFrame(offsetX, offsetY, event.target);
   });
 }
 
 function isPointerAtViewportEdge(clientX: number, clientY: number) {
-  if (!fileContainerRef.value) return {};
-  const { top, bottom, left, right } = fileContainerRef.value.getBoundingClientRect();
+  if (!fileContainerRef.value) return null;
+  const rect = fileContainerRef.value.getBoundingClientRect();
   const edgeThreshold = 20;
-  const isAtTopEdge = clientY <= top + edgeThreshold;
-  const isAtBottomEdge = clientY >= bottom - edgeThreshold;
-  const isAtLeftEdge = clientX <= left + edgeThreshold;
-  const isAtRightEdge = clientX >= right - edgeThreshold;
-  return { isAtTopEdge, isAtBottomEdge, isAtLeftEdge, isAtRightEdge };
+  const top = clientY <= rect.top + edgeThreshold;
+  const bottom = clientY >= rect.bottom - edgeThreshold;
+  const left = clientX <= rect.left + edgeThreshold;
+  const right = clientX >= rect.right - edgeThreshold;
+
+  return { top, bottom, left, right };
 }
 
 function handlePointerUp() {
+  cancelScrollToPerFrame();
   isPointerDown = false;
 }
 
