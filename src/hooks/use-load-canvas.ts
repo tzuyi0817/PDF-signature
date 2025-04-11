@@ -34,7 +34,6 @@ export function useLoadCanvas(currentPDF: Ref<PDF>) {
   watch(
     () => currentPDF.value?.pages,
     pages => {
-      console.log('pages', pages);
       if (!pages) return;
 
       loadedPages.value = 0;

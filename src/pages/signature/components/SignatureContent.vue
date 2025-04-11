@@ -42,7 +42,6 @@ const {
   handleCanvasLoaded,
   handleCanvasReload,
 } = useLoadCanvas(currentPDF);
-const edgeThreshold = 20;
 let isGiveUpSignature = false;
 let isPointerDown = false;
 let requestFrame: number | null = null;
@@ -157,18 +156,24 @@ function scrollToPerFrame(offsetX: number, offsetY: number) {
 }
 
 function handlePointerMove(event: FabricPointerEvent) {
-  if (!isPointerDown || !fileContainerRef.value || requestFrame) return;
+  if (!isPointerDown || !fileContainerRef.value) return;
   const { clientX, clientY } = event.e instanceof TouchEvent ? event.e.touches[0] : event.e;
   const { isAtTopEdge, isAtBottomEdge, isAtLeftEdge, isAtRightEdge } = isPointerAtViewportEdge(clientX, clientY);
+  const moveStep = 5;
   let offsetX = 0;
   let offsetY = 0;
 
+  if (requestFrame) {
+    cancelAnimationFrame(requestFrame);
+    requestFrame = null;
+  }
+
   if (isAtLeftEdge || isAtRightEdge) {
-    offsetX = (isAtLeftEdge ? -1 : 1) * edgeThreshold;
+    offsetX = (isAtLeftEdge ? -1 : 1) * moveStep;
   }
 
   if (isAtTopEdge || isAtBottomEdge) {
-    offsetY = (isAtTopEdge ? -1 : 1) * edgeThreshold;
+    offsetY = (isAtTopEdge ? -1 : 1) * moveStep;
   }
 
   if (!offsetX && !offsetY) return;
@@ -181,11 +186,11 @@ function handlePointerMove(event: FabricPointerEvent) {
 function isPointerAtViewportEdge(clientX: number, clientY: number) {
   if (!fileContainerRef.value) return {};
   const { top, bottom, left, right } = fileContainerRef.value.getBoundingClientRect();
+  const edgeThreshold = 20;
   const isAtTopEdge = clientY <= top + edgeThreshold;
   const isAtBottomEdge = clientY >= bottom - edgeThreshold;
   const isAtLeftEdge = clientX <= left + edgeThreshold;
   const isAtRightEdge = clientX >= right - edgeThreshold;
-
   return { isAtTopEdge, isAtBottomEdge, isAtLeftEdge, isAtRightEdge };
 }
 
