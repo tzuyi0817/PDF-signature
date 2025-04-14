@@ -8,10 +8,12 @@ import { useSignatureStore } from '@/store';
 import SignIcon from '@/components/SignIcon.vue';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { toast } from '@/utils/toast';
+import type { DragOffset } from '@/types/drag';
 import type { SignatureTool } from '@/types/menu';
 
 const emit = defineEmits(['useSignature']);
 const currentTool = defineModel<SignatureTool | ''>('currentTool');
+const dragOffset = defineModel<DragOffset>('dragOffset', { required: true });
 const currentSelect = ref('');
 const isShowDrawPopup = ref(false);
 const { signatureList } = storeToRefs(useSignatureStore());
@@ -45,6 +47,7 @@ function dragSignature(event: DragEvent) {
 
   event.dataTransfer?.setData('text/uri-list', src);
   event.dataTransfer?.setData('custom/offset', JSON.stringify({ offsetX, offsetY }));
+  dragOffset.value = { x: event.offsetX, y: event.offsetY, width: offsetWidth, height: offsetHeight };
 }
 
 function close() {

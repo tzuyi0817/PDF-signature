@@ -3,7 +3,6 @@ import { ref, defineAsyncComponent, useTemplateRef } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
 import imageCompression from 'browser-image-compression';
-import type { FabricPointerEvent } from '@component-hook/pdf-canvas/vue';
 import SignatureSign from './SignatureSign.vue';
 import SignatureToolbar from './SignatureToolbar.vue';
 import SignatureImage from './SignatureImage.vue';
@@ -16,11 +15,14 @@ import { onAfterRouteLeave } from '@/router';
 import SignStepBtn from '@/components/SignStepBtn.vue';
 import { usePdfStore, useConfigStore } from '@/store';
 import SignVersion from '@/components/SignVersion.vue';
+import { usePointerFabric } from '@/hooks/use-pointer-fabric';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { useLoadCanvas } from '@/hooks/use-load-canvas';
 import { toast } from '@/utils/toast';
 import { sleep } from '@/utils/common';
 import { canvasToFile } from '@/utils/image';
+import { DRAG_MOVE_STEP } from '@/constants/common';
+import type { DragOffset } from '@/types/drag';
 import type { SignatureTool } from '@/types/menu';
 
 const SignatureCanvasItem = defineAsyncComponent(() => import('@component-hook/pdf-canvas/vue'));
@@ -31,10 +33,12 @@ const isShowNextWarnPopup = ref(false);
 const isShowMergePopup = ref(false);
 const fileContainerRef = useTemplateRef<HTMLDivElement>('fileContainer');
 const fileZoom = ref(1);
+const dragOffset = ref<DragOffset>({ x: 0, y: 0, width: 0, height: 0 });
 const { currentPDF } = storeToRefs(usePdfStore());
 const configStore = useConfigStore();
 const { t } = useI18n();
 const { isShowWarnPopup, SignPopup, goBack, goPage, toggleWarnPopup } = useWarnPopup();
+const { handlePointerDown, handlePointerMove, handlePointerUp } = usePointerFabric(fileContainerRef);
 const {
   canvasItems: signatureCanvasItems,
   loadedState,
@@ -43,7 +47,6 @@ const {
   handleCanvasReload,
 } = useLoadCanvas(currentPDF);
 let isGiveUpSignature = false;
-let isPointerDown = false;
 let requestFrame: number | null = null;
 
 async function mergeFile() {
@@ -130,18 +133,36 @@ function cancelMergeFile() {
   toggleMergePopup(false);
 }
 
-function handlePointerDown() {
-  isPointerDown = true;
+function handleDragOver(event: DragEvent) {
+  if (!fileContainerRef.value) return;
+  const { clientX, clientY } = event;
+  const rect = fileContainerRef.value.getBoundingClientRect();
+  const { x, y, height, width } = dragOffset.value;
+  const top = clientY <= rect.top + y;
+  const bottom = clientY >= rect.bottom - (height - y);
+  const left = clientX <= rect.left + x;
+  const right = clientX >= rect.right - (width - x);
+  let offsetX = 0;
+  let offsetY = 0;
+
+  cancelScrollToPerFrame();
+
+  if (left || right) {
+    offsetX = left ? -DRAG_MOVE_STEP : DRAG_MOVE_STEP;
+  }
+
+  if (top || bottom) {
+    offsetY = top ? -DRAG_MOVE_STEP : DRAG_MOVE_STEP;
+  }
+
+  if (!offsetX && !offsetY) return;
+
+  requestFrame = window.requestAnimationFrame(() => {
+    scrollToPerFrame(offsetX, offsetY);
+  });
 }
 
-function cancelScrollToPerFrame() {
-  if (!requestFrame) return;
-
-  cancelAnimationFrame(requestFrame);
-  requestFrame = null;
-}
-
-function scrollToPerFrame(offsetX: number, offsetY: number, fabric: FabricPointerEvent['target']) {
+function scrollToPerFrame(offsetX: number, offsetY: number) {
   if (!fileContainerRef.value) return;
   const { scrollTop, scrollLeft, scrollHeight, scrollWidth, clientHeight, clientWidth } = fileContainerRef.value;
   const top = scrollTop + offsetY;
@@ -154,68 +175,15 @@ function scrollToPerFrame(offsetX: number, offsetY: number, fabric: FabricPointe
 
   requestFrame = requestAnimationFrame(() => {
     scrollTo({ top, left });
-    updateFabricCoords(offsetX, offsetY, fabric);
-    scrollToPerFrame(offsetX, offsetY, fabric);
+    scrollToPerFrame(offsetX, offsetY);
   });
 }
 
-function updateFabricCoords(offsetX: number, offsetY: number, fabric: FabricPointerEvent['target']) {
-  if (!fabric) return;
+function cancelScrollToPerFrame() {
+  if (!requestFrame) return;
 
-  fabric.left += offsetX * fabric.borderScaleFactor;
-  fabric.top += offsetY * fabric.borderScaleFactor;
-  fabric.setCoords();
-  fabric.canvas?.renderAll();
-}
-
-function handlePointerMove(event: FabricPointerEvent) {
-  if (!isPointerDown || !fileContainerRef.value) return;
-  const { clientX, clientY } = event.e instanceof TouchEvent ? event.e.touches[0] : event.e;
-  const isAtEdge = isPointerAtViewportEdge(clientX, clientY, event.transform);
-  const moveStep = 5;
-  let offsetX = 0;
-  let offsetY = 0;
-
-  cancelScrollToPerFrame();
-
-  if (isAtEdge?.left || isAtEdge?.right) {
-    offsetX = (isAtEdge.left ? -1 : 1) * moveStep;
-  }
-
-  if (isAtEdge?.top || isAtEdge?.bottom) {
-    offsetY = (isAtEdge.top ? -1 : 1) * moveStep;
-  }
-
-  if (!offsetX && !offsetY) return;
-
-  requestFrame = window.requestAnimationFrame(() => {
-    scrollToPerFrame(offsetX, offsetY, event.target);
-  });
-}
-
-function isPointerAtViewportEdge(clientX: number, clientY: number, transform: FabricPointerEvent['transform']) {
-  if (!fileContainerRef.value) return null;
-  const rect = fileContainerRef.value.getBoundingClientRect();
-  const { height = 0, width = 0, offsetX = 0, offsetY = 0, scaleX = 0, scaleY = 0, target } = transform ?? {};
-  const edgeThreshold = 20;
-  const borderScaleFactor = target ? target.borderScaleFactor : 1;
-  const originalWidth = width * scaleX;
-  const originalHeight = height * scaleY;
-  const offsetTop = offsetY / borderScaleFactor || edgeThreshold;
-  const offsetBottom = (originalHeight - offsetY) / borderScaleFactor || edgeThreshold;
-  const offsetLeft = offsetX / borderScaleFactor || edgeThreshold;
-  const offsetRight = (originalWidth - offsetX) / borderScaleFactor || edgeThreshold;
-  const top = clientY <= rect.top + offsetTop;
-  const bottom = clientY >= rect.bottom - offsetBottom;
-  const left = clientX <= rect.left + offsetLeft;
-  const right = clientX >= rect.right - offsetRight;
-
-  return { top, bottom, left, right };
-}
-
-function handlePointerUp() {
-  cancelScrollToPerFrame();
-  isPointerDown = false;
+  cancelAnimationFrame(requestFrame);
+  requestFrame = null;
 }
 
 onAfterRouteLeave(() => {
@@ -244,14 +212,17 @@ onAfterRouteLeave(() => {
         <signature-toolbar v-model:current-tool="currentTool" />
         <signature-sign
           v-model:current-tool="currentTool"
+          v-model:drag-offset="dragOffset"
           @use-signature="addFabric"
         />
         <signature-image
           v-model:current-tool="currentTool"
+          v-model:drag-offset="dragOffset"
           @use-image="addFabric"
         />
         <signature-literal
           v-model:current-tool="currentTool"
+          v-model:drag-offset="dragOffset"
           @use-literal="addFabric"
         />
         <signature-page
@@ -264,7 +235,10 @@ onAfterRouteLeave(() => {
         ref="fileContainer"
         class="signature-content-file"
       >
-        <div class="relative w-full h-full">
+        <div
+          class="relative w-full h-full"
+          @dragover.stop.prevent="handleDragOver"
+        >
           <template
             v-for="page in currentPDF.pages"
             :key="page"

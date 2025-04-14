@@ -24,3 +24,5 @@ export const I18N_MAP = {
   'he-IL': 'עברית', // 希伯來語
   'hi-IN': 'हिन्दी', // 印地語
 } as const;
+
+export const DRAG_MOVE_STEP = 15;

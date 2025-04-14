@@ -7,10 +7,12 @@ import { useLiteralStore } from '@/store';
 import SignIcon from '@/components/SignIcon.vue';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { toast } from '@/utils/toast';
+import type { DragOffset } from '@/types/drag';
 import type { SignatureTool } from '@/types/menu';
 
 const emit = defineEmits(['useLiteral']);
 const currentTool = defineModel<SignatureTool | ''>('currentTool');
+const dragOffset = defineModel<DragOffset>('dragOffset', { required: true });
 const currentSelect = ref('');
 const isShowLiteralPopup = ref(false);
 const literal = ref('');
@@ -76,6 +78,7 @@ function dragLiteral(event: DragEvent) {
 
   event.dataTransfer?.setData('text/plain', textContent ?? '');
   event.dataTransfer?.setData('custom/offset', JSON.stringify({ offsetX, offsetY }));
+  dragOffset.value = { x: event.offsetX, y: event.offsetY, width: offsetWidth, height: offsetHeight };
 }
 
 function close() {
