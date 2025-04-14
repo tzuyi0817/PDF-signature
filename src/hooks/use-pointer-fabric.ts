@@ -45,11 +45,11 @@ export function usePointerFabric(containerRef: Readonly<ShallowRef<HTMLDivElemen
     cancelScrollToPerFrame();
 
     if (isAtEdge?.left || isAtEdge?.right) {
-      offsetX = (isAtEdge.left ? -1 : 1) * DRAG_MOVE_STEP;
+      offsetX = isAtEdge.left ? -DRAG_MOVE_STEP : DRAG_MOVE_STEP;
     }
 
     if (isAtEdge?.top || isAtEdge?.bottom) {
-      offsetY = (isAtEdge.top ? -1 : 1) * DRAG_MOVE_STEP;
+      offsetY = isAtEdge.top ? -DRAG_MOVE_STEP : DRAG_MOVE_STEP;
     }
 
     if (!offsetX && !offsetY) return;
