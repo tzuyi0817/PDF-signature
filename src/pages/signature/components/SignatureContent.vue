@@ -171,7 +171,7 @@ function updateFabricCoords(offsetX: number, offsetY: number, fabric: FabricPoin
 function handlePointerMove(event: FabricPointerEvent) {
   if (!isPointerDown || !fileContainerRef.value) return;
   const { clientX, clientY } = event.e instanceof TouchEvent ? event.e.touches[0] : event.e;
-  const isAtEdge = isPointerAtViewportEdge(clientX, clientY);
+  const isAtEdge = isPointerAtViewportEdge(clientX, clientY, event.transform);
   const moveStep = 5;
   let offsetX = 0;
   let offsetY = 0;
@@ -193,14 +193,22 @@ function handlePointerMove(event: FabricPointerEvent) {
   });
 }
 
-function isPointerAtViewportEdge(clientX: number, clientY: number) {
+function isPointerAtViewportEdge(clientX: number, clientY: number, transform: FabricPointerEvent['transform']) {
   if (!fileContainerRef.value) return null;
   const rect = fileContainerRef.value.getBoundingClientRect();
+  const { height = 0, width = 0, offsetX = 0, offsetY = 0, scaleX = 0, scaleY = 0, target } = transform ?? {};
   const edgeThreshold = 20;
-  const top = clientY <= rect.top + edgeThreshold;
-  const bottom = clientY >= rect.bottom - edgeThreshold;
-  const left = clientX <= rect.left + edgeThreshold;
-  const right = clientX >= rect.right - edgeThreshold;
+  const borderScaleFactor = target ? target.borderScaleFactor : 1;
+  const originalWidth = width * scaleX;
+  const originalHeight = height * scaleY;
+  const offsetTop = offsetY / borderScaleFactor || edgeThreshold;
+  const offsetBottom = (originalHeight - offsetY) / borderScaleFactor || edgeThreshold;
+  const offsetLeft = offsetX / borderScaleFactor || edgeThreshold;
+  const offsetRight = (originalWidth - offsetX) / borderScaleFactor || edgeThreshold;
+  const top = clientY <= rect.top + offsetTop;
+  const bottom = clientY >= rect.bottom - offsetBottom;
+  const left = clientX <= rect.left + offsetLeft;
+  const right = clientX >= rect.right - offsetRight;
 
   return { top, bottom, left, right };
 }
@@ -358,6 +366,7 @@ onAfterRouteLeave(() => {
   margin: 0 10px 28px;
   background-color: var(--color-gray-30);
   border: 2px solid var(--color-gray-30);
+  touch-action: pan-x pan-y;
   overflow: auto;
   width: calc(100% - 20px);
   height: 100%;
