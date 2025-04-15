@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.4.4](https://github.com/tzuyi0817/PDF-signature/compare/v0.4.3...v0.4.4) (2024-04-15)
+
+### Features
+
+- optimize the automatic scrolling speed when dragging signatures to the edge of the canvas ([2eb55fc](https://github.com/tzuyi0817/PDF-signature/commit/2eb55fcedaa73557374f00622a380e355ede3550))
+
+### Bug Fixes
+
+- calculation of length and width of signatures after rotation ([4eaaacf](https://github.com/tzuyi0817/PDF-signature/commit/4eaaacfffad95c44a1d26d5b3d553985cab7920d))
+
 ## [0.4.3](https://github.com/tzuyi0817/PDF-signature/compare/v0.4.2...v0.4.3) (2024-04-10)
 
 ### Features

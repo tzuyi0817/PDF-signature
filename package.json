@@ -1,7 +1,7 @@
 {
   "name": "pdf-signature",
   "private": true,
-  "version": "0.4.3",
+  "version": "0.4.4",
   "type": "module",
   "packageManager": "pnpm@10.7.1",
   "scripts": {
