@@ -62,11 +62,13 @@ export function usePointerFabric(containerRef: Readonly<ShallowRef<HTMLDivElemen
   function isPointerAtViewportEdge(clientX: number, clientY: number, transform: FabricPointerEvent['transform']) {
     if (!containerRef.value) return null;
     const rect = containerRef.value.getBoundingClientRect();
-    const { height = 0, width = 0, offsetX = 0, offsetY = 0, scaleX = 0, scaleY = 0, target } = transform ?? {};
+    const { height = 0, width = 0, scaleX = 0, scaleY = 0, target } = transform ?? {};
     const edgeThreshold = 20;
-    const borderScaleFactor = target ? target.borderScaleFactor : 1;
-    const originalWidth = width * scaleX;
-    const originalHeight = height * scaleY;
+    const borderScaleFactor = target?.borderScaleFactor ?? 1;
+    const angle = target?.angle ?? 0;
+    const { width: originalWidth, height: originalHeight } = getBoundingSize(width * scaleX, height * scaleY, angle);
+    const offsetX = transform?.offsetX ? (transform.offsetX + originalWidth) % originalWidth : 0;
+    const offsetY = transform?.offsetY ? (transform.offsetY + originalHeight) % originalHeight : 0;
     const offsetTop = offsetY / borderScaleFactor || edgeThreshold;
     const offsetBottom = (originalHeight - offsetY) / borderScaleFactor || edgeThreshold;
     const offsetLeft = offsetX / borderScaleFactor || edgeThreshold;
@@ -98,4 +100,12 @@ function updateFabricCoords(offsetX: number, offsetY: number, fabric: FabricPoin
   fabric.top += offsetY * fabric.borderScaleFactor;
   fabric.setCoords();
   fabric.canvas?.renderAll();
+}
+
+function getBoundingSize(width: number, height: number, angle: number) {
+  const radian = (angle * Math.PI) / 180;
+  const rotatedWidth = Math.abs(width * Math.cos(radian)) + Math.abs(height * Math.sin(radian));
+  const rotatedHeight = Math.abs(width * Math.sin(radian)) + Math.abs(height * Math.cos(radian));
+
+  return { width: rotatedWidth, height: rotatedHeight };
 }
