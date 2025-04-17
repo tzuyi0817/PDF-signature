@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.5.0](https://github.com/tzuyi0817/PDF-signature/compare/v0.4.4...v0.5.0) (2024-04-17)
+
+### Features
+
+- added the functions of copying and deleting signatures to the panel ([1e78270](https://github.com/tzuyi0817/PDF-signature/commit/1e78270d7f7db97e7ff1ed66563524eb3496706f))
+
 ## [0.4.4](https://github.com/tzuyi0817/PDF-signature/compare/v0.4.3...v0.4.4) (2024-04-15)
 
 ### Features
