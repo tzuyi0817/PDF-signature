@@ -8,7 +8,7 @@
 
 ### Bug Fixes
 
-- calculation of length and width of signatures after rotation ([4eaaacf](https://github.com/tzuyi0817/PDF-signature/commit/4eaaacfffad95c44a1d26d5b3d553985cab7920d))
+- calculation of height and width of signatures after rotation ([4eaaacf](https://github.com/tzuyi0817/PDF-signature/commit/4eaaacfffad95c44a1d26d5b3d553985cab7920d))
 
 ## [0.4.3](https://github.com/tzuyi0817/PDF-signature/compare/v0.4.2...v0.4.3) (2024-04-10)
 

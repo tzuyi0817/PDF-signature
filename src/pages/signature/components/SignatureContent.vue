@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, defineAsyncComponent, useTemplateRef } from 'vue';
+import { ref, defineAsyncComponent, useTemplateRef, computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
 import imageCompression from 'browser-image-compression';
@@ -10,7 +10,7 @@ import SignatureLiteral from './SignatureLiteral.vue';
 import SignaturePage from './SignaturePage.vue';
 import SignatureLoading from './SignatureLoading.vue';
 import SignatureMergePopup from './SignatureMergePopup.vue';
-import SignatureMagnifier from './SignatureMagnifier.vue';
+import SignaturePanel from './SignaturePanel.vue';
 import { onAfterRouteLeave } from '@/router';
 import SignStepBtn from '@/components/SignStepBtn.vue';
 import { usePdfStore, useConfigStore } from '@/store';
@@ -34,6 +34,7 @@ const isShowMergePopup = ref(false);
 const fileContainerRef = useTemplateRef<HTMLDivElement>('fileContainer');
 const fileZoom = ref(1);
 const dragOffset = ref<DragOffset>({ x: 0, y: 0, width: 0, height: 0 });
+const isActivatedFabric = ref(false);
 const { currentPDF } = storeToRefs(usePdfStore());
 const configStore = useConfigStore();
 const { t } = useI18n();
@@ -46,6 +47,13 @@ const {
   handleCanvasLoaded,
   handleCanvasReload,
 } = useLoadCanvas(currentPDF);
+
+const currentCanvasItem = computed(() => {
+  if (!signatureCanvasItems.value) return null;
+
+  return signatureCanvasItems.value.at(currentPage.value - 1);
+});
+
 let isGiveUpSignature = false;
 let requestFrame: number | null = null;
 
@@ -92,18 +100,16 @@ async function mergeFile() {
 }
 
 function addFabric(value: string, type?: string) {
-  if (!signatureCanvasItems.value) return;
-  const proxy = signatureCanvasItems.value.at(currentPage.value - 1);
+  const canvas = currentCanvasItem.value;
 
-  if (!proxy) return;
-  if (type === 'text') {
-    proxy.addText(value);
-    return;
-  }
-  proxy.addImage(value);
+  if (!canvas) return;
+  const action = type === 'text' ? canvas.addText : canvas.addImage;
+
+  action(value);
 }
 
 function usePage(page: number) {
+  currentCanvasItem.value?.clearActive();
   currentPage.value = page;
   scrollTo({ top: 0, left: 0 });
 }
@@ -231,12 +237,10 @@ onAfterRouteLeave(() => {
         />
       </div>
 
-      <div
-        ref="fileContainer"
-        class="signature-content-file"
-      >
+      <div class="signature-content-file">
         <div
-          class="relative w-full h-full"
+          ref="fileContainer"
+          class="relative w-full h-full overflow-auto touch-pan-x touch-pan-y"
           @dragover.stop.prevent="handleDragOver"
         >
           <template
@@ -247,7 +251,7 @@ onAfterRouteLeave(() => {
               <signature-canvas-item
                 v-show="currentPage === page"
                 ref="signatureCanvasItems"
-                class="absolute py-5 px-3 origin-top-left md:py-10 md:px-14"
+                class="absolute pt-5 pb-18 px-3 origin-top-left md:pt-10 md:px-14"
                 :file="currentPDF"
                 :file-zoom="fileZoom"
                 :file-scale="6.8"
@@ -256,12 +260,15 @@ onAfterRouteLeave(() => {
                 :password="configStore.filePassword"
                 is-drop
                 manual-reload
+                :close-svg-options="{ src: '' }"
                 :on-destroy="onAfterRouteLeave"
                 @loaded="handleCanvasLoaded(page)"
                 @reload="handleCanvasReload"
                 @pointer-down="handlePointerDown"
                 @pointer-move="handlePointerMove"
                 @pointer-up="handlePointerUp"
+                @selection-created="isActivatedFabric = true"
+                @selection-cleared="isActivatedFabric = false"
               />
             </template>
           </template>
@@ -271,8 +278,14 @@ onAfterRouteLeave(() => {
             class="absolute"
           />
         </div>
+
+        <signature-panel
+          v-model:file-zoom="fileZoom"
+          :is-activated-fabric="isActivatedFabric"
+          @copy-fabric="currentCanvasItem?.copyActiveFabric"
+          @delete-fabric="currentCanvasItem?.deleteActiveFabric"
+        />
       </div>
-      <signature-magnifier v-model="fileZoom" />
     </div>
 
     <sign-step-btn
@@ -340,10 +353,9 @@ onAfterRouteLeave(() => {
   margin: 0 10px 28px;
   background-color: var(--color-gray-30);
   border: 2px solid var(--color-gray-30);
-  touch-action: pan-x pan-y;
-  overflow: auto;
   width: calc(100% - 20px);
   height: 100%;
+  position: relative;
 }
 
 @media (min-width: 768px) {

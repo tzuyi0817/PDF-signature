@@ -75,15 +75,16 @@
     border-radius: 1rem;
     padding: 4px 12px;
     font-weight: 700;
-    font-size: 0.75rem;
     outline: none;
+    transition:
+      color 0.2s,
+      background-color 0.2s,
+      text-shadow 0.2s;
   }
 
   @media (min-width: 768px) {
     .btn-small {
-      font-size: 1rem;
       border-width: 2px;
-      padding: 4px 28px;
     }
   }
 
