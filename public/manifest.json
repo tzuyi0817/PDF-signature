@@ -83,10 +83,18 @@
   ],
   "screenshots": [
     {
+      "src": "cover-mobile.jpg",
+      "sizes": "340x652",
+      "type": "image/jpg",
+      "form_factor": "narrow",
+      "label": "Mobile Screen"
+    },
+    {
       "src": "cover.jpg",
       "type": "image/jpg",
       "sizes": "1200x628",
-      "form_factor": "wide"
+      "form_factor": "wide",
+      "label": "Desktop Screen"
     }
   ]
 }
