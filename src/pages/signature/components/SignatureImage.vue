@@ -226,7 +226,7 @@ function close() {
   </sign-popup>
 </template>
 
-<style lang="postcss" scoped>
+<style lang="css" scoped>
 .signature-image-add {
   border: 1px dashed var(--color-secondary);
   padding: 20px 0;

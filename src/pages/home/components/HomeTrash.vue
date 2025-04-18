@@ -41,7 +41,7 @@ usePdfStore().filterTrash();
   </div>
 </template>
 
-<style lang="postcss" scoped>
+<style lang="css" scoped>
 .index-trash-warn {
   color: var(--color-danger);
   text-align: center;
