@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, defineAsyncComponent } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { useFabric } from '@component-hook/pdf-canvas/vue';
-import { onAfterRouteLeave } from '@/router';
-import { usePdfStore, useConfigStore } from '@/store';
-import SignStepBtn from '@/components/SignStepBtn.vue';
+import { computed, defineAsyncComponent, onMounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import SignIcon from '@/components/SignIcon.vue';
+import SignStepBtn from '@/components/SignStepBtn.vue';
 import SignVersion from '@/components/SignVersion.vue';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
-import { toast } from '@/utils/toast';
+import { onAfterRouteLeave } from '@/router';
+import { useConfigStore, usePdfStore } from '@/store';
 import { sleep } from '@/utils/common';
 import { checkFile } from '@/utils/reader';
+import { toast } from '@/utils/toast';
 
 const fileName = ref('');
 const projectName = ref('');

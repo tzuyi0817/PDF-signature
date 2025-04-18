@@ -1,7 +1,7 @@
-import { ref, readonly, computed, watch, type Ref } from 'vue';
-import type CanvasItem from '@component-hook/pdf-canvas/vue';
+import { computed, readonly, ref, watch, type Ref } from 'vue';
 import { sleep, throttle } from '@/utils/common';
 import type { PDF } from '@/types/pdf';
+import type CanvasItem from '@component-hook/pdf-canvas/vue';
 
 export function useLoadCanvas(currentPDF: Ref<PDF>) {
   const loadedState = ref<boolean[]>([]);

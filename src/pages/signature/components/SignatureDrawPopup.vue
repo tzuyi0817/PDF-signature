@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { ref, defineAsyncComponent } from 'vue';
+import { defineAsyncComponent, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useSignatureStore } from '@/store';
 import SignIcon from '@/components/SignIcon.vue';
-import { toast } from '@/utils/toast';
+import { useSignatureStore } from '@/store';
 import { isDesktop } from '@/utils/common';
+import { toast } from '@/utils/toast';
 
 const emit = defineEmits(['close']);
 const canvasDraw = ref<HTMLCanvasElement | null>(null);

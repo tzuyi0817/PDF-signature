@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import HomeSignFiles from './HomeSignFiles.vue';
 import { usePdfStore } from '@/store';
+import HomeSignFiles from './HomeSignFiles.vue';
 
 const { archiveList } = storeToRefs(usePdfStore());
 </script>

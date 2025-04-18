@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
+import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import SignaturePopup from './SignaturePopup.vue';
-import { useLiteralStore } from '@/store';
 import SignIcon from '@/components/SignIcon.vue';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
+import { useLiteralStore } from '@/store';
 import { toast } from '@/utils/toast';
 import type { DragOffset } from '@/types/drag';
 import type { SignatureTool } from '@/types/menu';
+import SignaturePopup from './SignaturePopup.vue';
 
 const emit = defineEmits(['useLiteral']);
 const currentTool = defineModel<SignatureTool | ''>('currentTool');

@@ -1,4 +1,4 @@
-import { ref, defineAsyncComponent } from 'vue';
+import { defineAsyncComponent, ref } from 'vue';
 import { useRedirect } from '@/hooks/use-redirect';
 
 export function useWarnPopup() {

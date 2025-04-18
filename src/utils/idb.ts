@@ -1,6 +1,6 @@
-import { toRaw, isRef, isReactive, isProxy } from 'vue';
 import { get, set, type UseStore } from 'idb-keyval';
-import { isArray, isPlainObject, hasOwn } from './check-type';
+import { isProxy, isReactive, isRef, toRaw } from 'vue';
+import { hasOwn, isArray, isPlainObject } from './check-type';
 
 export function getIdb<T>(key: IDBValidKey, customStore?: UseStore): Promise<T | undefined> {
   return get(key, customStore);

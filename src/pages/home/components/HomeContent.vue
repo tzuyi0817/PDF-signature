@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import HomeFiles from './HomeFiles.vue';
-import HomeArchives from './HomeArchives.vue';
-import HomeTrash from './HomeTrash.vue';
 import SignVersion from '@/components/SignVersion.vue';
 import { useRedirect } from '@/hooks/use-redirect';
 import type { MenuTab } from '@/types/menu';
+import HomeArchives from './HomeArchives.vue';
+import HomeFiles from './HomeFiles.vue';
+import HomeTrash from './HomeTrash.vue';
 
 interface Props {
   currentTab: MenuTab;

@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
+import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import SignaturePopup from './SignaturePopup.vue';
-import SignatureDrawPopup from './SignatureDrawPopup.vue';
-import { useSignatureStore } from '@/store';
 import SignIcon from '@/components/SignIcon.vue';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
+import { useSignatureStore } from '@/store';
 import { toast } from '@/utils/toast';
 import type { DragOffset } from '@/types/drag';
 import type { SignatureTool } from '@/types/menu';
+import SignatureDrawPopup from './SignatureDrawPopup.vue';
+import SignaturePopup from './SignaturePopup.vue';
 
 const emit = defineEmits(['useSignature']);
 const currentTool = defineModel<SignatureTool | ''>('currentTool');

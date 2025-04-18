@@ -1,6 +1,6 @@
 import { jsPDF, type jsPDFOptions } from 'jspdf';
-import { sleep } from './common';
 import type { PDF } from '@/types/pdf';
+import { sleep } from './common';
 
 export async function downloadPDF(doc: PDF, setCompleteness?: (value: number) => void, password?: string) {
   const { name, canvas } = doc;

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref, defineAsyncComponent, onBeforeUnmount } from 'vue';
 import { storeToRefs } from 'pinia';
-import SignaturePopup from './SignaturePopup.vue';
-import { usePdfStore, useConfigStore } from '@/store';
+import { defineAsyncComponent, onBeforeUnmount, ref } from 'vue';
 import { useLoadCanvas } from '@/hooks/use-load-canvas';
+import { useConfigStore, usePdfStore } from '@/store';
 import { isDesktop, monitorDevicePixelRatio } from '@/utils/common';
 import type { SignatureTool } from '@/types/menu';
+import SignaturePopup from './SignaturePopup.vue';
 
 const emit = defineEmits(['usePage']);
 const currentTool = defineModel<SignatureTool | ''>('currentTool');

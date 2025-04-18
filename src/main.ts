@@ -1,14 +1,14 @@
-import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
-import 'virtual:svg-icons-register';
-
-import '@/styles/index.css';
+import { createApp } from 'vue';
 import App from '@/App.vue';
-import router from '@/router';
+
 import errorHandlerPlugin from '@/plugins/error-handler';
 import i18NPlugin from '@/plugins/i18n';
 import preloadPlugin from '@/plugins/preload';
+import router from '@/router';
+import 'virtual:svg-icons-register';
+import '@/styles/index.css';
 
 const app = createApp(App);
 const pinia = createPinia();

@@ -1,7 +1,7 @@
 import { inject } from 'vue';
-import type { Router } from 'vue-router';
 import { ROUTER_INJECT_KEY } from '@/constants/router';
 import type { RouterEvents } from '@/types/router';
+import type { Router } from 'vue-router';
 
 type Handler<T> = (params?: T) => void;
 type RouterEventKey = keyof RouterEvents;

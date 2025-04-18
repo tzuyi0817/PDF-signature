@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
-import type { Loading } from '@/types/config';
 import type { PickPartial } from '@/types/common';
+import type { Loading } from '@/types/config';
 
 interface ConfigStore {
   loading: Loading;

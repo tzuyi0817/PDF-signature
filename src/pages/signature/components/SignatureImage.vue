@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
+import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import SignaturePopup from './SignaturePopup.vue';
-import { useImageStore, useConfigStore } from '@/store';
 import SignIcon from '@/components/SignIcon.vue';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
-import { toast } from '@/utils/toast';
+import { useConfigStore, useImageStore } from '@/store';
 import { convertToBase64 } from '@/utils/image';
 import { checkFile } from '@/utils/reader';
+import { toast } from '@/utils/toast';
 import type { DragOffset } from '@/types/drag';
 import type { SignatureTool } from '@/types/menu';
+import SignaturePopup from './SignaturePopup.vue';
 
 interface Emits {
   useImage: [src: string];

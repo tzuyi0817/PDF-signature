@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { ref, computed, defineAsyncComponent, nextTick, onActivated } from 'vue';
-import HomeSearch from './HomeSearch.vue';
-import SignIcon from '@/components/SignIcon.vue';
-import SignFile from '@/components/SignFile.vue';
-import Checkbox from '@/components/common/Checkbox.vue';
+import { computed, defineAsyncComponent, nextTick, onActivated, ref } from 'vue';
 import BatchOperation from '@/components/common/BatchOperation.vue';
-import { usePdfStore } from '@/store';
+import Checkbox from '@/components/common/Checkbox.vue';
+import SignFile from '@/components/SignFile.vue';
+import SignIcon from '@/components/SignIcon.vue';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
-import type { MenuTab, FileShowStatus } from '@/types/menu';
+import { usePdfStore } from '@/store';
+import type { FileShowStatus, MenuTab } from '@/types/menu';
 import type { PDF } from '@/types/pdf';
+import HomeSearch from './HomeSearch.vue';
 
 interface Props {
   type: MenuTab;

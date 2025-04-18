@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref, computed, defineAsyncComponent, onBeforeMount, onBeforeUnmount } from 'vue';
 import { storeToRefs } from 'pinia';
+import { computed, defineAsyncComponent, onBeforeMount, onBeforeUnmount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { usePdfStore, useConfigStore } from '@/store';
 import SignIcon from '@/components/SignIcon.vue';
 import SignVersion from '@/components/SignVersion.vue';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
+import { useConfigStore, usePdfStore } from '@/store';
 import { toast } from '@/utils/toast';
 
 type WarnType = 'archive' | 'trash';

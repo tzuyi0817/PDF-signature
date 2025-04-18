@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import UploadContent from './components/UploadContent.vue';
 import SignStep from '@/components/SignStep.vue';
+import UploadContent from './components/UploadContent.vue';
 </script>
 
 <template>

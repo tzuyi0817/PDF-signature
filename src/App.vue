@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import SignHeader from '@/components/SignHeader.vue';
 import SignFooter from '@/components/SignFooter.vue';
+import SignHeader from '@/components/SignHeader.vue';
 import SignLoading from '@/components/SignLoading.vue';
-import SignToast from '@/components/SignToast.vue';
 import SignReload from '@/components/SignReload.vue';
+import SignToast from '@/components/SignToast.vue';
 import { emitRouteEvent } from '@/router/events';
 
 const router = useRouter();

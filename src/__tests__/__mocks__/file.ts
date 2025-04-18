@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { type Page } from '@playwright/test';
-import { importModule } from './common';
 import type { PdfStore } from '@/store';
+import { importModule } from './common';
 
 const MOCK_BASE64_IMAGE = `data:image/png;base64,${readFileSync('src/assets/logo/logo_darkbg_horizontal.png', 'base64')}`;
 

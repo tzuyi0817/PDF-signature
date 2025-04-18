@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import SignatureContent from './components/SignatureContent.vue';
 import SignStep from '@/components/SignStep.vue';
+import SignatureContent from './components/SignatureContent.vue';
 </script>
 
 <template>

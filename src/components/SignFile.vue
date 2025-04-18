@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import SignIcon from '@/components/SignIcon.vue';
 import SvgList from '@/components/svg/SvgList.vue';

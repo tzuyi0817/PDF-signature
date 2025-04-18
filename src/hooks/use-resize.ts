@@ -1,4 +1,4 @@
-import { onMounted, onBeforeUnmount } from 'vue';
+import { onBeforeUnmount, onMounted } from 'vue';
 import { debounce } from '@/utils/common';
 
 export function useResize(callback: () => void) {

@@ -1,5 +1,5 @@
 import { preloadFont } from './font';
-import { preloadStorage, preloadImages } from './local';
+import { preloadImages, preloadStorage } from './local';
 
 export default {
   install() {

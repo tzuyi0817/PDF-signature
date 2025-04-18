@@ -1,4 +1,4 @@
-import { useRouter, useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 export function useRedirect() {
   const router = useRouter();

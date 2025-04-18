@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import SignPopup from '@/components/SignPopup.vue';
 import SignPassword from '@/components/SignPassword.vue';
+import SignPopup from '@/components/SignPopup.vue';
 import { useConfigStore } from '@/store';
 import { downloadPDF } from '@/utils/jspdf';
 import { toast } from '@/utils/toast';

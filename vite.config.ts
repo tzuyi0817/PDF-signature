@@ -1,13 +1,13 @@
-import { fileURLToPath, URL } from 'node:url';
 import { dirname, resolve } from 'node:path';
-import { defineConfig, splitVendorChunkPlugin, type Plugin } from 'vite';
-import vue from '@vitejs/plugin-vue';
-import tailwindcss from '@tailwindcss/vite';
-import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
+import { fileURLToPath, URL } from 'node:url';
 import vueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
-import topLevelAwait from 'vite-plugin-top-level-await';
-import { VitePWA } from 'vite-plugin-pwa';
+import tailwindcss from '@tailwindcss/vite';
+import vue from '@vitejs/plugin-vue';
 import { visualizer } from 'rollup-plugin-visualizer';
+import { defineConfig, splitVendorChunkPlugin, type Plugin } from 'vite';
+import { VitePWA } from 'vite-plugin-pwa';
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
+import topLevelAwait from 'vite-plugin-top-level-await';
 import packageJson from './package.json' with { type: 'json' };
 
 process.env.VITE_APP_VERSION = packageJson.version;

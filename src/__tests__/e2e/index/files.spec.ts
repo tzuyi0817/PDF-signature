@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 import { createMockFiles, MOCK_FILES } from '@/__tests__/__mocks__/file';
 import { transformTimestamp } from '@/utils/common';
 

@@ -1,6 +1,6 @@
-import { test, expect } from '@playwright/test';
-import { sleep } from '@/utils/common';
+import { expect, test } from '@playwright/test';
 import { I18N_MAP } from '@/constants/common';
+import { sleep } from '@/utils/common';
 
 test.describe('header', () => {
   test.beforeEach(async ({ page }) => {

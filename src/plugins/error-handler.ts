@@ -1,6 +1,6 @@
-import type { App } from 'vue';
 import i18n from '@/plugins/i18n';
 import { toast } from '@/utils/toast';
+import type { App } from 'vue';
 
 export default {
   install(app: App) {

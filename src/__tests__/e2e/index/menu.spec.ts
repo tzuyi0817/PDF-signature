@@ -1,4 +1,4 @@
-import { test, expect, type Page } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 
 test.describe('menu', () => {
   const getShared = (page: Page) => {

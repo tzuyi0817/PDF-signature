@@ -1,6 +1,6 @@
-import type { ShallowRef } from 'vue';
-import type { FabricPointerEvent } from '@component-hook/pdf-canvas/vue';
 import { DRAG_MOVE_STEP } from '@/constants/common';
+import type { FabricPointerEvent } from '@component-hook/pdf-canvas/vue';
+import type { ShallowRef } from 'vue';
 
 export function usePointerFabric(containerRef: Readonly<ShallowRef<HTMLDivElement | null>>) {
   let isPointerDown = false;

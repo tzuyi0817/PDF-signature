@@ -1,6 +1,6 @@
-import type { App } from 'vue';
-import { router } from './setup';
 import { ROUTER_INJECT_KEY } from '@/constants/router';
+import { router } from './setup';
+import type { App } from 'vue';
 
 export * from './events';
 

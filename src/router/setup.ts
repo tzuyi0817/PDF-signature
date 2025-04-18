@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
-import Home from '@/pages/home/index.vue';
-import Upload from '@/pages/upload/index.vue';
-import Signature from '@/pages/signature/index.vue';
 import Complete from '@/pages/complete/index.vue';
+import Home from '@/pages/home/index.vue';
+import Signature from '@/pages/signature/index.vue';
+import Upload from '@/pages/upload/index.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {

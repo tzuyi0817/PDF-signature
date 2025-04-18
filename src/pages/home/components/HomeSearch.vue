@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, computed } from 'vue';
+import { computed, ref } from 'vue';
 import SignIcon from '@/components/SignIcon.vue';
 import SvgSearch from '@/components/svg/SvgSearch.vue';
 
