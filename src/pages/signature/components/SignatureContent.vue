@@ -25,6 +25,7 @@ import SignaturePanel from './SignaturePanel.vue';
 import SignatureSign from './SignatureSign.vue';
 import SignatureToolbar from './SignatureToolbar.vue';
 
+const CANVAS_SCALE = 0.6;
 const SignatureCanvasItem = defineAsyncComponent(() => import('@component-hook/pdf-canvas/vue'));
 const currentTool = ref<SignatureTool | ''>('');
 const isCancelMerge = ref(false);
@@ -44,9 +45,13 @@ const {
   canvasItems: signatureCanvasItems,
   loadedState,
   isCompleted,
+  canvasRect,
   handleCanvasLoaded,
   handleCanvasReload,
-} = useLoadCanvas(currentPDF);
+} = useLoadCanvas(currentPDF, true);
+
+const canvasWidth = computed(() => `${canvasRect.value.width * fileZoom.value * CANVAS_SCALE}px`);
+const canvasHeight = computed(() => `${canvasRect.value.height * fileZoom.value * CANVAS_SCALE}px`);
 
 const currentCanvasItem = computed(() => {
   if (!signatureCanvasItems.value) return null;
@@ -200,7 +205,7 @@ onAfterRouteLeave(() => {
 </script>
 
 <template>
-  <div class="signature-content content">
+  <div class="signature-content content flex flex-col">
     <h5
       class="title text-center"
       :class="{ 'animate-pulse': !isCompleted }"
@@ -213,7 +218,7 @@ onAfterRouteLeave(() => {
       >
     </h5>
 
-    <div class="flex flex-col h-[calc(100%-88px)] md:flex-row">
+    <div class="flex flex-col min-h-0 flex-1 md:flex-row">
       <div class="md:border-r-2 md:border-primary md:py-4 md:px-6">
         <signature-toolbar v-model:current-tool="currentTool" />
         <signature-sign
@@ -240,38 +245,41 @@ onAfterRouteLeave(() => {
       <div class="signature-content-file">
         <div
           ref="fileContainer"
-          class="relative w-full h-full overflow-auto touch-pan-x touch-pan-y"
+          class="relative w-full h-full overflow-auto touch-pan-x touch-pan-y pt-3 px-2 pb-11 md:pt-6 md:px-8"
           @dragover.stop.prevent="handleDragOver"
+          @dragleave.stop.prevent="cancelScrollToPerFrame"
         >
-          <template
-            v-for="page in currentPDF.pages"
-            :key="page"
-          >
-            <template v-if="loadedState[page - 1]">
-              <signature-canvas-item
-                v-show="currentPage === page"
-                ref="signatureCanvasItems"
-                class="absolute pt-5 pb-18 px-3 origin-top-left md:pt-10 md:px-14"
-                :file="currentPDF"
-                :file-zoom="fileZoom"
-                :file-scale="6.8"
-                :page="page"
-                :canvas-scale="0.6"
-                :password="configStore.filePassword"
-                is-drop
-                manual-reload
-                :close-svg-options="{ src: '' }"
-                :on-destroy="onAfterRouteLeave"
-                @loaded="handleCanvasLoaded(page)"
-                @reload="handleCanvasReload"
-                @pointer-down="handlePointerDown"
-                @pointer-move="handlePointerMove"
-                @pointer-up="handlePointerUp"
-                @selection-created="isActivatedFabric = true"
-                @selection-cleared="isActivatedFabric = false"
-              />
+          <div :style="{ width: canvasWidth, height: canvasHeight }">
+            <template
+              v-for="page in currentPDF.pages"
+              :key="page"
+            >
+              <template v-if="loadedState[page - 1]">
+                <signature-canvas-item
+                  v-show="currentPage === page"
+                  ref="signatureCanvasItems"
+                  class="origin-top-left absolute"
+                  :file="currentPDF"
+                  :file-zoom="fileZoom"
+                  :file-scale="6.8"
+                  :page="page"
+                  :canvas-scale="CANVAS_SCALE"
+                  :password="configStore.filePassword"
+                  is-drop
+                  manual-reload
+                  :close-svg-options="{ src: '' }"
+                  :on-destroy="onAfterRouteLeave"
+                  @loaded="handleCanvasLoaded(page)"
+                  @reload="handleCanvasReload"
+                  @pointer-down="handlePointerDown"
+                  @pointer-move="handlePointerMove"
+                  @pointer-up="handlePointerUp"
+                  @selection-created="isActivatedFabric = true"
+                  @selection-cleared="isActivatedFabric = false"
+                />
+              </template>
             </template>
-          </template>
+          </div>
 
           <signature-loading
             v-if="!loadedState[currentPage]"
@@ -289,6 +297,7 @@ onAfterRouteLeave(() => {
     </div>
 
     <sign-step-btn
+      class="pb-2.5"
       :is-prev-disabled="!isCompleted"
       :is-next-disabled="!isCompleted"
       @next-step="toggleNextWarnPopup(true)"
@@ -354,14 +363,16 @@ onAfterRouteLeave(() => {
   background-color: var(--color-gray-30);
   border: 2px solid var(--color-gray-30);
   width: calc(100% - 20px);
-  height: 100%;
+  min-height: 0;
+  flex: 1 1 0%;
   position: relative;
 }
 
 @media (min-width: 768px) {
   .signature-content-file {
     margin: 24px 5% 0;
-    height: calc(100% - 40px);
+    min-width: 0;
+    height: calc(100% - 58px);
   }
 }
 </style>
