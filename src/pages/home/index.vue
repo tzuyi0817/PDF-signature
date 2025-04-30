@@ -8,7 +8,7 @@ const currentTab = ref<MenuTab>('file');
 </script>
 
 <template>
-  <div class="index layout">
+  <div class="index layout md:-translate-x-10">
     <home-menu v-model:current-tab="currentTab" />
     <home-content :current-tab="currentTab" />
   </div>

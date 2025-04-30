@@ -114,6 +114,7 @@ function onTransitionEnd(event: TransitionEvent) {
   align-items: center;
   background-color: black;
   padding: 0.5rem;
+  z-index: 1;
 }
 
 .sign-header-icon {
@@ -137,6 +138,7 @@ function onTransitionEnd(event: TransitionEvent) {
   top: 3rem;
   right: 0.75rem;
   transform-origin: top;
+  z-index: 1;
 }
 
 .sign-header-menu-arrow {

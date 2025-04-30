@@ -63,7 +63,7 @@ router.beforeEach((to, from) => {
 @media (min-width: 768px) {
   .slide-fade-enter-from,
   .slide-fade-leave-to {
-    transform: translate(20px, 120px);
+    transform: translateX(40px);
   }
 }
 </style>

@@ -49,9 +49,10 @@ defineProps<Props>();
 @media (min-width: 768px) {
   .sign-step {
     position: fixed;
-    top: -7rem;
+    top: 6px;
     left: 50%;
     transform: translateX(-50%);
+    z-index: 2;
   }
 }
 
