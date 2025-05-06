@@ -4,7 +4,11 @@
     min-height: 100dvh;
     padding-left: 10px;
     padding-right: 10px;
-    padding-top: 3.5rem;
+    padding-top: 56px;
+  }
+
+  .layout.step {
+    margin-top: 40px;
   }
 
   @media (min-width: 768px) {
@@ -12,6 +16,10 @@
       display: flex;
       justify-content: center;
       padding-top: 120px;
+    }
+
+    .layout.step {
+      margin-top: 0px;
     }
   }
 }

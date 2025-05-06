@@ -1,3 +1,7 @@
+<script lang="ts" setup>
+defineOptions({ name: 'AppFooter' });
+</script>
+
 <template>
   <div class="sign-footer">
     <img

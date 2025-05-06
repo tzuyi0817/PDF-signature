@@ -4,6 +4,9 @@ import { useI18n } from 'vue-i18n';
 import SignIcon from '@/components/SignIcon.vue';
 import { I18N_MAP } from '@/constants/common';
 import { sleep } from '@/utils/common';
+import SignStep from './SignStep.vue';
+
+defineOptions({ name: 'AppHeader' });
 
 const isShowLanguageMenu = ref(false);
 const isDisplayLanguageMenu = ref(false);
@@ -44,7 +47,7 @@ function onTransitionEnd(event: TransitionEvent) {
 </script>
 
 <template>
-  <header class="sign-header">
+  <header class="app-header">
     <router-link to="/">
       <img
         src="@/assets/logo/logo_darkbg_horizontal.png"
@@ -52,6 +55,8 @@ function onTransitionEnd(event: TransitionEvent) {
         alt="logo"
       />
     </router-link>
+
+    <sign-step />
 
     <div class="flex items-center gap-2 md:gap-4">
       <div
@@ -61,23 +66,23 @@ function onTransitionEnd(event: TransitionEvent) {
       >
         <sign-icon
           name="global"
-          class="sign-header-icon text-gray-40 mt-0.5"
+          class="app-header-icon text-gray-40 mt-0.5"
         />
 
         <div
           v-if="isDisplayLanguageMenu"
-          :class="['sign-header-menu-arrow sign-header-transition', { 'opacity-0 scale-y-0': !isShowLanguageMenu }]"
+          :class="['app-header-menu-arrow app-header-transition', { 'opacity-0 scale-y-0': !isShowLanguageMenu }]"
         ></div>
 
         <teleport to="body">
           <div
             v-if="isDisplayLanguageMenu"
-            :class="['sign-header-menu sign-header-transition', { 'scale-y-0 opacity-0': !isShowLanguageMenu }]"
+            :class="['app-header-menu app-header-transition', { 'scale-y-0 opacity-0': !isShowLanguageMenu }]"
             @transitionend="onTransitionEnd"
             @mouseover="openLanguageMenu"
             @mouseleave="closeLanguageMenu"
           >
-            <ul class="sign-header-language">
+            <ul class="app-header-language">
               <li
                 v-for="(name, language) in I18N_MAP"
                 :key="language"
@@ -98,7 +103,7 @@ function onTransitionEnd(event: TransitionEvent) {
       >
         <sign-icon
           name="github"
-          class="sign-header-icon text-gray-40"
+          class="app-header-icon text-gray-40"
         />
       </a>
     </div>
@@ -106,27 +111,27 @@ function onTransitionEnd(event: TransitionEvent) {
 </template>
 
 <style lang="css" scoped>
-.sign-header {
+.app-header {
   position: fixed;
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: black;
-  padding: 0.5rem;
+  padding: 8px;
   z-index: 1;
 }
 
-.sign-header-icon {
+.app-header-icon {
   width: 1.5rem;
   height: 1.5rem;
 }
 
-.sign-header-icon:active {
+.app-header-icon:active {
   transform: scale(0.9);
 }
 
-.sign-header-menu {
+.app-header-menu {
   position: fixed;
   height: fit-content;
   padding: 0.5rem;
@@ -141,7 +146,7 @@ function onTransitionEnd(event: TransitionEvent) {
   z-index: 1;
 }
 
-.sign-header-menu-arrow {
+.app-header-menu-arrow {
   position: absolute;
   bottom: -1rem;
   left: 50%;
@@ -153,7 +158,7 @@ function onTransitionEnd(event: TransitionEvent) {
   clip-path: inset(0 0 1.5px 0);
 }
 
-.sign-header-language {
+.app-header-language {
   max-height: 50dvh;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
@@ -161,7 +166,7 @@ function onTransitionEnd(event: TransitionEvent) {
   overflow-x: hidden;
 }
 
-.sign-header-language li {
+.app-header-language li {
   padding: 0.5rem 0.75rem;
   cursor: pointer;
   border-radius: 0.25rem;
@@ -170,33 +175,33 @@ function onTransitionEnd(event: TransitionEvent) {
     color 0.2s;
 }
 
-.sign-header-language li:hover {
+.app-header-language li:hover {
   background-color: var(--color-primary);
   color: black;
 }
 
-.sign-header-transition {
+.app-header-transition {
   transition:
     scale 0.3s,
     opacity 0.3s;
 }
 
 @media (min-width: 768px) {
-  .sign-header {
+  .app-header {
     padding: 1rem;
   }
 
-  .sign-header-icon {
+  .app-header-icon {
     width: 2rem;
     height: 2rem;
   }
 
-  .sign-header-menu {
+  .app-header-menu {
     top: 70px;
     right: 1.25rem;
   }
 
-  .sign-header-language {
+  .app-header-language {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 0.25rem 1.5rem;

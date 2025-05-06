@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import SignFooter from '@/components/SignFooter.vue';
-import SignHeader from '@/components/SignHeader.vue';
+import { AppFooter, AppHeader } from '@/components/layout';
 import SignLoading from '@/components/SignLoading.vue';
 import SignReload from '@/components/SignReload.vue';
 import SignToast from '@/components/SignToast.vue';
@@ -19,7 +18,7 @@ router.beforeEach((to, from) => {
 </script>
 
 <template>
-  <sign-header />
+  <app-header />
   <router-view v-slot="{ Component }">
     <transition
       name="slide-fade"
@@ -34,7 +33,7 @@ router.beforeEach((to, from) => {
       <component :is="Component" />
     </transition>
   </router-view>
-  <sign-footer />
+  <app-footer />
   <sign-loading />
   <sign-toast />
   <sign-reload />
