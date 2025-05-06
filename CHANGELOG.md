@@ -1,12 +1,28 @@
 # Changelog
 
-## [0.5.0](https://github.com/tzuyi0817/PDF-signature/compare/v0.4.4...v0.5.0) (2024-04-17)
+## [0.5.1](https://github.com/tzuyi0817/PDF-signature/compare/v0.5.0...v0.5.1) (2025-05-06)
+
+### Features
+
+- add `autoprefixer` to automatically add prefixes suitable for each browser ([06831c5](https://github.com/tzuyi0817/PDF-signature/commit/06831c5015f094f20c2eeef7a4fd4c3064110f24))
+- optimize header progress bar display ([fb62875](https://github.com/tzuyi0817/PDF-signature/commit/fb6287532787a6080837c7378531803d4ae4f7fa))
+
+### Refactors
+
+- `toast` component ([c0e2cb9](https://github.com/tzuyi0817/PDF-signature/commit/c0e2cb912cb0e9fe9546b663a65164884dc35a09))
+
+### Bug Fixes
+
+- width and height of pdf canvas when scaling ([f98ebd4](https://github.com/tzuyi0817/PDF-signature/commit/f98ebd4a2ab6d11d64a9849fd48fd08802a3fbdb))
+- content layout is not centered ([619d1b5](https://github.com/tzuyi0817/PDF-signature/commit/619d1b57158e53018729b1b8939ae0897cf95c8a))
+
+## [0.5.0](https://github.com/tzuyi0817/PDF-signature/compare/v0.4.4...v0.5.0) (2025-04-17)
 
 ### Features
 
 - added the functions of copying and deleting signatures to the panel ([1e78270](https://github.com/tzuyi0817/PDF-signature/commit/1e78270d7f7db97e7ff1ed66563524eb3496706f))
 
-## [0.4.4](https://github.com/tzuyi0817/PDF-signature/compare/v0.4.3...v0.4.4) (2024-04-15)
+## [0.4.4](https://github.com/tzuyi0817/PDF-signature/compare/v0.4.3...v0.4.4) (2025-04-15)
 
 ### Features
 
@@ -16,7 +32,7 @@
 
 - calculation of height and width of signatures after rotation ([4eaaacf](https://github.com/tzuyi0817/PDF-signature/commit/4eaaacfffad95c44a1d26d5b3d553985cab7920d))
 
-## [0.4.3](https://github.com/tzuyi0817/PDF-signature/compare/v0.4.2...v0.4.3) (2024-04-10)
+## [0.4.3](https://github.com/tzuyi0817/PDF-signature/compare/v0.4.2...v0.4.3) (2025-04-10)
 
 ### Features
 
@@ -27,7 +43,7 @@
 
 - screen freezing due to reload canvas ([c2c5de7](https://github.com/tzuyi0817/PDF-signature/commit/c2c5de788242834f05595bb7e7b8a9a2c5725e30))
 
-## [0.4.2](https://github.com/tzuyi0817/PDF-signature/compare/v0.4.1...v0.4.2) (2024-04-08)
+## [0.4.2](https://github.com/tzuyi0817/PDF-signature/compare/v0.4.1...v0.4.2) (2025-04-08)
 
 ### Features
 
