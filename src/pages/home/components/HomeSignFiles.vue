@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, nextTick, onActivated, ref } from 'vue';
-import BatchOperation from '@/components/common/BatchOperation.vue';
-import Checkbox from '@/components/common/Checkbox.vue';
+import { BatchOperation, Checkbox } from '@/components/common';
 import SignFile from '@/components/SignFile.vue';
 import SignIcon from '@/components/SignIcon.vue';
 import { useWarnPopup } from '@/hooks/use-warn-popup';

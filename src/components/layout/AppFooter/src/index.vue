@@ -3,7 +3,7 @@ defineOptions({ name: 'AppFooter' });
 </script>
 
 <template>
-  <div class="sign-footer">
+  <div class="app-footer">
     <img
       src="@/assets/img/bg_decorate.svg"
       alt="background decorate"
@@ -12,7 +12,7 @@ defineOptions({ name: 'AppFooter' });
 </template>
 
 <style lang="css" scoped>
-.sign-footer {
+.app-footer {
   position: fixed;
   bottom: 0;
   width: 350vw;
@@ -24,7 +24,7 @@ defineOptions({ name: 'AppFooter' });
 }
 
 @media (min-width: 768px) {
-  .sign-footer img {
+  .app-footer img {
     transform: translateX(0);
   }
 }

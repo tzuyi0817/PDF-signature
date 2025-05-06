@@ -2,12 +2,12 @@
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { showToast } from '@/components/common';
 import SignIcon from '@/components/SignIcon.vue';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { useConfigStore, useImageStore } from '@/store';
 import { convertToBase64 } from '@/utils/image';
 import { checkFile } from '@/utils/reader';
-import { toast } from '@/utils/toast';
 import type { DragOffset } from '@/types/drag';
 import type { SignatureTool } from '@/types/menu';
 import SignaturePopup from './SignaturePopup.vue';
@@ -37,7 +37,7 @@ function selectImage(image: string) {
 
 function deleteImage() {
   useImageStore().deleteImage(currentSelect.value);
-  toast.showToast(t('prompt.picture_delete_success'), 'success');
+  showToast(t('prompt.picture_delete_success'));
   toggleWarnPopup(false);
   currentSelect.value = '';
 }
@@ -70,14 +70,14 @@ async function readerFile(files?: FileList | null) {
     const result = await convertToBase64(file);
 
     if (imageList.value.includes(result)) {
-      toast.showToast(t('prompt.picture_already_exists'), 'error');
+      showToast({ message: t('prompt.picture_already_exists'), type: 'error' });
       return;
     }
     useImageStore().addImage(result);
     toggleImagePopup(false);
-    toast.showToast(t('prompt.picture_add_success'), 'success');
+    showToast(t('prompt.picture_add_success'));
   } catch {
-    toast.showToast(t('prompt.picture_upload_failed'), 'error');
+    showToast({ message: t('prompt.picture_upload_failed'), type: 'error' });
   } finally {
     toggleLoading({ isShow: false });
   }

@@ -2,10 +2,10 @@
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { showToast } from '@/components/common';
 import SignIcon from '@/components/SignIcon.vue';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { useSignatureStore } from '@/store';
-import { toast } from '@/utils/toast';
 import type { DragOffset } from '@/types/drag';
 import type { SignatureTool } from '@/types/menu';
 import SignatureDrawPopup from './SignatureDrawPopup.vue';
@@ -31,7 +31,7 @@ function selectSignature(signature: string) {
 
 function deleteSignature() {
   useSignatureStore().deleteSignature(currentSelect.value);
-  toast.showToast(t('prompt.signature_delete_success'), 'success');
+  showToast(t('prompt.signature_delete_success'));
   toggleWarnPopup(false);
   currentSelect.value = '';
 }

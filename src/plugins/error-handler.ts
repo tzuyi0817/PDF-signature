@@ -1,5 +1,5 @@
+import { showToast } from '@/components/common';
 import i18n from '@/plugins/i18n';
-import { toast } from '@/utils/toast';
 import type { App } from 'vue';
 
 export default {
@@ -31,7 +31,7 @@ function errorHandler() {
   const { t } = i18n.global;
   const reloadBtn = document.querySelector('#loading-reload');
 
-  toast.showToast(t('prompt.error_occurred'), 'error');
+  showToast({ message: t('prompt.error_occurred'), type: 'error' });
 
   if (!reloadBtn || !(reloadBtn instanceof HTMLElement)) return;
   reloadBtn.style.display = 'flex';

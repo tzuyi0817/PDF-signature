@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { showToast } from '@/components/common';
 import SignPassword from '@/components/SignPassword.vue';
 import SignPopup from '@/components/SignPopup.vue';
 import { useConfigStore } from '@/store';
-import { toast } from '@/utils/toast';
 
 const emit = defineEmits(['closePassword']);
 const password = ref('');
@@ -12,7 +12,7 @@ const { t } = useI18n();
 
 function confirmPassword() {
   if (!password.value) {
-    toast.showToast(t('password_required'), 'error');
+    showToast({ message: t('password_required'), type: 'error' });
     return;
   }
   useConfigStore().updateFilePassword(password.value);

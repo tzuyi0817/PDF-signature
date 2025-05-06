@@ -1,6 +1,6 @@
+import { showToast } from '@/components/common';
 import { MAX_SIZE } from '@/constants/common';
 import i18n from '@/plugins/i18n';
-import { toast } from './toast';
 
 export function checkFile(files: FileList | null | undefined, regexp: RegExp, maxSize = MAX_SIZE) {
   if (!files) return;
@@ -8,11 +8,13 @@ export function checkFile(files: FileList | null | undefined, regexp: RegExp, ma
   const file = files[0];
 
   if (!regexp.test(file.type)) {
-    return toast.showToast(t('prompt.file_format_not_match'), 'error');
+    showToast({ message: t('prompt.file_format_not_match'), type: 'error' });
+    return;
   }
 
   if (file.size > maxSize) {
-    return toast.showToast(t('prompt.file_size_exceed'), 'error');
+    showToast({ message: t('prompt.file_size_exceed'), type: 'error' });
+    return;
   }
   return file;
 }

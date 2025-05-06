@@ -2,11 +2,11 @@
 import { storeToRefs } from 'pinia';
 import { computed, defineAsyncComponent, onBeforeMount, onBeforeUnmount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { showToast } from '@/components/common';
 import SignIcon from '@/components/SignIcon.vue';
 import SignVersion from '@/components/SignVersion.vue';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { useConfigStore, usePdfStore } from '@/store';
-import { toast } from '@/utils/toast';
 
 type WarnType = 'archive' | 'trash';
 
@@ -38,7 +38,7 @@ function warnConfirm() {
   } else {
     addTrash(currentPDF.value);
   }
-  toast.showToast(t(isArchive ? 'prompt.file_archived_success' : 'prompt.file_delete_success'), 'success');
+  showToast(t(isArchive ? 'prompt.file_archived_success' : 'prompt.file_delete_success'));
   toggleWarnPopup(false);
 
   if (isArchive) return;

@@ -9,6 +9,8 @@ interface Props {
   batch: Set<PDF>;
 }
 
+defineOptions({ name: 'BatchOperation' });
+
 const { batch, type } = defineProps<Props>();
 const emit = defineEmits(['clearBatch', 'openWarnPopup']);
 const { batchAddArchive, batchAddTrash, batchReductionArchive, batchReductionTrash } = usePdfStore();

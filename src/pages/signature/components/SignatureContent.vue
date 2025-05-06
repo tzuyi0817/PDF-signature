@@ -3,6 +3,7 @@ import imageCompression from 'browser-image-compression';
 import { storeToRefs } from 'pinia';
 import { computed, defineAsyncComponent, ref, useTemplateRef } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { showToast } from '@/components/common';
 import SignStepBtn from '@/components/SignStepBtn.vue';
 import SignVersion from '@/components/SignVersion.vue';
 import { DRAG_MOVE_STEP } from '@/constants/common';
@@ -13,7 +14,6 @@ import { onAfterRouteLeave } from '@/router';
 import { useConfigStore, usePdfStore } from '@/store';
 import { sleep } from '@/utils/common';
 import { canvasToFile } from '@/utils/image';
-import { toast } from '@/utils/toast';
 import type { DragOffset } from '@/types/drag';
 import type { SignatureTool } from '@/types/menu';
 import SignatureImage from './SignatureImage.vue';
@@ -94,10 +94,10 @@ async function mergeFile() {
       } else {
         addPDF(file);
       }
-      toast.showToast(t('prompt.file_created_success'), 'success');
+      showToast(t('prompt.file_created_success'));
       goPage('complete');
     } catch {
-      toast.showToast(t('prompt.operation_timed_out'), 'error');
+      showToast({ message: t('prompt.operation_timed_out'), type: 'error' });
     } finally {
       toggleMergePopup(false);
     }

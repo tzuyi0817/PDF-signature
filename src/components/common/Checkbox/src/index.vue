@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useId } from 'vue';
 
+defineOptions({ name: 'Checkbox' });
+
 const checked = defineModel<boolean | 'mixed'>();
 const emit = defineEmits(['change']);
 const id = useId();

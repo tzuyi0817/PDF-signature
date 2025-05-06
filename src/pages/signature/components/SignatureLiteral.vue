@@ -2,10 +2,10 @@
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { showToast } from '@/components/common';
 import SignIcon from '@/components/SignIcon.vue';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { useLiteralStore } from '@/store';
-import { toast } from '@/utils/toast';
 import type { DragOffset } from '@/types/drag';
 import type { SignatureTool } from '@/types/menu';
 import SignaturePopup from './SignaturePopup.vue';
@@ -32,11 +32,11 @@ function selectLiteral(text: string) {
 
 function addLiteral() {
   if (literalList.value.includes(literal.value)) {
-    toast.showToast(t('prompt.text_already_exists'), 'error');
+    showToast({ message: t('prompt.text_already_exists'), type: 'error' });
     return;
   }
   useLiteralStore().addLiteral(literal.value);
-  toast.showToast(t('prompt.text_add_success'), 'success');
+  showToast(t('prompt.text_add_success'));
   toggleLiteralPopup(false);
 }
 
@@ -46,21 +46,21 @@ function editLiteral() {
     return;
   }
   if (literalList.value.includes(literal.value)) {
-    toast.showToast(t('prompt.text_already_exists'), 'error');
+    showToast({ message: t('prompt.text_already_exists'), type: 'error' });
     return;
   }
   const { addLiteral: addText, deleteLiteral: deleteText } = useLiteralStore();
 
   addText(literal.value);
   deleteText(currentSelect.value);
-  toast.showToast(t('prompt.text_edit_success'), 'success');
+  showToast(t('prompt.text_edit_success'));
   currentSelect.value = literal.value;
   toggleLiteralPopup(false);
 }
 
 function deleteLiteral() {
   useLiteralStore().deleteLiteral(currentSelect.value);
-  toast.showToast(t('prompt.text_delete_success'), 'success');
+  showToast(t('prompt.text_delete_success'));
   toggleWarnPopup(false);
   currentSelect.value = '';
 }

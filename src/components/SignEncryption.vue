@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { showToast } from '@/components/common';
 import SignPassword from '@/components/SignPassword.vue';
 import SignPopup from '@/components/SignPopup.vue';
 import { useConfigStore } from '@/store';
 import { downloadPDF } from '@/utils/jspdf';
-import { toast } from '@/utils/toast';
 import type { PDF } from '@/types/pdf';
 
 interface Props {
@@ -21,11 +21,11 @@ const { toggleLoading, setLoadingCompleteness } = useConfigStore();
 
 function download(isEncrypt: boolean) {
   if (isEncrypt && (!password.value || !confirmPassword.value)) {
-    toast.showToast(t('password_required'), 'error');
+    showToast({ message: t('password_required'), type: 'error' });
     return;
   }
   if (isEncrypt && password.value !== confirmPassword.value) {
-    toast.showToast(t('password_not_match'), 'error');
+    showToast({ message: t('password_not_match'), type: 'error' });
     return;
   }
   emit('closeEncryptPopup');

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { defineAsyncComponent, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { showToast } from '@/components/common';
 import SignIcon from '@/components/SignIcon.vue';
 import { useSignatureStore } from '@/store';
 import { isDesktop } from '@/utils/common';
-import { toast } from '@/utils/toast';
 
 const emit = defineEmits(['close']);
 const canvasDraw = ref<HTMLCanvasElement | null>(null);
@@ -28,7 +28,7 @@ function addSignature() {
   if (!signature) return;
   useSignatureStore().addSignature(signature);
   emit('close');
-  toast.showToast(t('signature_add_success'), 'success');
+  showToast(t('signature_add_success'));
 }
 
 function setCanvas() {
