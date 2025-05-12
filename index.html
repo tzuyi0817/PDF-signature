@@ -125,7 +125,6 @@
         height: 100%;
         display: flex;
         flex-direction: column;
-        gap: 100px;
         justify-content: center;
         align-items: center;
         background: linear-gradient(145deg, #0d0d0d, #1a1a1a 20%, #4f4f4f 50%, #1a1a1a 80%, #000000);
@@ -134,6 +133,7 @@
 
       #loading-screen-logo {
         animation: spin 2.8s infinite;
+        margin-bottom: 6.25rem;
       }
 
       #loading-screen-alphabet {
@@ -148,14 +148,40 @@
         font-family: monospace;
         list-style: none;
         font-size: 1.5rem;
+        line-height: 1;
         color: #b7ec5d;
         animation: beat 0.5s calc(var(--i) * 0.16s) alternate infinite;
+      }
+
+      #loading-progress {
+        margin-top: 0.625rem;
+        width: 25rem;
+        height: 0.3rem;
+        appearance: none;
+        max-width: calc(100% - 3rem);
+      }
+
+      @media (min-width: 768px) {
+        #loading-progress {
+          height: 0.4rem;
+        }
+      }
+
+      #loading-progress::-webkit-progress-bar {
+        background-color: #666666;
+        border-radius: 0.25rem;
+      }
+
+      #loading-progress::-webkit-progress-value {
+        background-color: #b7ec5d;
+        border-radius: 0.25rem;
+        transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1);
       }
 
       #loading-reload {
         display: none;
         position: absolute;
-        bottom: 20%;
+        bottom: 10%;
         width: 100%;
         justify-content: center;
       }
@@ -208,6 +234,12 @@
         <li style="--i: 12">E</li>
       </ul>
 
+      <progress
+        id="loading-progress"
+        value="0"
+        max="100"
+      ></progress>
+
       <div id="loading-reload"></div>
     </div>
 
@@ -216,5 +248,19 @@
       type="module"
       src="/src/main.ts"
     ></script>
+
+    <script>
+      const progressBar = document.getElementById('loading-progress');
+
+      const interval = setInterval(() => {
+        const value = parseInt(progressBar.value);
+
+        if (value >= 70) {
+          clearInterval(interval);
+        } else {
+          progressBar.value += 1;
+        }
+      }, 50);
+    </script>
   </body>
 </html>

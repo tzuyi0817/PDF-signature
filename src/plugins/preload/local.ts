@@ -4,12 +4,12 @@ import { loadImage } from '@/utils/image';
 export function preloadStorage() {
   const { getCurrentPDF, getPDF, getArchive, getTrash } = usePdfStore();
 
-  return Promise.all([getCurrentPDF(), getPDF(), getArchive(), getTrash()]);
+  return Promise.all([getCurrentPDF(), getPDF(), getArchive(), getTrash()]).then(() => {});
 }
 
 export function preloadImages() {
   const images = import.meta.glob('@/assets/img/*', { eager: true, as: 'url' });
   const promises = Object.values(images).map(loadImage);
 
-  return Promise.allSettled(promises);
+  return Promise.allSettled(promises).then(() => {});
 }
