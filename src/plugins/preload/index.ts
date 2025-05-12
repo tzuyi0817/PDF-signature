@@ -5,12 +5,12 @@ import { preloadImages, preloadStorage } from './local';
 export default {
   install() {
     const preloads = [
-      { promise: preloadFont('Gen Jyuu Gothic P', 'GenJyuuGothic-P.woff2'), weight: 10 },
-      { promise: preloadStorage(), weight: 10 },
-      { promise: preloadImages(), weight: 10 },
+      { promise: preloadFont('Gen Jyuu Gothic P', 'GenJyuuGothic-P.woff2'), weight: 20 },
+      { promise: preloadStorage(), weight: 20 },
+      { promise: preloadImages(), weight: 20 },
     ];
 
-    setProgressBar(70);
+    setProgressBar(40);
 
     const trackPreloads = preloads.map(preload => {
       return trackablePromise(preload.promise, progress => updateTotalProgress(progress, preload.weight));

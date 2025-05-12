@@ -154,7 +154,7 @@
       }
 
       #loading-progress {
-        margin-top: 0.625rem;
+        margin-top: 1.5rem;
         width: 25rem;
         height: 0.3rem;
         appearance: none;
@@ -163,6 +163,7 @@
 
       @media (min-width: 768px) {
         #loading-progress {
+          margin-top: 2rem;
           height: 0.4rem;
         }
       }
@@ -255,7 +256,7 @@
       const interval = setInterval(() => {
         const value = parseInt(progressBar.value);
 
-        if (value >= 70) {
+        if (value >= 40) {
           clearInterval(interval);
         } else {
           progressBar.value += 1;
