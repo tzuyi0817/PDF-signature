@@ -9,11 +9,10 @@ import SignaturePopup from './SignaturePopup.vue';
 
 const emit = defineEmits(['usePage']);
 const currentTool = defineModel<SignatureTool | ''>('currentTool');
-const currentPage = ref(1);
 const devicePixelRatio = ref(window.devicePixelRatio);
 const { currentPDF } = storeToRefs(usePdfStore());
 const configStore = useConfigStore();
-const { loadedState, canvasItems, handleCanvasLoaded, handleCanvasReload } = useLoadCanvas(currentPDF);
+const { currentPage, loadedState, canvasItems, handleCanvasLoaded, handleCanvasReload } = useLoadCanvas(currentPDF);
 const SignaturePageItem = defineAsyncComponent(() => import('@component-hook/pdf-canvas/vue'));
 const stopMonitorDevicePixelRatio = monitorDevicePixelRatio(changeDevicePixelRatio);
 

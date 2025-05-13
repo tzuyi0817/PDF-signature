@@ -29,7 +29,6 @@ const CANVAS_SCALE = 0.6;
 const SignatureCanvasItem = defineAsyncComponent(() => import('@component-hook/pdf-canvas/vue'));
 const currentTool = ref<SignatureTool | ''>('');
 const isCancelMerge = ref(false);
-const currentPage = ref(1);
 const isShowNextWarnPopup = ref(false);
 const isShowMergePopup = ref(false);
 const fileContainerRef = useTemplateRef<HTMLDivElement>('fileContainer');
@@ -42,22 +41,18 @@ const { t } = useI18n();
 const { isShowWarnPopup, SignPopup, goBack, goPage, toggleWarnPopup } = useWarnPopup();
 const { handlePointerDown, handlePointerMove, handlePointerUp } = usePointerFabric(fileContainerRef);
 const {
+  currentPage,
   canvasItems: signatureCanvasItems,
   loadedState,
   isCompleted,
   canvasRect,
+  currentCanvasItem,
   handleCanvasLoaded,
   handleCanvasReload,
 } = useLoadCanvas(currentPDF, true);
 
 const canvasWidth = computed(() => `${canvasRect.value.width * fileZoom.value * CANVAS_SCALE}px`);
 const canvasHeight = computed(() => `${canvasRect.value.height * fileZoom.value * CANVAS_SCALE}px`);
-
-const currentCanvasItem = computed(() => {
-  if (!signatureCanvasItems.value) return null;
-
-  return signatureCanvasItems.value.at(currentPage.value - 1);
-});
 
 let isGiveUpSignature = false;
 let requestFrame: number | null = null;
