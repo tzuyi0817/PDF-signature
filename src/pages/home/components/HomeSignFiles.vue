@@ -4,7 +4,7 @@ import { BatchOperation, Checkbox } from '@/components/common';
 import SignFile from '@/components/SignFile.vue';
 import SignIcon from '@/components/SignIcon.vue';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
-import { usePdfStore } from '@/store';
+import { usePdfStore } from '@/stores';
 import type { FileShowStatus, MenuTab } from '@/types/menu';
 import type { PDF } from '@/types/pdf';
 import HomeSearch from './HomeSearch.vue';

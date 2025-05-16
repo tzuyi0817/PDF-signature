@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import SignIcon from '@/components/SignIcon.vue';
-import { usePdfStore } from '@/store';
+import { usePdfStore } from '@/stores';
 import type { MenuTab } from '@/types/menu';
 import type { PDF } from '@/types/pdf';
 

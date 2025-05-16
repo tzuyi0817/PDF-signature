@@ -6,7 +6,7 @@ import { showToast } from '@/components/common';
 import SignIcon from '@/components/SignIcon.vue';
 import SignVersion from '@/components/SignVersion.vue';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
-import { useConfigStore, usePdfStore } from '@/store';
+import { useConfigStore, usePdfStore } from '@/stores';
 
 type WarnType = 'archive' | 'trash';
 

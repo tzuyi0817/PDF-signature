@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
 import SignPopup from '@/components/SignPopup.vue';
-import { useConfigStore } from '@/store';
+import { useConfigStore } from '@/stores';
 
 const { loading } = storeToRefs(useConfigStore());
 </script>

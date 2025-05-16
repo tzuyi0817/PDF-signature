@@ -1,4 +1,4 @@
-import { usePdfStore } from '@/store';
+import { usePdfStore } from '@/stores';
 import { loadImage } from '@/utils/image';
 
 export function preloadStorage() {

@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { type Page } from '@playwright/test';
-import type { PdfStore } from '@/store';
+import type { PdfStore } from '@/stores';
 import { importModule } from './common';
 
 const MOCK_BASE64_IMAGE = `data:image/png;base64,${readFileSync('src/assets/logo/logo_darkbg_horizontal.png', 'base64')}`;
@@ -28,7 +28,7 @@ export async function createMockFiles(page: Page) {
   await page.addScriptTag({ content: `${importModule}` });
 
   return page.evaluate(async mockFiles => {
-    const { usePdfStore } = await importModule<PdfStore>('/src/store/pdf');
+    const { usePdfStore } = await importModule<PdfStore>('/src/stores');
     const { addPDF } = usePdfStore();
 
     mockFiles.forEach(async file => await addPDF(file));
@@ -39,7 +39,7 @@ export async function clearMockFiles(page: Page) {
   await page.addScriptTag({ content: `${importModule}` });
 
   return page.evaluate(async mockFiles => {
-    const { usePdfStore } = await importModule<PdfStore>('/src/store/pdf');
+    const { usePdfStore } = await importModule<PdfStore>('/src/stores');
     const { deletePDF } = usePdfStore();
 
     mockFiles.forEach(async file => await deletePDF(file.PDFId));

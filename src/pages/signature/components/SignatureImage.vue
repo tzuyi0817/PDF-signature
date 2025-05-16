@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n';
 import { showToast } from '@/components/common';
 import SignIcon from '@/components/SignIcon.vue';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
-import { useConfigStore, useImageStore } from '@/store';
+import { useConfigStore, useImageStore } from '@/stores';
 import { convertToBase64 } from '@/utils/image';
 import { checkFile } from '@/utils/reader';
 import type { DragOffset } from '@/types/drag';

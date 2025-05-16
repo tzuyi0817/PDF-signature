@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n';
 import { showToast } from '@/components/common';
 import SignIcon from '@/components/SignIcon.vue';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
-import { useLiteralStore } from '@/store';
+import { useLiteralStore } from '@/stores';
 import type { DragOffset } from '@/types/drag';
 import type { SignatureTool } from '@/types/menu';
 import SignaturePopup from './SignaturePopup.vue';

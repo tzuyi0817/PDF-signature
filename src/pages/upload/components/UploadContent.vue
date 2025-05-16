@@ -8,7 +8,7 @@ import SignStepBtn from '@/components/SignStepBtn.vue';
 import SignVersion from '@/components/SignVersion.vue';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { onAfterRouteLeave } from '@/router';
-import { useConfigStore, usePdfStore } from '@/store';
+import { useConfigStore, usePdfStore } from '@/stores';
 import { sleep } from '@/utils/common';
 import { checkFile } from '@/utils/reader';
 

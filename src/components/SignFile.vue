@@ -3,7 +3,7 @@ import { computed, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import SignIcon from '@/components/SignIcon.vue';
 import SvgList from '@/components/svg/SvgList.vue';
-import { usePdfStore } from '@/store';
+import { usePdfStore } from '@/stores';
 import { transformTimestamp } from '@/utils/common';
 import type { MenuTab } from '@/types/menu';
 import type { PDF } from '@/types/pdf';

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { useRedirect } from '@/hooks/use-redirect';
-import { usePdfStore } from '@/store';
+import { usePdfStore } from '@/stores';
 import HomeSignFiles from './HomeSignFiles.vue';
 
 const { goPage } = useRedirect();

@@ -11,7 +11,7 @@ import { useLoadCanvas } from '@/hooks/use-load-canvas';
 import { usePointerFabric } from '@/hooks/use-pointer-fabric';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { onAfterRouteLeave } from '@/router';
-import { useConfigStore, usePdfStore } from '@/store';
+import { useConfigStore, usePdfStore } from '@/stores';
 import { sleep } from '@/utils/common';
 import { canvasToFile } from '@/utils/image';
 import type { DragOffset } from '@/types/drag';

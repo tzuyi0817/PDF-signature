@@ -8,7 +8,7 @@ const defaultState: ImageStore = {
   literalList: [],
 };
 
-export const useLiteralStore = defineStore('pdf_signature_literal', {
+export const useLiteralStore = defineStore('literal', {
   state: () => ({ ...defaultState }),
   actions: {
     addLiteral(text: string) {

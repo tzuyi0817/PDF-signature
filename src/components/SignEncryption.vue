@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { showToast } from '@/components/common';
 import SignPassword from '@/components/SignPassword.vue';
 import SignPopup from '@/components/SignPopup.vue';
-import { useConfigStore } from '@/store';
+import { useConfigStore } from '@/stores';
 import { downloadPDF } from '@/utils/jspdf';
 import type { PDF } from '@/types/pdf';
 

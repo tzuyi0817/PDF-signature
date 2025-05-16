@@ -2,7 +2,7 @@
 import { storeToRefs } from 'pinia';
 import { defineAsyncComponent, onBeforeUnmount, ref } from 'vue';
 import { useLoadCanvas } from '@/hooks/use-load-canvas';
-import { useConfigStore, usePdfStore } from '@/store';
+import { useConfigStore, usePdfStore } from '@/stores';
 import { isDesktop, monitorDevicePixelRatio } from '@/utils/common';
 import type { SignatureTool } from '@/types/menu';
 import SignaturePopup from './SignaturePopup.vue';
