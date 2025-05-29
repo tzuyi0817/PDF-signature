@@ -5,6 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 import vue from '@vitejs/plugin-vue';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { defineConfig, type Plugin } from 'vite';
+import { createHtmlPlugin } from 'vite-plugin-html';
 import { VitePWA } from 'vite-plugin-pwa';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 import topLevelAwait from 'vite-plugin-top-level-await';
@@ -26,6 +27,14 @@ export default defineConfig({
     topLevelAwait({
       promiseExportName: '__tla',
       promiseImportName: (index: number) => `__tla_${index}`,
+    }),
+    createHtmlPlugin({
+      minify: true,
+      inject: {
+        ejsOptions: {
+          views: ['./.ejs/'],
+        },
+      },
     }),
     VitePWA({ registerType: 'autoUpdate' }),
     visualizer({ gzipSize: true, open: true }) as unknown as Plugin<any>,
