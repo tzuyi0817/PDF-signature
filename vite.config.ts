@@ -4,7 +4,7 @@ import vueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 import tailwindcss from '@tailwindcss/vite';
 import vue from '@vitejs/plugin-vue';
 import { visualizer } from 'rollup-plugin-visualizer';
-import { defineConfig, splitVendorChunkPlugin, type Plugin } from 'vite';
+import { defineConfig, type Plugin } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 import topLevelAwait from 'vite-plugin-top-level-await';
@@ -28,8 +28,7 @@ export default defineConfig({
       promiseImportName: (index: number) => `__tla_${index}`,
     }),
     VitePWA({ registerType: 'autoUpdate' }),
-    splitVendorChunkPlugin(),
-    visualizer({ gzipSize: true }) as unknown as Plugin<any>,
+    visualizer({ gzipSize: true, open: true }) as unknown as Plugin<any>,
   ],
   server: {
     port: 8080,
@@ -46,11 +45,14 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        chunkFileNames: 'chunks/[name]-[hash].js',
-        manualChunks: filepath => {
-          if (filepath.includes('@component-hook/pdf-canvas')) {
-            return '@component-hook/pdf-canvas';
-          }
+        chunkFileNames: 'chunks/[name].[hash].js',
+        assetFileNames: 'assets/[name].[hash].[ext]',
+        entryFileNames: 'entries/[name].[hash].js',
+        manualChunks: {
+          core: ['vue', 'vue-router', 'pinia', 'pinia-plugin-persistedstate', 'vue-i18n'],
+          vender: ['browser-image-compression', 'idb-keyval', '@intlify/unplugin-vue-i18n/messages'],
+          'pdf-canvas': ['@component-hook/pdf-canvas/vue'],
+          jspdf: ['jspdf'],
         },
       },
     },

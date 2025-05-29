@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { defineAsyncComponent, ref } from 'vue';
+import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { showToast } from '@/components/common';
 import SignIcon from '@/components/SignIcon.vue';
+import SignPopup from '@/components/SignPopup.vue';
 import { useSignatureStore } from '@/stores';
 import { isDesktop } from '@/utils/common';
 
@@ -11,7 +12,6 @@ const canvasDraw = ref<HTMLCanvasElement | null>(null);
 const currentTool = ref('black');
 const isDraw = ref(false);
 const { t } = useI18n();
-const SignPopup = defineAsyncComponent(() => import('@/components/SignPopup.vue'));
 const drawCtx = {
   ctx: null as CanvasRenderingContext2D | null | undefined,
   isPainting: false,
