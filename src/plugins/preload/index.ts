@@ -13,7 +13,15 @@ export default {
     setProgressBar(40);
 
     const trackPreloads = preloads.map(preload => {
-      return trackablePromise(preload.promise, progress => updateTotalProgress(progress, preload.weight));
+      let currentOffset = 0;
+
+      return trackablePromise(preload.promise, progress => {
+        const offset = (progress / 100) * preload.weight;
+        const addedOffset = offset - currentOffset;
+
+        currentOffset = offset;
+        updateProgressBar(addedOffset);
+      });
     });
 
     Promise.all(trackPreloads).then(async () => {
@@ -38,11 +46,10 @@ function trackablePromise<T>(promise: Promise<T>, onProgress: (progress: number)
   });
 }
 
-function updateTotalProgress(progress: number, weight: number) {
+function updateProgressBar(offset: number) {
   const progressBar = document.querySelector('#loading-progress');
 
   if (!(progressBar instanceof HTMLProgressElement)) return;
-  const offset = (progress / 100) * weight;
 
   progressBar.value += offset;
 }
