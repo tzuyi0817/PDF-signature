@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.5.1",
   "type": "module",
-  "packageManager": "pnpm@10.11.0",
+  "packageManager": "pnpm@10.12.1",
   "scripts": {
     "dev": "vite",
     "dev:e2e": "vite --port 8081",
@@ -22,7 +22,7 @@
     "browser-image-compression": "^2.0.2",
     "idb-keyval": "^6.2.2",
     "jspdf": "^2.5.2",
-    "pinia": "^3.0.2",
+    "pinia": "^3.0.3",
     "pinia-plugin-persistedstate": "^4.3.0",
     "vue": "^3.5.16",
     "vue-i18n": "^11.1.5",
@@ -33,13 +33,13 @@
     "@intlify/unplugin-vue-i18n": "^6.0.8",
     "@playwright/test": "^1.52.0",
     "@tailwindcss/vite": "^4.1.8",
-    "@types/node": "^22.15.24",
+    "@types/node": "^22.15.30",
     "@vitejs/plugin-vue": "^5.2.4",
     "autoprefixer": "^10.4.21",
     "cssnano": "^7.0.7",
-    "eslint": "^9.27.0",
-    "postcss": "^8.5.3",
-    "postcss-preset-env": "^10.2.0",
+    "eslint": "^9.28.0",
+    "postcss": "^8.5.4",
+    "postcss-preset-env": "^10.2.1",
     "postcss-pxtorem": "^6.1.0",
     "prettier": "^3.5.3",
     "rollup-plugin-visualizer": "^5.13.1",
@@ -65,7 +65,7 @@
   },
   "pnpm": {
     "overrides": {
-      "@typescript-eslint/typescript-estree": "^8.33.0"
+      "@typescript-eslint/typescript-estree": "^8.34.0"
     }
   }
 }
