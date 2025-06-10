@@ -8,7 +8,11 @@ export function preloadStorage() {
 }
 
 export function preloadImages() {
-  const images = import.meta.glob('@/assets/img/*', { eager: true, as: 'url' });
+  const images = import.meta.glob<string>('@/assets/img/*', {
+    eager: true,
+    query: '?url',
+    import: 'default',
+  });
   const promises = Object.values(images).map(loadImage);
 
   return Promise.allSettled(promises).then(() => {});

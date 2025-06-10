@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
 import Complete from '@/pages/complete/index.vue';
 import Home from '@/pages/home/index.vue';
 import Signature from '@/pages/signature/index.vue';
