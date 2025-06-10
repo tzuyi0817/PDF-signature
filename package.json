@@ -54,11 +54,6 @@
     "vite-plugin-top-level-await": "^1.5.0",
     "vue-tsc": "^2.2.10"
   },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead"
-  ],
   "optionalDependencies": {
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",

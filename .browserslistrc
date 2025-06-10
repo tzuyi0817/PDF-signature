@@ -1,0 +1,10 @@
+# Click this link to view browser coverage https://browsersl.ist/#q=%3E+1.5%25%0Aios+%3E%3D+12%0Achrome+%3E%3D+49%0Anot+ie+%3C%3D+11%0Alast+2+versions%0Anot+dead
+
+# Browsers that support
+
+> 1.5%
+ios >= 12
+chrome >= 49
+not ie <= 11
+last 2 versions
+not dead
