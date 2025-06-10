@@ -85,8 +85,8 @@ importers:
         specifier: ^3.5.3
         version: 3.5.3
       rollup-plugin-visualizer:
-        specifier: ^5.13.1
-        version: 5.14.0(rollup@2.79.2)
+        specifier: ^6.0.3
+        version: 6.0.3(rollup@2.79.2)
       tailwindcss:
         specifier: ^4.1.8
         version: 4.1.8
@@ -4846,12 +4846,12 @@ packages:
     deprecated: Rimraf versions prior to v4 are no longer supported
     hasBin: true
 
-  rollup-plugin-visualizer@5.14.0:
-    resolution: {integrity: sha512-VlDXneTDaKsHIw8yzJAFWtrzguoJ/LnQ+lMpoVfYJ3jJF4Ihe5oYLAqLklIK/35lgUY+1yEzCkHyZ1j4A5w5fA==}
+  rollup-plugin-visualizer@6.0.3:
+    resolution: {integrity: sha512-ZU41GwrkDcCpVoffviuM9Clwjy5fcUxlz0oMoTXTYsK+tcIFzbdacnrr2n8TXcHxbGKKXtOdjxM2HUS4HjkwIw==}
     engines: {node: '>=18'}
     hasBin: true
     peerDependencies:
-      rolldown: 1.x
+      rolldown: 1.x || ^1.0.0-beta
       rollup: 2.x || 3.x || 4.x
     peerDependenciesMeta:
       rolldown:
@@ -11026,7 +11026,7 @@ snapshots:
       glob: 7.2.3
     optional: true
 
-  rollup-plugin-visualizer@5.14.0(rollup@2.79.2):
+  rollup-plugin-visualizer@6.0.3(rollup@2.79.2):
     dependencies:
       open: 8.4.2
       picomatch: 4.0.2
