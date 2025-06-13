@@ -1,0 +1,41 @@
+<script>
+  (function observeDeviceSafeArea() {
+    const root = document.getElementById('app');
+
+    function isIos() {
+      const iosRegex = /iPhone|iPad|iPod/i;
+
+      return iosRegex.test(navigator.userAgent || navigator.vendor || window.opera);
+    }
+
+    function updateSafeAreaInsets() {
+      // Calculate the viewport's aspect ratio
+      const proportion = window.innerHeight / window.innerWidth;
+
+      // Determine whether it is full screen
+      const isFullIos = isIos() && proportion >= 2.16;
+      const isFullAndroid = !isIos() && proportion >= 2.02;
+
+      // Safe area values ​​for iOS
+      if (isFullIos) {
+        root.style.setProperty('--safe-area-top', '44px');
+        root.style.setProperty('--safe-area-bottom', '20px');
+      }
+
+      // safe area values for Android
+      if (isFullAndroid) {
+        root.style.setProperty('--safe-area-top', '32px');
+        root.style.setProperty('--safe-area-bottom', '20px');
+      }
+
+      // When not full screen, set the safe area to 0
+      if (!isFullIos && !isFullAndroid) {
+        root.style.setProperty('--safe-area-top', '0px');
+        root.style.setProperty('--safe-area-bottom', '0px');
+      }
+    }
+
+    updateSafeAreaInsets();
+    window.addEventListener('resize', updateSafeAreaInsets);
+  })();
+</script>
