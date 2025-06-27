@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.5.1",
   "type": "module",
-  "packageManager": "pnpm@10.12.1",
+  "packageManager": "pnpm@10.12.4",
   "scripts": {
     "dev": "vite",
     "dev:e2e": "vite --port 8081",
@@ -25,27 +25,27 @@
     "pinia": "^3.0.3",
     "pinia-plugin-persistedstate": "^4.3.0",
     "vue": "^3.5.17",
-    "vue-i18n": "^11.1.6",
+    "vue-i18n": "^11.1.7",
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
     "@component-hook/eslint-plugin": "^1.1.1",
     "@intlify/unplugin-vue-i18n": "^6.0.8",
     "@playwright/test": "^1.53.1",
-    "@tailwindcss/vite": "^4.1.10",
+    "@tailwindcss/vite": "^4.1.11",
     "@tsconfig/node22": "^22.0.2",
-    "@types/node": "^22.15.32",
+    "@types/node": "^22.15.33",
     "@vitejs/plugin-vue": "^5.2.4",
     "@vue/tsconfig": "^0.7.0",
     "autoprefixer": "^10.4.21",
     "cssnano": "^7.0.7",
     "eslint": "^9.29.0",
     "postcss": "^8.5.6",
-    "postcss-preset-env": "^10.2.3",
+    "postcss-preset-env": "^10.2.4",
     "postcss-pxtorem": "^6.1.0",
-    "prettier": "^3.5.3",
+    "prettier": "^3.6.2",
     "rollup-plugin-visualizer": "^6.0.3",
-    "tailwindcss": "^4.1.10",
+    "tailwindcss": "^4.1.11",
     "typescript": "^5.8.3",
     "vite": "^6.3.5",
     "vite-plugin-html": "^3.2.2",
@@ -62,7 +62,7 @@
   },
   "pnpm": {
     "overrides": {
-      "@typescript-eslint/typescript-estree": "^8.34.1"
+      "@typescript-eslint/typescript-estree": "^8.35.0"
     }
   }
 }
