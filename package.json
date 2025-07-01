@@ -35,7 +35,7 @@
     "@tailwindcss/vite": "^4.1.11",
     "@tsconfig/node22": "^22.0.2",
     "@types/node": "^22.15.33",
-    "@vitejs/plugin-vue": "^5.2.4",
+    "@vitejs/plugin-vue": "^6.0.0",
     "@vue/tsconfig": "^0.7.0",
     "autoprefixer": "^10.4.21",
     "cssnano": "^7.0.7",
