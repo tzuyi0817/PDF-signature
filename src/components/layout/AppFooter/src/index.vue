@@ -9,6 +9,8 @@ defineOptions({ name: 'AppFooter' });
       alt="background decorate"
     />
   </div>
+
+  <div class="safe-area-bottom"></div>
 </template>
 
 <style lang="css" scoped>

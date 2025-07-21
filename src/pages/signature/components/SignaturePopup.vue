@@ -25,9 +25,11 @@ function close() {
     <h5 class="title text-center md:hidden">
       {{ title }}
     </h5>
+
     <div class="signature-popup-content">
       <slot></slot>
     </div>
+
     <div class="flex justify-center gap-5 md:hidden">
       <button
         class="btn btn-base"
