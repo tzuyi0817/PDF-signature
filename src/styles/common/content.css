@@ -1,8 +1,9 @@
 @layer components {
   .content {
     width: 100%;
-    height: calc(100dvh - 120px);
+    flex: 1 1 0%;
     background-color: white;
+    min-height: 500px;
     padding: 0.75rem;
     box-shadow:
       inset 0px 2px 4px rgba(135, 135, 135, 0.35),
@@ -16,8 +17,8 @@
   @media (min-width: 768px) {
     .content {
       padding: 1rem 1.75rem;
-      width: 75%;
-      height: calc(100dvh - 175px);
+      flex-grow: 0.75;
+      max-width: 75%;
     }
   }
 

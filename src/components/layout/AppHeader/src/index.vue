@@ -47,6 +47,8 @@ function onTransitionEnd(event: TransitionEvent) {
 </script>
 
 <template>
+  <div class="safe-area-top"></div>
+
   <header class="app-header">
     <router-link to="/">
       <img
@@ -112,6 +114,7 @@ function onTransitionEnd(event: TransitionEvent) {
 
 <style lang="css" scoped>
 .app-header {
+  position: relative;
   width: 100%;
   display: flex;
   justify-content: space-between;

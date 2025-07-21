@@ -5,6 +5,14 @@
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 12px;
+    padding-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   .layout.step {
@@ -13,9 +21,11 @@
 
   @media (min-width: 768px) {
     .layout {
-      display: flex;
+      flex-direction: row;
       justify-content: center;
       padding-top: 43px;
+      padding-bottom: 43px;
+      overflow-y: auto;
     }
 
     .layout.step {

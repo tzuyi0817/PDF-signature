@@ -76,6 +76,7 @@ function changeTab(tab: MenuTab) {
     flex-direction: column;
     gap: 10px;
     transform: translateY(82px);
+    height: fit-content;
   }
 
   .index-menu li {
