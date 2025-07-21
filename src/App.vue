@@ -42,7 +42,10 @@ router.beforeEach((to, from) => {
 <style lang="css">
 #app {
   width: 100%;
+  height: 100dvh;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .slide-fade-enter-active {

@@ -1,10 +1,10 @@
 @layer components {
   .layout {
     position: relative;
-    min-height: 100dvh;
+    flex: 1 1 0%;
     padding-left: 10px;
     padding-right: 10px;
-    padding-top: 56px;
+    padding-top: 12px;
   }
 
   .layout.step {
@@ -15,7 +15,7 @@
     .layout {
       display: flex;
       justify-content: center;
-      padding-top: 120px;
+      padding-top: 43px;
     }
 
     .layout.step {

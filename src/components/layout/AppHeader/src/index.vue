@@ -11,7 +11,7 @@ defineOptions({ name: 'AppHeader' });
 const isShowLanguageMenu = ref(false);
 const isDisplayLanguageMenu = ref(false);
 const { locale } = useI18n();
-let closeMenuTimer: NodeJS.Timeout | null = null;
+let closeMenuTimer: ReturnType<typeof setTimeout> | null = null;
 let isClosingMenu = false;
 
 async function changeLocale(code: string) {
@@ -112,7 +112,6 @@ function onTransitionEnd(event: TransitionEvent) {
 
 <style lang="css" scoped>
 .app-header {
-  position: fixed;
   width: 100%;
   display: flex;
   justify-content: space-between;

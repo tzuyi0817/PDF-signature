@@ -16,7 +16,7 @@ export function deepToRaw<T>(value: T): T {
   if (isPlainObject(value)) {
     return Object.keys(value).reduce((obj, key) => {
       if (!hasOwn(value, key)) return obj;
-      return (obj[key] = deepToRaw(value[key])), obj;
+      return ((obj[key] = deepToRaw(value[key])), obj);
     }, {} as T);
   }
   return value;
