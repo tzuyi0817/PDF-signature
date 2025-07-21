@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.5.2](https://github.com/tzuyi0817/PDF-signature/compare/v0.5.1...v0.5.2) (2025-07-21)
+
+### Features
+
+- initial screen loading progress bar ([b66d90f](https://github.com/tzuyi0817/PDF-signature/commit/b66d90f891be659dee497f0b137c7b82883e235f))
+- update browserslist ([c47550b](https://github.com/tzuyi0817/PDF-signature/commit/c47550b980028121f35911a682e5940bba26fbe6))
+- add safe area to render content within the safe area boundaries of a device
+
+### Bug Fixes
+
+- calculation of pdf canvas width and height per page when scaling ([f61f13a](https://github.com/tzuyi0817/PDF-signature/commit/f61f13af5a29dc6b3b2f2440e794fcbd8101cefa))
+
 ## [0.5.1](https://github.com/tzuyi0817/PDF-signature/compare/v0.5.0...v0.5.1) (2025-05-06)
 
 ### Features
