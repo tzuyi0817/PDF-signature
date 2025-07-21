@@ -71,7 +71,7 @@ function onTransitionEnd(event: TransitionEvent) {
 
         <div
           v-if="isDisplayLanguageMenu"
-          :class="['app-header-menu-arrow app-header-transition', { 'opacity-0 scale-y-0': !isShowLanguageMenu }]"
+          :class="['app-header-menu-arrow app-header-transition', { 'opacity-0': !isShowLanguageMenu }]"
         ></div>
 
         <teleport to="body">
@@ -147,14 +147,14 @@ function onTransitionEnd(event: TransitionEvent) {
 
 .app-header-menu-arrow {
   position: absolute;
-  bottom: -1rem;
+  bottom: -14px;
   left: 50%;
-  transform: translateX(-50%);
-  border-width: 8px;
-  border-color: transparent;
-  border-bottom-color: white;
-  transform-origin: bottom;
-  clip-path: inset(0 0 1.5px 0);
+  transform: translateX(-50%) rotate(180deg);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 8px solid white;
 }
 
 .app-header-language {
@@ -181,8 +181,8 @@ function onTransitionEnd(event: TransitionEvent) {
 
 .app-header-transition {
   transition:
-    scale 0.3s,
-    opacity 0.3s;
+    scale 0.2s,
+    opacity 0.2s;
 }
 
 @media (min-width: 768px) {

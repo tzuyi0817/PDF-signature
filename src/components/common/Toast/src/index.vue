@@ -32,7 +32,7 @@ const height = ref(0);
 const isClose = ref(false);
 const toastRef = useTemplateRef('toastRef');
 let observer: ResizeObserver | null = new ResizeObserver(updateHeight);
-let timer: NodeJS.Timeout | null = null;
+let timer: ReturnType<typeof setTimeout> | null = null;
 
 const offsetY = computed(() => {
   const previousToast = getPreviousToast(props.id);
