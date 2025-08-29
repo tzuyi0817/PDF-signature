@@ -30,17 +30,22 @@ function parallelPreload<T, K>(
   const results: K[] = Array.from({ length: n });
   let currentIndex = 0;
 
-  function worker() {
-    while (currentIndex < n) {
-      const index = currentIndex++;
-      const item = array[index];
+  function worker(): Promise<void> {
+    const index = currentIndex++;
 
-      if (!item) continue;
-
-      func(item).then(result => {
-        results[index] = result;
-      });
+    if (index >= n) {
+      return Promise.resolve();
     }
+
+    const item = array[index];
+
+    if (item === undefined) return worker();
+
+    return func(item).then(result => {
+      results[index] = result;
+
+      return worker();
+    });
   }
 
   const workers = Array.from({ length: concurrency }, worker);
