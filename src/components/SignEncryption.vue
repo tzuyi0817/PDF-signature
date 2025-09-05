@@ -12,8 +12,12 @@ interface Props {
   file: PDF | null;
 }
 
+interface Emits {
+  closeEncryptPopup: [];
+}
+
 const { file } = defineProps<Props>();
-const emit = defineEmits(['closeEncryptPopup']);
+const emit = defineEmits<Emits>();
 const password = ref('');
 const confirmPassword = ref('');
 const { t } = useI18n();

@@ -1,5 +1,5 @@
 import { ROUTER_INJECT_KEY } from '@/constants/router';
-import { preloadRoutes } from './preload';
+import { preloadComponents, preloadRoutes } from './preload';
 import { router } from './setup';
 import type { App } from 'vue';
 
@@ -7,6 +7,7 @@ export * from './events';
 
 router.isReady().then(() => {
   preloadRoutes(router);
+  preloadComponents();
 });
 
 export default {

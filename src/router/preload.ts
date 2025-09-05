@@ -1,4 +1,5 @@
 import type { AsyncComponent } from './types';
+import type { AsyncComponentLoader, Component } from 'vue';
 import type { Router, RouteRecordName } from 'vue-router';
 
 /** Used to store preloaded routing components */
@@ -51,6 +52,17 @@ function parallelPreload<T, K>(
   const workers = Array.from({ length: concurrency }, worker);
 
   return Promise.all(workers).then(() => results);
+}
+
+export function preloadComponents() {
+  requestIdleCallback(() => {
+    const components: AsyncComponentLoader<Component>[] = [
+      () => import('@/pages/upload/components/UploadPassword.vue'),
+      () => import('@/components/SignEncryption.vue'),
+    ];
+
+    parallelPreload(2, components, loader => loader());
+  });
 }
 
 export function preloadRoutes(router: Router, concurrency = 3) {

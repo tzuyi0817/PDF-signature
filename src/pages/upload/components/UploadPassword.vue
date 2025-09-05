@@ -6,7 +6,11 @@ import SignPassword from '@/components/SignPassword.vue';
 import SignPopup from '@/components/SignPopup.vue';
 import { useConfigStore } from '@/stores';
 
-const emit = defineEmits(['closePassword']);
+interface Emits {
+  closePassword: [confirmed?: boolean];
+}
+
+const emit = defineEmits<Emits>();
 const password = ref('');
 const { t } = useI18n();
 

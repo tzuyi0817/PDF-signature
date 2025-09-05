@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 
-interface Props {
+export interface Props {
   title: string;
 }
 
