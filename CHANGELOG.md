@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.5.3](https://github.com/tzuyi0817/PDF-signature/compare/v0.5.2...v0.5.3) (2025-09-05)
+
+### Features
+
+- preload dynamic routes ([b15ce0b](https://github.com/tzuyi0817/PDF-signature/commit/b15ce0bec2658b5ca1e42b85e80f6ce2e6758a7d))
+
+### Bug Fixes
+
+- preload async components to avoid errors caused by old hashes ([d28d206](https://github.com/tzuyi0817/PDF-signature/commit/d28d20692684ae23aab034477bfc535fe4955863))
+
 ## [0.5.2](https://github.com/tzuyi0817/PDF-signature/compare/v0.5.1...v0.5.2) (2025-07-21)
 
 ### Features
