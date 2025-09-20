@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@component-hook/eslint-plugin": "^1.1.5",
-    "@intlify/unplugin-vue-i18n": "^6.0.8",
+    "@intlify/unplugin-vue-i18n": "^11.0.1",
     "@playwright/test": "^1.55.0",
     "@tailwindcss/vite": "^4.1.13",
     "@tsconfig/node22": "^22.0.2",
