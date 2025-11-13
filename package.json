@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.5.3",
   "type": "module",
-  "packageManager": "pnpm@10.20.0",
+  "packageManager": "pnpm@10.22.0",
   "scripts": {
     "dev": "vite",
     "dev:e2e": "vite --port 8081",
@@ -18,7 +18,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@component-hook/pdf-canvas": "^1.1.5",
+    "@component-hook/pdf-canvas": "^1.2.1",
     "browser-image-compression": "^2.0.2",
     "idb-keyval": "^6.2.2",
     "jspdf": "^2.5.2",
@@ -29,15 +29,15 @@
     "vue-router": "^4.6.3"
   },
   "devDependencies": {
-    "@component-hook/eslint-plugin": "^1.1.5",
+    "@component-hook/eslint-plugin": "^1.2.1",
     "@intlify/unplugin-vue-i18n": "^11.0.1",
     "@playwright/test": "^1.56.1",
     "@tailwindcss/vite": "^4.1.17",
-    "@tsconfig/node22": "^22.0.2",
-    "@types/node": "^24.10.0",
+    "@tsconfig/node22": "^22.0.3",
+    "@types/node": "^24.10.1",
     "@vitejs/plugin-vue": "^6.0.1",
     "@vue/tsconfig": "^0.8.1",
-    "autoprefixer": "^10.4.21",
+    "autoprefixer": "^10.4.22",
     "cssnano": "^7.1.2",
     "eslint": "^9.39.1",
     "postcss": "^8.5.6",
@@ -62,7 +62,7 @@
   },
   "pnpm": {
     "overrides": {
-      "@typescript-eslint/typescript-estree": "^8.46.3"
+      "@typescript-eslint/typescript-estree": "^8.46.4"
     }
   }
 }
