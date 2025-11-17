@@ -17,7 +17,7 @@ function toggleType() {
 </script>
 
 <template>
-  <label class="relative w-full max-w-96 flex justify-center">
+  <label class="relative flex w-full max-w-96 justify-center">
     <input
       v-model="password"
       :type="type"
@@ -26,7 +26,7 @@ function toggleType() {
     />
     <sign-icon
       :name="icon"
-      class="w-6 h-6 absolute top-1/2 right-2 -translate-y-1/2 md:right-3"
+      class="absolute top-1/2 right-2 h-6 w-6 -translate-y-1/2 md:right-3"
       @click="toggleType"
     />
   </label>

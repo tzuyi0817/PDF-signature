@@ -21,28 +21,28 @@ onMounted(() => {
     <li @click="selectTool('sign')">
       <sign-icon
         name="sign"
-        :class="['w-7 h-7', { 'text-primary': currentTool === 'sign' }]"
+        :class="['h-7 w-7', { 'text-primary': currentTool === 'sign' }]"
       />
       <p>{{ $t('sign') }}</p>
     </li>
     <li @click="selectTool('image')">
       <sign-icon
         name="pic"
-        :class="['w-7 h-7', { 'text-primary': currentTool === 'image' }]"
+        :class="['h-7 w-7', { 'text-primary': currentTool === 'image' }]"
       />
       <p>{{ $t('picture') }}</p>
     </li>
     <li @click="selectTool('literal')">
       <sign-icon
         name="text"
-        :class="['w-7 h-7', { 'text-primary': currentTool === 'literal' }]"
+        :class="['h-7 w-7', { 'text-primary': currentTool === 'literal' }]"
       />
       <p>{{ $t('text') }}</p>
     </li>
     <li @click="selectTool('page')">
       <sign-icon
         name="page"
-        :class="['w-7 h-7', { 'text-primary': currentTool === 'page' }]"
+        :class="['h-7 w-7', { 'text-primary': currentTool === 'page' }]"
       />
       <p>{{ $t('pages') }}</p>
     </li>

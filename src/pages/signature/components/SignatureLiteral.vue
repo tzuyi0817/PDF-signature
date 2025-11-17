@@ -110,19 +110,19 @@ function close() {
         v-for="word in literalList"
         :key="word"
         :class="[
-          'rounded-[20px] relative w-full flex cursor-pointer px-3 py-4',
+          'relative flex w-full cursor-pointer rounded-[20px] px-3 py-4',
           currentSelect === word ? 'bg-primary opacity-70' : 'bg-white',
         ]"
         draggable="true"
         @dragstart="dragLiteral"
         @click="selectLiteral(word)"
       >
-        <p class="whitespace-pre-wrap w-full text-ellipsis overflow-hidden">
+        <p class="w-full overflow-hidden text-ellipsis whitespace-pre-wrap">
           <span class="inline">{{ word }}</span>
           <sign-icon
             v-show="currentSelect === word"
             name="edit"
-            class="w-5 h-5 text-gray-80 inline relative scale-150 -top-[2px]"
+            class="text-gray-80 relative -top-[2px] inline h-5 w-5 scale-150"
             hover-color="hover:text-green-600"
             @click="toggleLiteralPopup(true, true)"
           />
@@ -130,7 +130,7 @@ function close() {
         <sign-icon
           v-show="currentSelect === word"
           name="close_s"
-          class="absolute top-1 right-1 w-8 h-8 text-gray-80"
+          class="text-gray-80 absolute top-1 right-1 h-8 w-8"
           hover-color="hover:text-danger"
           @click="toggleWarnPopup(true)"
         />

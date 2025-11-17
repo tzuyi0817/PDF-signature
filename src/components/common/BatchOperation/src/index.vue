@@ -40,25 +40,25 @@ async function batchReduction() {
     <sign-icon
       v-if="type === 'file'"
       name="archive"
-      class="w-6 h-6"
+      class="h-6 w-6"
       @click="batchMoveToArchive"
     />
     <sign-icon
       v-if="type === 'archive' || type === 'trash'"
       name="reduction"
-      class="w-6 h-6"
+      class="h-6 w-6"
       @click="batchReduction"
     />
     <sign-icon
       v-if="type === 'file' || type === 'archive'"
       name="trash"
-      class="w-6 h-6"
+      class="h-6 w-6"
       @click="batchMoveToTrash"
     />
     <sign-icon
       v-if="type === 'trash'"
       name="trash"
-      class="w-6 h-6"
+      class="h-6 w-6"
       @click="$emit('openWarnPopup')"
     />
   </div>

@@ -88,7 +88,7 @@ function onTransitionEnd(event: TransitionEvent) {
               <li
                 v-for="(name, language) in I18N_MAP"
                 :key="language"
-                :class="['text-gray-50', { 'text-black bg-primary': locale === language }]"
+                :class="['text-gray-50', { 'bg-primary text-black': locale === language }]"
                 @click="changeLocale(language)"
               >
                 {{ name }}

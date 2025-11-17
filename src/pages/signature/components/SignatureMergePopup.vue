@@ -18,7 +18,7 @@ const { SignPopup, goPage } = useWarnPopup();
     v-if="isShowMergePopup"
     :title="$t('create_file')"
   >
-    <div class="flex flex-col gap-8 items-center py-8">
+    <div class="flex flex-col items-center gap-8 py-8">
       <img
         src="@/assets/img/loading.gif"
         class="w-[60%]"
@@ -38,7 +38,7 @@ const { SignPopup, goPage } = useWarnPopup();
       </div>
       <h5
         v-else
-        class="text-center text-gray-40"
+        class="text-gray-40 text-center"
       >
         {{ $t('merging_files') }}
       </h5>

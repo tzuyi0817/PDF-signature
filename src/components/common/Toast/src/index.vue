@@ -121,13 +121,13 @@ defineExpose({ close, offsetBottom });
     role="alert"
     @transitionend="onTransitionEnd"
   >
-    <p class="highlight text-white truncate w-fit">
+    <p class="highlight w-fit truncate text-white">
       {{ message }}
     </p>
 
     <img
       src="@/assets/icon/ic_close_s_white.svg"
-      class="cursor-pointer w-10 h-10"
+      class="h-10 w-10 cursor-pointer"
       alt="close toast icon"
       @click="close"
     />

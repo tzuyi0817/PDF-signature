@@ -97,7 +97,7 @@ function clear() {
       <li>
         <sign-icon
           :name="currentTool === 'black' ? 'color_black_h' : 'color_black'"
-          class="w-7 h-7"
+          class="h-7 w-7"
           hover-change-svg
           @click="selectTool('black')"
         />
@@ -105,7 +105,7 @@ function clear() {
       <li>
         <sign-icon
           :name="currentTool === 'blue' ? 'color_blue_h' : 'color_blue'"
-          class="w-7 h-7"
+          class="h-7 w-7"
           hover-change-svg
           @click="selectTool('blue')"
         />
@@ -113,7 +113,7 @@ function clear() {
       <li>
         <sign-icon
           :name="currentTool === 'red' ? 'color_red_h' : 'color_red'"
-          class="w-7 h-7"
+          class="h-7 w-7"
           hover-change-svg
           @click="selectTool('red')"
         />
@@ -121,14 +121,14 @@ function clear() {
       <li>
         <sign-icon
           name="trash"
-          class="w-7 h-7"
+          class="h-7 w-7"
           @click="clear"
         />
       </li>
     </ul>
     <canvas
       ref="canvasDraw"
-      class="bg-secondary-tint border-2 border-gray-30 rounded-[20px] mb-6"
+      class="bg-secondary-tint border-gray-30 mb-6 rounded-[20px] border-2"
       @mousedown.prevent="startPosition"
       @mouseup="finishedPosition"
       @mouseleave="finishedPosition"

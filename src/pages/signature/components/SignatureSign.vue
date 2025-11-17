@@ -79,7 +79,7 @@ function close() {
         v-for="signature in signatureList"
         :key="signature"
         :class="[
-          'rounded-[20px] relative w-full flex justify-center cursor-pointer h-[98px]',
+          'relative flex h-[98px] w-full cursor-pointer justify-center rounded-[20px]',
           currentSelect === signature ? 'bg-primary opacity-70' : 'bg-white',
         ]"
         @click="selectSignature(signature)"
@@ -87,13 +87,13 @@ function close() {
         <img
           :src="signature"
           alt="signature icon"
-          class="object-contain rounded-[20px]"
+          class="rounded-[20px] object-contain"
           @dragstart="dragSignature"
         />
         <sign-icon
           v-show="currentSelect === signature"
           name="close_s"
-          class="absolute top-1 right-1 w-8 h-8 text-gray-80"
+          class="text-gray-80 absolute top-1 right-1 h-8 w-8"
           hover-color="hover:text-danger"
           @click="toggleWarnPopup(true)"
         />

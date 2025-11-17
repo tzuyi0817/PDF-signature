@@ -18,7 +18,7 @@ usePdfStore().filterTrash();
 
     <div
       v-else
-      class="h-full flex flex-col items-center justify-center gap-[35px]"
+      class="flex h-full flex-col items-center justify-center gap-[35px]"
     >
       <img
         src="@/assets/img/img_trash.svg"
@@ -33,8 +33,8 @@ usePdfStore().filterTrash();
       </div>
     </div>
 
-    <div class="absolute w-full flex justify-center left-0 -bottom-4 md:-bottom-3">
-      <p class="index-trash-warn shadow shadow-primary">
+    <div class="absolute -bottom-4 left-0 flex w-full justify-center md:-bottom-3">
+      <p class="index-trash-warn shadow-primary shadow">
         {{ $t('prompt.trash_shelf_life') }}
       </p>
     </div>

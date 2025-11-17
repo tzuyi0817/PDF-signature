@@ -21,12 +21,12 @@ function clear() {
 </script>
 
 <template>
-  <label class="w-[90%] relative m-3 max-w-[400px] md:absolute md:-top-16">
+  <label class="relative m-3 w-[90%] max-w-[400px] md:absolute md:-top-16">
     <svg-search :color="searchIconColor" />
     <sign-icon
       v-show="isShowClose"
       name="close_s"
-      class="absolute right-1 top-0 w-10 h-10"
+      class="absolute top-0 right-1 h-10 w-10"
       @click="clear"
     />
     <input

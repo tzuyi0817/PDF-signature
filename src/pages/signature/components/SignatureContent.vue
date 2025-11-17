@@ -208,13 +208,13 @@ onAfterRouteLeave(() => {
       {{ $t('sign_file') }}
       <span
         v-if="!isCompleted"
-        class="text-xs text-gray-60 md:text-sm"
+        class="text-gray-60 text-xs md:text-sm"
         >({{ $t('file_uploading') }})</span
       >
     </h5>
 
-    <div class="flex flex-col min-h-0 flex-1 md:flex-row">
-      <div class="md:border-r-2 md:border-primary md:py-4 md:px-6">
+    <div class="flex min-h-0 flex-1 flex-col md:flex-row">
+      <div class="md:border-primary md:border-r-2 md:px-6 md:py-4">
         <signature-toolbar v-model:current-tool="currentTool" />
         <signature-sign
           v-model:current-tool="currentTool"
@@ -240,7 +240,7 @@ onAfterRouteLeave(() => {
       <div class="signature-content-file">
         <div
           ref="fileContainer"
-          class="relative w-full h-full overflow-auto touch-pan-x touch-pan-y pt-3 px-2 pb-11 md:pt-6 md:px-8"
+          class="relative h-full w-full touch-pan-x touch-pan-y overflow-auto px-2 pt-3 pb-11 md:px-8 md:pt-6"
           @dragover.stop.prevent="handleDragOver"
           @dragleave.stop.prevent="cancelScrollToPerFrame"
         >
@@ -253,7 +253,7 @@ onAfterRouteLeave(() => {
                 <signature-canvas-item
                   v-show="currentPage === page"
                   ref="signatureCanvasItems"
-                  class="origin-top-left absolute"
+                  class="absolute origin-top-left"
                   :file="currentPDF"
                   :file-zoom="fileZoom"
                   :file-scale="6.8"

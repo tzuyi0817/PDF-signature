@@ -11,25 +11,25 @@ const { loading } = storeToRefs(useConfigStore());
     v-if="loading.isShow"
     :title="$t(loading.title)"
   >
-    <div class="flex flex-col gap-8 items-center py-8">
+    <div class="flex flex-col items-center gap-8 py-8">
       <img
         src="@/assets/img/loading.gif"
         class="w-[60%]"
         alt="loading gif"
       />
 
-      <h5 class="text-center text-gray-40">
+      <h5 class="text-gray-40 text-center">
         {{ $t(loading.content) }}
       </h5>
       <div
         v-if="loading.isProcess"
-        class="w-[90%] h-2 rounded bg-gray-30"
+        class="bg-gray-30 h-2 w-[90%] rounded"
       >
         <div
-          class="h-full bg-primary transition-all rounded"
+          class="bg-primary h-full rounded transition-all"
           :style="{ width: `${loading.completeness}%` }"
         ></div>
-        <p class="text-center mt-1 text-sm md:text-base">
+        <p class="mt-1 text-center text-sm md:text-base">
           {{ `${$t('download_progress')} ${Math.floor(loading.completeness)}%` }}
         </p>
       </div>

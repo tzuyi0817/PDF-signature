@@ -49,10 +49,10 @@ function download(isEncrypt: boolean) {
     :title="$t('encryption')"
     @close-popup="$emit('closeEncryptPopup')"
   >
-    <p class="text-center my-5">
+    <p class="my-5 text-center">
       {{ $t('prompt.encryption_file') }}
     </p>
-    <div class="mb-4 flex flex-col justify-center items-center gap-3">
+    <div class="mb-4 flex flex-col items-center justify-center gap-3">
       <sign-password
         v-model="password"
         placeholder="placeholder.password"

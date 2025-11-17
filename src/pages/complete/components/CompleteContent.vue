@@ -57,36 +57,36 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="complete-content content">
-    <h5 class="title text-center w-full">
+    <h5 class="title w-full text-center">
       {{ $t('sign_completed') }}
     </h5>
 
-    <ul class="toolbar md:absolute md:right-10 md:top-5">
+    <ul class="toolbar md:absolute md:top-5 md:right-10">
       <li>
         <sign-icon
           name="download"
-          class="w-9 h-9"
+          class="h-9 w-9"
           @click="toggleEncryptPopup(true)"
         />
       </li>
       <li>
         <sign-icon
           name="archive"
-          class="w-9 h-9"
+          class="h-9 w-9"
           @click="openWarnPopup('archive')"
         />
       </li>
       <li>
         <sign-icon
           name="trash"
-          class="w-9 h-9"
+          class="h-9 w-9"
           @click="openWarnPopup('trash')"
         />
       </li>
     </ul>
 
     <div class="complete-content-file">
-      <div class="w-fit h-fit py-5 px-3 scale-150 origin-top-left flex flex-col gap-5 md:scale-100 md:py-10 md:px-14">
+      <div class="flex h-fit w-fit origin-top-left scale-150 flex-col gap-5 px-3 py-5 md:scale-100 md:px-14 md:py-10">
         <template
           v-for="canvas in currentPDF.canvas"
           :key="canvas"
@@ -100,7 +100,7 @@ onBeforeUnmount(() => {
     </div>
 
     <button
-      class="btn btn-primary md:absolute md:left-10 md:top-7"
+      class="btn btn-primary md:absolute md:top-7 md:left-10"
       :disabled="false"
       @click="goPage('home')"
     >

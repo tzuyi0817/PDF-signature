@@ -18,7 +18,7 @@ onMounted(() => emit('childMounted'));
       @click.self="$emit('closePopup')"
     >
       <div class="sign-popup-box">
-        <h5 class="border-b-2 border-primary py-1 px-4 text-center font-medium md:pb-4">
+        <h5 class="border-primary border-b-2 px-4 py-1 text-center font-medium md:pb-4">
           {{ title }}
         </h5>
         <slot></slot>

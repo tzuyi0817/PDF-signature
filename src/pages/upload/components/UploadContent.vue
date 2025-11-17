@@ -116,22 +116,22 @@ onAfterRouteLeave(deleteCanvas);
     </h5>
     <div
       v-show="fileName"
-      class="upload-content-box h-[calc(100%-128px)] w-full my-5"
+      class="upload-content-box my-5 h-[calc(100%-128px)] w-full"
     >
-      <div class="flex flex-col gap-2 items-center w-full h-fit">
+      <div class="flex h-fit w-full flex-col items-center gap-2">
         <div class="relative h-fit">
           <sign-icon
             name="close"
-            class="absolute -right-8 -top-2 cursor-pointer w-7 h-7 md:w-9 md:h-9 md:-right-12 md:-top-4"
+            class="absolute -top-2 -right-8 h-7 w-7 cursor-pointer md:-top-4 md:-right-12 md:h-9 md:w-9"
             @click="remove"
           />
           <canvas
             id="canvas"
-            class="border-2 border-gray-20 w-full"
+            class="border-gray-20 w-full border-2"
           >
           </canvas>
         </div>
-        <h5 class="w-full text-ellipsis overflow-hidden whitespace-nowrap text-center">
+        <h5 class="w-full overflow-hidden text-center text-ellipsis whitespace-nowrap">
           {{ fileName }}
         </h5>
         <p class="text-gray-40">
@@ -139,9 +139,9 @@ onAfterRouteLeave(deleteCanvas);
         </p>
       </div>
 
-      <div class="w-full flex flex-col gap-4 items-center">
+      <div class="flex w-full flex-col items-center gap-4">
         <p>{{ $t('project_name') }}</p>
-        <label class="w-[90%] relative max-w-[400px]">
+        <label class="relative w-[90%] max-w-[400px]">
           <input
             v-model.trim="projectName"
             type="text"
@@ -153,7 +153,7 @@ onAfterRouteLeave(deleteCanvas);
             src="@/assets/icon/ic_edit.svg"
             alt="edit icon"
             :class="[
-              'absolute right-1 top-[2px] w-9 h-9 transition-all pointer-events-none',
+              'pointer-events-none absolute top-[2px] right-1 h-9 w-9 transition-all',
               isShowPen ? 'opacity-100' : 'opacity-0',
             ]"
           />
@@ -163,10 +163,10 @@ onAfterRouteLeave(deleteCanvas);
 
     <div
       v-if="!fileName"
-      class="border-dashed border-secondary border rounded-[20px] my-5 p-3 h-[calc(100%-128px)] w-full"
+      class="border-secondary my-5 h-[calc(100%-128px)] w-full rounded-[20px] border border-dashed p-3"
     >
       <div
-        class="upload-content-box justify-center h-full w-full"
+        class="upload-content-box h-full w-full justify-center"
         @dragover.stop.prevent
         @dragenter.stop.prevent
         @drop.stop.prevent="dropFile"
@@ -179,7 +179,7 @@ onAfterRouteLeave(deleteCanvas);
           <input
             type="file"
             accept="application/pdf, .jpg, .png"
-            class="opacity-0 absolute w-[131px] h-[41px] cursor-pointer"
+            class="absolute h-[41px] w-[131px] cursor-pointer opacity-0"
             @change="uploadFile"
           />{{ $t('select_file') }}
         </button>

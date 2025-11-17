@@ -122,7 +122,7 @@ function close() {
         v-for="image in imageList"
         :key="image"
         :class="[
-          'rounded-[20px] relative w-full flex justify-center cursor-pointer h-[180px]',
+          'relative flex h-[180px] w-full cursor-pointer justify-center rounded-[20px]',
           currentSelect === image ? 'bg-primary opacity-70' : 'bg-white',
         ]"
         @click="selectImage(image)"
@@ -130,13 +130,13 @@ function close() {
         <img
           :src="image"
           alt="image"
-          class="object-cover rounded-[20px]"
+          class="rounded-[20px] object-cover"
           @dragstart="dragImage"
         />
         <sign-icon
           v-show="currentSelect === image"
           name="close_s"
-          class="absolute top-1 right-1 w-8 h-8 text-gray-80 drop-shadow-md"
+          class="text-gray-80 absolute top-1 right-1 h-8 w-8 drop-shadow-md"
           hover-color="hover:text-danger"
           @click="toggleWarnPopup(true)"
         />
@@ -179,7 +179,7 @@ function close() {
         <input
           type="file"
           accept="application/.jpg, .png"
-          class="opacity-0 absolute w-[131px] h-[41px] cursor-pointer"
+          class="absolute h-[41px] w-[131px] cursor-pointer opacity-0"
           @change="uploadFile"
         />{{ $t('select_file') }}
       </button>

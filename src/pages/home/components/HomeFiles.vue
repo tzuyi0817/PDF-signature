@@ -18,12 +18,12 @@ const { PDFList } = storeToRefs(usePdfStore());
 
     <div
       v-else
-      class="h-full flex flex-col items-center justify-center gap-5"
+      class="flex h-full flex-col items-center justify-center gap-5"
     >
       <img
         src="@/assets/icon/ic_add_dark.svg"
         alt="create file"
-        class="iconScale w-[80px] h-[80] md:w-[136px] md:h-[136px]"
+        class="iconScale h-[80] w-[80px] md:h-[136px] md:w-[136px]"
         @click="goPage('upload')"
       />
       <h3 class="text-center">

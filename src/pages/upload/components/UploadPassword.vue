@@ -26,12 +26,12 @@ function confirmPassword() {
 
 <template>
   <sign-popup :title="$t('warn')">
-    <p class="text-center my-5">
+    <p class="my-5 text-center">
       {{ $t('prompt.protected_file') }}
     </p>
     <sign-password
       v-model="password"
-      class="mb-4 mx-auto"
+      class="mx-auto mb-4"
       placeholder="placeholder.password"
     />
     <div class="flex justify-between md:justify-evenly">

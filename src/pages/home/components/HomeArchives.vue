@@ -16,7 +16,7 @@ const { archiveList } = storeToRefs(usePdfStore());
 
     <div
       v-else
-      class="h-full flex flex-col items-center justify-center gap-[35px]"
+      class="flex h-full flex-col items-center justify-center gap-[35px]"
     >
       <img
         src="@/assets/img/img_archive.svg"

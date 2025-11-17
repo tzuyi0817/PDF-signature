@@ -109,10 +109,10 @@ onActivated(updateSelectAll);
   <div class="sign-files">
     <home-search v-model="keyword" />
 
-    <div class="hidden md:flex items-end w-full px-4 py-5">
-      <div class="w-[300px] flex items-center pl-6 gap-5 h-6">
+    <div class="hidden w-full items-end px-4 py-5 md:flex">
+      <div class="flex h-6 w-[300px] items-center gap-5 pl-6">
         <div
-          class="w-7 h-8 flex items-center justify-center hover:bg-gray-50/15 cursor-pointer transition-colors rounded"
+          class="flex h-8 w-7 cursor-pointer items-center justify-center rounded transition-colors hover:bg-gray-50/15"
         >
           <checkbox
             v-model="isSelectAll"
@@ -133,19 +133,19 @@ onActivated(updateSelectAll);
         </p>
       </div>
 
-      <div class="flex justify-between items-end flex-1">
-        <p :class="['text-sm h-6', { 'opacity-0': !isShowThread }]">
+      <div class="flex flex-1 items-end justify-between">
+        <p :class="['h-6 text-sm', { 'opacity-0': !isShowThread }]">
           {{ $t('project_name') }}
         </p>
         <div class="flex gap-1">
           <sign-icon
             name="list"
-            :class="['w-10 h-10', { 'text-primary': isListStatus }]"
+            :class="['h-10 w-10', { 'text-primary': isListStatus }]"
             @click="changeShowStatus('list')"
           />
           <sign-icon
             name="card"
-            :class="['w-10 h-10', { 'text-primary': showStatus === 'card' }]"
+            :class="['h-10 w-10', { 'text-primary': showStatus === 'card' }]"
             @click="changeShowStatus('card')"
           />
         </div>
@@ -155,7 +155,7 @@ onActivated(updateSelectAll);
     <ul
       v-if="search.length"
       :class="[
-        'w-full h-[calc(100%-60px)] overflow-y-auto gap-6 px-4',
+        'h-[calc(100%-60px)] w-full gap-6 overflow-y-auto px-4',
         { 'md:flex md:flex-row md:flex-wrap md:gap-4': !isListStatus },
       ]"
     >
@@ -176,14 +176,14 @@ onActivated(updateSelectAll);
 
     <div
       v-else
-      class="w-[80%] h-[calc(100%-60px)] flex flex-col items-center justify-center"
+      class="flex h-[calc(100%-60px)] w-[80%] flex-col items-center justify-center"
     >
       <img
         src="@/assets/img/img_search.svg"
         alt="Search Icon"
         class="mb-10"
       />
-      <h3 class="text-gray-40 text-center mb-3">
+      <h3 class="text-gray-40 mb-3 text-center">
         {{ $t('prompt.un_found') }}
       </h3>
       <p class="text-gray-40 text-center">
