@@ -1,14 +1,28 @@
-import { computed, onBeforeUnmount, readonly, ref, watch, type Ref } from 'vue';
+import { computed, onBeforeUnmount, readonly, ref, watch, type ComputedRef, type Ref } from 'vue';
 import { sleep, throttle } from '@/utils/common';
 import type { PDF } from '@/types/pdf';
 import type CanvasItem from '@component-hook/pdf-canvas/vue';
 
-export function useLoadCanvas(currentPDF: Ref<PDF>, isObserveResize = false) {
+type CanvasItemInstance = InstanceType<typeof CanvasItem>;
+type CanvasRect = Record<'height' | 'width', number>;
+
+interface LoadCanvasReturn {
+  currentPage: Ref<number>;
+  canvasItems: Ref<CanvasItemInstance[] | null>;
+  loadedState: Readonly<Ref<readonly boolean[]>>;
+  canvasRect: Readonly<Ref<CanvasRect>>;
+  isCompleted: ComputedRef<boolean>;
+  currentCanvasItem: ComputedRef<CanvasItemInstance | null | undefined>;
+  handleCanvasLoaded: (page: number) => Promise<void>;
+  handleCanvasReload: () => void;
+}
+
+export function useLoadCanvas(currentPDF: Ref<PDF>, isObserveResize = false): LoadCanvasReturn {
   const currentPage = ref(1);
   const loadedState = ref<boolean[]>([]);
   const loadedPages = ref(-1);
-  const canvasItems = ref<InstanceType<typeof CanvasItem>[] | null>(null);
-  const canvasRect = ref<Record<'height' | 'width', number>>({ height: 0, width: 0 });
+  const canvasItems = ref<CanvasItemInstance[] | null>(null);
+  const canvasRect = ref<CanvasRect>({ height: 0, width: 0 });
   const resizeObserver = new ResizeObserver(handleCanvasResize);
 
   const isCompleted = computed(() => loadedPages.value >= currentPDF.value.pages);
@@ -33,9 +47,9 @@ export function useLoadCanvas(currentPDF: Ref<PDF>, isObserveResize = false) {
   }
 
   async function reloadCanvas(page: number) {
-    if (page >= currentPDF.value.pages) return;
+    if (page >= currentPDF.value.pages || !canvasItems.value) return;
 
-    await canvasItems.value?.[page].reload();
+    await canvasItems.value[page]?.reload();
     await sleep(300);
     await reloadCanvas(page + 1);
   }

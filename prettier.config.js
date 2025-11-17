@@ -1,6 +1,7 @@
 /** @type {import('prettier').RequiredOptions} */
 
 export default {
+  $schema: 'https://json.schemastore.org/prettierrc',
   singleQuote: true,
   semi: true,
   endOfLine: 'lf',
@@ -8,4 +9,5 @@ export default {
   proseWrap: 'preserve',
   arrowParens: 'avoid',
   singleAttributePerLine: true,
+  plugins: ['prettier-plugin-tailwindcss'],
 };

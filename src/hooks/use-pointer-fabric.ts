@@ -37,7 +37,12 @@ export function usePointerFabric(containerRef: Readonly<ShallowRef<HTMLDivElemen
 
   function handlePointerMove(event: FabricPointerEvent) {
     if (!isPointerDown || !containerRef.value) return;
-    const { clientX, clientY } = event.e instanceof TouchEvent ? event.e.touches[0] : event.e;
+
+    const e = event.e instanceof TouchEvent ? event.e.touches[0] : event.e;
+
+    if (!e) return;
+
+    const { clientX, clientY } = e;
     const isAtEdge = isPointerAtViewportEdge(clientX, clientY, event.transform);
     let offsetX = 0;
     let offsetY = 0;

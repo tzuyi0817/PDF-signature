@@ -27,7 +27,10 @@ export async function downloadPDF(doc: PDF, setCompleteness?: (value: number) =>
     const image = canvas[index];
     const isLast = index === pages - 1;
 
-    await setPdf(pdf, image, isLast);
+    if (image) {
+      await setPdf(pdf, image, isLast);
+    }
+
     setCompleteness?.(((index + 1) / pages) * 100);
     await sleep(150);
   }

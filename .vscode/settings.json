@@ -1,0 +1,29 @@
+{
+  "editor.tabSize": 2,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  "debug.javascript.autoAttachFilter": "smart",
+
+  "typescript.tsdk": "node_modules/typescript/lib",
+
+  "workbench.editor.splitInGroupLayout": "vertical",
+  "terminal.integrated.shellIntegration.enabled": true,
+
+  "cSpell.words": [
+    "dotenv",
+    "pinia",
+    "persistedstate",
+    "postcss",
+    "idb-keyval",
+    "VITE",
+    "vercel",
+    "typecheck",
+    "pxtorem",
+    "norem"
+  ]
+}

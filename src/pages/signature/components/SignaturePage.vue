@@ -54,7 +54,7 @@ onBeforeUnmount(() => {
         v-for="page in currentPDF.pages"
         :key="page"
         :class="[
-          'rounded-[20px] relative w-full flex flex-shrink-0 justify-center py-3 cursor-pointer overflow-hidden min-h-32',
+          'relative flex min-h-32 w-full shrink-0 cursor-pointer justify-center overflow-hidden rounded-[20px] py-3',
           currentPage === page ? 'bg-primary opacity-70' : 'bg-white',
         ]"
         @click="selectPage(page)"
@@ -76,15 +76,15 @@ onBeforeUnmount(() => {
 
         <div
           v-if="!loadedState[page]"
-          class="absolute h-28 animate-pulse leading-[112px] text-center"
+          class="absolute h-28 animate-pulse text-center leading-28"
         >
           Loading...
         </div>
 
-        <span class="highlight absolute left-4 top-2">{{ `${page}.` }}</span>
+        <span class="highlight absolute top-2 left-4">{{ `${page}.` }}</span>
         <div
           v-show="currentPage === page"
-          class="absolute right-3 top-3 rounded-full bg-danger w-2 h-2"
+          class="bg-danger absolute top-3 right-3 h-2 w-2 rounded-full"
         ></div>
       </li>
     </ul>

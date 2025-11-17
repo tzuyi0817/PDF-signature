@@ -3,7 +3,8 @@ import { MAX_SIZE } from '@/constants/common';
 import i18n from '@/plugins/i18n';
 
 export function checkFile(files: FileList | null | undefined, regexp: RegExp, maxSize = MAX_SIZE) {
-  if (!files) return;
+  if (!files || !files[0]) return;
+
   const { t } = i18n.global;
   const file = files[0];
 
@@ -16,6 +17,7 @@ export function checkFile(files: FileList | null | undefined, regexp: RegExp, ma
     showToast({ message: t('prompt.file_size_exceed'), type: 'error' });
     return;
   }
+
   return file;
 }
 
