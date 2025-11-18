@@ -21,7 +21,7 @@ function close() {
     :is-show-mask="isShowPopup"
     @close="close"
   />
-  <div :class="['signature-popup z-[1]', isShowPopup ? 'translate-y-0 md:block' : 'translate-y-[100%] md:hidden']">
+  <div :class="['signature-popup z-1', isShowPopup ? 'translate-y-0 md:block' : 'translate-y-full md:hidden']">
     <h5 class="title text-center md:hidden">
       {{ title }}
     </h5>

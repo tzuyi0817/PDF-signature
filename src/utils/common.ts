@@ -17,7 +17,7 @@ export function deepClone<T extends Record<string, unknown>>(obj: T, hash = new 
 
 export function debounce<T extends (...args: Parameters<T>) => ReturnType<T>>(fun: T, time = 500) {
   if (typeof fun !== 'function') throw new TypeError('The first argument is not a function.');
-  let timer: NodeJS.Timeout | null = null;
+  let timer: ReturnType<typeof setTimeout> | null = null;
 
   return function (this: void, ...args: Parameters<T>) {
     if (timer) {
@@ -54,6 +54,9 @@ export function isDesktop() {
 
 export function transformTimestamp(timestamp: number) {
   const [date, time] = new Date(timestamp).toLocaleString('en-GB').split(',');
+
+  if (!date || !time) return '';
+
   const [day, month, year] = date.split('/');
 
   return `${year}-${month}-${day} ${time}`;

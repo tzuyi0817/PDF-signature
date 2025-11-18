@@ -51,14 +51,18 @@ function getPaintPosition(event: MouseEvent | TouchEvent) {
 
   if (event.type === 'mousemove') {
     const { clientX, clientY } = event as MouseEvent;
+
     return { x: clientX - left, y: clientY - top };
   }
 
   const { touches } = event as TouchEvent;
+  const touch = touches[0];
+
+  if (!touch) return { x: 0, y: 0 };
 
   return {
-    x: touches[0].clientX - left,
-    y: touches[0].clientY - top,
+    x: touch.clientX - left,
+    y: touch.clientY - top,
   };
 }
 

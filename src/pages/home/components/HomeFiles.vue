@@ -23,7 +23,7 @@ const { PDFList } = storeToRefs(usePdfStore());
       <img
         src="@/assets/icon/ic_add_dark.svg"
         alt="create file"
-        class="iconScale h-[80] w-[80px] md:h-[136px] md:w-[136px]"
+        class="iconScale h-20 w-20 md:h-[136px] md:w-[136px]"
         @click="goPage('upload')"
       />
       <h3 class="text-center">

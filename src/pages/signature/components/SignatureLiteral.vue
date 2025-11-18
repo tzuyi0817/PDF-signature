@@ -122,7 +122,7 @@ function close() {
           <sign-icon
             v-show="currentSelect === word"
             name="edit"
-            class="text-gray-80 relative -top-[2px] inline h-5 w-5 scale-150"
+            class="text-gray-80 relative -top-0.5 inline h-5 w-5 scale-150"
             hover-color="hover:text-green-600"
             @click="toggleLiteralPopup(true, true)"
           />

@@ -153,7 +153,7 @@ onAfterRouteLeave(deleteCanvas);
             src="@/assets/icon/ic_edit.svg"
             alt="edit icon"
             :class="[
-              'pointer-events-none absolute top-[2px] right-1 h-9 w-9 transition-all',
+              'pointer-events-none absolute top-0.5 right-1 h-9 w-9 transition-all',
               isShowPen ? 'opacity-100' : 'opacity-0',
             ]"
           />
