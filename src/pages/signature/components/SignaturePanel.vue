@@ -34,7 +34,7 @@ function changeZoom(value: number) {
       >
         <sign-icon
           name="file"
-          class="text-primary h-4.5 w-4.5"
+          class="text-primary pointer-events-none h-4.5 w-4.5"
         />
       </button>
     </describedby>
@@ -47,7 +47,7 @@ function changeZoom(value: number) {
       >
         <sign-icon
           name="trash"
-          class="text-primary h-4.5 w-4.5"
+          class="text-primary pointer-events-none h-4.5 w-4.5"
         />
       </button>
     </describedby>
@@ -60,7 +60,7 @@ function changeZoom(value: number) {
       >
         <sign-icon
           name="pic"
-          class="text-primary h-4.5 w-4.5"
+          class="text-primary pointer-events-none h-4.5 w-4.5"
         />
       </button>
     </describedby>

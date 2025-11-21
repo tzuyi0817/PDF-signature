@@ -24,6 +24,7 @@ export function useLoadCanvas(currentPDF: Ref<PDF>, isObserveResize = false): Lo
   const canvasItems = ref<CanvasItemInstance[] | null>(null);
   const canvasRect = ref<CanvasRect>({ height: 0, width: 0 });
   const resizeObserver = new ResizeObserver(handleCanvasResize);
+  let reloadId: number | null = null;
 
   const isCompleted = computed(() => loadedPages.value >= currentPDF.value.pages);
 
@@ -36,8 +37,9 @@ export function useLoadCanvas(currentPDF: Ref<PDF>, isObserveResize = false): Lo
   const handleCanvasReload = throttle(async () => {
     if (!loadedPages.value) return;
 
+    reloadId = Date.now();
     loadedPages.value = 0;
-    await reloadCanvas(0);
+    await reloadCanvas(0, reloadId);
   }, 1000);
 
   async function handleCanvasLoaded(page: number) {
@@ -46,12 +48,12 @@ export function useLoadCanvas(currentPDF: Ref<PDF>, isObserveResize = false): Lo
     loadedPages.value += 1;
   }
 
-  async function reloadCanvas(page: number) {
-    if (page >= currentPDF.value.pages || !canvasItems.value) return;
+  async function reloadCanvas(page: number, id: number) {
+    if (page >= currentPDF.value.pages || !canvasItems.value || id !== reloadId) return;
 
     await canvasItems.value[page]?.reload();
     await sleep(300);
-    await reloadCanvas(page + 1);
+    await reloadCanvas(page + 1, id);
   }
 
   function handleCanvasResize(entries: ResizeObserverEntry[]) {

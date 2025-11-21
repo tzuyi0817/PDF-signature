@@ -12,7 +12,7 @@ const currentTool = defineModel<SignatureTool | ''>('currentTool');
 const devicePixelRatio = ref(window.devicePixelRatio);
 const { currentPDF } = storeToRefs(usePdfStore());
 const configStore = useConfigStore();
-const { currentPage, loadedState, canvasItems, handleCanvasLoaded, handleCanvasReload } = useLoadCanvas(currentPDF);
+const { currentPage, loadedState, canvasItems, handleCanvasLoaded } = useLoadCanvas(currentPDF);
 const SignaturePageItem = defineAsyncComponent(() => import('@component-hook/pdf-canvas/vue'));
 const stopMonitorDevicePixelRatio = monitorDevicePixelRatio(changeDevicePixelRatio);
 
@@ -71,7 +71,6 @@ onBeforeUnmount(() => {
           :password="configStore.filePassword"
           manual-reload
           @loaded="handleCanvasLoaded(page)"
-          @reload="handleCanvasReload"
         />
 
         <div
