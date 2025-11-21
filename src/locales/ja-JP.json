@@ -7,6 +7,7 @@
   "archived_files": "アーカイブされたファイル",
   "cancel": "キャンセル",
   "confirm": "確認",
+  "copy": "コピー",
   "create_file": "ファイルを作成",
   "create_signature_file": "署名ファイルを作成",
   "delete": "削除",
@@ -95,5 +96,8 @@
   "upload_file_lower": "ファイルをアップロード",
   "use": "使用する",
   "wait": "待つ",
-  "warn": "警告"
+  "warn": "警告",
+  "watermark": "ウォーターマーク",
+  "zoom_in": "ズームイン",
+  "zoom_out": "ズームアウト"
 }

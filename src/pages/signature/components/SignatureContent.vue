@@ -192,6 +192,10 @@ function cancelScrollToPerFrame() {
   requestFrame = null;
 }
 
+function watermarkActiveFabric() {
+  currentCanvasItem.value?.setActiveFabric({ opacity: 0.3 });
+}
+
 onAfterRouteLeave(() => {
   if (!isGiveUpSignature) return;
 
@@ -287,6 +291,7 @@ onAfterRouteLeave(() => {
           :is-activated-fabric="isActivatedFabric"
           @copy-fabric="currentCanvasItem?.copyActiveFabric"
           @delete-fabric="currentCanvasItem?.deleteActiveFabric"
+          @watermark-fabric="watermarkActiveFabric"
         />
       </div>
     </div>

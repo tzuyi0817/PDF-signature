@@ -7,6 +7,7 @@
   "batch_operation": "批量操作",
   "cancel": "取消",
   "confirm": "确认",
+  "copy": "复制",
   "create_file": "创建文件",
   "create_signature_file": "创建签名文件",
   "delete": "删除",
@@ -95,5 +96,8 @@
   "upload_file_lower": "上传文件",
   "use": "使用",
   "wait": "等待",
-  "warn": "警告"
+  "warn": "警告",
+  "watermark": "水印",
+  "zoom_in": "放大",
+  "zoom_out": "缩小"
 }

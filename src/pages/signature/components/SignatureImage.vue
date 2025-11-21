@@ -178,7 +178,7 @@ function close() {
       <button class="btn btn-primary">
         <input
           type="file"
-          accept="application/.jpg, .png"
+          accept=".jpg, .png, .jpeg, image/jpeg, image/png"
           class="absolute h-[41px] w-[131px] cursor-pointer opacity-0"
           @change="uploadFile"
         />{{ $t('select_file') }}

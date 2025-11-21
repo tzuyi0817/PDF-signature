@@ -7,6 +7,7 @@
   "batch_operation": "Parti işlemi",
   "cancel": "İptal",
   "confirm": "Onayla",
+  "copy": "Kopyala",
   "create_file": "Dosya Oluştur",
   "create_signature_file": "İmza dosyası oluştur",
   "delete": "Sil",
@@ -95,5 +96,8 @@
   "upload_file_lower": "@.lower:upload_file",
   "use": "Kullan",
   "wait": "Bekle",
-  "warn": "Uyarı"
+  "warn": "Uyarı",
+  "watermark": "Filigran",
+  "zoom_in": "Yakınlaştır",
+  "zoom_out": "Uzaklaştır"
 }

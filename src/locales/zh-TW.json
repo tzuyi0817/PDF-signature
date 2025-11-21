@@ -7,6 +7,7 @@
   "batch_operation": "批量操作",
   "cancel": "取消",
   "confirm": "確定",
+  "copy": "複製",
   "create_file": "創建檔案",
   "create_signature_file": "建立簽名檔",
   "delete": "刪除",
@@ -95,5 +96,8 @@
   "upload_file_lower": "@.lower:upload_file",
   "use": "使用",
   "wait": "等一下",
-  "warn": "警告"
+  "warn": "警告",
+  "watermark": "浮水印",
+  "zoom_in": "放大",
+  "zoom_out": "縮小"
 }

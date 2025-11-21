@@ -7,6 +7,7 @@
   "batch_operation": "Erätoiminto",
   "cancel": "Peruuta",
   "confirm": "Vahvista",
+  "copy": "Kopioi",
   "create_file": "Luo tiedosto",
   "create_signature_file": "Luo allekirjoitus tiedosto",
   "delete": "Poista",
@@ -95,5 +96,8 @@
   "upload_file_lower": "@.lower:upload_file",
   "use": "Käytä",
   "wait": "Odota",
-  "warn": "Varoitus"
+  "warn": "Varoitus",
+  "watermark": "Vesileima",
+  "zoom_in": "Zoomaa sisään",
+  "zoom_out": "Zoomaa ulos"
 }

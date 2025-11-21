@@ -7,6 +7,7 @@
   "batch_operation": "배치 작업",
   "cancel": "취소",
   "confirm": "확인",
+  "copy": "복사",
   "create_file": "파일 생성",
   "create_signature_file": "서명 파일 생성",
   "delete": "삭제",
@@ -95,5 +96,8 @@
   "upload_file_lower": "파일 업로드",
   "use": "사용",
   "wait": "기다리세요",
-  "warn": "경고"
+  "warn": "경고",
+  "watermark": "워터마크",
+  "zoom_in": "확대",
+  "zoom_out": "축소"
 }

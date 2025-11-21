@@ -4,7 +4,7 @@ import vueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 import tailwindcss from '@tailwindcss/vite';
 import vue from '@vitejs/plugin-vue';
 import { visualizer } from 'rollup-plugin-visualizer';
-import { defineConfig, type PluginOption } from 'vite';
+import { defineConfig, type Plugin } from 'vite';
 import { createHtmlPlugin } from 'vite-plugin-html';
 import { VitePWA } from 'vite-plugin-pwa';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
@@ -37,7 +37,7 @@ export default defineConfig({
       },
     }),
     VitePWA({ registerType: 'autoUpdate' }),
-    visualizer({ gzipSize: true, open: true }) as PluginOption,
+    visualizer({ gzipSize: true, open: true }) as unknown as Plugin,
   ],
   server: {
     port: 8080,
@@ -45,6 +45,9 @@ export default defineConfig({
   esbuild: {
     pure: ['console.log'],
     drop: ['debugger'],
+  },
+  optimizeDeps: {
+    exclude: ['@component-hook/pdf-canvas'],
   },
   resolve: {
     alias: {

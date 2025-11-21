@@ -7,6 +7,7 @@
   "batch_operation": "Batchoperation",
   "cancel": "Avbryt",
   "confirm": "Bekräfta",
+  "copy": "Kopiera",
   "create_file": "Skapa fil",
   "create_signature_file": "Skapa signaturfil",
   "delete": "Radera",
@@ -95,5 +96,8 @@
   "upload_file_lower": "ladda upp fil",
   "use": "Använd",
   "wait": "Vänta",
-  "warn": "Varna"
+  "warn": "Varna",
+  "watermark": "Vattenstämpel",
+  "zoom_in": "Zooma in",
+  "zoom_out": "Zooma ut"
 }

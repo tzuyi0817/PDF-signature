@@ -7,6 +7,7 @@
   "batch_operation": "Batchoperasjon",
   "cancel": "Avbryt",
   "confirm": "Bekreft",
+  "copy": "Kopier",
   "create_file": "Opprett fil",
   "create_signature_file": "Opprett signaturfil",
   "delete": "Slett",
@@ -95,5 +96,8 @@
   "upload_file_lower": "@.lower:upload_file",
   "use": "Bruk",
   "wait": "Vent",
-  "warn": "Advar"
+  "warn": "Advar",
+  "watermark": "Vannmerke",
+  "zoom_in": "Zoom inn",
+  "zoom_out": "Zoom ut"
 }

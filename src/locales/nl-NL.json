@@ -7,6 +7,7 @@
   "batch_operation": "Batchbewerking",
   "cancel": "Annuleren",
   "confirm": "Bevestigen",
+  "copy": "Kopiëren",
   "create_file": "Bestand aanmaken",
   "create_signature_file": "Handtekeningbestand maken",
   "delete": "Verwijderen",
@@ -95,5 +96,8 @@
   "upload_file_lower": "bestand uploaden",
   "use": "Gebruiken",
   "wait": "Wachten",
-  "warn": "Waarschuwing"
+  "warn": "Waarschuwing",
+  "watermark": "Watermerk",
+  "zoom_in": "Inzoomen",
+  "zoom_out": "Uitzoomen"
 }

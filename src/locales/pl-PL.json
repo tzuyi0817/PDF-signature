@@ -7,6 +7,7 @@
   "batch_operation": "Operacja wsadowa",
   "cancel": "Anuluj",
   "confirm": "Potwierdź",
+  "copy": "Kopiuj",
   "create_file": "Utwórz plik",
   "create_signature_file": "Utwórz plik sygnatury",
   "delete": "Usuń",
@@ -95,5 +96,8 @@
   "upload_file_lower": "@.lower:upload_file",
   "use": "Użyj",
   "wait": "Czekaj",
-  "warn": "Ostrzeżenie"
+  "warn": "Ostrzeżenie",
+  "watermark": "Znak wodny",
+  "zoom_in": "Powiększ",
+  "zoom_out": "Pomniejsz"
 }

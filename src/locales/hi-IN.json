@@ -7,6 +7,7 @@
   "batch_operation": "बैच संचालन",
   "cancel": "रद्द करें",
   "confirm": "पुष्टि करें",
+  "copy": "कॉपी करें",
   "create_file": "फाइल बनाएँ",
   "create_signature_file": "हस्ताक्षर फ़ाइल बनाएँ",
   "delete": "हटाएँ",
@@ -95,5 +96,8 @@
   "upload_file_lower": "@.lower:फ़ाइल अपलोड करें",
   "use": "उपयोग करें",
   "wait": "प्रतीक्षा करें",
-  "warn": "चेतावनी"
+  "warn": "चेतावनी",
+  "watermark": "वॉटरमार्क",
+  "zoom_in": "ज़ूम इन करें",
+  "zoom_out": "ज़ूम आउट करें"
 }

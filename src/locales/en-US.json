@@ -7,6 +7,7 @@
   "archived_files": "Archived Files",
   "cancel": "Cancel",
   "confirm": "Confirm",
+  "copy": "Copy",
   "create_file": "Create File",
   "create_signature_file": "Create signature file",
   "delete": "Delete",
@@ -95,5 +96,8 @@
   "upload_file_lower": "@.lower:upload_file",
   "use": "Use",
   "wait": "Wait",
-  "warn": "Warn"
+  "warn": "Warn",
+  "watermark": "Watermark",
+  "zoom_in": "Zoom In",
+  "zoom_out": "Zoom Out"
 }

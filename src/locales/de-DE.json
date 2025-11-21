@@ -7,6 +7,7 @@
   "batch_operation": "Stapelverarbeitung",
   "cancel": "Abbrechen",
   "confirm": "Bestätigen",
+  "copy": "Kopieren",
   "create_file": "Datei erstellen",
   "create_signature_file": "Signaturdatei erstellen",
   "delete": "Löschen",
@@ -95,5 +96,8 @@
   "upload_file_lower": "datei hochladen",
   "use": "Verwenden",
   "wait": "Warten",
-  "warn": "Warnung"
+  "warn": "Warnung",
+  "watermark": "Wasserzeichen",
+  "zoom_in": "Vergrößern",
+  "zoom_out": "Verkleinern"
 }

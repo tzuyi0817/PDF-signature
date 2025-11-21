@@ -7,6 +7,7 @@
   "batch_operation": "Opération par lots",
   "cancel": "Annuler",
   "confirm": "Confirmer",
+  "copy": "Copier",
   "create_file": "Créer un fichier",
   "create_signature_file": "Créer un fichier de signature",
   "delete": "Supprimer",
@@ -95,5 +96,8 @@
   "upload_file_lower": "téléverser un fichier",
   "use": "Utiliser",
   "wait": "Attendre",
-  "warn": "Avertissement"
+  "warn": "Avertissement",
+  "watermark": "Filigrane",
+  "zoom_in": "Zoom avant",
+  "zoom_out": "Zoom arrière"
 }

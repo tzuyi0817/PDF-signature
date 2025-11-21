@@ -7,6 +7,7 @@
   "batch_operation": "Operazione batch",
   "cancel": "Annulla",
   "confirm": "Conferma",
+  "copy": "Copia",
   "create_file": "Crea file",
   "create_signature_file": "Crea file di firma",
   "delete": "Elimina",
@@ -95,5 +96,8 @@
   "upload_file_lower": "carica file",
   "use": "Usa",
   "wait": "Attendere",
-  "warn": "Avviso"
+  "warn": "Avviso",
+  "watermark": "Filigrana",
+  "zoom_in": "Zoom avanti",
+  "zoom_out": "Zoom indietro"
 }

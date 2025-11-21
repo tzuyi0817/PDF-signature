@@ -7,6 +7,7 @@
   "batch_operation": "عملية الدفعات",
   "cancel": "إلغاء",
   "confirm": "تأكيد",
+  "copy": "نسخ",
   "create_file": "إنشاء ملف",
   "create_signature_file": "إنشاء ملف توقيع",
   "delete": "حذف",
@@ -95,5 +96,8 @@
   "upload_file_lower": "@.lower:تحميل ملف",
   "use": "استخدام",
   "wait": "انتظر",
-  "warn": "تحذير"
+  "warn": "تحذير",
+  "watermark": "علامة مائية",
+  "zoom_in": "تكبير",
+  "zoom_out": "تصغير"
 }

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Describedby } from '@/components/common';
 import SignIcon from '@/components/SignIcon.vue';
 
 interface Props {
@@ -8,6 +9,7 @@ interface Props {
 interface Emits {
   copyFabric: [];
   deleteFabric: [];
+  watermarkFabric: [];
 }
 
 defineProps<Props>();
@@ -24,42 +26,64 @@ function changeZoom(value: number) {
 
 <template>
   <div class="signature-panel">
-    <button
-      class="btn-small btn-primary"
-      :disabled="!isActivatedFabric"
-      @click="$emit('copyFabric')"
-    >
-      <sign-icon
-        name="file"
-        class="text-primary h-4.5 w-4.5"
-      />
-    </button>
+    <describedby :title="$t('copy')">
+      <button
+        class="btn-small btn-primary"
+        :disabled="!isActivatedFabric"
+        @click="$emit('copyFabric')"
+      >
+        <sign-icon
+          name="file"
+          class="text-primary h-4.5 w-4.5"
+        />
+      </button>
+    </describedby>
 
-    <button
-      class="btn-small btn-primary"
-      :disabled="!isActivatedFabric"
-      @click="$emit('deleteFabric')"
-    >
-      <sign-icon
-        name="trash"
-        class="text-primary h-4.5 w-4.5"
-      />
-    </button>
+    <describedby :title="$t('delete')">
+      <button
+        class="btn-small btn-primary"
+        :disabled="!isActivatedFabric"
+        @click="$emit('deleteFabric')"
+      >
+        <sign-icon
+          name="trash"
+          class="text-primary h-4.5 w-4.5"
+        />
+      </button>
+    </describedby>
 
-    <button
-      class="btn-small btn-primary text-xs"
-      :disabled="fileZoom >= MAX_ZOOM"
-      @click="changeZoom(0.1)"
-    >
-      ➕
-    </button>
-    <button
-      class="btn-small btn-primary text-xs"
-      :disabled="fileZoom <= MIN_ZOOM"
-      @click="changeZoom(-0.1)"
-    >
-      ➖
-    </button>
+    <describedby :title="$t('watermark')">
+      <button
+        class="btn-small btn-primary"
+        :disabled="!isActivatedFabric"
+        @click="$emit('watermarkFabric')"
+      >
+        <sign-icon
+          name="pic"
+          class="text-primary h-4.5 w-4.5"
+        />
+      </button>
+    </describedby>
+
+    <describedby :title="$t('zoom_in')">
+      <button
+        class="btn-small btn-primary text-xs"
+        :disabled="fileZoom >= MAX_ZOOM"
+        @click="changeZoom(0.1)"
+      >
+        ➕
+      </button>
+    </describedby>
+
+    <describedby :title="$t('zoom_out')">
+      <button
+        class="btn-small btn-primary text-xs"
+        :disabled="fileZoom <= MIN_ZOOM"
+        @click="changeZoom(-0.1)"
+      >
+        ➖
+      </button>
+    </describedby>
   </div>
 </template>
 
@@ -86,6 +110,7 @@ function changeZoom(value: number) {
 }
 
 .signature-panel .btn-small {
+  min-width: 46px;
   text-shadow: 0 0 0 #b7ec5d;
   color: transparent;
 }
