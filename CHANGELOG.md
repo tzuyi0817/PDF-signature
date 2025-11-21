@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.5.4](https://github.com/tzuyi0817/PDF-signature/compare/v0.5.3...v0.5.4) (2025-11-21)
+
+### Features
+
+- adding describedby for control panel ([49149ad](https://github.com/tzuyi0817/PDF-signature/commit/49149adbc28b6723f1e2bf73e566c5f85ce72e59))
+
+### Bug Fixes
+
+- repeatedly rendering PDFs during screen resizing ([76190e5](https://github.com/tzuyi0817/PDF-signature/commit/76190e595f97e718246b1a9173c3763de3ddfe3b))
+
 ## [0.5.3](https://github.com/tzuyi0817/PDF-signature/compare/v0.5.2...v0.5.3) (2025-09-05)
 
 ### Features
