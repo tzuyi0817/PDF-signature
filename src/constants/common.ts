@@ -26,3 +26,6 @@ export const I18N_MAP = {
 } as const;
 
 export const DRAG_MOVE_STEP = 15;
+
+export const A4_WIDTH = 210;
+export const A4_HEIGHT = 297;

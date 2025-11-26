@@ -6,11 +6,11 @@ import type { Router, RouteRecordName } from 'vue-router';
 const preloadRouteSet = new Set<RouteRecordName>();
 
 const requestIdleCallback =
-  window.requestIdleCallback ||
+  globalThis.requestIdleCallback ||
   function (callback: IdleRequestCallback) {
     const startTime = Date.now();
     // Use setTimeout to simulate and delay execution for 1ms
-    return window.setTimeout(() => {
+    return globalThis.setTimeout(() => {
       callback({
         didTimeout: false,
         timeRemaining: () => Math.max(0, 50 - (Date.now() - startTime)),

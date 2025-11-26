@@ -4,16 +4,16 @@ export function createImageSrc(url: string) {
 
 export function convertToBase64(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
-    const blobURL = window.URL.createObjectURL(file);
+    const blobURL = globalThis.URL.createObjectURL(file);
     const image = new Image();
 
     image.src = blobURL;
     image.addEventListener('load', async () => {
-      window.URL.revokeObjectURL(blobURL);
+      globalThis.URL.revokeObjectURL(blobURL);
       resolve(await compressImage(image));
     });
     image.addEventListener('error', error => {
-      window.URL.revokeObjectURL(blobURL);
+      globalThis.URL.revokeObjectURL(blobURL);
       reject(error);
     });
   });

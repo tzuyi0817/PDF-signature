@@ -60,6 +60,7 @@ async function renderFile(file: File) {
     const fileContent = await loadFile(file, filePassword);
 
     if (!fileContent) throw new Error('File content is empty');
+
     setCurrentPDF(fileContent);
     pages.value = fileContent.pages;
     showToast(t('prompt.file_upload_success'));

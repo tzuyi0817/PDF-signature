@@ -59,7 +59,7 @@ export function usePointerFabric(containerRef: Readonly<ShallowRef<HTMLDivElemen
 
     if (!offsetX && !offsetY) return;
 
-    requestFrame = window.requestAnimationFrame(() => {
+    requestFrame = globalThis.requestAnimationFrame(() => {
       scrollToPerFrame(offsetX, offsetY, event.target);
     });
   }

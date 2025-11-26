@@ -1,6 +1,6 @@
 <script setup lang="ts">
 function reload() {
-  window.location.reload();
+  globalThis.location.reload();
 }
 </script>
 

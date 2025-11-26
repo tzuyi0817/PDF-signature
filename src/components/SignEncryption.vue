@@ -33,7 +33,7 @@ function download(isEncrypt: boolean) {
     return;
   }
   emit('closeEncryptPopup');
-  window.requestAnimationFrame(async () => {
+  globalThis.requestAnimationFrame(async () => {
     if (!file) return;
     const userPassword = isEncrypt ? password.value : '';
 

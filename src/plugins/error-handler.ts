@@ -12,14 +12,14 @@ export default {
       errorHandler();
     };
 
-    window.addEventListener('error', ({ message, filename, lineno, colno, error }) => {
+    globalThis.addEventListener('error', ({ message, filename, lineno, colno, error }) => {
       console.error('Error caught:', { message, filename, lineno, colno, error });
 
       errorHandler();
       return true; // Return true to prevent errors from continuing to be output on the console
     });
 
-    window.addEventListener('unhandledrejection', event => {
+    globalThis.addEventListener('unhandledrejection', event => {
       console.error('Catch errors thrown by unhandled Promise', event.reason);
 
       errorHandler();

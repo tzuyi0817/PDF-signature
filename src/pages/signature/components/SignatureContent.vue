@@ -6,7 +6,7 @@ import { useI18n } from 'vue-i18n';
 import { showToast } from '@/components/common';
 import SignStepBtn from '@/components/SignStepBtn.vue';
 import SignVersion from '@/components/SignVersion.vue';
-import { DRAG_MOVE_STEP } from '@/constants/common';
+import { A4_WIDTH, DRAG_MOVE_STEP } from '@/constants/common';
 import { useLoadCanvas } from '@/hooks/use-load-canvas';
 import { usePointerFabric } from '@/hooks/use-pointer-fabric';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
@@ -62,27 +62,33 @@ async function mergeFile() {
   toggleMergePopup(true);
   await sleep();
 
-  window.requestAnimationFrame(async () => {
+  globalThis.requestAnimationFrame(async () => {
     try {
       if (!signatureCanvasItems.value) return;
       const { setCurrentPDFCanvas, addPDF, updatePDF } = usePdfStore();
       const compressPromises = signatureCanvasItems.value.map(async ({ canvasRef }) => {
         if (!canvasRef) return '';
+
         const imageFile = await canvasToFile(canvasRef);
 
         return imageCompression(imageFile, { useWebWorker: true });
       });
 
-      const compressedBlobs = await Promise.all(compressPromises);
-      const blobToBase64Promises = compressedBlobs.map(blob => blob && imageCompression.getDataUrlFromFile(blob));
-      const canvas = await Promise.all(blobToBase64Promises);
+      const blobs = await Promise.all(compressPromises);
+      const filteredBlobs = blobs.filter(blob => blob !== '');
 
       if (isCancelMerge.value) {
         isCancelMerge.value = false;
         return;
       }
-      setCurrentPDFCanvas(canvas);
-      const file = { ...currentPDF.value, PDFBase64: '', updateDate: Date.now() };
+
+      const ratio = A4_WIDTH / canvasRect.value.width;
+      const width = canvasRect.value.width * ratio;
+      const height = canvasRect.value.height * ratio;
+
+      setCurrentPDFCanvas(filteredBlobs, width, height);
+
+      const file = { ...currentPDF.value, data: null, updateDate: Date.now() };
 
       if (file.isUpdate) {
         updatePDF(file);
@@ -163,7 +169,7 @@ function handleDragOver(event: DragEvent) {
 
   if (!offsetX && !offsetY) return;
 
-  requestFrame = window.requestAnimationFrame(() => {
+  requestFrame = globalThis.requestAnimationFrame(() => {
     scrollToPerFrame(offsetX, offsetY);
   });
 }

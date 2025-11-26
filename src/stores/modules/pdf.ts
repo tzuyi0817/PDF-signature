@@ -16,11 +16,13 @@ const defaultState: PDFStore = {
     PDFId: '',
     name: '',
     updateDate: 0,
-    PDFBase64: '',
+    data: null,
     pages: 0,
     canvas: [],
     trashDate: 0,
     isUpdate: false,
+    width: 0,
+    height: 0,
   },
   PDFList: [],
   archiveList: [],
@@ -46,9 +48,13 @@ export const usePdfStore = defineStore('pdf', {
         PDFId: '',
         name: '',
         updateDate: 0,
-        PDFBase64: '',
+        data: null,
         pages: 0,
         canvas: [],
+        trashDate: 0,
+        isUpdate: false,
+        width: 0,
+        height: 0,
       };
       return this.updateCurrentPDFIdb();
     },
@@ -56,8 +62,11 @@ export const usePdfStore = defineStore('pdf', {
       this.currentPDF.name = name;
       return this.updateCurrentPDFIdb();
     },
-    setCurrentPDFCanvas(canvas: string[]) {
+    setCurrentPDFCanvas(canvas: Blob[], width: number, height: number) {
       this.currentPDF.canvas = canvas;
+      this.currentPDF.width = width;
+      this.currentPDF.height = height;
+
       return this.updateCurrentPDFIdb();
     },
     updateCurrentPDFIdb() {

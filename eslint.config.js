@@ -11,4 +11,9 @@ export default [
     files: ['**/__tests__/e2e/**/*.spec.[jt]s?(x)'],
     ...componentHookPlugin.configs.playwright,
   },
+  {
+    rules: {
+      'unicorn/prefer-blob-reading-methods': 'warn',
+    },
+  },
 ];

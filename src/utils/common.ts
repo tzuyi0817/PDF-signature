@@ -65,7 +65,7 @@ export function transformTimestamp(timestamp: number) {
 export function monitorDevicePixelRatio(callback: (ratio: number) => void) {
   let currentRatio = window.devicePixelRatio;
 
-  const mediaQuery = window.matchMedia(`(resolution: ${currentRatio}dppx)`);
+  const mediaQuery = globalThis.matchMedia(`(resolution: ${currentRatio}dppx)`);
 
   const handleChange = () => {
     const newRatio = window.devicePixelRatio;

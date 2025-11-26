@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
+import { BlobImage } from '@/components/common';
 import SignIcon from '@/components/SignIcon.vue';
 import SvgList from '@/components/svg/SvgList.vue';
 import { usePdfStore } from '@/stores';
@@ -158,8 +159,8 @@ watch(
     />
 
     <div :class="['flex h-[150px] w-1/3 items-center justify-center', { 'md:hidden': isListStatus }]">
-      <img
-        :src="file.canvas?.at(0)"
+      <blob-image
+        :blob="file.canvas?.at(0)"
         class="border-gray-20 w-full border-2"
         alt="file"
       />

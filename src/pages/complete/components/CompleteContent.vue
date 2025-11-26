@@ -2,7 +2,7 @@
 import { storeToRefs } from 'pinia';
 import { computed, defineAsyncComponent, onBeforeMount, onBeforeUnmount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { showToast } from '@/components/common';
+import { BlobImage, showToast } from '@/components/common';
 import SignIcon from '@/components/SignIcon.vue';
 import SignVersion from '@/components/SignVersion.vue';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
@@ -91,8 +91,8 @@ onBeforeUnmount(() => {
           v-for="canvas in currentPDF.canvas"
           :key="canvas"
         >
-          <img
-            :src="canvas"
+          <blob-image
+            :blob="canvas"
             alt="PDF document"
           />
         </template>
