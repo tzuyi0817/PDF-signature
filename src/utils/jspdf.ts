@@ -8,10 +8,13 @@ export async function downloadPDF(doc: PDF, setCompleteness?: (value: number) =>
 
   if (!canvas) return;
 
+  const width = doc.width || A4_WIDTH;
+  const height = doc.height || A4_HEIGHT;
+  const orientation = width > height ? 'l' : 'p';
   const options: jsPDFOptions = {
-    orientation: 'p',
+    orientation,
     unit: 'mm',
-    format: [doc.width || A4_WIDTH, doc.height || A4_HEIGHT],
+    format: [width, height],
     compress: true,
   };
 

@@ -82,7 +82,8 @@ async function mergeFile() {
         return;
       }
 
-      const ratio = A4_WIDTH / canvasRect.value.width;
+      const isPortrait = canvasRect.value.width <= canvasRect.value.height;
+      const ratio = isPortrait ? A4_WIDTH / canvasRect.value.width : A4_WIDTH / canvasRect.value.height;
       const width = canvasRect.value.width * ratio;
       const height = canvasRect.value.height * ratio;
 
