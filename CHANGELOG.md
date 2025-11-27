@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.5](https://github.com/tzuyi0817/PDF-signature/compare/v0.5.4...v0.5.5) (2025-11-27)
+
+### Bug Fixes
+
+- download pdf page size ([4d75cf0](https://github.com/tzuyi0817/PDF-signature/commit/4d75cf082e44bc36e9c09125ab13a6b0a0e08b9b))
+- download horizontal pdf judgment ([5333a54](https://github.com/tzuyi0817/PDF-signature/commit/5333a54af81ae2f98afa8db2c66deaa1b296a409))
+
 ## [0.5.4](https://github.com/tzuyi0817/PDF-signature/compare/v0.5.3...v0.5.4) (2025-11-21)
 
 ### Features

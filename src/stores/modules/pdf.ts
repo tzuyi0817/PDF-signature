@@ -37,10 +37,14 @@ export const usePdfStore = defineStore('pdf', {
       const currentPDF = await getIdb<PDF>(IDB_KEY.CURRENT_PDF);
 
       if (!currentPDF) return;
+
       this.currentPDF = currentPDF;
+
+      return currentPDF;
     },
     setCurrentPDF(PDF: PDF) {
       this.currentPDF = PDF;
+
       return this.updateCurrentPDFIdb();
     },
     clearCurrentPDF() {
@@ -56,10 +60,12 @@ export const usePdfStore = defineStore('pdf', {
         width: 0,
         height: 0,
       };
+
       return this.updateCurrentPDFIdb();
     },
     setCurrentPDFName(name: string) {
       this.currentPDF.name = name;
+
       return this.updateCurrentPDFIdb();
     },
     setCurrentPDFCanvas(canvas: Blob[], width: number, height: number) {
@@ -77,21 +83,28 @@ export const usePdfStore = defineStore('pdf', {
       const PDFList = await getIdb<PDF[]>(IDB_KEY.PDF_LIST);
 
       if (!PDFList) return;
+
       this.PDFList = PDFList;
+
+      return PDFList;
     },
     addPDF(PDF: PDF) {
       this.PDFList.unshift({ ...PDF });
+
       return this.updatePDFIdb();
     },
     updatePDF(PDF: PDF) {
       const index = this.PDFList.findIndex(item => item.PDFId === PDF.PDFId);
 
       if (index === -1) return;
+
       this.PDFList[index] = PDF;
+
       return this.updatePDFIdb();
     },
     deletePDF(id: string) {
       this.PDFList = this.PDFList.filter(({ PDFId }) => id !== PDFId);
+
       return this.updatePDFIdb();
     },
     updatePDFIdb() {
@@ -102,11 +115,15 @@ export const usePdfStore = defineStore('pdf', {
       const archiveList = await getIdb<PDF[]>(IDB_KEY.ARCHIVE_LIST);
 
       if (!archiveList) return;
+
       this.archiveList = archiveList;
+
+      return archiveList;
     },
     addArchive(PDF: PDF) {
       this.deletePDF(PDF.PDFId);
       this.archiveList.unshift(PDF);
+
       return this.updateArchiveIdb();
     },
     batchAddArchive(PDFList: Set<PDF>) {
@@ -114,10 +131,12 @@ export const usePdfStore = defineStore('pdf', {
         this.PDFList = this.PDFList.filter(({ PDFId }) => PDF.PDFId !== PDFId);
         this.archiveList.unshift(PDF);
       }
+
       return Promise.all([this.updatePDFIdb(), this.updateArchiveIdb()]);
     },
     deleteArchive(id: string) {
       this.archiveList = this.archiveList.filter(({ PDFId }) => id !== PDFId);
+
       return this.updateArchiveIdb();
     },
     batchReductionArchive(PDFList: Set<PDF>) {
@@ -125,6 +144,7 @@ export const usePdfStore = defineStore('pdf', {
         this.archiveList = this.archiveList.filter(({ PDFId }) => PDF.PDFId !== PDFId);
         this.PDFList.unshift(PDF);
       }
+
       return Promise.all([this.updatePDFIdb(), this.updateArchiveIdb()]);
     },
     updateArchiveIdb() {
@@ -135,12 +155,17 @@ export const usePdfStore = defineStore('pdf', {
       const trashList = await getIdb<PDF[]>(IDB_KEY.TRASH_LIST);
 
       if (!trashList) return;
+
       this.trashList = trashList;
+
+      return trashList;
     },
     addTrash(PDF: PDF, type?: MenuTab) {
       if (!type || type === 'file') this.deletePDF(PDF.PDFId);
       if (!type || type === 'archive') this.deleteArchive(PDF.PDFId);
+
       this.trashList.unshift({ ...PDF, trashDate: Date.now() });
+
       return this.updateTrashIdb();
     },
     batchAddTrash(PDFList: Set<PDF>, type: MenuTab) {
@@ -157,13 +182,16 @@ export const usePdfStore = defineStore('pdf', {
     },
     deleteTrash(id?: string) {
       if (!id) return;
+
       this.trashList = this.trashList.filter(({ PDFId }) => id !== PDFId);
+
       return this.updateTrashIdb();
     },
     batchDeleteTrash(PDFList: Set<PDF>) {
       for (const PDF of PDFList) {
         this.trashList = this.trashList.filter(({ PDFId }) => PDF.PDFId !== PDFId);
       }
+
       return this.updateTrashIdb();
     },
     batchReductionTrash(PDFList: Set<PDF>) {
@@ -171,6 +199,7 @@ export const usePdfStore = defineStore('pdf', {
         this.trashList = this.trashList.filter(({ PDFId }) => PDF.PDFId !== PDFId);
         this.PDFList.unshift(PDF);
       }
+
       return Promise.all([this.updatePDFIdb(), this.updateTrashIdb()]);
     },
     filterTrash() {
@@ -181,6 +210,7 @@ export const usePdfStore = defineStore('pdf', {
         if (!trashDate) return true;
         return now - trashDate < MAX_DAY;
       });
+
       return this.updateTrashIdb();
     },
     updateTrashIdb() {
