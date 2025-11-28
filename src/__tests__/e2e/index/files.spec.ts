@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { createMockFiles, MOCK_FILES } from '@/__tests__/__mocks__/file';
+import { createMockBlobs, createMockFiles, MOCK_FILES } from '@/__tests__/__mocks__/file';
 import { transformTimestamp } from '@/utils/common';
 
 test.describe('files', () => {
@@ -69,16 +69,13 @@ test.describe('files', () => {
     });
 
     test.describe('download file feature', () => {
-      const { name } = MOCK_FILES[0];
       const secretPlaceholder = 'Please enter password';
 
-      test.beforeEach(async ({ page }) => {
+      test('show encryption popup', async ({ page }) => {
+        const { name } = MOCK_FILES[0];
         const li = page.locator(`li:has-text("${name}")`);
 
         await li.getByTitle(/#icon-ic_download/i).click();
-      });
-
-      test('show encryption popup', async ({ page }) => {
         await expect(page.getByRole('heading', { name: /encryption/i })).toBeInViewport();
         await expect(page.getByText(/set a password to protect your pdf file/i)).toBeInViewport();
         await expect(page.getByPlaceholder('Please enter password', { exact: true })).toBeInViewport();
@@ -86,14 +83,26 @@ test.describe('files', () => {
       });
 
       test('download file', async ({ page }) => {
-        await page.getByRole('button', { name: /not yet/i }).click();
+        const { name, pages } = MOCK_FILES[0];
+        const li = page.locator(`li:has-text("${name}")`);
 
-        const download = await page.waitForEvent('download');
+        MOCK_FILES[0].canvas = createMockBlobs(pages);
+        await li.getByTitle(/#icon-ic_download/i).click();
+
+        const [download] = await Promise.all([
+          page.waitForEvent('download'),
+          page.getByRole('button', { name: /not yet/i }).click(),
+        ]);
 
         expect(download.suggestedFilename()).toMatch(`${name}.pdf`);
       });
 
       test('click the eye icon to show password', async ({ page }) => {
+        const { name } = MOCK_FILES[0];
+        const li = page.locator(`li:has-text("${name}")`);
+
+        await li.getByTitle(/#icon-ic_download/i).click();
+
         const secret = '123456';
         const secretInput = page.getByPlaceholder(secretPlaceholder, { exact: true });
         const secretConfirmInput = page.getByPlaceholder(/please enter password again/i, { exact: true });
@@ -114,11 +123,19 @@ test.describe('files', () => {
       });
 
       test('without password', async ({ page }) => {
+        const { name } = MOCK_FILES[0];
+        const li = page.locator(`li:has-text("${name}")`);
+
+        await li.getByTitle(/#icon-ic_download/i).click();
         await page.getByRole('button', { name: /confirm/i }).click();
         await expect(page.getByText(/password is required/i)).toBeInViewport();
       });
 
       test('with inconsistent password', async ({ page }) => {
+        const { name } = MOCK_FILES[0];
+        const li = page.locator(`li:has-text("${name}")`);
+
+        await li.getByTitle(/#icon-ic_download/i).click();
         await page.getByPlaceholder(secretPlaceholder, { exact: true }).fill('123456');
         await page.getByPlaceholder(/please enter password again/i, { exact: true }).fill('123');
         await page.getByRole('button', { name: /confirm/i }).click();
@@ -127,12 +144,18 @@ test.describe('files', () => {
 
       test('with correct password', async ({ page }) => {
         const secret = '123456';
+        const { name, pages } = MOCK_FILES[1];
+        const li = page.locator(`li:has-text("${name}")`);
 
+        MOCK_FILES[1].canvas = createMockBlobs(pages);
+        await li.getByTitle(/#icon-ic_download/i).click();
         await page.getByPlaceholder(secretPlaceholder, { exact: true }).fill(secret);
         await page.getByPlaceholder(/please enter password again/i, { exact: true }).fill(secret);
-        await page.getByRole('button', { name: /confirm/i }).click();
 
-        const download = await page.waitForEvent('download');
+        const [download] = await Promise.all([
+          page.waitForEvent('download'),
+          page.getByRole('button', { name: /confirm/i }).click(),
+        ]);
 
         expect(download.suggestedFilename()).toMatch(`${name}.pdf`);
       });
