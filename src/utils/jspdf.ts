@@ -8,23 +8,7 @@ export async function downloadPDF(doc: PDF, setCompleteness?: (value: number) =>
 
   if (!canvas) return;
 
-  const width = doc.width || A4_WIDTH;
-  const height = doc.height || A4_HEIGHT;
-  const orientation = width > height ? 'l' : 'p';
-  const options: jsPDFOptions = {
-    orientation,
-    unit: 'mm',
-    format: [width, height],
-    compress: true,
-  };
-
-  if (password) {
-    options.encryption = {
-      userPassword: password,
-      ownerPassword: password,
-      userPermissions: ['print', 'copy'],
-    };
-  }
+  const options = getOptions(doc, password);
   const pdf = new jsPDF(options);
   const pages = canvas.length;
 
@@ -43,6 +27,29 @@ export async function downloadPDF(doc: PDF, setCompleteness?: (value: number) =>
   pdf.save(`${name}.pdf`);
 }
 
+export async function generatePDF(doc: PDF) {
+  const { canvas, name } = doc;
+
+  if (!canvas) return;
+
+  const options = getOptions(doc);
+  const pdf = new jsPDF(options);
+  const pages = canvas.length;
+
+  for (let index = 0; index < pages; index++) {
+    const blob = canvas[index];
+    const isLast = index === pages - 1;
+
+    if (blob) {
+      await setPdf(pdf, blob, isLast);
+    }
+  }
+
+  const blob = pdf.output('blob');
+
+  return new File([blob], `${name}.pdf`, { type: blob.type });
+}
+
 async function setPdf(pdf: jsPDF, blob: Blob, isLast: boolean) {
   const { width, height } = pdf.internal.pageSize;
   const arrayBuffer = await blobToArrayBuffer(blob);
@@ -53,6 +60,28 @@ async function setPdf(pdf: jsPDF, blob: Blob, isLast: boolean) {
   if (isLast) return;
 
   pdf.addPage();
+}
+
+function getOptions(doc: PDF, password?: string) {
+  const width = doc.width || A4_WIDTH;
+  const height = doc.height || A4_HEIGHT;
+  const orientation = width > height ? 'l' : 'p';
+  const options: jsPDFOptions = {
+    orientation,
+    unit: 'mm',
+    format: [width, height],
+    compress: true,
+  };
+
+  if (password) {
+    options.encryption = {
+      userPassword: password,
+      ownerPassword: password,
+      userPermissions: ['print', 'copy'],
+    };
+  }
+
+  return options;
 }
 
 export function blobToArrayBuffer(file: Blob): Promise<ArrayBuffer> {

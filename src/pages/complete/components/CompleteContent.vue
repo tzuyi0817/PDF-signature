@@ -88,8 +88,8 @@ onBeforeUnmount(() => {
     <div class="complete-content-file">
       <div class="flex h-fit w-fit origin-top-left scale-150 flex-col gap-5 px-3 py-5 md:scale-100 md:px-14 md:py-10">
         <template
-          v-for="canvas in currentPDF.canvas"
-          :key="canvas"
+          v-for="(canvas, index) in currentPDF.canvas"
+          :key="index"
         >
           <blob-image
             :blob="canvas"

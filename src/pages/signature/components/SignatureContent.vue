@@ -75,13 +75,13 @@ async function mergeFile() {
       });
 
       const blobs = await Promise.all(compressPromises);
-      const filteredBlobs = blobs.filter(blob => blob !== '');
 
       if (isCancelMerge.value) {
         isCancelMerge.value = false;
         return;
       }
 
+      const filteredBlobs = blobs.filter(blob => blob !== '');
       const isPortrait = canvasRect.value.width <= canvasRect.value.height;
       const ratio = isPortrait ? A4_WIDTH / canvasRect.value.width : A4_WIDTH / canvasRect.value.height;
       const width = canvasRect.value.width * ratio;

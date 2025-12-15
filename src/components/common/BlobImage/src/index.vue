@@ -3,7 +3,6 @@ import { onBeforeUnmount, ref, watch } from 'vue';
 
 interface Props {
   blob?: Blob;
-  alt?: string;
 }
 
 defineOptions({ name: 'BlobImage' });
@@ -35,8 +34,5 @@ onBeforeUnmount(cleanupObjectURL);
 </script>
 
 <template>
-  <img
-    :src="src"
-    :alt="alt"
-  />
+  <img :src="src" />
 </template>

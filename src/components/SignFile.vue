@@ -1,11 +1,13 @@
 <script setup lang="ts">
+import { loadFile } from '@component-hook/pdf-canvas/vue';
 import { computed, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { BlobImage } from '@/components/common';
 import SignIcon from '@/components/SignIcon.vue';
 import SvgList from '@/components/svg/SvgList.vue';
-import { usePdfStore } from '@/stores';
-import { transformTimestamp } from '@/utils/common';
+import { useConfigStore, usePdfStore } from '@/stores';
+import { sleep, transformTimestamp } from '@/utils/common';
+import { generatePDF } from '@/utils/jspdf';
 import type { MenuTab } from '@/types/menu';
 import type { PDF } from '@/types/pdf';
 
@@ -24,6 +26,7 @@ const isShowMore = ref(false);
 const isSelected = ref(false);
 const router = useRouter();
 const { addPDF, addArchive, addTrash, deleteArchive, deleteTrash, setCurrentPDF } = usePdfStore();
+const { toggleLoading } = useConfigStore();
 
 const localTime = computed(() => {
   return transformTimestamp(file.updateDate);
@@ -46,6 +49,7 @@ const more = computed(() => {
       { icon: 'trash', feat: () => openWarnPopup() },
     ],
   };
+
   return moreMap[type];
 });
 
@@ -54,8 +58,17 @@ function openEncryptPopup() {
   emit('openEncryptPopup', file);
 }
 
-function editFile() {
-  setCurrentPDF({ ...file, isUpdate: true });
+async function editFile() {
+  toggleLoading({ isShow: true, title: 'upload_file', content: 'file_uploading' });
+
+  const [pdf] = await Promise.all([generatePDF(file), sleep(300)]);
+
+  if (!pdf) return;
+
+  const content = await loadFile(pdf);
+
+  setCurrentPDF({ ...file, ...content, PDFId: file.PDFId, canvas: [], isUpdate: true });
+  toggleLoading({ isShow: false });
   router.push({ name: 'signature' });
 }
 
