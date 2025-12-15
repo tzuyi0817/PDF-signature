@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.5.6](https://github.com/tzuyi0817/PDF-signature/compare/v0.5.5...v0.5.6) (2025-12-15)
+
+### Features
+
+- adjust the way PDF files are read for editing ([e987a9d](https://github.com/tzuyi0817/PDF-signature/commit/e987a9dc9d2dfbe9c33239547b98b5d51a57eeb0))
+
 ## [0.5.5](https://github.com/tzuyi0817/PDF-signature/compare/v0.5.4...v0.5.5) (2025-11-27)
 
 ### Bug Fixes
