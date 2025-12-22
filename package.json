@@ -33,7 +33,7 @@
     "@intlify/unplugin-vue-i18n": "^11.0.1",
     "@playwright/test": "^1.56.1",
     "@tailwindcss/vite": "^4.1.17",
-    "@tsconfig/node22": "^22.0.2",
+    "@tsconfig/node24": "^24.0.0",
     "@types/node": "^24.10.0",
     "@vitejs/plugin-vue": "^6.0.1",
     "@vue/tsconfig": "^0.8.1",
