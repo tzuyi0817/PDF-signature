@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { showToast, SvgIcon } from '@/components/common';
-import SignPopup from '@/components/SignPopup.vue';
+import { Popup, showToast, SvgIcon } from '@/components/common';
 import { useSignatureStore } from '@/stores';
 import { isDesktop } from '@/utils/common';
 
@@ -92,7 +91,7 @@ function clear() {
 </script>
 
 <template>
-  <sign-popup
+  <popup
     :title="$t('create_signature_file')"
     @child-mounted="setCanvas"
   >
@@ -156,5 +155,5 @@ function clear() {
         {{ $t('confirm') }}
       </button>
     </div>
-  </sign-popup>
+  </popup>
 </template>

@@ -6,3 +6,4 @@ export * from './blob-image';
 export * from './version';
 export * from './svg-icon';
 export * from './step-btn';
+export * from './popup';

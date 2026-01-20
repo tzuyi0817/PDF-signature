@@ -21,7 +21,7 @@ const isSelectAll = ref<boolean | 'mixed'>(false);
 const currentFile = ref<PDF | null>(null);
 const batch = new Set<PDF>();
 const { deleteTrash, batchDeleteTrash } = usePdfStore();
-const { isShowWarnPopup, SignPopup, toggleWarnPopup } = useWarnPopup();
+const { isShowWarnPopup, Popup, toggleWarnPopup } = useWarnPopup();
 
 const SignEncryption = defineAsyncComponent(() => import('@/components/SignEncryption.vue'));
 const isListStatus = computed(() => showStatus.value === 'list');
@@ -190,7 +190,7 @@ onActivated(updateSelectAll);
       </p>
     </div>
 
-    <sign-popup
+    <popup
       v-if="isShowWarnPopup"
       :title="$t('warn')"
     >
@@ -211,7 +211,7 @@ onActivated(updateSelectAll);
           {{ $t('confirm') }}
         </button>
       </div>
-    </sign-popup>
+    </popup>
 
     <sign-encryption
       v-if="iShowEncryptPopup"

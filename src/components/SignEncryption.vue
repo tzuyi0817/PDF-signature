@@ -1,9 +1,8 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { showToast } from '@/components/common';
+import { Popup, showToast } from '@/components/common';
 import SignPassword from '@/components/SignPassword.vue';
-import SignPopup from '@/components/SignPopup.vue';
 import { useConfigStore } from '@/stores';
 import { downloadPDF } from '@/utils/jspdf';
 import type { PDF } from '@/types/pdf';
@@ -45,7 +44,7 @@ function download(isEncrypt: boolean) {
 </script>
 
 <template>
-  <SignPopup
+  <popup
     :title="$t('encryption')"
     @close-popup="$emit('closeEncryptPopup')"
   >
@@ -76,5 +75,5 @@ function download(isEncrypt: boolean) {
         {{ $t('confirm') }}
       </button>
     </div>
-  </SignPopup>
+  </popup>
 </template>

@@ -18,7 +18,7 @@ const literal = ref('');
 const isEditing = ref(false);
 const { literalList } = storeToRefs(useLiteralStore());
 const { t } = useI18n();
-const { isShowWarnPopup, SignPopup, toggleWarnPopup } = useWarnPopup();
+const { isShowWarnPopup, Popup, toggleWarnPopup } = useWarnPopup();
 
 function useLiteral() {
   emit('useLiteral', currentSelect.value, 'text');
@@ -154,7 +154,7 @@ function close() {
     </div>
   </signature-popup>
 
-  <sign-popup
+  <popup
     v-if="isShowLiteralPopup"
     :title="isEditing ? $t('edit_text') : $t('add_text')"
   >
@@ -178,9 +178,9 @@ function close() {
         {{ $t('confirm') }}
       </button>
     </div>
-  </sign-popup>
+  </popup>
 
-  <sign-popup
+  <popup
     v-if="isShowWarnPopup"
     :title="$t('warn')"
   >
@@ -201,5 +201,5 @@ function close() {
         {{ $t('delete') }}
       </button>
     </div>
-  </sign-popup>
+  </popup>
 </template>

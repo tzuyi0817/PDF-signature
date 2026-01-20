@@ -16,7 +16,7 @@ const isShowPasswordPopup = ref(false);
 const pages = ref(1);
 const { t, locale } = useI18n();
 const { createCanvas, deleteCanvas, loadFile } = useFabric({ id: 'canvas' });
-const { isShowWarnPopup, SignPopup, goBack, goPage, toggleWarnPopup } = useWarnPopup();
+const { isShowWarnPopup, Popup, goBack, goPage, toggleWarnPopup } = useWarnPopup();
 const { toggleLoading, updateFilePassword } = useConfigStore();
 const UploadPassword = defineAsyncComponent(() => import('./UploadPassword.vue'));
 const regexp = /.pdf|.png|.jpg|.jpeg/;
@@ -201,7 +201,7 @@ onAfterRouteLeave(deleteCanvas);
 
     <version />
 
-    <sign-popup
+    <popup
       v-if="isShowWarnPopup"
       :title="$t('warn')"
     >
@@ -222,7 +222,7 @@ onAfterRouteLeave(deleteCanvas);
           {{ $t('give_up') }}
         </button>
       </div>
-    </sign-popup>
+    </popup>
 
     <upload-password
       v-if="isShowPasswordPopup"

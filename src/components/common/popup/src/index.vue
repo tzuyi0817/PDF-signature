@@ -5,7 +5,9 @@ export interface Props {
   title: string;
 }
 
+defineOptions({ name: 'Popup' });
 defineProps<Props>();
+
 const emit = defineEmits(['childMounted', 'closePopup']);
 
 onMounted(() => emit('childMounted'));

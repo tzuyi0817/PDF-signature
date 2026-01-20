@@ -22,7 +22,7 @@ const currentSelect = ref('');
 const isShowImagePopup = ref(false);
 const { imageList } = storeToRefs(useImageStore());
 const { t, locale } = useI18n();
-const { isShowWarnPopup, SignPopup, toggleWarnPopup } = useWarnPopup();
+const { isShowWarnPopup, Popup, toggleWarnPopup } = useWarnPopup();
 const { toggleLoading } = useConfigStore();
 
 function useImage() {
@@ -160,7 +160,7 @@ function close() {
     </div>
   </signature-popup>
 
-  <sign-popup
+  <popup
     v-if="isShowImagePopup"
     :title="$t('add_picture')"
   >
@@ -199,9 +199,9 @@ function close() {
     >
       {{ $t('cancel') }}
     </button>
-  </sign-popup>
+  </popup>
 
-  <sign-popup
+  <popup
     v-if="isShowWarnPopup"
     :title="$t('warn')"
   >
@@ -222,7 +222,7 @@ function close() {
         {{ $t('delete') }}
       </button>
     </div>
-  </sign-popup>
+  </popup>
 </template>
 
 <style lang="css" scoped>

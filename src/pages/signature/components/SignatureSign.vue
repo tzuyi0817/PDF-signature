@@ -17,7 +17,7 @@ const currentSelect = ref('');
 const isShowDrawPopup = ref(false);
 const { signatureList } = storeToRefs(useSignatureStore());
 const { t } = useI18n();
-const { isShowWarnPopup, SignPopup, toggleWarnPopup } = useWarnPopup();
+const { isShowWarnPopup, Popup, toggleWarnPopup } = useWarnPopup();
 
 function useSignature() {
   emit('useSignature', currentSelect.value);
@@ -122,7 +122,7 @@ function close() {
     @close="toggleDrawPopup(false)"
   />
 
-  <sign-popup
+  <popup
     v-if="isShowWarnPopup"
     :title="$t('warn')"
   >
@@ -143,5 +143,5 @@ function close() {
         {{ $t('delete') }}
       </button>
     </div>
-  </sign-popup>
+  </popup>
 </template>

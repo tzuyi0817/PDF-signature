@@ -12,7 +12,7 @@ const warnType = ref<WarnType>('archive');
 const iShowEncryptPopup = ref(false);
 const { currentPDF } = storeToRefs(usePdfStore());
 const { t } = useI18n();
-const { isShowWarnPopup, SignPopup, goPage, toggleWarnPopup } = useWarnPopup();
+const { isShowWarnPopup, Popup, goPage, toggleWarnPopup } = useWarnPopup();
 const SignEncryption = defineAsyncComponent(() => import('@/components/SignEncryption.vue'));
 const warnContent = computed(() => {
   const contentMap = {
@@ -106,7 +106,8 @@ onBeforeUnmount(() => {
     </button>
 
     <version />
-    <sign-popup
+
+    <popup
       v-if="isShowWarnPopup"
       :title="$t('warn')"
     >
@@ -127,7 +128,7 @@ onBeforeUnmount(() => {
           {{ $t('confirm') }}
         </button>
       </div>
-    </sign-popup>
+    </popup>
 
     <sign-encryption
       v-if="iShowEncryptPopup"

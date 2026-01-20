@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { showToast } from '@/components/common';
+import { Popup, showToast } from '@/components/common';
 import SignPassword from '@/components/SignPassword.vue';
-import SignPopup from '@/components/SignPopup.vue';
 import { useConfigStore } from '@/stores';
 
 interface Emits {
@@ -25,7 +24,7 @@ function confirmPassword() {
 </script>
 
 <template>
-  <sign-popup :title="$t('warn')">
+  <popup :title="$t('warn')">
     <p class="my-5 text-center">
       {{ $t('prompt.protected_file') }}
     </p>
@@ -48,5 +47,5 @@ function confirmPassword() {
         {{ $t('confirm') }}
       </button>
     </div>
-  </sign-popup>
+  </popup>
 </template>

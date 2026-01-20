@@ -10,11 +10,11 @@ interface Props {
 defineProps<Props>();
 
 const isMergeComplete = ref(false);
-const { SignPopup, goPage } = useWarnPopup();
+const { Popup, goPage } = useWarnPopup();
 </script>
 
 <template>
-  <sign-popup
+  <popup
     v-if="isShowMergePopup"
     :title="$t('create_file')"
   >
@@ -29,7 +29,7 @@ const { SignPopup, goPage } = useWarnPopup();
         v-if="isMergeComplete"
         class="text-center"
       >
-        <h5 class="text-primary mb-[18px]">
+        <h5 class="text-primary mb-4.5">
           {{ $t('file_completed') }}
         </h5>
         <p class="text-gray-40">
@@ -59,5 +59,5 @@ const { SignPopup, goPage } = useWarnPopup();
         {{ $t('cancel') }}
       </button>
     </div>
-  </sign-popup>
+  </popup>
 </template>

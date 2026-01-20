@@ -36,7 +36,7 @@ const isActivatedFabric = ref(false);
 const { currentPDF } = storeToRefs(usePdfStore());
 const configStore = useConfigStore();
 const { t } = useI18n();
-const { isShowWarnPopup, SignPopup, goBack, goPage, toggleWarnPopup } = useWarnPopup();
+const { isShowWarnPopup, Popup, goBack, goPage, toggleWarnPopup } = useWarnPopup();
 const { handlePointerDown, handlePointerMove, handlePointerUp } = usePointerFabric(fileContainerRef);
 const {
   currentPage,
@@ -311,7 +311,7 @@ onAfterRouteLeave(() => {
 
     <version />
 
-    <sign-popup
+    <popup
       v-if="isShowWarnPopup"
       :title="$t('warn')"
     >
@@ -332,9 +332,9 @@ onAfterRouteLeave(() => {
           {{ $t('give_up') }}
         </button>
       </div>
-    </sign-popup>
+    </popup>
 
-    <sign-popup
+    <popup
       v-if="isShowNextWarnPopup"
       :title="$t('create_file')"
     >
@@ -355,7 +355,7 @@ onAfterRouteLeave(() => {
           {{ $t('confirm') }}
         </button>
       </div>
-    </sign-popup>
+    </popup>
 
     <signature-merge-popup
       :is-show-merge-popup="isShowMergePopup"

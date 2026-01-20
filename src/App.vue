@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { AppFooter, AppHeader } from '@/components/layout';
-import SignLoading from '@/components/SignLoading.vue';
-import SignReload from '@/components/SignReload.vue';
+import { AppFooter, AppHeader, AppLoading, AppReload } from '@/components/layout';
 import { emitRouteEvent } from '@/router/events';
 
 const router = useRouter();
@@ -35,8 +33,8 @@ router.beforeEach((to, from) => {
   </router-view>
 
   <app-footer />
-  <sign-loading />
-  <sign-reload />
+  <app-loading />
+  <app-reload />
 </template>
 
 <style lang="css">

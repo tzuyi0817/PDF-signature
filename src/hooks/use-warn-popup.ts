@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import SignPopup from '@/components/SignPopup.vue';
+import { Popup } from '@/components/common';
 import { useRedirect } from '@/hooks/use-redirect';
 
 export function useWarnPopup() {
@@ -12,7 +12,7 @@ export function useWarnPopup() {
 
   return {
     isShowWarnPopup,
-    SignPopup,
+    Popup,
     goBack,
     goPage,
     toggleWarnPopup,

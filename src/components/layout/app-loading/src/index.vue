@@ -1,13 +1,15 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
-import SignPopup from '@/components/SignPopup.vue';
+import { Popup } from '@/components/common';
 import { useConfigStore } from '@/stores';
+
+defineOptions({ name: 'AppLoading' });
 
 const { loading } = storeToRefs(useConfigStore());
 </script>
 
 <template>
-  <sign-popup
+  <popup
     v-if="loading.isShow"
     :title="$t(loading.title)"
   >
@@ -34,5 +36,5 @@ const { loading } = storeToRefs(useConfigStore());
         </p>
       </div>
     </div>
-  </sign-popup>
+  </popup>
 </template>
