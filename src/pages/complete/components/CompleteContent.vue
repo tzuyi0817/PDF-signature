@@ -2,9 +2,8 @@
 import { storeToRefs } from 'pinia';
 import { computed, defineAsyncComponent, onBeforeMount, onBeforeUnmount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { BlobImage, showToast } from '@/components/common';
+import { BlobImage, showToast, Version } from '@/components/common';
 import SignIcon from '@/components/SignIcon.vue';
-import SignVersion from '@/components/SignVersion.vue';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { useConfigStore, usePdfStore } from '@/stores';
 
@@ -107,7 +106,7 @@ onBeforeUnmount(() => {
       <span class="text-4xl font-thin">←</span>{{ $t('return_home') }}
     </button>
 
-    <sign-version />
+    <version />
     <sign-popup
       v-if="isShowWarnPopup"
       :title="$t('warn')"

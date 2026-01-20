@@ -1,4 +1,6 @@
 <script setup lang="ts">
+defineOptions({ name: 'Version' });
+
 const version = import.meta.env.VITE_APP_VERSION;
 </script>
 

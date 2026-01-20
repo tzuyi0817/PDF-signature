@@ -3,9 +3,8 @@ import imageCompression from 'browser-image-compression';
 import { storeToRefs } from 'pinia';
 import { computed, defineAsyncComponent, ref, useTemplateRef } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { showToast } from '@/components/common';
+import { showToast, Version } from '@/components/common';
 import SignStepBtn from '@/components/SignStepBtn.vue';
-import SignVersion from '@/components/SignVersion.vue';
 import { A4_WIDTH, DRAG_MOVE_STEP } from '@/constants/common';
 import { useLoadCanvas } from '@/hooks/use-load-canvas';
 import { usePointerFabric } from '@/hooks/use-pointer-fabric';
@@ -14,8 +13,6 @@ import { onAfterRouteLeave } from '@/router';
 import { useConfigStore, usePdfStore } from '@/stores';
 import { sleep } from '@/utils/common';
 import { canvasToFile } from '@/utils/image';
-import type { DragOffset } from '@/types/drag';
-import type { SignatureTool } from '@/types/menu';
 import SignatureImage from './SignatureImage.vue';
 import SignatureLiteral from './SignatureLiteral.vue';
 import SignatureLoading from './SignatureLoading.vue';
@@ -24,6 +21,8 @@ import SignaturePage from './SignaturePage.vue';
 import SignaturePanel from './SignaturePanel.vue';
 import SignatureSign from './SignatureSign.vue';
 import SignatureToolbar from './SignatureToolbar.vue';
+import type { DragOffset } from '@/types/drag';
+import type { SignatureTool } from '@/types/menu';
 
 const CANVAS_SCALE = 0.6;
 const SignatureCanvasItem = defineAsyncComponent(() => import('@component-hook/pdf-canvas/vue'));
@@ -310,7 +309,9 @@ onAfterRouteLeave(() => {
       @next-step="toggleNextWarnPopup(true)"
       @prev-step="toggleWarnPopup(true)"
     />
-    <sign-version />
+
+    <version />
+
     <sign-popup
       v-if="isShowWarnPopup"
       :title="$t('warn')"

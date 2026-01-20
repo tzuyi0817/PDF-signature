@@ -2,10 +2,9 @@
 import { useFabric } from '@component-hook/pdf-canvas/vue';
 import { computed, defineAsyncComponent, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { showToast } from '@/components/common';
+import { showToast, Version } from '@/components/common';
 import SignIcon from '@/components/SignIcon.vue';
 import SignStepBtn from '@/components/SignStepBtn.vue';
-import SignVersion from '@/components/SignVersion.vue';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { onAfterRouteLeave } from '@/router';
 import { useConfigStore, usePdfStore } from '@/stores';
@@ -142,7 +141,7 @@ onAfterRouteLeave(deleteCanvas);
 
       <div class="flex w-full flex-col items-center gap-4">
         <p>{{ $t('project_name') }}</p>
-        <label class="relative w-[90%] max-w-[400px]">
+        <label class="relative w-[90%] max-w-100">
           <input
             v-model.trim="projectName"
             type="text"
@@ -180,7 +179,7 @@ onAfterRouteLeave(deleteCanvas);
           <input
             type="file"
             accept="application/pdf, .jpg, .png"
-            class="absolute h-[41px] w-[131px] cursor-pointer opacity-0"
+            class="absolute h-10.25 w-32.75 cursor-pointer opacity-0"
             @change="uploadFile"
           />{{ $t('select_file') }}
         </button>
@@ -201,7 +200,9 @@ onAfterRouteLeave(deleteCanvas);
       @next-step="goPage('signature')"
       @prev-step="toggleWarnPopup(true)"
     />
-    <sign-version />
+
+    <version />
+
     <sign-popup
       v-if="isShowWarnPopup"
       :title="$t('warn')"

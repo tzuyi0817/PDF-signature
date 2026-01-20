@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import SignVersion from '@/components/SignVersion.vue';
+import { Version } from '@/components/common';
 import { useRedirect } from '@/hooks/use-redirect';
-import type { MenuTab } from '@/types/menu';
 import HomeArchives from './HomeArchives.vue';
 import HomeFiles from './HomeFiles.vue';
 import HomeTrash from './HomeTrash.vue';
+import type { MenuTab } from '@/types/menu';
 
 interface Props {
   currentTab: MenuTab;
@@ -43,7 +43,8 @@ const currentCom = computed(() => {
     <h5 class="title">
       {{ $t(title) }}
     </h5>
-    <sign-version />
+
+    <version />
 
     <keep-alive>
       <component :is="currentCom" />
