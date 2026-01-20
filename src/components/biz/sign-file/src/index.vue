@@ -3,7 +3,7 @@ import { loadFile } from '@component-hook/pdf-canvas/vue';
 import { computed, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { BlobImage, SvgIcon } from '@/components/common';
-import SvgList from '@/components/svg/SvgList.vue';
+import { SvgList } from '@/components/svg';
 import { useConfigStore, usePdfStore } from '@/stores';
 import { sleep, transformTimestamp } from '@/utils/common';
 import { generatePDF } from '@/utils/jspdf';

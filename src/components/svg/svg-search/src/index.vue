@@ -3,6 +3,7 @@ interface Props {
   color: string;
 }
 
+defineOptions({ name: 'SvgSearch' });
 defineProps<Props>();
 </script>
 

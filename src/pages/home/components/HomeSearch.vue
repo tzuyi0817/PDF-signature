@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
 import { SvgIcon } from '@/components/common';
-import SvgSearch from '@/components/svg/SvgSearch.vue';
+import { SvgSearch } from '@/components/svg';
 
 const keyword = defineModel();
 const searchIconColor = ref('#CCCCCC');

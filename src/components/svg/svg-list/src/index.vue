@@ -1,3 +1,7 @@
+<script setup lang="ts">
+defineOptions({ name: 'SvgList' });
+</script>
+
 <template>
   <svg
     width="40"
