@@ -2,8 +2,7 @@
 import { useFabric } from '@component-hook/pdf-canvas/vue';
 import { computed, defineAsyncComponent, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { showToast, SvgIcon, Version } from '@/components/common';
-import SignStepBtn from '@/components/SignStepBtn.vue';
+import { showToast, StepBtn, SvgIcon, Version } from '@/components/common';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { onAfterRouteLeave } from '@/router';
 import { useConfigStore, usePdfStore } from '@/stores';
@@ -194,7 +193,7 @@ onAfterRouteLeave(deleteCanvas);
       </div>
     </div>
 
-    <sign-step-btn
+    <step-btn
       :is-next-disabled="isNextDisabled"
       @next-step="goPage('signature')"
       @prev-step="toggleWarnPopup(true)"

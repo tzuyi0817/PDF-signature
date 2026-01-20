@@ -5,3 +5,4 @@ export * from './describedby';
 export * from './blob-image';
 export * from './version';
 export * from './svg-icon';
+export * from './step-btn';

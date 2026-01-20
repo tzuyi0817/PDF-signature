@@ -4,7 +4,9 @@ interface Props {
   isNextDisabled?: boolean;
 }
 
+defineOptions({ name: 'StepBtn' });
 defineProps<Props>();
+
 const emit = defineEmits(['prevStep', 'nextStep']);
 </script>
 

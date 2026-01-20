@@ -3,8 +3,7 @@ import imageCompression from 'browser-image-compression';
 import { storeToRefs } from 'pinia';
 import { computed, defineAsyncComponent, ref, useTemplateRef } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { showToast, Version } from '@/components/common';
-import SignStepBtn from '@/components/SignStepBtn.vue';
+import { showToast, StepBtn, Version } from '@/components/common';
 import { A4_WIDTH, DRAG_MOVE_STEP } from '@/constants/common';
 import { useLoadCanvas } from '@/hooks/use-load-canvas';
 import { usePointerFabric } from '@/hooks/use-pointer-fabric';
@@ -302,7 +301,7 @@ onAfterRouteLeave(() => {
       </div>
     </div>
 
-    <sign-step-btn
+    <step-btn
       class="pb-2.5"
       :is-prev-disabled="!isCompleted"
       :is-next-disabled="!isCompleted"
