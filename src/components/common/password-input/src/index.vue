@@ -6,7 +6,9 @@ interface Props {
   placeholder: string;
 }
 
+defineOptions({ name: 'PasswordInput' });
 defineProps<Props>();
+
 const password = defineModel({ required: true });
 const type = ref('password');
 const icon = computed(() => (type.value === 'password' ? 'eye_closed' : 'eye_open'));

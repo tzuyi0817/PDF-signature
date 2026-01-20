@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Popup, showToast } from '@/components/common';
-import SignPassword from '@/components/SignPassword.vue';
+import { PasswordInput, Popup, showToast } from '@/components/common';
 import { useConfigStore } from '@/stores';
 
 interface Emits {
@@ -28,11 +27,13 @@ function confirmPassword() {
     <p class="my-5 text-center">
       {{ $t('prompt.protected_file') }}
     </p>
-    <sign-password
+
+    <password-input
       v-model="password"
       class="mx-auto mb-4"
       placeholder="placeholder.password"
     />
+
     <div class="flex justify-between md:justify-evenly">
       <button
         class="btn btn-base"

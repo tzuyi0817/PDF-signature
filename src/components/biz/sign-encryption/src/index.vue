@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Popup, showToast } from '@/components/common';
-import SignPassword from '@/components/SignPassword.vue';
+import { PasswordInput, Popup, showToast } from '@/components/common';
 import { useConfigStore } from '@/stores';
 import { downloadPDF } from '@/utils/jspdf';
 import type { PDF } from '@/types/pdf';
@@ -14,6 +13,8 @@ interface Props {
 interface Emits {
   closeEncryptPopup: [];
 }
+
+defineOptions({ name: 'SignEncryption' });
 
 const { file } = defineProps<Props>();
 const emit = defineEmits<Emits>();
@@ -51,16 +52,18 @@ function download(isEncrypt: boolean) {
     <p class="my-5 text-center">
       {{ $t('prompt.encryption_file') }}
     </p>
+
     <div class="mb-4 flex flex-col items-center justify-center gap-3">
-      <sign-password
+      <password-input
         v-model="password"
         placeholder="placeholder.password"
       />
-      <sign-password
+      <password-input
         v-model="confirmPassword"
         placeholder="placeholder.confirm_password"
       />
     </div>
+
     <div class="flex justify-between md:justify-evenly">
       <button
         class="btn btn-base"

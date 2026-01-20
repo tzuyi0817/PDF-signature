@@ -19,6 +19,8 @@ interface Props {
   isSelectAll: boolean | 'mixed';
 }
 
+defineOptions({ name: 'SignFile' });
+
 const { file, type, keyword, isSelectAll } = defineProps<Props>();
 const emit = defineEmits(['openWarnPopup', 'openEncryptPopup', 'selectFile']);
 const isShowMore = ref(false);

@@ -13,7 +13,7 @@ const iShowEncryptPopup = ref(false);
 const { currentPDF } = storeToRefs(usePdfStore());
 const { t } = useI18n();
 const { isShowWarnPopup, Popup, goPage, toggleWarnPopup } = useWarnPopup();
-const SignEncryption = defineAsyncComponent(() => import('@/components/SignEncryption.vue'));
+const SignEncryption = defineAsyncComponent(() => import('@/components/biz/sign-encryption/src/index.vue'));
 const warnContent = computed(() => {
   const contentMap = {
     archive: 'prompt.sure_archive_file',

@@ -58,7 +58,7 @@ export function preloadComponents() {
   requestIdleCallback(() => {
     const components: AsyncComponentLoader<Component>[] = [
       () => import('@/pages/upload/components/UploadPassword.vue'),
-      () => import('@/components/SignEncryption.vue'),
+      () => import('@/components/biz/sign-encryption/src/index.vue'),
     ];
 
     parallelPreload(2, components, loader => loader());

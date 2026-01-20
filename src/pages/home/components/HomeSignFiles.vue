@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, nextTick, onActivated, ref } from 'vue';
+import { SignFile } from '@/components/biz';
 import { BatchOperation, Checkbox, SvgIcon } from '@/components/common';
-import SignFile from '@/components/SignFile.vue';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { usePdfStore } from '@/stores';
 import HomeSearch from './HomeSearch.vue';
@@ -23,7 +23,7 @@ const batch = new Set<PDF>();
 const { deleteTrash, batchDeleteTrash } = usePdfStore();
 const { isShowWarnPopup, Popup, toggleWarnPopup } = useWarnPopup();
 
-const SignEncryption = defineAsyncComponent(() => import('@/components/SignEncryption.vue'));
+const SignEncryption = defineAsyncComponent(() => import('@/components/biz/sign-encryption/src/index.vue'));
 const isListStatus = computed(() => showStatus.value === 'list');
 const isShowThread = computed(() => isListStatus.value && isSelectAll.value === false);
 const search = computed(() => {

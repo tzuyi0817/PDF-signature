@@ -7,3 +7,4 @@ export * from './version';
 export * from './svg-icon';
 export * from './step-btn';
 export * from './popup';
+export * from './password-input';
