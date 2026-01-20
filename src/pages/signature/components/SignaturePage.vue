@@ -4,8 +4,8 @@ import { defineAsyncComponent, onBeforeUnmount, ref } from 'vue';
 import { useLoadCanvas } from '@/hooks/use-load-canvas';
 import { useConfigStore, usePdfStore } from '@/stores';
 import { isDesktop, monitorDevicePixelRatio } from '@/utils/common';
-import type { SignatureTool } from '@/types/menu';
 import SignaturePopup from './SignaturePopup.vue';
+import type { SignatureTool } from '@/types/menu';
 
 const emit = defineEmits(['usePage']);
 const currentTool = defineModel<SignatureTool | ''>('currentTool');

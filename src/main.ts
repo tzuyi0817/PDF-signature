@@ -1,7 +1,6 @@
 import { createApp } from 'vue';
 import App from '@/App.vue';
 import errorHandlerPlugin from '@/plugins/error-handler';
-
 import i18NPlugin from '@/plugins/i18n';
 import preloadPlugin from '@/plugins/preload';
 import router from '@/router';

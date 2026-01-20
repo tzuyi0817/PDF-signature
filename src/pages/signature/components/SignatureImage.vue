@@ -8,9 +8,9 @@ import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { useConfigStore, useImageStore } from '@/stores';
 import { convertToBase64 } from '@/utils/image';
 import { checkFile } from '@/utils/reader';
+import SignaturePopup from './SignaturePopup.vue';
 import type { DragOffset } from '@/types/drag';
 import type { SignatureTool } from '@/types/menu';
-import SignaturePopup from './SignaturePopup.vue';
 
 interface Emits {
   useImage: [src: string];

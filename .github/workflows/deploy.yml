@@ -9,12 +9,12 @@ on:
     branches: [main]
     paths:
       - 'src/**'
-      - 'pnpm-lock.yaml'
-      - 'package.json'
+      - pnpm-lock.yaml
+      - package.json
 
 jobs:
   CI:
-    uses: './.github/workflows/ci.yml'
+    uses: ./.github/workflows/ci.yml
 
   deploy:
     needs: CI

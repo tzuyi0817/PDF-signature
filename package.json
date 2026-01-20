@@ -1,8 +1,8 @@
 {
   "name": "pdf-signature",
-  "private": true,
-  "version": "0.5.6",
   "type": "module",
+  "version": "0.5.6",
+  "private": true,
   "packageManager": "pnpm@10.28.0",
   "scripts": {
     "dev": "vite",
@@ -27,6 +27,12 @@
     "vue": "^3.5.26",
     "vue-i18n": "^11.1.12",
     "vue-router": "^4.6.4"
+  },
+  "optionalDependencies": {
+    "@commitlint/cli": "^20.3.1",
+    "@commitlint/config-conventional": "^20.3.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7"
   },
   "devDependencies": {
     "@component-hook/eslint-plugin": "^1.4.2",
@@ -53,12 +59,6 @@
     "vite-plugin-svg-icons": "^2.0.1",
     "vite-plugin-top-level-await": "^1.6.0",
     "vue-tsc": "^3.2.2"
-  },
-  "optionalDependencies": {
-    "@commitlint/cli": "^20.3.1",
-    "@commitlint/config-conventional": "^20.3.1",
-    "husky": "^9.1.7",
-    "lint-staged": "^16.2.7"
   },
   "pnpm": {
     "overrides": {

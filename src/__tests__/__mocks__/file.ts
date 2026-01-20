@@ -1,7 +1,7 @@
 import { type Page } from '@playwright/test';
+import { importModule } from './common';
 import type { PdfStore } from '@/stores';
 import type { PDF } from '@/types/pdf';
-import { importModule } from './common';
 
 export const MOCK_FILES: [PDF, PDF] = [
   {

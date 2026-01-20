@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import type { MenuTab } from '@/types/menu';
 import HomeContent from './components/HomeContent.vue';
 import HomeMenu from './components/HomeMenu.vue';
+import type { MenuTab } from '@/types/menu';
 
 const currentTab = ref<MenuTab>('file');
 </script>

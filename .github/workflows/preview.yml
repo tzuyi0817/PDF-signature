@@ -10,7 +10,7 @@ on:
 
 jobs:
   CI:
-    uses: './.github/workflows/ci.yml'
+    uses: ./.github/workflows/ci.yml
 
   deploy:
     needs: CI

@@ -5,9 +5,9 @@ import SignFile from '@/components/SignFile.vue';
 import SignIcon from '@/components/SignIcon.vue';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { usePdfStore } from '@/stores';
+import HomeSearch from './HomeSearch.vue';
 import type { FileShowStatus, MenuTab } from '@/types/menu';
 import type { PDF } from '@/types/pdf';
-import HomeSearch from './HomeSearch.vue';
 
 interface Props {
   type: MenuTab;

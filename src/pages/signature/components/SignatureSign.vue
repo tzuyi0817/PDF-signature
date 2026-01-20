@@ -6,10 +6,10 @@ import { showToast } from '@/components/common';
 import SignIcon from '@/components/SignIcon.vue';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { useSignatureStore } from '@/stores';
-import type { DragOffset } from '@/types/drag';
-import type { SignatureTool } from '@/types/menu';
 import SignatureDrawPopup from './SignatureDrawPopup.vue';
 import SignaturePopup from './SignaturePopup.vue';
+import type { DragOffset } from '@/types/drag';
+import type { SignatureTool } from '@/types/menu';
 
 const emit = defineEmits(['useSignature']);
 const currentTool = defineModel<SignatureTool | ''>('currentTool');

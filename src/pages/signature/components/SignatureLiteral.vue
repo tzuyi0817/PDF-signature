@@ -6,9 +6,9 @@ import { showToast } from '@/components/common';
 import SignIcon from '@/components/SignIcon.vue';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { useLiteralStore } from '@/stores';
+import SignaturePopup from './SignaturePopup.vue';
 import type { DragOffset } from '@/types/drag';
 import type { SignatureTool } from '@/types/menu';
-import SignaturePopup from './SignaturePopup.vue';
 
 const emit = defineEmits(['useLiteral']);
 const currentTool = defineModel<SignatureTool | ''>('currentTool');
