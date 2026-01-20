@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { showToast } from '@/components/common';
-import SignIcon from '@/components/SignIcon.vue';
+import { showToast, SvgIcon } from '@/components/common';
 import SignPopup from '@/components/SignPopup.vue';
 import { useSignatureStore } from '@/stores';
 import { isDesktop } from '@/utils/common';
@@ -99,7 +98,7 @@ function clear() {
   >
     <ul class="toolbar">
       <li>
-        <sign-icon
+        <svg-icon
           :name="currentTool === 'black' ? 'color_black_h' : 'color_black'"
           class="h-7 w-7"
           hover-change-svg
@@ -107,7 +106,7 @@ function clear() {
         />
       </li>
       <li>
-        <sign-icon
+        <svg-icon
           :name="currentTool === 'blue' ? 'color_blue_h' : 'color_blue'"
           class="h-7 w-7"
           hover-change-svg
@@ -115,7 +114,7 @@ function clear() {
         />
       </li>
       <li>
-        <sign-icon
+        <svg-icon
           :name="currentTool === 'red' ? 'color_red_h' : 'color_red'"
           class="h-7 w-7"
           hover-change-svg
@@ -123,7 +122,7 @@ function clear() {
         />
       </li>
       <li>
-        <sign-icon
+        <svg-icon
           name="trash"
           class="h-7 w-7"
           @click="clear"

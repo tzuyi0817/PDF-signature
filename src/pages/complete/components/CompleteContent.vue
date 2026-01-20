@@ -2,8 +2,7 @@
 import { storeToRefs } from 'pinia';
 import { computed, defineAsyncComponent, onBeforeMount, onBeforeUnmount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { BlobImage, showToast, Version } from '@/components/common';
-import SignIcon from '@/components/SignIcon.vue';
+import { BlobImage, showToast, SvgIcon, Version } from '@/components/common';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { useConfigStore, usePdfStore } from '@/stores';
 
@@ -62,21 +61,21 @@ onBeforeUnmount(() => {
 
     <ul class="toolbar md:absolute md:top-5 md:right-10">
       <li>
-        <sign-icon
+        <svg-icon
           name="download"
           class="h-9 w-9"
           @click="toggleEncryptPopup(true)"
         />
       </li>
       <li>
-        <sign-icon
+        <svg-icon
           name="archive"
           class="h-9 w-9"
           @click="openWarnPopup('archive')"
         />
       </li>
       <li>
-        <sign-icon
+        <svg-icon
           name="trash"
           class="h-9 w-9"
           @click="openWarnPopup('trash')"

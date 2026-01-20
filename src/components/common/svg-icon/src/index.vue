@@ -9,6 +9,8 @@ interface Props {
   hoverChangeSvg?: boolean;
 }
 
+defineOptions({ name: 'SvgIcon' });
+
 const {
   name,
   hoverColor = 'hover:text-primary',

@@ -2,8 +2,7 @@
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { showToast } from '@/components/common';
-import SignIcon from '@/components/SignIcon.vue';
+import { showToast, SvgIcon } from '@/components/common';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { useConfigStore, useImageStore } from '@/stores';
 import { convertToBase64 } from '@/utils/image';
@@ -122,7 +121,7 @@ function close() {
         v-for="image in imageList"
         :key="image"
         :class="[
-          'relative flex h-[180px] w-full cursor-pointer justify-center rounded-[20px]',
+          'relative flex h-45 w-full cursor-pointer justify-center rounded-[20px]',
           currentSelect === image ? 'bg-primary opacity-70' : 'bg-white',
         ]"
         @click="selectImage(image)"
@@ -133,7 +132,7 @@ function close() {
           class="rounded-[20px] object-cover"
           @dragstart="dragImage"
         />
-        <sign-icon
+        <svg-icon
           v-show="currentSelect === image"
           name="close_s"
           class="text-gray-80 absolute top-1 right-1 h-8 w-8 drop-shadow-md"

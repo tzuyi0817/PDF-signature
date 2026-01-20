@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import SignIcon from '@/components/SignIcon.vue';
+import { SvgIcon } from '@/components/common';
 import { I18N_MAP } from '@/constants/common';
 import { sleep } from '@/utils/common';
 import SignStep from './SignStep.vue';
@@ -53,7 +53,7 @@ function onTransitionEnd(event: TransitionEvent) {
     <router-link to="/">
       <img
         src="@/assets/logo/logo_darkbg_horizontal.png"
-        class="w-36 md:w-[228px]"
+        class="w-36 md:w-57"
         alt="logo"
       />
     </router-link>
@@ -66,7 +66,7 @@ function onTransitionEnd(event: TransitionEvent) {
         @mouseover="openLanguageMenu"
         @mouseleave="closeLanguageMenu"
       >
-        <sign-icon
+        <svg-icon
           name="global"
           class="app-header-icon text-gray-40 mt-0.5"
         />
@@ -103,7 +103,7 @@ function onTransitionEnd(event: TransitionEvent) {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <sign-icon
+        <svg-icon
           name="github"
           class="app-header-icon text-gray-40"
         />

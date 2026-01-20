@@ -2,8 +2,7 @@
 import { useFabric } from '@component-hook/pdf-canvas/vue';
 import { computed, defineAsyncComponent, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { showToast, Version } from '@/components/common';
-import SignIcon from '@/components/SignIcon.vue';
+import { showToast, SvgIcon, Version } from '@/components/common';
 import SignStepBtn from '@/components/SignStepBtn.vue';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { onAfterRouteLeave } from '@/router';
@@ -120,7 +119,7 @@ onAfterRouteLeave(deleteCanvas);
     >
       <div class="flex h-fit w-full flex-col items-center gap-2">
         <div class="relative h-fit">
-          <sign-icon
+          <svg-icon
             name="close"
             class="absolute -top-2 -right-8 h-7 w-7 cursor-pointer md:-top-4 md:-right-12 md:h-9 md:w-9"
             @click="remove"

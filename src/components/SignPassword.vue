@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import SignIcon from '@/components/SignIcon.vue';
+import { SvgIcon } from '@/components/common';
 
 interface Props {
   placeholder: string;
@@ -24,7 +24,8 @@ function toggleType() {
       class="input-password"
       :placeholder="$t(placeholder)"
     />
-    <sign-icon
+
+    <svg-icon
       :name="icon"
       class="absolute top-1/2 right-2 h-6 w-6 -translate-y-1/2 md:right-3"
       @click="toggleType"

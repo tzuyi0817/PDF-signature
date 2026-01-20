@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import SignIcon from '@/components/SignIcon.vue';
+import { SvgIcon } from '@/components/common';
 import { isDesktop } from '@/utils/common';
 import type { SignatureTool } from '@/types/menu';
 
@@ -19,28 +19,28 @@ onMounted(() => {
 <template>
   <ul class="toolbar signature-toolbar">
     <li @click="selectTool('sign')">
-      <sign-icon
+      <svg-icon
         name="sign"
         :class="['h-7 w-7', { 'text-primary': currentTool === 'sign' }]"
       />
       <p>{{ $t('sign') }}</p>
     </li>
     <li @click="selectTool('image')">
-      <sign-icon
+      <svg-icon
         name="pic"
         :class="['h-7 w-7', { 'text-primary': currentTool === 'image' }]"
       />
       <p>{{ $t('picture') }}</p>
     </li>
     <li @click="selectTool('literal')">
-      <sign-icon
+      <svg-icon
         name="text"
         :class="['h-7 w-7', { 'text-primary': currentTool === 'literal' }]"
       />
       <p>{{ $t('text') }}</p>
     </li>
     <li @click="selectTool('page')">
-      <sign-icon
+      <svg-icon
         name="page"
         :class="['h-7 w-7', { 'text-primary': currentTool === 'page' }]"
       />

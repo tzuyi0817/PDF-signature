@@ -2,8 +2,7 @@
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { showToast } from '@/components/common';
-import SignIcon from '@/components/SignIcon.vue';
+import { showToast, SvgIcon } from '@/components/common';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { useLiteralStore } from '@/stores';
 import SignaturePopup from './SignaturePopup.vue';
@@ -119,7 +118,7 @@ function close() {
       >
         <p class="w-full overflow-hidden text-ellipsis whitespace-pre-wrap">
           <span class="inline">{{ word }}</span>
-          <sign-icon
+          <svg-icon
             v-show="currentSelect === word"
             name="edit"
             class="text-gray-80 relative -top-0.5 inline h-5 w-5 scale-150"
@@ -127,7 +126,7 @@ function close() {
             @click="toggleLiteralPopup(true, true)"
           />
         </p>
-        <sign-icon
+        <svg-icon
           v-show="currentSelect === word"
           name="close_s"
           class="text-gray-80 absolute top-1 right-1 h-8 w-8"

@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, nextTick, onActivated, ref } from 'vue';
-import { BatchOperation, Checkbox } from '@/components/common';
+import { BatchOperation, Checkbox, SvgIcon } from '@/components/common';
 import SignFile from '@/components/SignFile.vue';
-import SignIcon from '@/components/SignIcon.vue';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { usePdfStore } from '@/stores';
 import HomeSearch from './HomeSearch.vue';
@@ -110,7 +109,7 @@ onActivated(updateSelectAll);
     <home-search v-model="keyword" />
 
     <div class="hidden w-full items-end px-4 py-5 md:flex">
-      <div class="flex h-6 w-[300px] items-center gap-5 pl-6">
+      <div class="flex h-6 w-75 items-center gap-5 pl-6">
         <div
           class="flex h-8 w-7 cursor-pointer items-center justify-center rounded transition-colors hover:bg-gray-50/15"
         >
@@ -138,12 +137,12 @@ onActivated(updateSelectAll);
           {{ $t('project_name') }}
         </p>
         <div class="flex gap-1">
-          <sign-icon
+          <svg-icon
             name="list"
             :class="['h-10 w-10', { 'text-primary': isListStatus }]"
             @click="changeShowStatus('list')"
           />
-          <sign-icon
+          <svg-icon
             name="card"
             :class="['h-10 w-10', { 'text-primary': showStatus === 'card' }]"
             @click="changeShowStatus('card')"

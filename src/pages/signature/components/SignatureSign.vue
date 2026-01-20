@@ -2,8 +2,7 @@
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { showToast } from '@/components/common';
-import SignIcon from '@/components/SignIcon.vue';
+import { showToast, SvgIcon } from '@/components/common';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { useSignatureStore } from '@/stores';
 import SignatureDrawPopup from './SignatureDrawPopup.vue';
@@ -90,7 +89,7 @@ function close() {
           class="rounded-[20px] object-contain"
           @dragstart="dragSignature"
         />
-        <sign-icon
+        <svg-icon
           v-show="currentSelect === signature"
           name="close_s"
           class="text-gray-80 absolute top-1 right-1 h-8 w-8"

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import SignIcon from '@/components/SignIcon.vue';
+import { SvgIcon } from '@/components/common';
 import { usePdfStore } from '@/stores';
 import type { MenuTab } from '@/types/menu';
 import type { PDF } from '@/types/pdf';
@@ -37,25 +37,25 @@ async function batchReduction() {
 
 <template>
   <div class="flex gap-3">
-    <sign-icon
+    <svg-icon
       v-if="type === 'file'"
       name="archive"
       class="h-6 w-6"
       @click="batchMoveToArchive"
     />
-    <sign-icon
+    <svg-icon
       v-if="type === 'archive' || type === 'trash'"
       name="reduction"
       class="h-6 w-6"
       @click="batchReduction"
     />
-    <sign-icon
+    <svg-icon
       v-if="type === 'file' || type === 'archive'"
       name="trash"
       class="h-6 w-6"
       @click="batchMoveToTrash"
     />
-    <sign-icon
+    <svg-icon
       v-if="type === 'trash'"
       name="trash"
       class="h-6 w-6"

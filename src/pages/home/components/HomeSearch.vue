@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
-import SignIcon from '@/components/SignIcon.vue';
+import { SvgIcon } from '@/components/common';
 import SvgSearch from '@/components/svg/SvgSearch.vue';
 
 const keyword = defineModel();
@@ -21,9 +21,9 @@ function clear() {
 </script>
 
 <template>
-  <label class="relative m-3 w-[90%] max-w-[400px] md:absolute md:-top-16">
+  <label class="relative m-3 w-[90%] max-w-100 md:absolute md:-top-16">
     <svg-search :color="searchIconColor" />
-    <sign-icon
+    <svg-icon
       v-show="isShowClose"
       name="close_s"
       class="absolute top-0 right-1 h-10 w-10"

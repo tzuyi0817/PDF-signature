@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { Describedby } from '@/components/common';
-import SignIcon from '@/components/SignIcon.vue';
+import { Describedby, SvgIcon } from '@/components/common';
 
 interface Props {
   isActivatedFabric: boolean;
@@ -32,7 +31,7 @@ function changeZoom(value: number) {
         :disabled="!isActivatedFabric"
         @click="$emit('copyFabric')"
       >
-        <sign-icon
+        <svg-icon
           name="file"
           class="text-primary pointer-events-none h-4.5 w-4.5"
         />
@@ -45,7 +44,7 @@ function changeZoom(value: number) {
         :disabled="!isActivatedFabric"
         @click="$emit('deleteFabric')"
       >
-        <sign-icon
+        <svg-icon
           name="trash"
           class="text-primary pointer-events-none h-4.5 w-4.5"
         />
@@ -58,7 +57,7 @@ function changeZoom(value: number) {
         :disabled="!isActivatedFabric"
         @click="$emit('watermarkFabric')"
       >
-        <sign-icon
+        <svg-icon
           name="pic"
           class="text-primary pointer-events-none h-4.5 w-4.5"
         />
