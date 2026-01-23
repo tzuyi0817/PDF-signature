@@ -21,7 +21,7 @@
     "@component-hook/pdf-canvas": "^1.4.2",
     "browser-image-compression": "^2.0.2",
     "idb-keyval": "^6.2.2",
-    "jspdf": "^2.5.2",
+    "jspdf": "^4.0.0",
     "pinia": "^3.0.4",
     "pinia-plugin-persistedstate": "^4.7.1",
     "vue": "^3.5.26",
