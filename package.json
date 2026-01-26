@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.5.6",
   "private": true,
-  "packageManager": "pnpm@10.28.0",
+  "packageManager": "pnpm@10.28.2",
   "scripts": {
     "dev": "vite",
     "dev:e2e": "vite --port 8081",
@@ -24,7 +24,7 @@
     "jspdf": "^2.5.2",
     "pinia": "^3.0.4",
     "pinia-plugin-persistedstate": "^4.7.1",
-    "vue": "^3.5.26",
+    "vue": "^3.5.27",
     "vue-i18n": "^11.1.12",
     "vue-router": "^4.6.4"
   },
@@ -37,7 +37,7 @@
   "devDependencies": {
     "@component-hook/eslint-plugin": "^1.4.2",
     "@intlify/unplugin-vue-i18n": "^11.0.3",
-    "@playwright/test": "^1.57.0",
+    "@playwright/test": "^1.58.0",
     "@tailwindcss/vite": "^4.1.18",
     "@tsconfig/node24": "^24.0.4",
     "@types/node": "^24.10.9",
@@ -46,9 +46,9 @@
     "cssnano": "^7.1.2",
     "eslint": "^9.39.2",
     "postcss": "^8.5.6",
-    "postcss-preset-env": "^11.1.1",
+    "postcss-preset-env": "^11.1.2",
     "postcss-pxtorem": "^6.1.0",
-    "prettier": "^3.8.0",
+    "prettier": "^3.8.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "rollup-plugin-visualizer": "^6.0.5",
     "tailwindcss": "^4.1.18",
@@ -58,11 +58,11 @@
     "vite-plugin-pwa": "^1.2.0",
     "vite-plugin-svg-icons": "^2.0.1",
     "vite-plugin-top-level-await": "^1.6.0",
-    "vue-tsc": "^3.2.2"
+    "vue-tsc": "^3.2.4"
   },
   "pnpm": {
     "overrides": {
-      "@typescript-eslint/typescript-estree": "^8.53.0"
+      "@typescript-eslint/typescript-estree": "^8.54.0"
     }
   }
 }
