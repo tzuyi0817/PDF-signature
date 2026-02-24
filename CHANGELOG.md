@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.5.7](https://github.com/tzuyi0817/PDF-signature/compare/v0.5.6...v0.5.7) (2026-02-24)
+
+### Bug Fixes
+
+- encrypted PDF files not opening ([4fb2848](https://github.com/tzuyi0817/PDF-signature/commit/4fb284852fe4f4fb1754765d863ee55d8cd65d54))
+
 ## [0.5.6](https://github.com/tzuyi0817/PDF-signature/compare/v0.5.5...v0.5.6) (2025-12-15)
 
 ### Features
