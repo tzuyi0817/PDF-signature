@@ -9,7 +9,7 @@ defineOptions({ name: 'SvgList' });
     viewBox="0 0 40 40"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    class="hidden transition-colors md:block"
+    class="hidden transition-colors lg:block"
     title="list icon"
   >
     <rect

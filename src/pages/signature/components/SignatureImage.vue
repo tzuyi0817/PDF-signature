@@ -184,7 +184,7 @@ function close() {
       </button>
 
       <div class="text-center">
-        <h5 class="text-gray-40 mb-3 hidden md:block">
+        <h5 class="text-gray-40 mb-3 hidden lg:block">
           {{ $t('prompt.or_drag_file') }}
         </h5>
         <p class="text-gray-40 px-4 text-center">
@@ -208,7 +208,7 @@ function close() {
     <p class="text-center">
       {{ $t('prompt.sure_delete_picture') }}
     </p>
-    <div class="flex justify-between md:justify-evenly">
+    <div class="flex justify-between lg:justify-evenly">
       <button
         class="btn btn-base"
         @click="toggleWarnPopup(false)"

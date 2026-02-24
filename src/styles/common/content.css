@@ -14,11 +14,12 @@
     border-radius: 20px;
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 1024px) {
     .content {
       padding: 1rem 1.75rem;
-      flex-grow: 0.75;
-      max-width: 75%;
+      width: 90%;
+      flex-grow: 0.9;
+      max-width: 1408px;
     }
   }
 
@@ -38,7 +39,7 @@
     width: 1.75rem;
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 1024px) {
     .toolbar img {
       width: 2.25rem;
     }
@@ -49,7 +50,7 @@
     padding: 0.25rem 1rem;
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 1024px) {
     .title {
       padding-top: 1rem;
       padding-bottom: 1rem;

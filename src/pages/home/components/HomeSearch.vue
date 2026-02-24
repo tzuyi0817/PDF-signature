@@ -21,7 +21,7 @@ function clear() {
 </script>
 
 <template>
-  <label class="relative m-3 w-[90%] max-w-100 md:absolute md:-top-16">
+  <label class="relative m-3 w-[90%] max-w-100 lg:absolute lg:-top-16">
     <svg-search :color="searchIconColor" />
     <svg-icon
       v-show="isShowClose"

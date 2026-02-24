@@ -163,7 +163,7 @@ function close() {
       class="input my-5 h-[40dvh] rounded-[20px]"
     ></textarea>
 
-    <div class="flex justify-between md:justify-evenly">
+    <div class="flex justify-between lg:justify-evenly">
       <button
         class="btn btn-base"
         @click="toggleLiteralPopup(false)"
@@ -187,7 +187,7 @@ function close() {
     <p class="text-center">
       {{ $t('prompt.sure_delete_text') }}
     </p>
-    <div class="flex justify-between md:justify-evenly">
+    <div class="flex justify-between lg:justify-evenly">
       <button
         class="btn btn-base"
         @click="toggleWarnPopup(false)"

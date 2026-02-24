@@ -21,8 +21,8 @@ function close() {
     :is-show-mask="isShowPopup"
     @close="close"
   />
-  <div :class="['signature-popup z-1', isShowPopup ? 'translate-y-0 md:block' : 'translate-y-full md:hidden']">
-    <h5 class="title text-center md:hidden">
+  <div :class="['signature-popup z-1', isShowPopup ? 'translate-y-0 lg:block' : 'translate-y-full lg:hidden']">
+    <h5 class="title text-center lg:hidden">
       {{ title }}
     </h5>
 
@@ -30,7 +30,7 @@ function close() {
       <slot></slot>
     </div>
 
-    <div class="flex justify-center gap-5 md:hidden">
+    <div class="flex justify-center gap-5 lg:hidden">
       <button
         class="btn btn-base"
         @click="close"
@@ -62,7 +62,7 @@ function close() {
   padding: 24px 32px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .signature-popup {
     position: absolute;
     transform: translate(44px, -48px);
@@ -83,7 +83,7 @@ function close() {
   overflow-y: auto;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .signature-popup-content {
     margin: 0;
     height: 100%;

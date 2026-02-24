@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useFabric } from '@component-hook/pdf-canvas/vue';
-import { computed, defineAsyncComponent, onMounted, ref } from 'vue';
+import { computed, defineAsyncComponent, nextTick, onMounted, ref, useTemplateRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { showToast, StepBtn, SvgIcon, Version } from '@/components/common';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
@@ -11,9 +11,11 @@ import { checkFile } from '@/utils/reader';
 
 const fileName = ref('');
 const projectName = ref('');
+const projectNameRef = useTemplateRef('projectNameRef');
 const isShowPen = ref(true);
 const isShowPasswordPopup = ref(false);
 const pages = ref(1);
+const scale = ref(window.devicePixelRatio);
 const { t, locale } = useI18n();
 const { createCanvas, deleteCanvas, loadFile } = useFabric({ id: 'canvas' });
 const { isShowWarnPopup, Popup, goBack, goPage, toggleWarnPopup } = useWarnPopup();
@@ -22,7 +24,7 @@ const UploadPassword = defineAsyncComponent(() => import('./UploadPassword.vue')
 const regexp = /.pdf|.png|.jpg|.jpeg/;
 let currentFile: File | null = null;
 
-const isNextDisabled = computed(() => !fileName.value);
+const isNextDisabled = computed(() => !projectName.value);
 
 async function uploadFile(event: Event) {
   const target = event.target as HTMLInputElement;
@@ -58,11 +60,14 @@ async function renderFile(file: File) {
 
     if (!fileContent) throw new Error('File content is empty');
 
+    scale.value = window.devicePixelRatio;
     setCurrentPDF(fileContent);
     pages.value = fileContent.pages;
     showToast(t('prompt.file_upload_success'));
     fileName.value = file.name;
     projectName.value = file.name.replace(regexp, '');
+    await nextTick();
+    projectNameRef.value?.focus();
   } catch (error) {
     if (`${error}`.includes('PasswordException')) {
       isShowPasswordPopup.value = true;
@@ -117,15 +122,20 @@ onAfterRouteLeave(deleteCanvas);
       class="upload-content-box my-5 h-[calc(100%-128px)] w-full"
     >
       <div class="flex h-fit w-full flex-col items-center gap-2">
-        <div class="relative h-fit">
+        <div
+          class="relative h-fit"
+          :style="{ zoom: scale }"
+        >
           <svg-icon
             name="close"
-            class="absolute -top-2 -right-8 h-7 w-7 cursor-pointer md:-top-4 md:-right-12 md:h-9 md:w-9"
+            class="absolute -top-2 -right-8 h-7 w-7 cursor-pointer lg:-top-4 lg:-right-12 lg:h-9 lg:w-9"
+            :style="{ zoom: 1 / scale }"
             @click="remove"
           />
           <canvas
             id="canvas"
-            class="border-gray-20 w-full border-2"
+            class="border-gray-20 w-full"
+            :style="{ 'border-width': `${2 / scale}px` }"
           >
           </canvas>
         </div>
@@ -141,6 +151,7 @@ onAfterRouteLeave(deleteCanvas);
         <p>{{ $t('project_name') }}</p>
         <label class="relative w-[90%] max-w-100">
           <input
+            ref="projectNameRef"
             v-model.trim="projectName"
             type="text"
             class="input"
@@ -183,7 +194,7 @@ onAfterRouteLeave(deleteCanvas);
         </button>
 
         <div class="text-center">
-          <h5 class="text-gray-40 mb-3 hidden md:block">
+          <h5 class="text-gray-40 mb-3 hidden lg:block">
             {{ $t('prompt.or_drag_file') }}
           </h5>
           <p class="text-gray-40 px-4 text-center">
@@ -208,7 +219,7 @@ onAfterRouteLeave(deleteCanvas);
       <p class="text-center">
         {{ $t('prompt.give_up_edit') }}
       </p>
-      <div class="flex justify-between md:justify-around">
+      <div class="flex justify-between lg:justify-around">
         <button
           class="btn btn-base"
           @click="toggleWarnPopup(false)"
@@ -241,7 +252,7 @@ onAfterRouteLeave(deleteCanvas);
   overflow-y: auto;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .upload-content-box {
     padding: 48px 10px;
   }

@@ -104,7 +104,8 @@ const isCompletePage = computed(() => route.name === 'complete');
 }
 
 .sign-step-bar {
-  width: 90px;
+  width: 20dvw;
+  min-width: 90px;
   height: 2px;
   appearance: none;
 }
@@ -130,7 +131,7 @@ const isCompletePage = computed(() => route.name === 'complete');
   transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .sign-step {
     transform: translate(-50%, 0px);
   }

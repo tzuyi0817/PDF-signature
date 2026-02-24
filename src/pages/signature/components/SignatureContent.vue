@@ -23,7 +23,6 @@ import SignatureToolbar from './SignatureToolbar.vue';
 import type { DragOffset } from '@/types/drag';
 import type { SignatureTool } from '@/types/menu';
 
-const CANVAS_SCALE = 0.6;
 const SignatureCanvasItem = defineAsyncComponent(() => import('@component-hook/pdf-canvas/vue'));
 const currentTool = ref<SignatureTool | ''>('');
 const isCancelMerge = ref(false);
@@ -44,13 +43,14 @@ const {
   loadedState,
   isCompleted,
   canvasRect,
+  canvasScale,
   currentCanvasItem,
   handleCanvasLoaded,
   handleCanvasReload,
 } = useLoadCanvas(currentPDF, true);
 
-const canvasWidth = computed(() => `${canvasRect.value.width * fileZoom.value * CANVAS_SCALE}px`);
-const canvasHeight = computed(() => `${canvasRect.value.height * fileZoom.value * CANVAS_SCALE}px`);
+const canvasWidth = computed(() => `${canvasRect.value.width * fileZoom.value * canvasScale.value}px`);
+const canvasHeight = computed(() => `${canvasRect.value.height * fileZoom.value * canvasScale.value}px`);
 
 let isGiveUpSignature = false;
 let requestFrame: number | null = null;
@@ -217,13 +217,13 @@ onAfterRouteLeave(() => {
       {{ $t('sign_file') }}
       <span
         v-if="!isCompleted"
-        class="text-gray-60 text-xs md:text-sm"
+        class="text-gray-60 text-xs lg:text-sm"
         >({{ $t('file_uploading') }})</span
       >
     </h5>
 
-    <div class="flex min-h-0 flex-1 flex-col md:flex-row">
-      <div class="md:border-primary md:border-r-2 md:px-6 md:py-4">
+    <div class="flex min-h-0 flex-1 flex-col lg:flex-row">
+      <div class="lg:border-primary lg:border-r-2 lg:px-6 lg:py-4">
         <signature-toolbar v-model:current-tool="currentTool" />
         <signature-sign
           v-model:current-tool="currentTool"
@@ -249,7 +249,7 @@ onAfterRouteLeave(() => {
       <div class="signature-content-file">
         <div
           ref="fileContainer"
-          class="relative h-full w-full touch-pan-x touch-pan-y overflow-auto px-2 pt-3 pb-11 md:px-8 md:pt-6"
+          class="relative h-full w-full touch-pan-x touch-pan-y overflow-auto px-2 pt-3 pb-11 lg:px-8 lg:pt-6"
           @dragover.stop.prevent="handleDragOver"
           @dragleave.stop.prevent="cancelScrollToPerFrame"
         >
@@ -267,7 +267,7 @@ onAfterRouteLeave(() => {
                   :file-zoom="fileZoom"
                   :file-scale="6.8"
                   :page="page"
-                  :canvas-scale="CANVAS_SCALE"
+                  :canvas-scale="canvasScale"
                   :password="configStore.filePassword"
                   is-drop
                   manual-reload
@@ -318,7 +318,7 @@ onAfterRouteLeave(() => {
       <p class="text-center">
         {{ $t('prompt.sure_discard_edited_content') }}
       </p>
-      <div class="flex justify-between md:justify-evenly">
+      <div class="flex justify-between lg:justify-evenly">
         <button
           class="btn btn-base"
           @click="toggleWarnPopup(false)"
@@ -341,7 +341,7 @@ onAfterRouteLeave(() => {
       <p class="text-center">
         {{ $t('prompt.sure_completed_sign') }}
       </p>
-      <div class="flex justify-between md:justify-evenly">
+      <div class="flex justify-between lg:justify-evenly">
         <button
           class="btn btn-base"
           @click="toggleNextWarnPopup(false)"
@@ -375,7 +375,7 @@ onAfterRouteLeave(() => {
   position: relative;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .signature-content-file {
     margin: 24px 5% 0;
     min-width: 0;

@@ -134,12 +134,12 @@ watch(
   <li
     :class="[
       'sign-file flex flex-col',
-      isListStatus ? 'md:flex-row' : 'md:h-fit md:w-79 md:shrink-0',
+      isListStatus ? 'lg:flex-row' : 'lg:h-fit lg:w-79 lg:shrink-0',
       { active: isSelected },
     ]"
     @click="selectFile"
   >
-    <div :class="['transition-opacity md:hidden', isShowMore ? 'z-10 opacity-100' : '-z-1 opacity-0']">
+    <div :class="['transition-opacity lg:hidden', isShowMore ? 'z-10 opacity-100' : '-z-1 opacity-0']">
       <template v-if="isShowMore">
         <div
           class="mask"
@@ -162,17 +162,17 @@ watch(
     <svg-icon
       v-if="more.length"
       name="more"
-      :class="`absolute top-1 right-2 h-10 w-10 ${isShowMore ? 'opacity-0' : 'opacity-100'} md:hidden`"
+      :class="`absolute top-1 right-2 h-10 w-10 ${isShowMore ? 'opacity-0' : 'opacity-100'} lg:hidden`"
       @click.stop="toggleMore(true)"
     />
     <svg-icon
       v-else
       name="reduction"
-      class="absolute top-1 right-2 h-10 w-10 md:hidden"
+      class="absolute top-1 right-2 h-10 w-10 lg:hidden"
       @click.stop="reductionTrash"
     />
 
-    <div :class="['flex h-37.5 w-1/3 items-center justify-center', { 'md:hidden': isListStatus }]">
+    <div :class="['flex h-37.5 w-1/3 items-center justify-center', { 'lg:hidden': isListStatus }]">
       <blob-image
         :blob="file.canvas?.at(0)"
         class="border-gray-20 w-full border-2"
@@ -183,21 +183,21 @@ watch(
     <div
       :class="[
         'sign-file-content mt-4 flex-col text-center',
-        { 'md:mt-0 md:w-full md:flex-row md:items-center md:text-start': isListStatus },
+        { 'lg:mt-0 lg:w-full lg:flex-row lg:items-center lg:text-start': isListStatus },
       ]"
     >
-      <div :class="{ 'md:flex md:flex-1 md:flex-row-reverse md:items-center md:gap-1': isListStatus }">
+      <div :class="{ 'lg:flex lg:flex-1 lg:flex-row-reverse lg:items-center lg:gap-1': isListStatus }">
         <p
           class="flex-1"
           v-html="splitName(file.name)"
         ></p>
-        <p :class="['text-gray-40', { 'md:w-59 md:text-black': isListStatus }]">
+        <p :class="['text-gray-40', { 'lg:w-59 lg:text-black': isListStatus }]">
           {{ localTime }}
         </p>
 
         <svg-list v-if="isListStatus" />
       </div>
-      <ul :class="['hidden flex-row justify-center gap-1 md:flex', { 'mt-4': !isListStatus }]">
+      <ul :class="['hidden flex-row justify-center gap-1 lg:flex', { 'mt-4': !isListStatus }]">
         <li
           v-for="effect in more"
           :key="effect.icon"
@@ -230,7 +230,7 @@ watch(
   cursor: pointer;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .sign-file:hover {
     background: linear-gradient(to bottom, white, rgba(183, 236, 93, 0.3));
   }

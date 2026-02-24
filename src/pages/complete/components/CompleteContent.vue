@@ -59,7 +59,7 @@ onBeforeUnmount(() => {
       {{ $t('sign_completed') }}
     </h5>
 
-    <ul class="toolbar md:absolute md:top-5 md:right-10">
+    <ul class="toolbar lg:absolute lg:top-5 lg:right-10">
       <li>
         <svg-icon
           name="download"
@@ -84,7 +84,7 @@ onBeforeUnmount(() => {
     </ul>
 
     <div class="complete-content-file">
-      <div class="flex h-fit w-fit origin-top-left scale-150 flex-col gap-5 px-3 py-5 md:scale-100 md:px-14 md:py-10">
+      <div class="flex h-fit w-fit origin-top-left scale-150 flex-col gap-5 px-3 py-5 lg:scale-100 lg:px-14 lg:py-10">
         <template
           v-for="(canvas, index) in currentPDF.canvas"
           :key="index"
@@ -98,7 +98,7 @@ onBeforeUnmount(() => {
     </div>
 
     <button
-      class="btn btn-primary md:absolute md:top-7 md:left-10"
+      class="btn btn-primary lg:absolute lg:top-7 lg:left-10"
       :disabled="false"
       @click="goPage('home')"
     >
@@ -114,7 +114,7 @@ onBeforeUnmount(() => {
       <p class="text-center">
         {{ $t(warnContent) }}
       </p>
-      <div class="flex justify-between md:justify-evenly">
+      <div class="flex justify-between lg:justify-evenly">
         <button
           class="btn btn-base"
           @click="toggleWarnPopup(false)"
@@ -156,7 +156,7 @@ onBeforeUnmount(() => {
   max-width: 842px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .complete-content-file {
     margin-top: 24px;
     height: calc(100% - 110px);

@@ -178,7 +178,7 @@ defineExpose({ close, offsetBottom });
   transform: translate(-50%, calc(-100% + v-bind(translateY)));
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .toast {
     padding: 24px 12px 24px 24px;
   }

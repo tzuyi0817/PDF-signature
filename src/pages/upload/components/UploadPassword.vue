@@ -32,9 +32,10 @@ function confirmPassword() {
       v-model="password"
       class="mx-auto mb-4"
       placeholder="placeholder.password"
+      autofocus
     />
 
-    <div class="flex justify-between md:justify-evenly">
+    <div class="flex justify-between lg:justify-evenly">
       <button
         class="btn btn-base"
         @click="emit('closePassword')"

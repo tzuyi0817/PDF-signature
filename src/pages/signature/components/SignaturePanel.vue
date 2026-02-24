@@ -101,7 +101,7 @@ function changeZoom(value: number) {
   gap: 2px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .signature-panel {
     gap: 8px;
     padding: 4px 20px;

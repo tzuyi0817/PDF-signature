@@ -11,6 +11,7 @@ interface LoadCanvasReturn {
   canvasItems: Ref<CanvasItemInstance[] | null>;
   loadedState: Readonly<Ref<readonly boolean[]>>;
   canvasRect: Readonly<Ref<CanvasRect>>;
+  canvasScale: Readonly<Ref<number>>;
   isCompleted: ComputedRef<boolean>;
   currentCanvasItem: ComputedRef<CanvasItemInstance | null | undefined>;
   handleCanvasLoaded: (page: number) => Promise<void>;
@@ -18,11 +19,13 @@ interface LoadCanvasReturn {
 }
 
 export function useLoadCanvas(currentPDF: Ref<PDF>, isObserveResize = false): LoadCanvasReturn {
+  const BASE_SCALE = 0.4;
   const currentPage = ref(1);
   const loadedState = ref<boolean[]>([]);
   const loadedPages = ref(-1);
   const canvasItems = ref<CanvasItemInstance[] | null>(null);
   const canvasRect = ref<CanvasRect>({ height: 0, width: 0 });
+  const canvasScale = ref(BASE_SCALE * window.devicePixelRatio);
   const resizeObserver = new ResizeObserver(handleCanvasResize);
   let reloadId: number | null = null;
 
@@ -60,6 +63,7 @@ export function useLoadCanvas(currentPDF: Ref<PDF>, isObserveResize = false): Lo
     entries.forEach(({ contentRect }) => {
       canvasRect.value.height = contentRect.height;
       canvasRect.value.width = contentRect.width;
+      canvasScale.value = BASE_SCALE * window.devicePixelRatio;
     });
   }
 
@@ -99,6 +103,7 @@ export function useLoadCanvas(currentPDF: Ref<PDF>, isObserveResize = false): Lo
     canvasItems,
     loadedState: readonly(loadedState),
     canvasRect: readonly(canvasRect),
+    canvasScale: readonly(canvasScale),
     isCompleted,
     currentCanvasItem,
     handleCanvasLoaded,

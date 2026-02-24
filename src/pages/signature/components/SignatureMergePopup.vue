@@ -43,7 +43,7 @@ const { Popup, goPage } = useWarnPopup();
         {{ $t('merging_files') }}
       </h5>
     </div>
-    <div class="flex justify-between md:justify-evenly">
+    <div class="flex justify-between lg:justify-evenly">
       <button
         v-if="isMergeComplete"
         class="btn btn-primary w-full"

@@ -31,7 +31,7 @@ const { loading } = storeToRefs(useConfigStore());
           class="bg-primary h-full rounded transition-all"
           :style="{ width: `${loading.completeness}%` }"
         ></div>
-        <p class="mt-1 text-center text-sm md:text-base">
+        <p class="mt-1 text-center text-sm lg:text-base">
           {{ `${$t('download_progress')} ${Math.floor(loading.completeness)}%` }}
         </p>
       </div>

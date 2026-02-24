@@ -25,7 +25,7 @@ defineOptions({ name: 'AppFooter' });
   }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .app-footer img {
     transform: translateX(0);
   }

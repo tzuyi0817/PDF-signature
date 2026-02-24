@@ -140,7 +140,7 @@ function clear() {
       @touchcancel="finishedPosition"
       @touchmove="draw"
     ></canvas>
-    <div class="flex justify-between md:justify-evenly">
+    <div class="flex justify-between lg:justify-evenly">
       <button
         class="btn btn-base"
         @click="emit('close')"

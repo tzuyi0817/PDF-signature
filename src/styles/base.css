@@ -56,7 +56,7 @@
     line-height: 1.75rem;
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 1024px) {
     h1 {
       font-size: 56px;
     }

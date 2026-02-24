@@ -37,7 +37,7 @@ const emit = defineEmits(['prevStep', 'nextStep']);
   margin: 0 10px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .sign-step-btn {
     position: absolute;
     top: 24px;

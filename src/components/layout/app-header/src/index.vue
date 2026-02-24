@@ -53,14 +53,14 @@ function onTransitionEnd(event: TransitionEvent) {
     <router-link to="/">
       <img
         src="@/assets/logo/logo_darkbg_horizontal.png"
-        class="w-36 md:w-57"
+        class="w-36 lg:w-57"
         alt="logo"
       />
     </router-link>
 
     <sign-step />
 
-    <div class="flex items-center gap-2 md:gap-4">
+    <div class="flex items-center gap-2 lg:gap-4">
       <div
         class="relative"
         @mouseover="openLanguageMenu"
@@ -188,7 +188,7 @@ function onTransitionEnd(event: TransitionEvent) {
     opacity 0.2s;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .app-header {
     padding: 1rem;
   }

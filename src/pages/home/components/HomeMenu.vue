@@ -71,7 +71,7 @@ function changeTab(tab: MenuTab) {
   width: 22px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .index-menu {
     flex-direction: column;
     gap: 10px;

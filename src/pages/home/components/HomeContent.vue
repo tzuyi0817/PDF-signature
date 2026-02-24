@@ -61,7 +61,7 @@ const currentCom = computed(() => {
   top: -32px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .index-content-add {
     width: 80px;
     height: 80px;

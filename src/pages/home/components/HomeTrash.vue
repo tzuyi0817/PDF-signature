@@ -33,7 +33,7 @@ usePdfStore().filterTrash();
       </div>
     </div>
 
-    <div class="absolute -bottom-4 left-0 flex w-full justify-center md:-bottom-3">
+    <div class="absolute -bottom-4 left-0 flex w-full justify-center lg:-bottom-3">
       <p class="index-trash-warn shadow-primary shadow">
         {{ $t('prompt.trash_shelf_life') }}
       </p>
@@ -52,7 +52,7 @@ usePdfStore().filterTrash();
   border-radius: 50px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .index-trash-warn {
     padding: 8px 20px;
   }

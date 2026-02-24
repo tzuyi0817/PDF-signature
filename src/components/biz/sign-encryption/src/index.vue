@@ -57,6 +57,7 @@ function download(isEncrypt: boolean) {
       <password-input
         v-model="password"
         placeholder="placeholder.password"
+        autofocus
       />
       <password-input
         v-model="confirmPassword"
@@ -64,7 +65,7 @@ function download(isEncrypt: boolean) {
       />
     </div>
 
-    <div class="flex justify-between md:justify-evenly">
+    <div class="flex justify-between lg:justify-evenly">
       <button
         class="btn btn-base"
         @click="() => download(false)"

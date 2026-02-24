@@ -19,7 +19,7 @@
     font-weight: bold;
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 1024px) {
     .btn {
       font-size: 1.125rem;
       line-height: 1.75rem;
@@ -82,7 +82,7 @@
       text-shadow 0.2s;
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 1024px) {
     .btn-small {
       border-width: 2px;
     }

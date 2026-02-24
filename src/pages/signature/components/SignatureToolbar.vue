@@ -73,7 +73,7 @@ onMounted(() => {
   white-space: nowrap;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .signature-toolbar {
     margin: 0 0.5rem;
   }

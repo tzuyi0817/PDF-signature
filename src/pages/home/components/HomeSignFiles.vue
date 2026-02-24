@@ -108,7 +108,7 @@ onActivated(updateSelectAll);
   <div class="sign-files">
     <home-search v-model="keyword" />
 
-    <div class="hidden w-full items-end px-4 py-5 md:flex">
+    <div class="hidden w-full items-end px-4 py-5 lg:flex">
       <div class="flex h-6 w-75 items-center gap-5 pl-6">
         <div
           class="flex h-8 w-7 cursor-pointer items-center justify-center rounded transition-colors hover:bg-gray-50/15"
@@ -155,7 +155,7 @@ onActivated(updateSelectAll);
       v-if="search.length"
       :class="[
         'h-[calc(100%-60px)] w-full gap-6 overflow-y-auto px-4',
-        { 'md:flex md:flex-row md:flex-wrap md:gap-4': !isListStatus },
+        { 'lg:flex lg:flex-row lg:flex-wrap lg:gap-4': !isListStatus },
       ]"
     >
       <sign-file
@@ -197,7 +197,7 @@ onActivated(updateSelectAll);
       <p class="text-center">
         {{ $t('prompt.sure_delete_file') }}
       </p>
-      <div class="flex justify-between md:justify-evenly">
+      <div class="flex justify-between lg:justify-evenly">
         <button
           class="btn btn-base"
           @click="closeWarnPopup"
