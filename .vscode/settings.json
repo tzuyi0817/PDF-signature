@@ -20,11 +20,12 @@
     "persistedstate",
     "postcss",
     "idb-keyval",
-    "VITE",
+    "vite",
     "vercel",
     "typecheck",
     "pxtorem",
     "norem",
-    "Describedby"
+    "describedby",
+    "tzuyi"
   ]
 }
