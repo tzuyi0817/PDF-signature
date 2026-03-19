@@ -4,7 +4,7 @@ import vueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 import tailwindcss from '@tailwindcss/vite';
 import vue from '@vitejs/plugin-vue';
 import { visualizer } from 'rollup-plugin-visualizer';
-import { defineConfig, type Plugin } from 'vite';
+import { defineConfig } from 'vite';
 import { createHtmlPlugin } from 'vite-plugin-html';
 import { VitePWA } from 'vite-plugin-pwa';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
@@ -37,7 +37,7 @@ export default defineConfig({
       },
     }),
     VitePWA({ registerType: 'autoUpdate' }),
-    visualizer({ gzipSize: true, open: true }) as unknown as Plugin,
+    visualizer({ gzipSize: true, open: true }),
   ],
   server: {
     port: 8080,
@@ -46,25 +46,40 @@ export default defineConfig({
     pure: ['console.log'],
     drop: ['debugger'],
   },
-  optimizeDeps: {
-    exclude: ['@component-hook/pdf-canvas'],
-  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('src', import.meta.url)),
     },
   },
   build: {
-    rollupOptions: {
+    rolldownOptions: {
       output: {
         chunkFileNames: 'chunks/[name].[hash].js',
         assetFileNames: 'assets/[name].[hash].[ext]',
         entryFileNames: 'entries/[name].[hash].js',
-        manualChunks: {
-          core: ['vue', 'vue-router', 'pinia', 'pinia-plugin-persistedstate', 'vue-i18n'],
-          vender: ['browser-image-compression', 'idb-keyval', '@intlify/unplugin-vue-i18n/messages'],
-          'pdf-canvas': ['@component-hook/pdf-canvas/vue'],
-          jspdf: ['jspdf'],
+        codeSplitting: {
+          groups: [
+            {
+              name: 'core',
+              test: /node_modules[\\/](vue|pinia)/,
+              priority: 20,
+            },
+            {
+              name: 'vender',
+              test: /node_modules[\\/](browser-image-compression|idb-keyval)|@intlify\/unplugin-vue-i18n\/messages/,
+              priority: 15,
+            },
+            {
+              name: 'pdf-canvas',
+              test: /node_modules[\\/]@component-hook[\\/]pdf-canvas/,
+              priority: 10,
+            },
+            {
+              name: 'jspdf',
+              test: /node_modules[\\/]jspdf/,
+              priority: 5,
+            },
+          ],
         },
       },
     },
