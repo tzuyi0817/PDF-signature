@@ -36,7 +36,7 @@ test.describe('files', () => {
 
       const elements = page.getByTitle(/list icon/i);
 
-      expect(await elements.count()).toBe(MOCK_FILES.length);
+      await expect(elements).toHaveCount(MOCK_FILES.length);
 
       for (const file of MOCK_FILES) {
         await expect(page.getByText(file.name)).toBeInViewport();
@@ -110,14 +110,15 @@ test.describe('files', () => {
         await secretInput.fill(secret);
         await secretConfirmInput.fill(secret);
 
-        const icons = await page.getByTitle(/#icon-ic_eye_closed/i).all();
+        const iconLocator = page.getByTitle(/#icon-ic_eye_closed/i);
+        const count = 2;
 
-        icons.reverse();
-        expect(icons.length).toBe(2);
+        await expect(iconLocator).toHaveCount(count);
 
-        for (const icon of icons) {
-          await icon.click();
+        for (let index = count - 1; index >= 0; index--) {
+          await iconLocator.nth(index).click();
         }
+
         await expect(secretInput).toHaveAttribute('type', 'text');
         await expect(secretConfirmInput).toHaveAttribute('type', 'text');
       });
