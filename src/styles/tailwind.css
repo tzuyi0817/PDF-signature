@@ -1,16 +1,23 @@
 @import 'tailwindcss';
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-bg: #4d4d4d;
+  --color-bg: var(--color-bg);
+  --color-surface: var(--color-surface);
+  --color-surface-text: var(--color-surface-text);
+
+  --color-card-bg: var(--color-card-bg);
+  --color-card-border: var(--color-card-border);
+  --color-card-hover: var(--color-card-hover);
 
   --color-primary: #b7ec5d;
   --color-primary-dark: #648d1e;
   --color-primary-frame: rgba(183, 236, 93, 0.3);
   --color-primary-linear: rgb(183, 236, 93);
 
-  --color-secondary: #4d4d4d;
-  --color-secondary-dark: #222222;
-  --color-secondary-tint: #f5f5f5;
+  --color-secondary: var(--color-secondary);
+  --color-secondary-dark: var(--color-secondary-dark);
+  --color-secondary-tint: var(--color-secondary-tint);
 
   --color-success: #b7ec5d;
   --color-success-dark: #648d1e;
@@ -24,15 +31,15 @@
   --color-pen-blue: #0066ff;
   --color-pen-red: #f93819;
 
-  --color-gray-10: #e6e6e6;
-  --color-gray-20: #cccccc;
-  --color-gray-30: #b3b3b3;
-  --color-gray-40: #999999;
-  --color-gray-50: #808080;
-  --color-gray-60: #666666;
-  --color-gray-70: #4d4d4d;
-  --color-gray-80: #333333;
-  --color-gray-90: #1a1a1a;
+  --color-gray-10: var(--color-gray-10);
+  --color-gray-20: var(--color-gray-20);
+  --color-gray-30: var(--color-gray-30);
+  --color-gray-40: var(--color-gray-40);
+  --color-gray-50: var(--color-gray-50);
+  --color-gray-60: var(--color-gray-60);
+  --color-gray-70: var(--color-gray-70);
+  --color-gray-80: var(--color-gray-80);
+  --color-gray-90: var(--color-gray-90);
 
   --ease-in-page: cubic-bezier(1, 0.5, 0.8, 1);
 }

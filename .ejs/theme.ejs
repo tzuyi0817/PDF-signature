@@ -1,0 +1,19 @@
+<script>
+  (function () {
+    let stored = '{}';
+
+    try {
+      stored = localStorage.getItem('pdf_signature_config') || '{}';
+    } catch (e) {
+      console.error('Failed to access localStorage:', e);
+    }
+
+    const theme = JSON.parse(stored).theme || 'light';
+    const isDark =
+      theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>

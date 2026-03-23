@@ -42,6 +42,15 @@
     background-color: var(--color-gray-20);
   }
 
+  :where(.dark) .btn:disabled {
+    background-color: var(--color-gray-80);
+    border-color: var(--color-gray-70);
+  }
+
+  :where(.dark) .btn:disabled:hover {
+    background-color: var(--color-gray-80);
+  }
+
   .btn-base {
     border-color: var(--color-gray-50);
     color: var(--color-gray-50);
@@ -52,8 +61,13 @@
     background-color: var(--color-gray-50);
   }
 
+  :where(.dark) .btn-base {
+    border-color: var(--color-gray-40);
+    color: var(--color-gray-30);
+  }
+
   .btn-primary {
-    background-color: var(--color-secondary);
+    background-color: var(--color-bg);
     border-color: var(--color-primary);
     color: var(--color-primary);
   }
@@ -93,6 +107,12 @@
     border-color: var(--color-gray-20);
     color: black;
     cursor: not-allowed;
+  }
+
+  :where(.dark) .btn-small:disabled {
+    background-color: var(--color-gray-70);
+    border-color: var(--color-gray-70);
+    color: var(--color-gray-40);
   }
 
   button:not(:disabled):active {

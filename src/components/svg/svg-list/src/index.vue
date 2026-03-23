@@ -18,26 +18,31 @@ defineOptions({ name: 'SvgList' });
       width="14"
       height="16"
       rx="2"
-      stroke="#4D4D4D"
       stroke-width="2"
     />
     <path
       d="M17 16H23"
-      stroke="#4D4D4D"
       stroke-width="2"
       stroke-linecap="round"
     />
     <path
       d="M17 20H23"
-      stroke="#4D4D4D"
       stroke-width="2"
       stroke-linecap="round"
     />
     <path
       d="M17 24H21"
-      stroke="#4D4D4D"
       stroke-width="2"
       stroke-linecap="round"
     />
   </svg>
 </template>
+
+<style lang="css" scoped>
+svg {
+  rect,
+  path {
+    stroke: var(--color-surface-text);
+  }
+}
+</style>

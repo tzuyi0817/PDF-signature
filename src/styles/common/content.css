@@ -2,7 +2,8 @@
   .content {
     width: 100%;
     flex: 1 1 0%;
-    background-color: white;
+    background-color: var(--color-surface);
+    color: var(--color-surface-text);
     min-height: 500px;
     padding: 0.75rem;
     box-shadow:
@@ -12,6 +13,12 @@
       inset 0px -6px 6px rgba(215, 215, 215, 0.55);
     position: relative;
     border-radius: 20px;
+  }
+
+  :where(.dark) .content {
+    box-shadow:
+      inset 0px 2px 4px rgba(0, 0, 0, 0.4),
+      inset 0px -2px 4px rgba(0, 0, 0, 0.3);
   }
 
   @media (min-width: 1024px) {

@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { SvgIcon } from '@/components/common';
+import { Describedby, SvgIcon } from '@/components/common';
 import { I18N_MAP } from '@/constants/common';
 import { sleep } from '@/utils/common';
+import { useTheme } from './hooks/use-theme';
 import SignStep from './SignStep.vue';
 
 defineOptions({ name: 'AppHeader' });
@@ -11,8 +12,15 @@ defineOptions({ name: 'AppHeader' });
 const isShowLanguageMenu = ref(false);
 const isDisplayLanguageMenu = ref(false);
 const { locale } = useI18n();
+const { theme, toggleTheme } = useTheme();
 let closeMenuTimer: ReturnType<typeof setTimeout> | null = null;
 let isClosingMenu = false;
+
+const themeIcon = computed(() => {
+  const iconMap = { light: 'sun', dark: 'moon', system: 'monitor' } as const;
+
+  return iconMap[theme.value];
+});
 
 async function changeLocale(code: string) {
   locale.value = code;
@@ -88,7 +96,7 @@ function onTransitionEnd(event: TransitionEvent) {
               <li
                 v-for="(name, language) in I18N_MAP"
                 :key="language"
-                :class="['text-gray-50', { 'bg-primary text-black': locale === language }]"
+                :class="[locale === language ? 'bg-primary text-black' : 'dark:text-gray-30 text-gray-50']"
                 @click="changeLocale(language)"
               >
                 {{ name }}
@@ -97,6 +105,22 @@ function onTransitionEnd(event: TransitionEvent) {
           </div>
         </teleport>
       </div>
+
+      <describedby
+        :title="$t(`theme_${theme}`)"
+        position="bottom"
+      >
+        <button
+          class="flex items-center"
+          @click="toggleTheme"
+        >
+          <svg-icon
+            :name="themeIcon"
+            class="app-header-icon text-gray-40"
+            color="currentColor"
+          />
+        </button>
+      </describedby>
 
       <a
         href="https://github.com/tzuyi0817/PDF-signature"
@@ -137,7 +161,7 @@ function onTransitionEnd(event: TransitionEvent) {
   position: fixed;
   height: fit-content;
   padding: 0.5rem;
-  background-color: white;
+  background-color: var(--color-surface);
   box-shadow:
     0 4px 6px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1)),
     0 2px 4px -2px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
@@ -157,7 +181,7 @@ function onTransitionEnd(event: TransitionEvent) {
   height: 0;
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
-  border-top: 8px solid white;
+  border-top: 8px solid var(--color-surface);
 }
 
 .app-header-language {

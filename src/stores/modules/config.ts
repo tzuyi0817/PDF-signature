@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia';
 import type { PickPartial } from '@/types/common';
-import type { Loading } from '@/types/config';
+import type { Loading, Theme } from '@/types/config';
 
 interface ConfigStore {
   loading: Loading;
   filePassword: string;
+  theme: Theme;
 }
 
 const defaultState: ConfigStore = {
@@ -16,10 +17,14 @@ const defaultState: ConfigStore = {
     completeness: 0,
   },
   filePassword: '',
+  theme: 'light',
 };
 
 export const useConfigStore = defineStore('config', {
   state: () => ({ ...defaultState }),
+  persist: {
+    pick: ['theme'],
+  },
   actions: {
     toggleLoading({
       isShow,
@@ -35,6 +40,9 @@ export const useConfigStore = defineStore('config', {
     },
     updateFilePassword(password: string) {
       this.filePassword = password;
+    },
+    setTheme(theme: Theme) {
+      this.theme = theme;
     },
   },
 });

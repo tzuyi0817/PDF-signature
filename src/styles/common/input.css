@@ -2,7 +2,9 @@
   .input,
   .input-password {
     width: 100%;
-    border: 2px solid var(--color-gray-20);
+    border: 2px solid var(--color-surface-border);
+    background-color: var(--color-surface);
+    color: var(--color-surface-text);
     transition:
       border-color 0.2s ease,
       box-shadow 0.2s ease;

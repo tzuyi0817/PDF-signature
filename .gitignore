@@ -7,10 +7,14 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Development directories
 node_modules
 dist
 dist-ssr
 *.local
+.claude
+openspec
+CLAUDE.md
 
 # Editor directories and files
 .idea

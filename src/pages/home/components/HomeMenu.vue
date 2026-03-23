@@ -11,7 +11,7 @@ function changeTab(tab: MenuTab) {
 <template>
   <ul class="index-menu">
     <li
-      :class="currentTab === 'file' ? 'bg-white' : 'bg-gray-60'"
+      :class="currentTab === 'file' ? 'bg-surface' : 'bg-gray-60'"
       @click="changeTab('file')"
     >
       <img
@@ -20,7 +20,7 @@ function changeTab(tab: MenuTab) {
       />
     </li>
     <li
-      :class="currentTab === 'archive' ? 'bg-white' : 'bg-gray-60'"
+      :class="currentTab === 'archive' ? 'bg-surface' : 'bg-gray-60'"
       @click="changeTab('archive')"
     >
       <img
@@ -29,7 +29,7 @@ function changeTab(tab: MenuTab) {
       />
     </li>
     <li
-      :class="currentTab === 'trash' ? 'bg-white' : 'bg-gray-60'"
+      :class="currentTab === 'trash' ? 'bg-surface' : 'bg-gray-60'"
       @click="changeTab('trash')"
     >
       <img
@@ -64,7 +64,7 @@ function changeTab(tab: MenuTab) {
 }
 
 .index-menu li:hover {
-  background-color: white;
+  background-color: var(--color-surface);
 }
 
 .index-menu li img {

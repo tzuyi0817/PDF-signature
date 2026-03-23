@@ -46,7 +46,7 @@ usePdfStore().filterTrash();
   color: var(--color-danger);
   text-align: center;
   padding: 4px 20px;
-  background-color: var(--color-white);
+  background-color: var(--color-surface);
   width: fit-content;
   border: 2px solid var(--color-primary);
   border-radius: 50px;

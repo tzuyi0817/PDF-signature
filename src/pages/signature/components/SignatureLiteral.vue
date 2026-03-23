@@ -110,7 +110,7 @@ function close() {
         :key="word"
         :class="[
           'relative flex w-full cursor-pointer rounded-[20px] px-3 py-4',
-          currentSelect === word ? 'bg-primary opacity-70' : 'bg-white',
+          currentSelect === word ? 'bg-primary opacity-70' : 'bg-card-bg',
         ]"
         draggable="true"
         @dragstart="dragLiteral"

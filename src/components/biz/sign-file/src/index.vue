@@ -145,7 +145,8 @@ watch(
           class="mask"
           @click.stop="toggleMore(false)"
         ></div>
-        <ul class="sign-file-more bg-white">
+
+        <ul class="sign-file-more dark:bg-gray-80 bg-white">
           <li
             v-for="effect in more"
             :key="effect.icon"
@@ -159,6 +160,7 @@ watch(
         </ul>
       </template>
     </div>
+
     <svg-icon
       v-if="more.length"
       name="more"
@@ -191,12 +193,14 @@ watch(
           class="flex-1"
           v-html="splitName(file.name)"
         ></p>
-        <p :class="['text-gray-40', { 'lg:w-59 lg:text-black': isListStatus }]">
+
+        <p :class="['text-gray-40', { 'lg:text-surface-text lg:w-59': isListStatus }]">
           {{ localTime }}
         </p>
 
         <svg-list v-if="isListStatus" />
       </div>
+
       <ul :class="['hidden flex-row justify-center gap-1 lg:flex', { 'mt-4': !isListStatus }]">
         <li
           v-for="effect in more"
@@ -216,7 +220,8 @@ watch(
 <style lang="css" scoped>
 .sign-file {
   position: relative;
-  border: 2px solid var(--color-secondary-tint);
+  background-color: var(--color-card-bg);
+  border: 2px solid var(--color-card-border);
   padding: 16px;
   border-radius: 20px;
   box-shadow:
@@ -224,7 +229,7 @@ watch(
     0px 2px 10px rgba(0, 0, 0, 0.08),
     inset 0px -2px 4px rgba(215, 215, 215, 0.5);
   margin-bottom: 24px;
-  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition: border-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
   align-items: center;
   justify-content: center;
   cursor: pointer;
@@ -232,13 +237,13 @@ watch(
 
 @media (min-width: 1024px) {
   .sign-file:hover {
-    background: linear-gradient(to bottom, white, rgba(183, 236, 93, 0.3));
+    background: var(--color-card-hover);
   }
 }
 
 .sign-file.active {
   border-color: var(--color-primary);
-  background: linear-gradient(to bottom, white, rgba(183, 236, 93, 0.3));
+  background: var(--color-card-hover);
 }
 
 .sign-file-more {

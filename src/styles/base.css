@@ -17,6 +17,7 @@
     background-color: var(--color-bg);
     width: 100vw;
     overflow: hidden;
+    transition: background-color 0.2s;
   }
 
   img {

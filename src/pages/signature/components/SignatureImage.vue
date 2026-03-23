@@ -122,7 +122,7 @@ function close() {
         :key="image"
         :class="[
           'relative flex h-45 w-full cursor-pointer justify-center rounded-[20px]',
-          currentSelect === image ? 'bg-primary opacity-70' : 'bg-white',
+          currentSelect === image ? 'bg-primary opacity-70' : 'bg-card-bg',
         ]"
         @click="selectImage(image)"
       >
@@ -154,9 +154,7 @@ function close() {
         class="iconScale mb-5"
         @click="toggleImagePopup(true)"
       />
-      <h5 class="text-secondary text-center">
-        {{ $t('add_picture') }}
-      </h5>
+      <h5 class="text-secondary text-center">{{ $t('add_picture') }}</h5>
     </div>
   </signature-popup>
 

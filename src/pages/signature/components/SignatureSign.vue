@@ -79,7 +79,7 @@ function close() {
         :key="signature"
         :class="[
           'relative flex h-[98px] w-full cursor-pointer justify-center rounded-[20px]',
-          currentSelect === signature ? 'bg-primary opacity-70' : 'bg-white',
+          currentSelect === signature ? 'bg-primary opacity-70' : 'bg-card-bg',
         ]"
         @click="selectSignature(signature)"
       >

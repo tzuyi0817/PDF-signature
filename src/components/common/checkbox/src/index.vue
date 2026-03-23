@@ -44,7 +44,7 @@ function onclick() {
   left: 0;
   width: 16px;
   height: 16px;
-  border: 2px solid var(--color-gray-50);
+  border: 2px solid var(--color-checkbox-border);
   border-radius: 2px;
 }
 
@@ -53,7 +53,7 @@ function onclick() {
   opacity: 0;
   position: absolute;
   transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
-  border-color: var(--color-gray-50);
+  border-color: var(--color-checkbox-border);
   border-style: solid;
 }
 

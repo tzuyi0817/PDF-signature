@@ -1,21 +1,34 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { sleep } from '@/utils/common';
 
 interface Props {
   title?: string;
+  position?: 'top' | 'bottom' | 'left' | 'right';
 }
 
 defineOptions({ name: 'Describedby' });
 
-const { title } = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  position: 'top',
+});
 const isShowDescription = ref(false);
 const isDisplayDescription = ref(false);
 const id = Date.now().toString();
 let timer: ReturnType<typeof setTimeout> | null = null;
 
+const translate = computed(() => {
+  const transformMap = {
+    top: '-translate-x-1/2 -translate-y-[130%]',
+    bottom: '-translate-x-1/2 translate-y-[130%]',
+    left: '-translate-x-[150%]',
+    right: 'translate-x-[50%]',
+  } as const;
+
+  return transformMap[props.position];
+});
 async function handleMouseEnter() {
-  if (!title) return;
+  if (!props.title) return;
 
   cleanupTimer();
   isDisplayDescription.value = true;
@@ -24,7 +37,7 @@ async function handleMouseEnter() {
 }
 
 function handleMouseLeave() {
-  if (!title) return;
+  if (!props.title) return;
 
   isShowDescription.value = false;
   cleanupTimer();
@@ -54,7 +67,7 @@ function cleanupTimer() {
     <p
       v-if="isDisplayDescription"
       :id="id"
-      :class="['describedby', { 'opacity-0': !isShowDescription }]"
+      :class="['describedby', translate, { 'opacity-0': !isShowDescription }]"
     >
       {{ title }}
     </p>
@@ -74,8 +87,7 @@ function cleanupTimer() {
   position: absolute;
   white-space: nowrap;
   left: 50%;
-  top: -4px;
-  transform: translateX(-50%) translateY(-100%);
+  top: 0;
   transition: opacity 300ms cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
   z-index: 10;

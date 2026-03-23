@@ -54,12 +54,13 @@ function close() {
   bottom: 0;
   left: 0;
   height: 70%;
-  background-color: var(--color-white);
+  background-color: var(--color-surface);
   width: 100%;
   border-radius: 40px 40px 0 0;
   transition: translate 150ms cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
   padding: 24px 32px;
+  color: var(--color-surface-text);
 }
 
 @media (min-width: 1024px) {

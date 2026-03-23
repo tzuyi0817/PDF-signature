@@ -53,7 +53,15 @@ onMounted(() => emit('childMounted'));
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: white;
+  background-color: var(--color-surface);
+  color: var(--color-surface-text);
+}
+
+:where(.dark) .sign-popup-box {
+  box-shadow:
+    0px 4px 15px rgba(0, 0, 0, 0.5),
+    inset 0px 2px 5px rgba(50, 50, 50, 0.3),
+    inset 0px -1px 4px rgba(50, 50, 50, 0.4);
 }
 
 @media (min-width: 1024px) {
