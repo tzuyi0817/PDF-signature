@@ -43,6 +43,7 @@ Signatures, text, and images are stored in `localStorage` for reuse.
 - Store PDF files in IndexedDB
 - Custom signatures, text and images are stored in localStorage
 - Edit signed PDF files
+- Dark and light mode theme switching
 
 ## Development
 
