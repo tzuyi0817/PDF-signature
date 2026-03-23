@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.6.0](https://github.com/tzuyi0817/PDF-signature/compare/v0.5.7...v0.6.0) (2026-03-23)
+
+### Features
+
+- add dark mode theme toggle ([dfedd90](https://github.com/tzuyi0817/PDF-signature/commit/dfedd90deb6840146a0c7972aa000ab10db9bb56))
+
 ## [0.5.7](https://github.com/tzuyi0817/PDF-signature/compare/v0.5.6...v0.5.7) (2026-02-24)
 
 ### Bug Fixes

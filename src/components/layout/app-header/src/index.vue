@@ -116,7 +116,7 @@ function onTransitionEnd(event: TransitionEvent) {
         >
           <svg-icon
             :name="themeIcon"
-            class="app-header-icon text-gray-40"
+            class="app-header-icon text-gray-40 mt-0.5"
             color="currentColor"
           />
         </button>
