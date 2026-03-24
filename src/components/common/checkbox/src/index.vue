@@ -3,11 +3,18 @@ import { useId } from 'vue';
 
 defineOptions({ name: 'Checkbox' });
 
+interface Props {
+  disabled?: boolean;
+}
+
+const props = defineProps<Props>();
 const checked = defineModel<boolean | 'mixed'>();
 const emit = defineEmits(['change']);
 const id = useId();
 
 function onclick() {
+  if (props.disabled) return;
+
   if (checked.value === true || checked.value === 'mixed') {
     checked.value = false;
   } else {
@@ -20,7 +27,7 @@ function onclick() {
 <template>
   <label
     :id
-    :class="['checkbox-container', { checked: checked === true, mixed: checked === 'mixed' }]"
+    :class="['checkbox-container', { checked: checked === true, mixed: checked === 'mixed', disabled }]"
     :aria-checked="checked"
     role="checkbox"
     @click="onclick"
@@ -36,6 +43,11 @@ function onclick() {
   user-select: none;
   width: 16px;
   height: 16px;
+}
+
+.checkbox-container.disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
 }
 
 .checkbox-container .checkmark {

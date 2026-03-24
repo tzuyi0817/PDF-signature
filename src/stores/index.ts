@@ -3,6 +3,7 @@ import { createPersistedState } from 'pinia-plugin-persistedstate';
 import { STORAGE_PREFIX } from './constants';
 import * as pdfStore from './modules/pdf';
 export { useConfigStore } from './modules/config';
+export { useFolderStore } from './modules/folder';
 export { useImageStore } from './modules/image';
 export { useLiteralStore } from './modules/literal';
 export { useSignatureStore } from './modules/signature';

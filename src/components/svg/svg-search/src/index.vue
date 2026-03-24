@@ -14,7 +14,7 @@ defineProps<Props>();
     viewBox="0 0 40 40"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    class="absolute top-0 left-1 transition-colors"
+    class="absolute top-1/2 left-1 -translate-y-1/2 transition-colors"
     title="search icon"
   >
     <circle

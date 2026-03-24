@@ -6,4 +6,6 @@ export interface PDF extends P {
   isUpdate?: boolean;
   height?: number;
   width?: number;
+  /** 所屬資料夾 ID，undefined 或空字串表示根目錄 */
+  folderId?: string;
 }

@@ -19,25 +19,31 @@ interface Props {
   isSelectAll: boolean | 'mixed';
 }
 
+interface Emits {
+  openWarnPopup: [file: PDF];
+  openEncryptPopup: [file: PDF];
+  selectFile: [file: PDF, isSelected: boolean];
+  openMoveToFolder: [file: PDF];
+}
+
 defineOptions({ name: 'SignFile' });
 
 const { file, type, keyword, isSelectAll } = defineProps<Props>();
-const emit = defineEmits(['openWarnPopup', 'openEncryptPopup', 'selectFile']);
+const emit = defineEmits<Emits>();
 const isShowMore = ref(false);
 const isSelected = ref(false);
 const router = useRouter();
 const { addPDF, addArchive, addTrash, deleteArchive, deleteTrash, setCurrentPDF } = usePdfStore();
 const { toggleLoading } = useConfigStore();
 
-const localTime = computed(() => {
-  return transformTimestamp(file.updateDate);
-});
+const localTime = computed(() => transformTimestamp(file.updateDate));
 
 const more = computed(() => {
   const moreMap = {
     file: [
       { icon: 'download', feat: () => openEncryptPopup() },
       { icon: 'sign', feat: () => editFile() },
+      { icon: 'folder_move', feat: () => openMoveToFolder() },
       { icon: 'archive', feat: () => moveToArchive() },
       { icon: 'trash', feat: () => moveToTrash() },
     ],
@@ -57,6 +63,11 @@ const more = computed(() => {
 function openEncryptPopup() {
   toggleMore(false);
   emit('openEncryptPopup', file);
+}
+
+function openMoveToFolder() {
+  toggleMore(false);
+  emit('openMoveToFolder', file);
 }
 
 async function editFile() {

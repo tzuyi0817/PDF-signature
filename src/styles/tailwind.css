@@ -6,14 +6,16 @@
   --color-surface: var(--color-surface);
   --color-surface-text: var(--color-surface-text);
 
+  --color-breadcrumbs: var(--color-breadcrumbs);
+
   --color-card-bg: var(--color-card-bg);
   --color-card-border: var(--color-card-border);
   --color-card-hover: var(--color-card-hover);
 
-  --color-primary: #b7ec5d;
-  --color-primary-dark: #648d1e;
-  --color-primary-frame: rgba(183, 236, 93, 0.3);
-  --color-primary-linear: rgb(183, 236, 93);
+  --color-primary: var(--color-primary);
+  --color-primary-dark: var(--color-primary-dark);
+  --color-primary-frame: var(--color-primary-frame);
+  --color-primary-linear: var(--color-primary-linear);
 
   --color-secondary: var(--color-secondary);
   --color-secondary-dark: var(--color-secondary-dark);

@@ -9,10 +9,16 @@ interface Props {
   batch: Set<PDF>;
 }
 
+interface Emits {
+  clearBatch: [];
+  openWarnPopup: [];
+  batchMoveToFolder: [];
+}
+
 defineOptions({ name: 'BatchOperation' });
 
 const { batch, type } = defineProps<Props>();
-const emit = defineEmits(['clearBatch', 'openWarnPopup']);
+const emit = defineEmits<Emits>();
 const { batchAddArchive, batchAddTrash, batchReductionArchive, batchReductionTrash } = usePdfStore();
 
 async function batchMoveToArchive() {
@@ -31,12 +37,20 @@ async function batchReduction() {
   } else {
     await batchReductionTrash(batch);
   }
+
   emit('clearBatch');
 }
 </script>
 
 <template>
   <div class="flex gap-3">
+    <!-- 批次移動到資料夾按鈕 -->
+    <svg-icon
+      v-if="type === 'file'"
+      name="folder_move"
+      class="h-6 w-6"
+      @click="$emit('batchMoveToFolder')"
+    />
     <svg-icon
       v-if="type === 'file'"
       name="archive"

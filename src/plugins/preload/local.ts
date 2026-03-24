@@ -1,10 +1,11 @@
-import { usePdfStore } from '@/stores';
+import { useFolderStore, usePdfStore } from '@/stores';
 import { loadImage } from '@/utils/image';
 
 export function preloadStorage() {
   const { getCurrentPDF, getPDF, getArchive, getTrash } = usePdfStore();
+  const { getFolders } = useFolderStore();
 
-  return Promise.all([getCurrentPDF(), getPDF(), getArchive(), getTrash()]).then(() => {});
+  return Promise.all([getCurrentPDF(), getPDF(), getArchive(), getTrash(), getFolders()]).then(() => {});
 }
 
 export function preloadImages() {

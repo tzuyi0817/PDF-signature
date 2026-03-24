@@ -1,36 +1,73 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, nextTick, onActivated, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { SignFile } from '@/components/biz';
-import { BatchOperation, Checkbox, SvgIcon } from '@/components/common';
+import { BatchOperation, Checkbox, showToast, SvgIcon } from '@/components/common';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { usePdfStore } from '@/stores';
-import HomeSearch from './HomeSearch.vue';
+import FolderRow from './FolderRow.vue';
+import MoveFolderModal from './MoveFolderModal.vue';
+import type { Folder } from '@/types/folder';
 import type { FileShowStatus, MenuTab } from '@/types/menu';
 import type { PDF } from '@/types/pdf';
 
 interface Props {
   type: MenuTab;
   list: PDF[];
+  folders?: Folder[];
+  keyword: string;
 }
 
-const { list } = defineProps<Props>();
-const keyword = ref('');
+interface Emits {
+  navigateFolder: [folderId: string];
+  openRenameDialog: [folder: Folder];
+  openCreateFolder: [];
+}
+
+const props = defineProps<Props>();
+const emit = defineEmits<Emits>();
 const showStatus = ref<FileShowStatus>('list');
 const iShowEncryptPopup = ref(false);
 const isSelectAll = ref<boolean | 'mixed'>(false);
 const currentFile = ref<PDF | null>(null);
+const isShowMoveModal = ref(false);
 const batch = new Set<PDF>();
+const { t } = useI18n();
 const { deleteTrash, batchDeleteTrash } = usePdfStore();
 const { isShowWarnPopup, Popup, toggleWarnPopup } = useWarnPopup();
+const hasFiles = computed(() => props.list.length > 0);
 
 const SignEncryption = defineAsyncComponent(() => import('@/components/biz/sign-encryption/src/index.vue'));
 const isListStatus = computed(() => showStatus.value === 'list');
 const isShowThread = computed(() => isListStatus.value && isSelectAll.value === false);
-const search = computed(() => {
-  const target = keyword.value.toLowerCase();
 
-  return list.filter(({ name }) => name.toLowerCase().includes(target));
+const filteredFiles = computed(() => {
+  const target = props.keyword.toLowerCase();
+
+  return props.list.filter(({ name }) => name.toLowerCase().includes(target));
 });
+
+const filteredFolders = computed(() => {
+  if (!props.folders) return [];
+  if (!props.keyword) return props.folders;
+
+  const target = props.keyword.toLowerCase();
+
+  return props.folders.filter(({ name }) => name.toLowerCase().includes(target));
+});
+
+/** 批次選取的 PDF ID 集合 */
+const batchPdfIds = computed(() => {
+  const ids = new Set<string>();
+
+  for (const pdf of batch) {
+    ids.add(pdf.PDFId);
+  }
+
+  return ids;
+});
+
+const hasSearchResults = computed(() => filteredFiles.value.length > 0 || filteredFolders.value.length > 0);
 
 function changeShowStatus(status: FileShowStatus) {
   showStatus.value = status;
@@ -40,6 +77,7 @@ function openWarnPopup(file?: PDF) {
   toggleWarnPopup(true);
 
   if (!file) return;
+
   currentFile.value = file;
 }
 
@@ -66,6 +104,7 @@ function deleteFile() {
     batchDeleteTrash(batch);
     clearBatch();
   }
+
   closeWarnPopup();
 }
 
@@ -75,15 +114,23 @@ function selectFile(file: PDF, isSelected: boolean) {
   } else {
     batch.delete(file);
   }
+
   updateSelectAll();
 }
 
 function onCheckboxChange() {
+  if (!hasFiles.value) {
+    isSelectAll.value = false;
+    showToast({ message: t('prompt.no_files_to_select'), type: 'warn' });
+    return;
+  }
+
   if (!isSelectAll.value) {
     batch.clear();
     return;
   }
-  list.forEach(file => batch.add(file));
+
+  props.list.forEach(file => batch.add(file));
 }
 
 function clearBatch() {
@@ -98,7 +145,25 @@ async function updateSelectAll() {
     isSelectAll.value = false;
     return;
   }
-  isSelectAll.value = batch.size === list.length ? true : 'mixed';
+
+  isSelectAll.value = batch.size === props.list.length ? true : 'mixed';
+}
+
+const singleMovePdfIds = ref<Set<string>>(new Set());
+
+function openMoveModal() {
+  singleMovePdfIds.value = batchPdfIds.value;
+  isShowMoveModal.value = true;
+}
+
+function openSingleMoveModal(file: PDF) {
+  singleMovePdfIds.value = new Set([file.PDFId]);
+  isShowMoveModal.value = true;
+}
+
+function closeMoveModal() {
+  isShowMoveModal.value = false;
+  clearBatch();
 }
 
 onActivated(updateSelectAll);
@@ -106,8 +171,6 @@ onActivated(updateSelectAll);
 
 <template>
   <div class="sign-files">
-    <home-search v-model="keyword" />
-
     <div class="hidden w-full items-end px-4 py-5 lg:flex">
       <div class="flex h-6 w-75 items-center gap-5 pl-6">
         <div
@@ -125,6 +188,7 @@ onActivated(updateSelectAll);
           :batch
           @clear-batch="clearBatch"
           @open-warn-popup="openWarnPopup"
+          @batch-move-to-folder="openMoveModal"
         />
 
         <p :class="['text-sm', { 'opacity-0': isSelectAll }]">
@@ -136,7 +200,14 @@ onActivated(updateSelectAll);
         <p :class="['h-6 text-sm', { 'opacity-0': !isShowThread }]">
           {{ $t('project_name') }}
         </p>
-        <div class="flex gap-1">
+        <div class="flex items-center gap-1">
+          <!-- 新增資料夾按鈕（僅檔案頁籤） -->
+          <svg-icon
+            v-if="type === 'file'"
+            name="folder_new"
+            class="h-10 w-10"
+            @click="emit('openCreateFolder')"
+          />
           <svg-icon
             name="list"
             :class="['h-10 w-10', { 'text-primary': isListStatus }]"
@@ -152,14 +223,23 @@ onActivated(updateSelectAll);
     </div>
 
     <ul
-      v-if="search.length"
+      v-if="hasSearchResults"
       :class="[
-        'h-[calc(100%-60px)] w-full gap-6 overflow-y-auto px-4',
+        'min-h-0 w-full flex-1 gap-6 overflow-y-auto px-4',
         { 'lg:flex lg:flex-row lg:flex-wrap lg:gap-4': !isListStatus },
       ]"
     >
+      <folder-row
+        v-for="folder in filteredFolders"
+        :key="folder.folderId"
+        :folder
+        :is-list-status
+        @navigate="emit('navigateFolder', $event)"
+        @open-rename-dialog="emit('openRenameDialog', $event)"
+      />
+
       <sign-file
-        v-for="(pdf, index) in search"
+        v-for="(pdf, index) in filteredFiles"
         :key="pdf.PDFId"
         :file="pdf"
         :index
@@ -170,12 +250,13 @@ onActivated(updateSelectAll);
         @open-warn-popup="openWarnPopup"
         @open-encrypt-popup="openEncryptPopup"
         @select-file="selectFile"
+        @open-move-to-folder="openSingleMoveModal"
       />
     </ul>
 
     <div
       v-else
-      class="flex h-[calc(100%-60px)] w-[80%] flex-col items-center justify-center"
+      class="flex w-[80%] flex-1 flex-col items-center justify-center"
     >
       <img
         src="@/assets/img/img_search.svg"
@@ -218,6 +299,12 @@ onActivated(updateSelectAll);
       :file="currentFile"
       @close-encrypt-popup="closeEncryptPopup"
     />
+
+    <move-folder-modal
+      v-if="isShowMoveModal"
+      :pdf-ids="singleMovePdfIds"
+      @close="closeMoveModal"
+    />
   </div>
 </template>
 
@@ -228,7 +315,7 @@ onActivated(updateSelectAll);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  position: relative;
+  flex: 1 1 0%;
+  min-height: 0;
 }
 </style>

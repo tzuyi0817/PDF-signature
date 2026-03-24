@@ -3,4 +3,5 @@ export const IDB_KEY = {
   PDF_LIST: 'pdf_signature_PDF',
   ARCHIVE_LIST: 'pdf_signature_archive',
   TRASH_LIST: 'pdf_signature_trash',
+  FOLDER_LIST: 'pdf_signature_folder',
 };

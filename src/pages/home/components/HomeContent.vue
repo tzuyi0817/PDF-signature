@@ -33,7 +33,7 @@ const currentCom = computed(() => {
 </script>
 
 <template>
-  <div class="index-content content">
+  <div class="index-content content flex flex-col">
     <img
       src="@/assets/icon/ic_add_tint.svg"
       alt="Add File Svg"

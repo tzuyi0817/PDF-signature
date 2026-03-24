@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { IDB_KEY } from '@/constants/idb';
 import { getIdb, setIdb } from '@/utils/idb';
+import { useFolderStore } from './folder';
 import type { MenuTab } from '@/types/menu';
 import type { PDF } from '@/types/pdf';
 
@@ -43,7 +44,12 @@ export const usePdfStore = defineStore('pdf', {
       return currentPDF;
     },
     setCurrentPDF(PDF: PDF) {
-      this.currentPDF = PDF;
+      const { currentFolderId } = useFolderStore();
+
+      this.currentPDF = {
+        ...PDF,
+        folderId: currentFolderId ?? undefined,
+      };
 
       return this.updateCurrentPDFIdb();
     },
@@ -59,6 +65,7 @@ export const usePdfStore = defineStore('pdf', {
         isUpdate: false,
         width: 0,
         height: 0,
+        folderId: undefined,
       };
 
       return this.updateCurrentPDFIdb();
@@ -215,6 +222,29 @@ export const usePdfStore = defineStore('pdf', {
     },
     updateTrashIdb() {
       return setIdb(IDB_KEY.TRASH_LIST, this.trashList);
+    },
+
+    /** 將檔案移動到指定資料夾 */
+    moveFilesToFolder(pdfIds: Set<string>, folderId: string | null) {
+      const targetFolderId = folderId ?? undefined;
+
+      for (const pdf of this.PDFList) {
+        if (pdfIds.has(pdf.PDFId)) {
+          pdf.folderId = targetFolderId;
+        }
+      }
+
+      return this.updatePDFIdb();
+    },
+    /** 刪除資料夾時，將其下所有檔案移回根目錄 */
+    orphanFilesToRoot(folderIds: Set<string>) {
+      for (const pdf of this.PDFList) {
+        if (pdf.folderId && folderIds.has(pdf.folderId)) {
+          pdf.folderId = undefined;
+        }
+      }
+
+      return this.updatePDFIdb();
     },
   },
 });

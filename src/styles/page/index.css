@@ -1,11 +1,9 @@
 @layer components {
   .index-container {
-    height: calc(100% - 60px);
-  }
-
-  @media (min-width: 1024px) {
-    .index-container {
-      height: calc(100% - 90px);
-    }
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0%;
+    min-height: 0;
+    margin-bottom: 12px;
   }
 }

@@ -7,6 +7,7 @@ interface Props {
   prefix?: string;
   color?: string;
   hoverChangeSvg?: boolean;
+  disabled?: boolean;
 }
 
 defineOptions({ name: 'SvgIcon' });
@@ -17,6 +18,7 @@ const {
   prefix = 'icon',
   color = '#4D4D4D',
   hoverChangeSvg = false,
+  disabled = false,
 } = defineProps<Props>();
 
 const isHover = ref(false);
@@ -24,6 +26,7 @@ const symbolId = computed(() => {
   const symbol = `#${prefix}-ic_${name}`;
 
   if (hoverChangeSvg && isHover.value && !name.includes('_h')) return `${symbol}_h`;
+
   return symbol;
 });
 </script>
@@ -32,7 +35,10 @@ const symbolId = computed(() => {
   <svg
     aria-hidden="true"
     :title="symbolId"
-    :class="['cursor-pointer', { [`transition-[color_transform] ${hoverColor}`]: !hoverChangeSvg }]"
+    :class="[
+      { 'cursor-pointer': !disabled },
+      { [`transition-[color_transform] ${hoverColor}`]: !hoverChangeSvg && !disabled },
+    ]"
     @mouseenter="isHover = true"
     @mouseleave="isHover = false"
   >

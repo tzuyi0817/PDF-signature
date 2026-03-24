@@ -44,6 +44,7 @@ Signatures, text, and images are stored in `localStorage` for reuse.
 - Custom signatures, text and images are stored in localStorage
 - Edit signed PDF files
 - Dark and light mode theme switching
+- Organize files with folders (create, rename, delete, move)
 
 ## Development
 
@@ -74,6 +75,7 @@ Clone this repository and install dependencies by running `pnpm`(Node.js version
 7. `Download Signed PDF`: After signing, click the download button to get the signed PDF file.
 8. `Edit Signed PDF`: After signing, click the edit button to edit the signed PDF file.
 9. `Batch Operation`: Batch archive, delete and reduction files
+10. `Folder Organization`: Create folders to organize your PDF files. Move files into folders, rename or delete folders as needed. Navigate between folders using the breadcrumb trail.
 
 ## Contribution
 
