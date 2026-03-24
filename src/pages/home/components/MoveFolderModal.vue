@@ -9,6 +9,8 @@ import type { Folder } from '@/types/folder';
 interface Props {
   /** 要移動的檔案 ID 集合 */
   pdfIds: Set<string>;
+  /** 要移動的資料夾 ID 集合 */
+  movingFolderIds: Set<string>;
 }
 
 interface Emits {
@@ -25,9 +27,28 @@ const { folderList } = storeToRefs(folderStore);
 /** 在 modal 裡瀏覽的目標資料夾 ID */
 const browsingFolderId = ref<string | null>(null);
 
-/** 目前瀏覽層的子資料夾 */
+/** 移動資料夾時需排除的 ID 集合（所有被移動的資料夾及其子資料夾） */
+const excludedFolderIds = computed(() => {
+  if (props.movingFolderIds.size === 0) return new Set<string>();
+
+  const ids = new Set<string>();
+
+  for (const folderId of props.movingFolderIds) {
+    ids.add(folderId);
+
+    for (const descendantId of folderStore.collectDescendantIds(folderId)) {
+      ids.add(descendantId);
+    }
+  }
+
+  return ids;
+});
+
+/** 目前瀏覽層的子資料夾（排除自己及子資料夾以防止循環） */
 const currentChildren = computed(() => {
-  return folderList.value.filter(folder => folder.parentId === browsingFolderId.value);
+  return folderList.value.filter(
+    folder => folder.parentId === browsingFolderId.value && !excludedFolderIds.value.has(folder.folderId),
+  );
 });
 
 /** 目前瀏覽層的麵包屑路徑 */
@@ -53,10 +74,23 @@ function navigateTo(folderId: string | null) {
 }
 
 function confirmMove() {
-  const { moveFilesToFolder } = usePdfStore();
-
   moving.value = true;
-  moveFilesToFolder(props.pdfIds, browsingFolderId.value)
+
+  const promises: Promise<void>[] = [];
+
+  if (props.pdfIds.size > 0) {
+    const { moveFilesToFolder } = usePdfStore();
+
+    promises.push(moveFilesToFolder(props.pdfIds, browsingFolderId.value));
+  }
+
+  if (props.movingFolderIds.size > 0) {
+    const result = folderStore.batchMoveFolders(props.movingFolderIds, browsingFolderId.value);
+
+    if (result) promises.push(result);
+  }
+
+  Promise.all(promises)
     .then(() => {
       showToast(t('folder.moved'));
       emit('close');

@@ -20,6 +20,7 @@
   "file_uploading": "Subiendo archivo...",
   "folder": {
     "all_files": "Todos los archivos",
+    "cannot_archive": "Las carpetas no se pueden archivar",
     "confirm_delete": "¿Estás seguro de que quieres eliminar esta carpeta?",
     "create": "Crear carpeta",
     "created": "Carpeta creada",

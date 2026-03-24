@@ -31,11 +31,17 @@ const iShowEncryptPopup = ref(false);
 const isSelectAll = ref<boolean | 'mixed'>(false);
 const currentFile = ref<PDF | null>(null);
 const isShowMoveModal = ref(false);
+const singleMovePdfIds = ref<Set<string>>(new Set());
+const movingFolderIds = ref<Set<string>>(new Set());
 const batch = new Set<PDF>();
+const folderBatch = new Set<Folder>();
 const { t } = useI18n();
 const { deleteTrash, batchDeleteTrash } = usePdfStore();
 const { isShowWarnPopup, Popup, toggleWarnPopup } = useWarnPopup();
+
 const hasFiles = computed(() => props.list.length > 0);
+const hasFolders = computed(() => (props.folders?.length ?? 0) > 0);
+const hasItems = computed(() => hasFiles.value || hasFolders.value);
 
 const SignEncryption = defineAsyncComponent(() => import('@/components/biz/sign-encryption/src/index.vue'));
 const isListStatus = computed(() => showStatus.value === 'list');
@@ -68,6 +74,17 @@ const batchPdfIds = computed(() => {
 });
 
 const hasSearchResults = computed(() => filteredFiles.value.length > 0 || filteredFolders.value.length > 0);
+
+/** 批次選取的資料夾 ID 集合 */
+const batchFolderIds = computed(() => {
+  const ids = new Set<string>();
+
+  for (const folder of folderBatch) {
+    ids.add(folder.folderId);
+  }
+
+  return ids;
+});
 
 function changeShowStatus(status: FileShowStatus) {
   showStatus.value = status;
@@ -119,7 +136,7 @@ function selectFile(file: PDF, isSelected: boolean) {
 }
 
 function onCheckboxChange() {
-  if (!hasFiles.value) {
+  if (!hasItems.value) {
     isSelectAll.value = false;
     showToast({ message: t('prompt.no_files_to_select'), type: 'warn' });
     return;
@@ -127,38 +144,62 @@ function onCheckboxChange() {
 
   if (!isSelectAll.value) {
     batch.clear();
+    folderBatch.clear();
     return;
   }
 
   props.list.forEach(file => batch.add(file));
+  props.folders?.forEach(folder => folderBatch.add(folder));
+}
+
+function selectFolder(folder: Folder, isSelected: boolean) {
+  if (isSelected) {
+    folderBatch.add(folder);
+  } else {
+    folderBatch.delete(folder);
+  }
+
+  updateSelectAll();
 }
 
 function clearBatch() {
   batch.clear();
+  folderBatch.clear();
   updateSelectAll();
 }
 
 async function updateSelectAll() {
   await nextTick();
 
-  if (!batch.size) {
+  const totalSelected = batch.size + folderBatch.size;
+
+  if (!totalSelected) {
     isSelectAll.value = false;
     return;
   }
 
-  isSelectAll.value = batch.size === props.list.length ? true : 'mixed';
-}
+  const totalItems = props.list.length + (props.folders?.length ?? 0);
 
-const singleMovePdfIds = ref<Set<string>>(new Set());
+  isSelectAll.value = totalSelected === totalItems ? true : 'mixed';
+}
 
 function openMoveModal() {
   singleMovePdfIds.value = batchPdfIds.value;
+  movingFolderIds.value = batchFolderIds.value;
   isShowMoveModal.value = true;
 }
 
 function openSingleMoveModal(file: PDF) {
   singleMovePdfIds.value = new Set([file.PDFId]);
+  movingFolderIds.value = new Set();
   isShowMoveModal.value = true;
+}
+
+function openFolderMoveModal(folder: Folder) {
+  singleMovePdfIds.value = new Set();
+  movingFolderIds.value = new Set([folder.folderId]);
+  isShowMoveModal.value = true;
+  clearBatch();
 }
 
 function closeMoveModal() {
@@ -186,6 +227,7 @@ onActivated(updateSelectAll);
           v-if="isSelectAll"
           :type
           :batch
+          :folder-batch="folderBatch"
           @clear-batch="clearBatch"
           @open-warn-popup="openWarnPopup"
           @batch-move-to-folder="openMoveModal"
@@ -234,8 +276,11 @@ onActivated(updateSelectAll);
         :key="folder.folderId"
         :folder
         :is-list-status
+        :is-select-all
         @navigate="emit('navigateFolder', $event)"
         @open-rename-dialog="emit('openRenameDialog', $event)"
+        @open-move-folder="openFolderMoveModal"
+        @select-folder="selectFolder"
       />
 
       <sign-file
@@ -303,6 +348,7 @@ onActivated(updateSelectAll);
     <move-folder-modal
       v-if="isShowMoveModal"
       :pdf-ids="singleMovePdfIds"
+      :moving-folder-ids="movingFolderIds"
       @close="closeMoveModal"
     />
   </div>

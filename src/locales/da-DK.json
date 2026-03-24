@@ -20,6 +20,7 @@
   "file_uploading": "Uploader fil...",
   "folder": {
     "all_files": "Alle filer",
+    "cannot_archive": "Mapper kan ikke arkiveres",
     "confirm_delete": "Er du sikker på, at du vil slette denne mappe?",
     "create": "Opret mappe",
     "created": "Mappe oprettet",

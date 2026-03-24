@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Popup, showToast, SvgIcon } from '@/components/common';
 import { useFolderStore, usePdfStore } from '@/stores';
@@ -9,15 +9,19 @@ import type { Folder } from '@/types/folder';
 interface Props {
   folder: Folder;
   isListStatus: boolean;
+  isSelectAll: boolean | 'mixed';
 }
 
 interface Emits {
   navigate: [folderId: string];
   openRenameDialog: [folder: Folder];
+  openMoveFolder: [folder: Folder];
+  selectFolder: [folder: Folder, isSelected: boolean];
 }
 
-const { folder } = defineProps<Props>();
+const { folder, isSelectAll } = defineProps<Props>();
 const emit = defineEmits<Emits>();
+const isSelected = ref(false);
 const isShowMore = ref(false);
 const isShowDeleteConfirm = ref(false);
 const { t } = useI18n();
@@ -25,12 +29,36 @@ const { t } = useI18n();
 const localTime = computed(() => transformTimestamp(folder.createDate));
 
 function openFolder() {
+  if (isSelectAll) {
+    toggleSelect();
+    return;
+  }
+
   emit('navigate', folder.folderId);
 }
+
+function toggleSelect() {
+  isSelected.value = !isSelected.value;
+  emit('selectFolder', folder, isSelected.value);
+}
+
+watch(
+  () => isSelectAll,
+  isSelect => {
+    if (isSelect === 'mixed') return;
+
+    isSelected.value = isSelect;
+  },
+);
 
 function renameFolder() {
   toggleMore(false);
   emit('openRenameDialog', folder);
+}
+
+function moveFolder() {
+  toggleMore(false);
+  emit('openMoveFolder', folder);
 }
 
 function openDeleteConfirm() {
@@ -63,7 +91,11 @@ function toggleMore(isOpen: boolean) {
 
 <template>
   <li
-    :class="['folder-row flex flex-col', isListStatus ? 'lg:flex-row' : 'lg:h-fit lg:w-79 lg:shrink-0']"
+    :class="[
+      'folder-row flex flex-col',
+      isListStatus ? 'lg:flex-row' : 'lg:h-fit lg:w-79 lg:shrink-0',
+      { active: isSelected },
+    ]"
     @click="openFolder"
   >
     <div :class="['transition-opacity lg:hidden', isShowMore ? 'z-10 opacity-100' : '-z-1 opacity-0']">
@@ -79,6 +111,13 @@ function toggleMore(isOpen: boolean) {
               name="edit"
               class="h-10 w-10"
               @click.stop="renameFolder"
+            />
+          </li>
+          <li>
+            <svg-icon
+              name="folder_move"
+              class="h-10 w-10"
+              @click.stop="moveFolder"
             />
           </li>
           <li>
@@ -135,6 +174,13 @@ function toggleMore(isOpen: boolean) {
         </li>
         <li>
           <svg-icon
+            name="folder_move"
+            class="h-10 w-10"
+            @click.stop="moveFolder"
+          />
+        </li>
+        <li>
+          <svg-icon
             name="trash"
             class="h-10 w-10"
             @click.stop="openDeleteConfirm"
@@ -185,6 +231,11 @@ function toggleMore(isOpen: boolean) {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+}
+
+.folder-row.active {
+  border-color: var(--color-primary);
+  background: var(--color-card-hover);
 }
 
 @media (min-width: 1024px) {

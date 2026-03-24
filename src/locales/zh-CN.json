@@ -20,6 +20,7 @@
   "file_uploading": "文件上传中...",
   "folder": {
     "all_files": "所有文件",
+    "cannot_archive": "资料夹无法封存",
     "confirm_delete": "确定要删除此文件夹吗？",
     "create": "创建文件夹",
     "created": "文件夹已创建",

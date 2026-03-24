@@ -20,6 +20,7 @@
   "file_uploading": "Dosya yükleniyor...",
   "folder": {
     "all_files": "Tüm dosyalar",
+    "cannot_archive": "Klasörler arşivlenemez",
     "confirm_delete": "Bu klasörü silmek istediğinizden emin misiniz?",
     "create": "Klasör oluştur",
     "created": "Klasör oluşturuldu",

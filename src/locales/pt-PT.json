@@ -20,6 +20,7 @@
   "file_uploading": "Carregando arquivo...",
   "folder": {
     "all_files": "Todos os ficheiros",
+    "cannot_archive": "As pastas não podem ser arquivadas",
     "confirm_delete": "Tem certeza de que deseja excluir esta pasta?",
     "create": "Criar pasta",
     "created": "Pasta criada",

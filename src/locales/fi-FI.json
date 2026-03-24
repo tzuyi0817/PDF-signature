@@ -20,6 +20,7 @@
   "file_uploading": "Tiedoston lataaminen...",
   "folder": {
     "all_files": "Kaikki tiedostot",
+    "cannot_archive": "Kansioita ei voi arkistoida",
     "confirm_delete": "Haluatko varmasti poistaa tämän kansion?",
     "create": "Luo kansio",
     "created": "Kansio luotu",

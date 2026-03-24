@@ -20,6 +20,7 @@
   "file_uploading": "Laddar upp fil...",
   "folder": {
     "all_files": "Alla filer",
+    "cannot_archive": "Mappar kan inte arkiveras",
     "confirm_delete": "Är du säker på att du vill ta bort den här mappen?",
     "create": "Skapa mapp",
     "created": "Mapp skapad",

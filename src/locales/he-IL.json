@@ -20,6 +20,7 @@
   "file_uploading": "מעלה קובץ...",
   "folder": {
     "all_files": "כל הקבצים",
+    "cannot_archive": "לא ניתן לארכב תיקיות",
     "confirm_delete": "האם אתה בטוח שברצונך למחוק את התיקייה הזו?",
     "create": "צור תיקייה",
     "created": "התיקייה נוצרה",

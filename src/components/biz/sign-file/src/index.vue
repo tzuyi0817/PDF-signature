@@ -136,6 +136,7 @@ watch(
   () => isSelectAll,
   isSelect => {
     if (isSelect === 'mixed') return;
+
     isSelected.value = isSelect;
   },
 );

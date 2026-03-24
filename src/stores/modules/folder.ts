@@ -99,27 +99,63 @@ export const useFolderStore = defineStore('folder', {
 
       return { deletedIds: idsToDelete, promise: this.updateFolderIdb() };
     },
+    /** 批次刪除多個資料夾及其所有子資料夾（單次 IDB 寫入） */
+    batchDeleteFolders(folderIds: Set<string>) {
+      const allDeletedIds = new Set<string>();
+
+      for (const folderId of folderIds) {
+        allDeletedIds.add(folderId);
+
+        for (const id of this.collectDescendantIds(folderId)) {
+          allDeletedIds.add(id);
+        }
+      }
+
+      this.folderList = this.folderList.filter(f => !allDeletedIds.has(f.folderId));
+
+      return { deletedIds: allDeletedIds, promise: this.updateFolderIdb() };
+    },
     /** 導覽至指定資料夾 */
     navigateTo(folderId: string | null) {
       this.currentFolderId = folderId;
     },
     /** 移動資料夾到另一個資料夾 */
     moveFolder(folderId: string, targetParentId: string | null) {
+      if (!this.applyMoveFolder(folderId, targetParentId)) return;
+
+      return this.updateFolderIdb();
+    },
+    /** 批次移動多個資料夾到指定目標（單次 IDB 寫入） */
+    batchMoveFolders(folderIds: Set<string>, targetParentId: string | null) {
+      let moved = false;
+
+      for (const folderId of folderIds) {
+        if (this.applyMoveFolder(folderId, targetParentId)) {
+          moved = true;
+        }
+      }
+
+      if (!moved) return;
+
+      return this.updateFolderIdb();
+    },
+    /** 套用單個資料夾移動（不寫 IDB） */
+    applyMoveFolder(folderId: string, targetParentId: string | null): boolean {
       const folder = this.folderList.find(f => f.folderId === folderId);
 
-      if (!folder) return;
+      if (!folder) return false;
 
       // 防止移動到自己或自己的子資料夾
-      if (folderId === targetParentId) return;
+      if (folderId === targetParentId) return false;
 
       const descendants = this.collectDescendantIds(folderId);
 
-      if (targetParentId !== null && descendants.has(targetParentId)) return;
+      if (targetParentId !== null && descendants.has(targetParentId)) return false;
 
       folder.parentId = targetParentId;
       folder.updateDate = Date.now();
 
-      return this.updateFolderIdb();
+      return true;
     },
     /** 遞迴收集所有子資料夾 ID */
     collectDescendantIds(folderId: string): Set<string> {

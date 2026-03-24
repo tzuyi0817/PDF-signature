@@ -20,6 +20,7 @@
   "file_uploading": "Téléchargement du fichier...",
   "folder": {
     "all_files": "Tous les fichiers",
+    "cannot_archive": "Les dossiers ne peuvent pas être archivés",
     "confirm_delete": "Êtes-vous sûr de vouloir supprimer ce dossier ?",
     "create": "Créer un dossier",
     "created": "Dossier créé",

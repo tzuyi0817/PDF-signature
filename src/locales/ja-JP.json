@@ -20,6 +20,7 @@
   "file_uploading": "ファイルをアップロード中...",
   "folder": {
     "all_files": "すべてのファイル",
+    "cannot_archive": "フォルダはアーカイブできません",
     "confirm_delete": "このフォルダを削除してもよろしいですか？",
     "create": "フォルダを作成",
     "created": "フォルダが作成されました",

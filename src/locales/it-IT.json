@@ -20,6 +20,7 @@
   "file_uploading": "Caricamento del file...",
   "folder": {
     "all_files": "Tutti i file",
+    "cannot_archive": "Le cartelle non possono essere archiviate",
     "confirm_delete": "Sei sicuro di voler eliminare questa cartella?",
     "create": "Crea cartella",
     "created": "Cartella creata",

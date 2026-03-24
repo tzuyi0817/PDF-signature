@@ -1,12 +1,15 @@
 <script lang="ts" setup>
-import { SvgIcon } from '@/components/common';
-import { usePdfStore } from '@/stores';
+import { useI18n } from 'vue-i18n';
+import { showToast, SvgIcon } from '@/components/common';
+import { useFolderStore, usePdfStore } from '@/stores';
+import type { Folder } from '@/types/folder';
 import type { MenuTab } from '@/types/menu';
 import type { PDF } from '@/types/pdf';
 
 interface Props {
   type: MenuTab;
   batch: Set<PDF>;
+  folderBatch: Set<Folder>;
 }
 
 interface Emits {
@@ -17,24 +20,53 @@ interface Emits {
 
 defineOptions({ name: 'BatchOperation' });
 
-const { batch, type } = defineProps<Props>();
+const { batch, folderBatch, type } = defineProps<Props>();
 const emit = defineEmits<Emits>();
-const { batchAddArchive, batchAddTrash, batchReductionArchive, batchReductionTrash } = usePdfStore();
+const { t } = useI18n();
 
 async function batchMoveToArchive() {
-  await batchAddArchive(batch);
+  const { batchAddArchive } = usePdfStore();
+
+  if (folderBatch.size > 0) {
+    showToast({ message: t('folder.cannot_archive'), type: 'warn' });
+  }
+
+  if (batch.size > 0) {
+    await batchAddArchive(batch);
+  }
+
   emit('clearBatch');
 }
 
 async function batchMoveToTrash() {
-  await batchAddTrash(batch, type);
+  const { batchAddTrash, orphanFilesToRoot } = usePdfStore();
+  const promises: Promise<unknown>[] = [];
+
+  if (batch.size > 0) {
+    promises.push(batchAddTrash(batch, type));
+  }
+
+  if (folderBatch.size > 0) {
+    const { batchDeleteFolders } = useFolderStore();
+    const folderIds = new Set([...folderBatch].map(f => f.folderId));
+    const { deletedIds, promise } = batchDeleteFolders(folderIds);
+
+    orphanFilesToRoot(deletedIds);
+    promises.push(promise);
+  }
+
+  await Promise.all(promises);
   emit('clearBatch');
 }
 
 async function batchReduction() {
   if (type === 'archive') {
+    const { batchReductionArchive } = usePdfStore();
+
     await batchReductionArchive(batch);
   } else {
+    const { batchReductionTrash } = usePdfStore();
+
     await batchReductionTrash(batch);
   }
 

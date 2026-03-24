@@ -20,6 +20,7 @@
   "file_uploading": "Przesyłanie pliku...",
   "folder": {
     "all_files": "Wszystkie pliki",
+    "cannot_archive": "Foldery nie mogą być zarchiwizowane",
     "confirm_delete": "Czy na pewno chcesz usunąć ten folder?",
     "create": "Utwórz folder",
     "created": "Folder utworzony",

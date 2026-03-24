@@ -20,6 +20,7 @@
   "file_uploading": "파일 업로드 중...",
   "folder": {
     "all_files": "모든 파일",
+    "cannot_archive": "폴더는 보관할 수 없습니다",
     "confirm_delete": "이 폴더를 삭제하시겠습니까?",
     "create": "폴더 만들기",
     "created": "폴더가 생성되었습니다",

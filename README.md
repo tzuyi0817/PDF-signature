@@ -74,8 +74,8 @@ Clone this repository and install dependencies by running `pnpm`(Node.js version
 6. `Language Switch`: Select the language in the upper right corner of the header.
 7. `Download Signed PDF`: After signing, click the download button to get the signed PDF file.
 8. `Edit Signed PDF`: After signing, click the edit button to edit the signed PDF file.
-9. `Batch Operation`: Batch archive, delete and reduction files
-10. `Folder Organization`: Create folders to organize your PDF files. Move files into folders, rename or delete folders as needed. Navigate between folders using the breadcrumb trail.
+9. `Batch Operation`: Batch archive, delete and reduction files. Folders can also be batch selected for moving or deleting (folders cannot be archived).
+10. `Folder Organization`: Create folders to organize your PDF files. Move files or folders into other folders, rename or delete folders as needed. Navigate between folders using the breadcrumb trail.
 
 ## Contribution
 

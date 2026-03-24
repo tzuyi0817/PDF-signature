@@ -20,6 +20,7 @@
   "file_uploading": "Bestand uploaden...",
   "folder": {
     "all_files": "Alle bestanden",
+    "cannot_archive": "Mappen kunnen niet worden gearchiveerd",
     "confirm_delete": "Weet u zeker dat u deze map wilt verwijderen?",
     "create": "Map aanmaken",
     "created": "Map aangemaakt",

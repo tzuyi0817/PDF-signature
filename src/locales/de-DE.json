@@ -20,6 +20,7 @@
   "file_uploading": "Datei wird hochgeladen...",
   "folder": {
     "all_files": "Alle Dateien",
+    "cannot_archive": "Ordner können nicht archiviert werden",
     "confirm_delete": "Möchten Sie diesen Ordner wirklich löschen?",
     "create": "Ordner erstellen",
     "created": "Ordner erstellt",

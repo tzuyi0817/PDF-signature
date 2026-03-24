@@ -20,6 +20,7 @@
   "file_uploading": "File uploading...",
   "folder": {
     "all_files": "All Files",
+    "cannot_archive": "Folders cannot be archived",
     "confirm_delete": "Are you sure you want to delete this folder?",
     "create": "Create Folder",
     "created": "Folder created",
