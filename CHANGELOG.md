@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.0](https://github.com/tzuyi0817/PDF-signature/compare/v0.6.0...v0.7.0) (2026-03-25)
+
+### Features
+
+- organize files with folders (create, rename, delete, move) ([13941f5](https://github.com/tzuyi0817/PDF-signature/commit/13941f5c6ec24eda7e72212408da3e66acf12d1a))
+- folders batch selected for moving or deleting ([d2f28f2](https://github.com/tzuyi0817/PDF-signature/commit/d2f28f2c410c75420d728c76d757003a1541cd8d))
+- new folders can be added to an empty directory ([17b809e](https://github.com/tzuyi0817/PDF-signature/commit/17b809e0e1ecb3d19d49135d51f31a7af71d7c27))
+
 ## [0.6.0](https://github.com/tzuyi0817/PDF-signature/compare/v0.5.7...v0.6.0) (2026-03-23)
 
 ### Features
