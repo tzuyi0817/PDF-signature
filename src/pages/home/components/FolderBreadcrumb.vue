@@ -16,12 +16,10 @@ function navigateTo(folderId: string | null) {
 </script>
 
 <template>
-  <nav
-    v-if="currentFolderId !== null"
-    class="flex items-center gap-1 px-4 py-2 text-sm"
-  >
+  <nav class="flex flex-wrap items-center gap-1 px-4 py-2 text-sm">
     <button
-      class="text-breadcrumbs shrink-0 cursor-pointer font-medium hover:underline"
+      :class="['shrink-0 font-medium', currentFolderId === null ? 'text-surface-text' : 'breadcrumbs-active']"
+      :disabled="currentFolderId === null"
       @click="navigateTo(null)"
     >
       {{ t('folder.all_files') }}
@@ -39,7 +37,7 @@ function navigateTo(folderId: string | null) {
       <button
         :class="[
           'max-w-40 shrink-0 truncate font-medium',
-          crumb.folderId === currentFolderId ? 'text-surface-text' : 'text-breadcrumbs cursor-pointer hover:underline',
+          crumb.folderId === currentFolderId ? 'text-surface-text' : 'breadcrumbs-active',
         ]"
         :disabled="crumb.folderId === currentFolderId"
         @click="navigateTo(crumb.folderId)"
@@ -49,3 +47,15 @@ function navigateTo(folderId: string | null) {
     </template>
   </nav>
 </template>
+
+<style lang="css" scoped>
+.breadcrumbs-active {
+  color: var(--color-breadcrumbs);
+  cursor: pointer;
+  transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+</style>

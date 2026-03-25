@@ -62,7 +62,7 @@ function navigateToFolder(folderId: string) {
       v-model="keyword"
     />
 
-    <folder-breadcrumb v-if="currentFolderId !== null" />
+    <folder-breadcrumb />
 
     <home-sign-files
       v-if="hasItemsInFolder"
@@ -82,12 +82,23 @@ function navigateToFolder(folderId: string) {
       <img
         src="@/assets/icon/ic_add_dark.svg"
         alt="create file"
-        class="iconScale h-20 w-20 lg:h-34 lg:w-34"
+        class="iconScale h-20 w-20 cursor-pointer lg:h-34 lg:w-34"
         @click="goPage('upload')"
       />
-      <h3 class="text-center">
-        {{ $t('prompt.create_file') }}
-      </h3>
+
+      <h3 class="text-center">{{ $t('prompt.create_file') }}</h3>
+
+      <button
+        class="index-files-create-folder"
+        @click="openCreateFolder"
+      >
+        <img
+          src="@/assets/icon/ic_folder_new_dark.svg"
+          alt="create folder"
+          class="h-6 w-6"
+        />
+        <span class="text-sm">{{ $t('folder.create') }}</span>
+      </button>
     </div>
 
     <create-folder-dialog
@@ -97,3 +108,22 @@ function navigateToFolder(folderId: string) {
     />
   </div>
 </template>
+
+<style lang="css" scoped>
+.index-files-create-folder {
+  margin-top: 8px;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: 1px dashed var(--color-gray-40);
+  border-radius: 8px;
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    background-color: var(--color-primary);
+    color: black;
+  }
+}
+</style>

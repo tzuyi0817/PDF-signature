@@ -108,7 +108,7 @@ function confirmMove() {
   >
     <div class="flex flex-1 flex-col gap-4 py-4">
       <!-- 麵包屑導覽 -->
-      <nav class="flex items-center gap-1 px-4 text-sm">
+      <nav class="flex flex-wrap items-center gap-1 px-4 text-sm">
         <button
           class="text-breadcrumbs shrink-0 cursor-pointer font-medium hover:underline"
           @click="navigateTo(null)"

@@ -29,9 +29,9 @@ export async function createMockFiles(page: Page) {
     const { usePdfStore } = await importModule<PdfStore>('/src/stores');
     const { addPDF } = usePdfStore();
 
-    mockFiles.forEach(async file => {
+    for (const file of mockFiles) {
       await addPDF(file);
-    });
+    }
   }, MOCK_FILES);
 }
 
@@ -42,7 +42,9 @@ export async function clearMockFiles(page: Page) {
     const { usePdfStore } = await importModule<PdfStore>('/src/stores');
     const { deletePDF } = usePdfStore();
 
-    mockFiles.forEach(async file => await deletePDF(file.PDFId));
+    for (const file of mockFiles) {
+      await deletePDF(file.PDFId);
+    }
   }, MOCK_FILES);
 }
 

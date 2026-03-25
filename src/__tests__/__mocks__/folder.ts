@@ -4,6 +4,7 @@ import type { Page } from '@playwright/test';
 interface FolderStoreModule {
   useFolderStore: () => {
     createFolder: (name: string) => void;
+    updateFolderIdb: () => Promise<void>;
     navigateTo: (folderId: string | null) => void;
     folderList: Array<{ folderId: string; name: string; parentId: string | null }>;
   };
@@ -17,6 +18,7 @@ export async function createMockFolder(page: Page, name: string) {
     const store = useFolderStore();
 
     store.createFolder(folderName);
+    await store.updateFolderIdb();
 
     return store.folderList[0];
   }, name);
@@ -32,6 +34,8 @@ export async function createMockFolders(page: Page, names: string[]) {
     for (const name of folderNames) {
       store.createFolder(name);
     }
+
+    await store.updateFolderIdb();
 
     return store.folderList;
   }, names);

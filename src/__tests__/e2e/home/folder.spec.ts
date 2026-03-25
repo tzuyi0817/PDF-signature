@@ -1,6 +1,20 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 import { createMockFiles, MOCK_FILES } from '@/__tests__/__mocks__/file';
 import { createMockFolder } from '@/__tests__/__mocks__/folder';
+
+/** reload 後等待首頁檔案列表渲染完成，若未渲染則重試一次 */
+async function reloadAndWaitForFiles(page: Page) {
+  await page.reload({ waitUntil: 'networkidle' });
+
+  const fileLocator = page.locator('li.sign-file').first();
+
+  try {
+    await fileLocator.waitFor({ state: 'visible', timeout: 10_000 });
+  } catch {
+    await page.reload({ waitUntil: 'networkidle' });
+    await fileLocator.waitFor({ state: 'visible', timeout: 10_000 });
+  }
+}
 
 test.describe('folder', () => {
   test.beforeEach(async ({ page }) => {
@@ -10,9 +24,9 @@ test.describe('folder', () => {
   test.describe('folder CRUD', () => {
     test('should create a new folder via dialog', async ({ page }) => {
       await createMockFiles(page);
-      await page.reload();
+      await reloadAndWaitForFiles(page);
 
-      const newFolderIcon = page.getByTitle(/#icon-ic_folder_new/i);
+      const newFolderIcon = page.locator('svg[title*="folder_new"]');
 
       await newFolderIcon.click();
       await expect(page.getByText(/create folder/i)).toBeInViewport();
@@ -28,7 +42,7 @@ test.describe('folder', () => {
     test('should show folder in list before files', async ({ page }) => {
       await createMockFiles(page);
       await createMockFolder(page, 'My Documents');
-      await page.reload();
+      await reloadAndWaitForFiles(page);
 
       const folderItem = page.getByText('My Documents');
 
@@ -38,11 +52,12 @@ test.describe('folder', () => {
     test('should delete a folder', async ({ page }) => {
       await createMockFiles(page);
       await createMockFolder(page, 'Delete Me');
-      await page.reload();
+      await reloadAndWaitForFiles(page);
 
       const folderItem = page.locator('.folder-row:has-text("Delete Me")');
 
-      await folderItem.getByTitle(/#icon-ic_trash/i).click();
+      await folderItem.locator('svg[title*="trash"]').click();
+      await page.getByRole('button', { name: /confirm/i }).click();
       await expect(page.getByText('Delete Me')).toBeHidden();
     });
   });
@@ -51,7 +66,7 @@ test.describe('folder', () => {
     test('should navigate into folder and show breadcrumb', async ({ page }) => {
       await createMockFiles(page);
       await createMockFolder(page, 'Work Files');
-      await page.reload();
+      await reloadAndWaitForFiles(page);
 
       const folderItem = page.locator('.folder-row:has-text("Work Files")');
 
@@ -64,7 +79,7 @@ test.describe('folder', () => {
     test('should navigate back to root via breadcrumb', async ({ page }) => {
       await createMockFiles(page);
       await createMockFolder(page, 'Navigate Back');
-      await page.reload();
+      await reloadAndWaitForFiles(page);
 
       const folderItem = page.locator('.folder-row:has-text("Navigate Back")');
 
@@ -79,25 +94,28 @@ test.describe('folder', () => {
     test('should show move to folder option in file actions', async ({ page }) => {
       await createMockFiles(page);
       await createMockFolder(page, 'Target Folder');
-      await page.reload();
+      await reloadAndWaitForFiles(page);
 
       const { name } = MOCK_FILES[0];
       const li = page.locator(`li.sign-file:has-text("${name}")`);
 
-      await expect(li.getByTitle(/#icon-ic_folder_move/i)).toBeInViewport();
+      await expect(li.locator('svg[title*="folder_move"]')).toBeInViewport();
     });
 
     test('should open move modal when clicking move icon', async ({ page }) => {
       await createMockFiles(page);
       await createMockFolder(page, 'Destination');
-      await page.reload();
+      await reloadAndWaitForFiles(page);
 
       const { name } = MOCK_FILES[0];
       const li = page.locator(`li.sign-file:has-text("${name}")`);
 
-      await li.getByTitle(/#icon-ic_folder_move/i).click();
-      await expect(page.getByText(/move to folder/i)).toBeInViewport();
-      await expect(page.getByText('Destination')).toBeInViewport();
+      await li.locator('svg[title*="folder_move"]').click();
+
+      const modal = page.locator('.sign-popup');
+
+      await expect(modal.getByText(/move to folder/i)).toBeInViewport();
+      await expect(modal.getByText('Destination')).toBeInViewport();
     });
   });
 });

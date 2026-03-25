@@ -59,7 +59,7 @@ function handleKeydown(event: KeyboardEvent) {
     :title="title"
     @close-popup="emit('close')"
   >
-    <div class="px-6">
+    <div class="px-1 lg:px-6">
       <input
         ref="inputRef"
         v-model.trim="folderName"
