@@ -8,7 +8,7 @@ import { A4_WIDTH, DRAG_MOVE_STEP } from '@/constants/common';
 import { useLoadCanvas } from '@/hooks/use-load-canvas';
 import { usePointerFabric } from '@/hooks/use-pointer-fabric';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
-import { onAfterRouteLeave } from '@/router';
+import { onAfterRouteLeave } from '@/router/events';
 import { useConfigStore, usePdfStore } from '@/stores';
 import { sleep } from '@/utils/common';
 import { canvasToFile } from '@/utils/image';
