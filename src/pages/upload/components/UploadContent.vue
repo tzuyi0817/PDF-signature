@@ -4,7 +4,7 @@ import { computed, defineAsyncComponent, nextTick, onMounted, ref, useTemplateRe
 import { useI18n } from 'vue-i18n';
 import { showToast, StepBtn, SvgIcon, Version } from '@/components/common';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
-import { onAfterRouteLeave } from '@/router';
+import { onAfterRouteLeave } from '@/router/events';
 import { useConfigStore, usePdfStore } from '@/stores';
 import { sleep } from '@/utils/common';
 import { checkFile } from '@/utils/reader';
