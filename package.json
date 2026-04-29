@@ -44,7 +44,7 @@
     "@vitejs/plugin-vue": "^6.0.6",
     "@vue/tsconfig": "^0.9.1",
     "cssnano": "^7.1.5",
-    "eslint": "^9.39.4",
+    "eslint": "^10.2.1",
     "postcss": "^8.5.10",
     "postcss-preset-env": "^11.2.1",
     "postcss-pxtorem": "^6.1.0",
