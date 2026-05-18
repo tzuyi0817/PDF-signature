@@ -29,8 +29,8 @@
     "vue-router": "^5.0.4"
   },
   "optionalDependencies": {
-    "@commitlint/cli": "^20.5.0",
-    "@commitlint/config-conventional": "^20.5.0",
+    "@commitlint/cli": "^21.0.1",
+    "@commitlint/config-conventional": "^21.0.1",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0"
   },
