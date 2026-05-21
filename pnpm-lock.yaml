@@ -4,9 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-overrides:
-  '@typescript-eslint/typescript-estree': ^8.58.2
-
 importers:
 
   .:
