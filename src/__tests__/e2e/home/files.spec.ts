@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { createMockBlobs, createMockFiles, MOCK_FILES } from '@/__tests__/__mocks__/file';
+import { createMockFiles, MOCK_FILES } from '@/__tests__/__mocks__/file';
 import { transformTimestamp } from '@/utils/common';
 
 test.describe('files', () => {
@@ -83,10 +83,9 @@ test.describe('files', () => {
       });
 
       test('download file', async ({ page }) => {
-        const { name, pages } = MOCK_FILES[0];
+        const { name } = MOCK_FILES[0];
         const li = page.locator(`li:has-text("${name}")`);
 
-        MOCK_FILES[0].canvas = createMockBlobs(pages);
         await li.getByTitle(/#icon-ic_download/i).click();
 
         const [download] = await Promise.all([
@@ -145,10 +144,9 @@ test.describe('files', () => {
 
       test('with correct password', async ({ page }) => {
         const secret = '123456';
-        const { name, pages } = MOCK_FILES[1];
+        const { name } = MOCK_FILES[1];
         const li = page.locator(`li:has-text("${name}")`);
 
-        MOCK_FILES[1].canvas = createMockBlobs(pages);
         await li.getByTitle(/#icon-ic_download/i).click();
         await page.getByPlaceholder(secretPlaceholder, { exact: true }).fill(secret);
         await page.getByPlaceholder(/please enter password again/i, { exact: true }).fill(secret);

@@ -8,7 +8,7 @@ jobs:
   e2e-test:
     uses: tzuyi0817/workflows/.github/workflows/test.yml@v1
     with:
-      install-other-deps: pnpm dlx playwright install --with-deps
+      install-other-deps: pnpm exec playwright install --with-deps
       test: pnpm test:ci-e2e
 
   deploy:
