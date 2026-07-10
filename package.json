@@ -59,10 +59,5 @@
     "vite-plugin-svg-icons": "^2.0.1",
     "vite-plugin-top-level-await": "^1.6.0",
     "vue-tsc": "^3.2.6"
-  },
-  "pnpm": {
-    "overrides": {
-      "@typescript-eslint/typescript-estree": "^8.58.2"
-    }
   }
 }
