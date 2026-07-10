@@ -2,18 +2,9 @@ import { expect, test, type Page } from '@playwright/test';
 import { createMockFiles, MOCK_FILES } from '@/__tests__/__mocks__/file';
 import { createMockFolder } from '@/__tests__/__mocks__/folder';
 
-/** reload 後等待首頁檔案列表渲染完成，若未渲染則重試一次 */
-async function reloadAndWaitForFiles(page: Page) {
-  await page.reload({ waitUntil: 'networkidle' });
-
-  const fileLocator = page.locator('li.sign-file').first();
-
-  try {
-    await fileLocator.waitFor({ state: 'visible', timeout: 10_000 });
-  } catch {
-    await page.reload({ waitUntil: 'networkidle' });
-    await fileLocator.waitFor({ state: 'visible', timeout: 10_000 });
-  }
+/** 等待首頁檔案列表渲染完成 */
+async function waitForFiles(page: Page) {
+  await page.locator('li.sign-file').first().waitFor({ state: 'visible', timeout: 10_000 });
 }
 
 test.describe('folder', () => {
@@ -24,7 +15,7 @@ test.describe('folder', () => {
   test.describe('folder CRUD', () => {
     test('should create a new folder via dialog', async ({ page }) => {
       await createMockFiles(page);
-      await reloadAndWaitForFiles(page);
+      await waitForFiles(page);
 
       const newFolderIcon = page.locator('svg[title*="folder_new"]');
 
@@ -42,7 +33,7 @@ test.describe('folder', () => {
     test('should show folder in list before files', async ({ page }) => {
       await createMockFiles(page);
       await createMockFolder(page, 'My Documents');
-      await reloadAndWaitForFiles(page);
+      await waitForFiles(page);
 
       const folderItem = page.getByText('My Documents');
 
@@ -52,7 +43,7 @@ test.describe('folder', () => {
     test('should delete a folder', async ({ page }) => {
       await createMockFiles(page);
       await createMockFolder(page, 'Delete Me');
-      await reloadAndWaitForFiles(page);
+      await waitForFiles(page);
 
       const folderItem = page.locator('.folder-row:has-text("Delete Me")');
 
@@ -66,7 +57,7 @@ test.describe('folder', () => {
     test('should navigate into folder and show breadcrumb', async ({ page }) => {
       await createMockFiles(page);
       await createMockFolder(page, 'Work Files');
-      await reloadAndWaitForFiles(page);
+      await waitForFiles(page);
 
       const folderItem = page.locator('.folder-row:has-text("Work Files")');
 
@@ -79,7 +70,7 @@ test.describe('folder', () => {
     test('should navigate back to root via breadcrumb', async ({ page }) => {
       await createMockFiles(page);
       await createMockFolder(page, 'Navigate Back');
-      await reloadAndWaitForFiles(page);
+      await waitForFiles(page);
 
       const folderItem = page.locator('.folder-row:has-text("Navigate Back")');
 
@@ -94,7 +85,7 @@ test.describe('folder', () => {
     test('should show move to folder option in file actions', async ({ page }) => {
       await createMockFiles(page);
       await createMockFolder(page, 'Target Folder');
-      await reloadAndWaitForFiles(page);
+      await waitForFiles(page);
 
       const { name } = MOCK_FILES[0];
       const li = page.locator(`li.sign-file:has-text("${name}")`);
@@ -105,7 +96,7 @@ test.describe('folder', () => {
     test('should open move modal when clicking move icon', async ({ page }) => {
       await createMockFiles(page);
       await createMockFolder(page, 'Destination');
-      await reloadAndWaitForFiles(page);
+      await waitForFiles(page);
 
       const { name } = MOCK_FILES[0];
       const li = page.locator(`li.sign-file:has-text("${name}")`);

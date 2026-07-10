@@ -47,10 +47,3 @@ export async function clearMockFiles(page: Page) {
     }
   }, MOCK_FILES);
 }
-
-export function createMockBlobs(pages: number) {
-  const MOCK_BUFFER = new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10]);
-  const MOCK_BLOB = new Blob([MOCK_BUFFER], { type: 'image/png' });
-
-  return Array.from({ length: pages }, () => MOCK_BLOB);
-}
