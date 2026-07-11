@@ -3,7 +3,11 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   testDir: './src/__tests__/e2e',
   /* If gets stuck during the test, it will fail if it exceeds the timeout time. */
-  timeout: 30 * 1000,
+  timeout: 60 * 1000,
+  expect: {
+    /* Vite dev server under parallel cross-browser load needs a longer assertion window. */
+    timeout: 10 * 1000,
+  },
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,

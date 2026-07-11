@@ -4,7 +4,9 @@ import { transformTimestamp } from '@/utils/common';
 
 test.describe('files', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/');
+    // Simply wait for the `DOMContentLoaded` event.
+    // this prevents slow static assets from blocking the `load` event and causing timeouts during parallel testing.
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
   });
 
   test('should display correct layout', async ({ page }) => {
@@ -160,7 +162,19 @@ test.describe('files', () => {
       });
     });
 
-    test('click on the sign icon to redirect to signature page', async ({ page }) => {
+    test('click on the sign icon to redirect to signature page', async ({ page, browserName }) => {
+      // Playwright >= 1.61.0 regression: a WebSocket opened inside a Web Worker kills the Firefox
+      // page session with a bare "Error: Assertion error" (ffPage `_onWebSocketOpened` asserts on a
+      // request it never tracked). The signing flow triggers it because pdf.js spawns a worker whose
+      // script is served by the Vite dev server, which injects the HMR client (`/@vite/client`), and
+      // that client opens its HMR WebSocket inside the worker. Chromium/WebKit and real Firefox are
+      // unaffected; 1.59.1/1.60.0 pass, 1.61.x and 1.62.0-alpha fail. Minimal repro: https://github.com/microsoft/playwright/issues/41742.
+      // Remove this skip once the upstream regression is fixed.
+      test.skip(
+        browserName === 'firefox',
+        'Playwright >= 1.61.0 Firefox regression: WebSocket inside a worker crashes the page session',
+      );
+
       const { name } = MOCK_FILES[0];
       const li = page.locator(`li:has-text("${name}")`);
 

@@ -41,6 +41,9 @@ export default defineConfig({
   ],
   server: {
     port: 8080,
+    warmup: {
+      clientFiles: ['./src/main.ts', './src/pages/**/*.vue'],
+    },
   },
   esbuild: {
     pure: ['console.log'],

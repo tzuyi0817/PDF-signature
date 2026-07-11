@@ -61,7 +61,10 @@ export function preloadComponents() {
       () => import('@/components/biz/sign-encryption/src/index.vue'),
     ];
 
-    parallelPreload(2, components, loader => loader());
+    parallelPreload(2, components, loader => loader()).catch((error: unknown) => {
+      // Preloading is solely for performance optimization; failure should not trigger global error handling.
+      console.warn('Component preloading failed:', error);
+    });
   });
 }
 
@@ -87,6 +90,9 @@ export function preloadRoutes(router: Router, concurrency = 3) {
       }
 
       return route.components.default();
+    }).catch((error: unknown) => {
+      // Preloading is solely for performance optimization; failure should not trigger global error handling.
+      console.warn('Route preloading failed:', error);
     });
   });
 }
