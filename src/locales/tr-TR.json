@@ -21,7 +21,7 @@
   "folder": {
     "all_files": "Tüm dosyalar",
     "cannot_archive": "Klasörler arşivlenemez",
-    "confirm_delete": "Bu klasörü silmek istediğinizden emin misiniz?",
+    "confirm_delete": "Bu klasörü silmek istediğinizden emin misiniz? İçindeki tüm dosyalar çöp kutusuna taşınacaktır.",
     "create": "Klasör oluştur",
     "created": "Klasör oluşturuldu",
     "delete": "Klasörü sil",

@@ -21,7 +21,7 @@
   "folder": {
     "all_files": "Todos los archivos",
     "cannot_archive": "Las carpetas no se pueden archivar",
-    "confirm_delete": "¿Estás seguro de que quieres eliminar esta carpeta?",
+    "confirm_delete": "¿Estás seguro de que quieres eliminar esta carpeta? Todos los archivos que contiene se moverán a la papelera.",
     "create": "Crear carpeta",
     "created": "Carpeta creada",
     "delete": "Eliminar carpeta",

@@ -21,7 +21,7 @@
   "folder": {
     "all_files": "所有文件",
     "cannot_archive": "资料夹无法封存",
-    "confirm_delete": "确定要删除此文件夹吗？",
+    "confirm_delete": "确定要删除此文件夹吗？文件夹内的所有文件将移至垃圾箱。",
     "create": "创建文件夹",
     "created": "文件夹已创建",
     "delete": "删除文件夹",

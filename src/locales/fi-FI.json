@@ -21,7 +21,7 @@
   "folder": {
     "all_files": "Kaikki tiedostot",
     "cannot_archive": "Kansioita ei voi arkistoida",
-    "confirm_delete": "Haluatko varmasti poistaa tämän kansion?",
+    "confirm_delete": "Haluatko varmasti poistaa tämän kansion? Kaikki sen sisältämät tiedostot siirretään roskakoriin.",
     "create": "Luo kansio",
     "created": "Kansio luotu",
     "delete": "Poista kansio",

@@ -21,7 +21,7 @@
   "folder": {
     "all_files": "Alle Dateien",
     "cannot_archive": "Ordner können nicht archiviert werden",
-    "confirm_delete": "Möchten Sie diesen Ordner wirklich löschen?",
+    "confirm_delete": "Möchten Sie diesen Ordner wirklich löschen? Alle darin enthaltenen Dateien werden in den Papierkorb verschoben.",
     "create": "Ordner erstellen",
     "created": "Ordner erstellt",
     "delete": "Ordner löschen",

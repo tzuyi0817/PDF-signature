@@ -42,15 +42,6 @@ function toggleSelect() {
   emit('selectFolder', folder, isSelected.value);
 }
 
-watch(
-  () => isSelectAll,
-  isSelect => {
-    if (isSelect === 'mixed') return;
-
-    isSelected.value = isSelect;
-  },
-);
-
 function renameFolder() {
   toggleMore(false);
   emit('openRenameDialog', folder);
@@ -74,18 +65,25 @@ async function confirmDelete() {
   isShowDeleteConfirm.value = false;
 
   const folderStore = useFolderStore();
-  const { orphanFilesToRoot } = usePdfStore();
+  const { trashFilesByFolderIds } = usePdfStore();
   const { deletedIds, promise } = folderStore.deleteFolder(folder.folderId);
 
-  orphanFilesToRoot(deletedIds);
-
-  await promise;
+  await Promise.all([trashFilesByFolderIds(deletedIds), promise]);
   showToast(t('folder.deleted'));
 }
 
 function toggleMore(isOpen: boolean) {
   isShowMore.value = isOpen;
 }
+
+watch(
+  () => isSelectAll,
+  isSelect => {
+    if (isSelect === 'mixed') return;
+
+    isSelected.value = isSelect;
+  },
+);
 </script>
 
 <template>

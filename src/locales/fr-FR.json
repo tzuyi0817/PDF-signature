@@ -21,7 +21,7 @@
   "folder": {
     "all_files": "Tous les fichiers",
     "cannot_archive": "Les dossiers ne peuvent pas être archivés",
-    "confirm_delete": "Êtes-vous sûr de vouloir supprimer ce dossier ?",
+    "confirm_delete": "Êtes-vous sûr de vouloir supprimer ce dossier ? Tous les fichiers qu'il contient seront déplacés vers la corbeille.",
     "create": "Créer un dossier",
     "created": "Dossier créé",
     "delete": "Supprimer le dossier",

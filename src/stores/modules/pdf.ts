@@ -149,7 +149,7 @@ export const usePdfStore = defineStore('pdf', {
     batchReductionArchive(PDFList: Set<PDF>) {
       for (const PDF of PDFList) {
         this.archiveList = this.archiveList.filter(({ PDFId }) => PDF.PDFId !== PDFId);
-        this.PDFList.unshift(PDF);
+        this.PDFList.unshift(this.sanitizeFolderId(PDF));
       }
 
       return Promise.all([this.updatePDFIdb(), this.updateArchiveIdb()]);
@@ -204,7 +204,7 @@ export const usePdfStore = defineStore('pdf', {
     batchReductionTrash(PDFList: Set<PDF>) {
       for (const PDF of PDFList) {
         this.trashList = this.trashList.filter(({ PDFId }) => PDF.PDFId !== PDFId);
-        this.PDFList.unshift(PDF);
+        this.PDFList.unshift(this.sanitizeFolderId(PDF));
       }
 
       return Promise.all([this.updatePDFIdb(), this.updateTrashIdb()]);
@@ -224,6 +224,16 @@ export const usePdfStore = defineStore('pdf', {
       return setIdb(IDB_KEY.TRASH_LIST, this.trashList);
     },
 
+    /** 檔案原資料夾已不存在時，還原至根目錄 */
+    sanitizeFolderId(pdf: PDF): PDF {
+      const folderStore = useFolderStore();
+
+      if (pdf.folderId && !folderStore.getFolderById(pdf.folderId)) {
+        return { ...pdf, folderId: undefined };
+      }
+
+      return pdf;
+    },
     /** 將檔案移動到指定資料夾 */
     moveFilesToFolder(pdfIds: Set<string>, folderId: string | null) {
       const targetFolderId = folderId ?? undefined;
@@ -236,15 +246,23 @@ export const usePdfStore = defineStore('pdf', {
 
       return this.updatePDFIdb();
     },
-    /** 刪除資料夾時，將其下所有檔案移回根目錄 */
-    orphanFilesToRoot(folderIds: Set<string>) {
-      for (const pdf of this.PDFList) {
-        if (pdf.folderId && folderIds.has(pdf.folderId)) {
-          pdf.folderId = undefined;
-        }
-      }
+    /** 刪除資料夾時，將其下所有檔案移入垃圾桶，並清除封存與垃圾桶內指向已刪資料夾的 folderId */
+    trashFilesByFolderIds(folderIds: Set<string>) {
+      const isInDeletedFolder = (pdf: PDF) => Boolean(pdf.folderId && folderIds.has(pdf.folderId));
+      const trashedFiles = this.PDFList.filter(pdf => isInDeletedFolder(pdf)).map(pdf => ({
+        ...pdf,
+        folderId: undefined,
+        trashDate: Date.now(),
+      }));
 
-      return this.updatePDFIdb();
+      this.PDFList = this.PDFList.filter(pdf => !isInDeletedFolder(pdf));
+      this.trashList = [
+        ...trashedFiles,
+        ...this.trashList.map(pdf => (isInDeletedFolder(pdf) ? { ...pdf, folderId: undefined } : pdf)),
+      ];
+      this.archiveList = this.archiveList.map(pdf => (isInDeletedFolder(pdf) ? { ...pdf, folderId: undefined } : pdf));
+
+      return Promise.all([this.updatePDFIdb(), this.updateTrashIdb(), this.updateArchiveIdb()]);
     },
   },
 });

@@ -21,7 +21,7 @@
   "folder": {
     "all_files": "Alle filer",
     "cannot_archive": "Mapper kan ikke arkiveres",
-    "confirm_delete": "Er du sikker på at du vil slette denne mappen?",
+    "confirm_delete": "Er du sikker på at du vil slette denne mappen? Alle filene i mappen flyttes til papirkurven.",
     "create": "Opprett mappe",
     "created": "Mappe opprettet",
     "delete": "Slett mappe",

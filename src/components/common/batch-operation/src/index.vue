@@ -39,7 +39,7 @@ async function batchMoveToArchive() {
 }
 
 async function batchMoveToTrash() {
-  const { batchAddTrash, orphanFilesToRoot } = usePdfStore();
+  const { batchAddTrash, trashFilesByFolderIds } = usePdfStore();
   const promises: Promise<unknown>[] = [];
 
   if (batch.size > 0) {
@@ -51,8 +51,7 @@ async function batchMoveToTrash() {
     const folderIds = new Set([...folderBatch].map(f => f.folderId));
     const { deletedIds, promise } = batchDeleteFolders(folderIds);
 
-    orphanFilesToRoot(deletedIds);
-    promises.push(promise);
+    promises.push(trashFilesByFolderIds(deletedIds), promise);
   }
 
   await Promise.all(promises);

@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { createMockFiles, MOCK_FILES } from '../mocks/file';
+import { createMockFileInFolder, createMockFiles, MOCK_FILES, MOCK_FOLDER_FILE } from '../mocks/file';
 import { createMockFolder } from '../mocks/folder';
 
 /** 等待首頁檔案列表渲染完成 */
@@ -50,6 +50,31 @@ test.describe('folder', () => {
       await folderItem.locator('svg[title*="trash"]').click();
       await page.getByRole('button', { name: /confirm/i }).click();
       await expect(page.getByText('Delete Me')).toBeHidden();
+    });
+
+    test('should move files inside deleted folder to trash', async ({ page }) => {
+      await createMockFiles(page);
+
+      const folder = await createMockFolder(page, 'Folder With File');
+
+      await createMockFileInFolder(page, MOCK_FOLDER_FILE, folder.folderId);
+      await waitForFiles(page);
+
+      // 檔案位於資料夾內，不應出現在根目錄
+      await expect(page.getByText(MOCK_FOLDER_FILE.name)).toBeHidden();
+
+      const folderItem = page.locator('.folder-row:has-text("Folder With File")');
+
+      await folderItem.locator('svg[title*="trash"]').click();
+      await page.getByRole('button', { name: /confirm/i }).click();
+      await expect(folderItem).toBeHidden();
+
+      // 刪除資料夾後，檔案不應被移回根目錄
+      await expect(page.getByText(MOCK_FOLDER_FILE.name)).toBeHidden();
+
+      // 檔案應出現在垃圾桶
+      await page.locator('li:has(img[alt="trash icon"])').click();
+      await expect(page.getByText(MOCK_FOLDER_FILE.name)).toBeInViewport();
     });
   });
 

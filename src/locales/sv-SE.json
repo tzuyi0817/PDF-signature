@@ -21,7 +21,7 @@
   "folder": {
     "all_files": "Alla filer",
     "cannot_archive": "Mappar kan inte arkiveras",
-    "confirm_delete": "Är du säker på att du vill ta bort den här mappen?",
+    "confirm_delete": "Är du säker på att du vill ta bort den här mappen? Alla filer i mappen flyttas till papperskorgen.",
     "create": "Skapa mapp",
     "created": "Mapp skapad",
     "delete": "Ta bort mapp",

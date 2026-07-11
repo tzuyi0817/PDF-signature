@@ -21,7 +21,7 @@
   "folder": {
     "all_files": "Todos os ficheiros",
     "cannot_archive": "As pastas não podem ser arquivadas",
-    "confirm_delete": "Tem certeza de que deseja excluir esta pasta?",
+    "confirm_delete": "Tem certeza de que deseja excluir esta pasta? Todos os ficheiros no seu interior serão movidos para a lixeira.",
     "create": "Criar pasta",
     "created": "Pasta criada",
     "delete": "Eliminar pasta",

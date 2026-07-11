@@ -21,7 +21,7 @@
   "folder": {
     "all_files": "Wszystkie pliki",
     "cannot_archive": "Foldery nie mogą być zarchiwizowane",
-    "confirm_delete": "Czy na pewno chcesz usunąć ten folder?",
+    "confirm_delete": "Czy na pewno chcesz usunąć ten folder? Wszystkie pliki w nim zawarte zostaną przeniesione do kosza.",
     "create": "Utwórz folder",
     "created": "Folder utworzony",
     "delete": "Usuń folder",

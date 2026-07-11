@@ -22,6 +22,30 @@ export const MOCK_FILES: [PDF, PDF] = [
   },
 ];
 
+export const MOCK_FOLDER_FILE: PDF = {
+  data: null,
+  PDFId: 'pdf-in-folder-1722503099999',
+  canvas: [],
+  name: '資料夾內測試檔案',
+  pages: 1,
+  updateDate: 1722503099999,
+};
+
+/** 在指定資料夾內建立 mock 檔案 */
+export async function createMockFileInFolder(page: Page, file: PDF, folderId: string) {
+  await page.addScriptTag({ content: String(importModule) });
+
+  return page.evaluate(
+    async ({ mockFile, mockFolderId }) => {
+      const { usePdfStore } = await importModule<PdfStore>('/src/stores');
+      const { addPDF } = usePdfStore();
+
+      await addPDF({ ...mockFile, folderId: mockFolderId });
+    },
+    { mockFile: file, mockFolderId: folderId },
+  );
+}
+
 export async function createMockFiles(page: Page) {
   await page.addScriptTag({ content: String(importModule) });
 
