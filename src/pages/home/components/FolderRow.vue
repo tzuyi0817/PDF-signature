@@ -2,6 +2,7 @@
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Popup, showToast, SvgIcon } from '@/components/common';
+import { useDragMove } from '@/hooks/use-drag-move';
 import { useFolderStore, usePdfStore } from '@/stores';
 import { transformTimestamp } from '@/utils/common';
 import type { Folder } from '@/types/folder';
@@ -25,8 +26,29 @@ const isSelected = ref(false);
 const isShowMore = ref(false);
 const isShowDeleteConfirm = ref(false);
 const { t } = useI18n();
+const {
+  isDragOverTarget,
+  isDropCandidate,
+  startDragMove,
+  endDragMove,
+  onDropTargetDragEnter,
+  onDropTargetDragOver,
+  onDropTargetDragLeave,
+  onDropTargetDrop,
+} = useDragMove();
+const isDragSource = ref(false);
 
 const localTime = computed(() => transformTimestamp(folder.createDate));
+
+function onDragStart(event: DragEvent) {
+  isDragSource.value = true;
+  startDragMove(event, { pdfIds: [], folderIds: [folder.folderId] }, { label: folder.name, icon: 'folder' });
+}
+
+function onDragEnd() {
+  isDragSource.value = false;
+  endDragMove();
+}
 
 function openFolder() {
   if (isSelectAll) {
@@ -91,9 +113,21 @@ watch(
     :class="[
       'folder-row flex flex-col',
       isListStatus ? 'lg:flex-row' : 'lg:h-fit lg:w-79 lg:shrink-0',
-      { active: isSelected },
+      {
+        active: isSelected,
+        dragging: isDragSource,
+        'drop-candidate': isDropCandidate(folder.folderId),
+        'drop-target': isDragOverTarget(folder.folderId),
+      },
     ]"
+    :draggable="!isSelectAll"
     @click="openFolder"
+    @dragstart="onDragStart"
+    @dragend="onDragEnd"
+    @dragenter="onDropTargetDragEnter($event, folder.folderId)"
+    @dragover="onDropTargetDragOver($event, folder.folderId)"
+    @dragleave="onDropTargetDragLeave(folder.folderId)"
+    @drop="onDropTargetDrop($event, folder.folderId)"
   >
     <div :class="['transition-opacity lg:hidden', isShowMore ? 'z-10 opacity-100' : '-z-1 opacity-0']">
       <template v-if="isShowMore">
@@ -232,6 +266,21 @@ watch(
 
 .folder-row.active {
   border-color: var(--color-primary);
+  background: var(--color-card-hover);
+}
+
+.folder-row.dragging {
+  opacity: 0.4;
+}
+
+.folder-row.drop-candidate {
+  border-style: dashed;
+  border-color: color-mix(in srgb, var(--color-primary) 45%, transparent);
+}
+
+.folder-row.drop-target {
+  border-color: var(--color-primary);
+  border-style: dashed;
   background: var(--color-card-hover);
 }
 

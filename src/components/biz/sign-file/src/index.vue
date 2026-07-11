@@ -4,6 +4,7 @@ import { computed, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { BlobImage, SvgIcon } from '@/components/common';
 import { SvgList } from '@/components/svg';
+import { useDragMove } from '@/hooks/use-drag-move';
 import { useConfigStore, usePdfStore } from '@/stores';
 import { sleep, transformTimestamp } from '@/utils/common';
 import { generatePDF } from '@/utils/jspdf';
@@ -35,8 +36,23 @@ const isSelected = ref(false);
 const router = useRouter();
 const { addPDF, addArchive, addTrash, deleteArchive, deleteTrash, setCurrentPDF } = usePdfStore();
 const { toggleLoading } = useConfigStore();
+const { startDragMove, endDragMove } = useDragMove();
+const isDragSource = ref(false);
 
 const localTime = computed(() => transformTimestamp(file.updateDate));
+
+/** 僅檔案頁籤且非勾選模式時可拖曳移動 */
+const isDraggable = computed(() => type === 'file' && !isSelectAll);
+
+function onDragStart(event: DragEvent) {
+  isDragSource.value = true;
+  startDragMove(event, { pdfIds: [file.PDFId], folderIds: [] }, { label: file.name, icon: 'file_item' });
+}
+
+function onDragEnd() {
+  isDragSource.value = false;
+  endDragMove();
+}
 
 const more = computed(() => {
   const moreMap = {
@@ -147,9 +163,12 @@ watch(
     :class="[
       'sign-file flex flex-col',
       isListStatus ? 'lg:flex-row' : 'lg:h-fit lg:w-79 lg:shrink-0',
-      { active: isSelected },
+      { active: isSelected, dragging: isDragSource },
     ]"
+    :draggable="isDraggable"
     @click="selectFile"
+    @dragstart="onDragStart"
+    @dragend="onDragEnd"
   >
     <div :class="['transition-opacity lg:hidden', isShowMore ? 'z-10 opacity-100' : '-z-1 opacity-0']">
       <template v-if="isShowMore">
@@ -191,6 +210,7 @@ watch(
         :blob="file.canvas?.at(0)"
         class="border-gray-20 w-full border-2"
         alt="file"
+        draggable="false"
       />
     </div>
 
@@ -256,6 +276,10 @@ watch(
 .sign-file.active {
   border-color: var(--color-primary);
   background: var(--color-card-hover);
+}
+
+.sign-file.dragging {
+  opacity: 0.4;
 }
 
 .sign-file-more {

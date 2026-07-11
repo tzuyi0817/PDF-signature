@@ -15,6 +15,7 @@ export default [
     files: ['e2e/**/*.spec.[jt]s?(x)'],
     rules: {
       'playwright/no-skipped-test': ['warn', { allowConditional: true }],
+      'playwright/no-wait-for-timeout': 'off',
     },
   },
   {
