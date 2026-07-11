@@ -48,10 +48,12 @@ function handleMouseLeave() {
 }
 
 function cleanupTimer() {
-  if (timer) {
-    clearTimeout(timer);
-    timer = null;
+  if (!timer) {
+    return;
   }
+
+  clearTimeout(timer);
+  timer = null;
 }
 </script>
 

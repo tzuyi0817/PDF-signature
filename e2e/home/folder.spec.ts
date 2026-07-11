@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
-import { createMockFiles, MOCK_FILES } from '@/__tests__/__mocks__/file';
-import { createMockFolder } from '@/__tests__/__mocks__/folder';
+import { createMockFiles, MOCK_FILES } from '../mocks/file';
+import { createMockFolder } from '../mocks/folder';
 
 /** 等待首頁檔案列表渲染完成 */
 async function waitForFiles(page: Page) {

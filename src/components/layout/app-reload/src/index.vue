@@ -2,7 +2,7 @@
 defineOptions({ name: 'AppReload' });
 
 function reload() {
-  globalThis.location.reload();
+  location.reload();
 }
 </script>
 

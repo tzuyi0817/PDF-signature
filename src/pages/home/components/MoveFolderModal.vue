@@ -73,7 +73,7 @@ function navigateTo(folderId: string | null) {
   browsingFolderId.value = folderId;
 }
 
-function confirmMove() {
+async function confirmMove() {
   moving.value = true;
 
   const promises: Promise<void>[] = [];
@@ -90,14 +90,13 @@ function confirmMove() {
     if (result) promises.push(result);
   }
 
-  Promise.all(promises)
-    .then(() => {
-      showToast(t('folder.moved'));
-      emit('close');
-    })
-    .finally(() => {
-      moving.value = false;
-    });
+  try {
+    await Promise.all(promises);
+    showToast(t('folder.moved'));
+    emit('close');
+  } finally {
+    moving.value = false;
+  }
 }
 </script>
 

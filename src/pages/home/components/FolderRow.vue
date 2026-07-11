@@ -70,7 +70,7 @@ function closeDeleteConfirm() {
   isShowDeleteConfirm.value = false;
 }
 
-function confirmDelete() {
+async function confirmDelete() {
   isShowDeleteConfirm.value = false;
 
   const folderStore = useFolderStore();
@@ -79,9 +79,8 @@ function confirmDelete() {
 
   orphanFilesToRoot(deletedIds);
 
-  promise.then(() => {
-    showToast(t('folder.deleted'));
-  });
+  await promise;
+  showToast(t('folder.deleted'));
 }
 
 function toggleMore(isOpen: boolean) {

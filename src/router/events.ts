@@ -11,10 +11,13 @@ class RouteEvent {
   #events = new Map<EventKey, Set<Handler<any>>>();
 
   publish(key: EventKey) {
-    if (!this.#events.has(key)) return;
     const callbacks = this.#events.get(key);
 
-    callbacks?.forEach(callback => callback());
+    if (!callbacks) return;
+
+    for (const callback of callbacks) {
+      callback();
+    }
   }
 
   subscribe<T>(key: EventKey, callback: Handler<T>) {
@@ -34,9 +37,9 @@ class RouteEvent {
   }
 
   clearEvents() {
-    this.#events.forEach(callbacks => {
+    for (const callbacks of this.#events.values()) {
       callbacks.clear();
-    });
+    }
   }
 }
 

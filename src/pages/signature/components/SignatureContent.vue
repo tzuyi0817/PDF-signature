@@ -60,7 +60,7 @@ async function mergeFile() {
   toggleMergePopup(true);
   await sleep();
 
-  globalThis.requestAnimationFrame(async () => {
+  requestAnimationFrame(async () => {
     try {
       if (!signatureCanvasItems.value) return;
       const { setCurrentPDFCanvas, addPDF, updatePDF } = usePdfStore();
@@ -81,7 +81,7 @@ async function mergeFile() {
 
       const filteredBlobs = blobs.filter(blob => blob !== '');
       const isPortrait = canvasRect.value.width <= canvasRect.value.height;
-      const ratio = isPortrait ? A4_WIDTH / canvasRect.value.width : A4_WIDTH / canvasRect.value.height;
+      const ratio = A4_WIDTH / (isPortrait ? canvasRect.value.width : canvasRect.value.height);
       const width = canvasRect.value.width * ratio;
       const height = canvasRect.value.height * ratio;
 
@@ -126,7 +126,9 @@ function scrollTo(options: ScrollToOptions) {
 }
 
 function toggleNextWarnPopup(isOpen: boolean) {
-  signatureCanvasItems.value?.forEach(({ clearActive }) => clearActive());
+  for (const { clearActive } of signatureCanvasItems.value ?? []) {
+    clearActive();
+  }
   isShowNextWarnPopup.value = isOpen;
 }
 
@@ -168,7 +170,7 @@ function handleDragOver(event: DragEvent) {
 
   if (!offsetX && !offsetY) return;
 
-  requestFrame = globalThis.requestAnimationFrame(() => {
+  requestFrame = requestAnimationFrame(() => {
     scrollToPerFrame(offsetX, offsetY);
   });
 }

@@ -8,7 +8,7 @@ const THEME_ORDER: Theme[] = ['light', 'dark', 'system'];
 export function useTheme() {
   const configStore = useConfigStore();
   const { theme } = storeToRefs(configStore);
-  const mediaQuery = globalThis.matchMedia('(prefers-color-scheme: dark)');
+  const mediaQuery = matchMedia('(prefers-color-scheme: dark)');
 
   function applyTheme(value: Theme) {
     const isDark = value === 'dark' || (value === 'system' && mediaQuery.matches);

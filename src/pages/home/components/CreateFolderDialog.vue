@@ -22,7 +22,7 @@ const folderStore = useFolderStore();
 const folderName = ref(props.renameTarget?.name ?? '');
 const inputRef = ref<HTMLInputElement>();
 
-const title = props.renameTarget ? t('folder.rename') : t('folder.create');
+const title = t(props.renameTarget ? 'folder.rename' : 'folder.create');
 
 onMounted(() => {
   nextTick(() => {

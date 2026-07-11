@@ -148,8 +148,13 @@ function onCheckboxChange() {
     return;
   }
 
-  props.list.forEach(file => batch.add(file));
-  props.folders?.forEach(folder => folderBatch.add(folder));
+  for (const file of props.list) {
+    batch.add(file);
+  }
+
+  for (const folder of props.folders ?? []) {
+    folderBatch.add(folder);
+  }
 }
 
 function selectFolder(folder: Folder, isSelected: boolean) {

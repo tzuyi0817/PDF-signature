@@ -69,9 +69,9 @@ async function renderFile(file: File) {
     await nextTick();
     projectNameRef.value?.focus();
   } catch (error) {
-    if (`${error}`.includes('PasswordException')) {
+    if (String(error).includes('PasswordException')) {
       isShowPasswordPopup.value = true;
-      if (`${error}` !== 'PasswordException: Incorrect Password') return;
+      if (String(error) !== 'PasswordException: Incorrect Password') return;
       showToast({ message: t('prompt.incorrect_password'), type: 'error' });
       updateFilePassword('');
       return;

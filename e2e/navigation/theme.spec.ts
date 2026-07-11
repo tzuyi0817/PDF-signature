@@ -43,11 +43,6 @@ test.describe('theme toggle', () => {
     await themeButton.click();
     await expect(page.locator('html')).toHaveClass(/dark/);
 
-    await page.addInitScript(() => {
-      (globalThis as unknown as Record<string, boolean>).__darkClassOnLoad =
-        document.documentElement.classList.contains('dark');
-    });
-
     await page.reload();
     await page.waitForLoadState('domcontentloaded');
 

@@ -3,7 +3,7 @@ import { preloadFont } from './font';
 import { preloadImages, preloadStorage } from './local';
 
 export default {
-  install() {
+  async install() {
     const preloads = [
       { promise: preloadFont('Gen Jyuu Gothic P', 'GenJyuuGothic-P.woff2'), weight: 20 },
       { promise: preloadStorage(), weight: 20 },
@@ -24,14 +24,13 @@ export default {
       });
     });
 
-    Promise.all(trackPreloads).then(async () => {
-      await sleep(600); // Simulate a delay for the loading screen
-      closeLoadingScreen();
-    });
+    await Promise.all(trackPreloads);
+    await sleep(600); // Simulate a delay for the loading screen
+    closeLoadingScreen();
   },
 };
 
-function trackablePromise<T>(promise: Promise<T>, onProgress: (progress: number) => void): Promise<T> {
+async function trackablePromise<T>(promise: Promise<T>, onProgress: (progress: number) => void): Promise<T> {
   let progress = 0;
   let tick = 0;
 
@@ -40,10 +39,12 @@ function trackablePromise<T>(promise: Promise<T>, onProgress: (progress: number)
     onProgress(progress);
   }, 100);
 
-  return promise.finally(() => {
+  try {
+    return await promise;
+  } finally {
     clearInterval(interval);
     onProgress(100);
-  });
+  }
 }
 
 function updateProgressBar(offset: number) {

@@ -60,11 +60,11 @@ export function useLoadCanvas(currentPDF: Ref<PDF>, isObserveResize = false): Lo
   }
 
   function handleCanvasResize(entries: ResizeObserverEntry[]) {
-    entries.forEach(({ contentRect }) => {
+    for (const { contentRect } of entries) {
       canvasRect.value.height = contentRect.height;
       canvasRect.value.width = contentRect.width;
       canvasScale.value = BASE_SCALE * window.devicePixelRatio;
-    });
+    }
   }
 
   watch(

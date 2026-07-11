@@ -1,8 +1,7 @@
-export function preloadFont(name: string, file: string) {
+export async function preloadFont(name: string, file: string) {
   const fontFace = new FontFace(name, `url(/font/${file})`);
+  const font = await fontFace.load();
 
-  return fontFace.load().then(font => {
-    document.fonts.add(font);
-    document.body.style.fontFamily = name;
-  });
+  document.fonts.add(font);
+  document.body.style.fontFamily = name;
 }

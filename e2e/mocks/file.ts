@@ -23,7 +23,7 @@ export const MOCK_FILES: [PDF, PDF] = [
 ];
 
 export async function createMockFiles(page: Page) {
-  await page.addScriptTag({ content: `${importModule}` });
+  await page.addScriptTag({ content: String(importModule) });
 
   return page.evaluate(async mockFiles => {
     const { usePdfStore } = await importModule<PdfStore>('/src/stores');
@@ -36,7 +36,7 @@ export async function createMockFiles(page: Page) {
 }
 
 export async function clearMockFiles(page: Page) {
-  await page.addScriptTag({ content: `${importModule}` });
+  await page.addScriptTag({ content: String(importModule) });
 
   return page.evaluate(async mockFiles => {
     const { usePdfStore } = await importModule<PdfStore>('/src/stores');

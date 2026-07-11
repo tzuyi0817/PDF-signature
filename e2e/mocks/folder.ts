@@ -11,7 +11,7 @@ interface FolderStoreModule {
 }
 
 export async function createMockFolder(page: Page, name: string) {
-  await page.addScriptTag({ content: `${importModule}` });
+  await page.addScriptTag({ content: String(importModule) });
 
   return page.evaluate(async folderName => {
     const { useFolderStore } = await importModule<FolderStoreModule>('/src/stores');
@@ -25,7 +25,7 @@ export async function createMockFolder(page: Page, name: string) {
 }
 
 export async function createMockFolders(page: Page, names: string[]) {
-  await page.addScriptTag({ content: `${importModule}` });
+  await page.addScriptTag({ content: String(importModule) });
 
   return page.evaluate(async folderNames => {
     const { useFolderStore } = await importModule<FolderStoreModule>('/src/stores');

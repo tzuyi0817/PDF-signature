@@ -8,10 +8,10 @@ export function deepClone<T extends Record<string, unknown>>(obj: T, hash = new 
   const clone = isArray(obj) ? [] : Object.create(Object.getPrototypeOf(obj), descriptors);
 
   hash.set(obj, clone);
-  Reflect.ownKeys(obj).forEach(key => {
+  for (const key of Reflect.ownKeys(obj)) {
     const value = obj[key as keyof T];
     clone[key] = isObject(value) ? deepClone(value, hash) : value;
-  });
+  }
   return clone;
 }
 
@@ -65,7 +65,7 @@ export function transformTimestamp(timestamp: number) {
 export function monitorDevicePixelRatio(callback: (ratio: number) => void) {
   let currentRatio = window.devicePixelRatio;
 
-  const mediaQuery = globalThis.matchMedia(`(resolution: ${currentRatio}dppx)`);
+  const mediaQuery = matchMedia(`(resolution: ${currentRatio}dppx)`);
 
   const handleChange = () => {
     const newRatio = window.devicePixelRatio;
