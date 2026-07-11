@@ -45,6 +45,7 @@ Signatures, text, and images are stored in `localStorage` for reuse.
 - Edit signed PDF files
 - Dark and light mode theme switching
 - Organize files with folders (create, rename, delete, move)
+- Drag and drop to move files and folders (single or batch)
 
 ## Development
 
@@ -75,7 +76,8 @@ Clone this repository and install dependencies by running `pnpm`(Node.js version
 7. `Download Signed PDF`: After signing, click the download button to get the signed PDF file.
 8. `Edit Signed PDF`: After signing, click the edit button to edit the signed PDF file.
 9. `Batch Operation`: Batch archive, delete and reduction files. Folders can also be batch selected for moving or deleting (folders cannot be archived).
-10. `Folder Organization`: Create folders to organize your PDF files. Move files or folders into other folders, rename or delete folders as needed. Navigate between folders using the breadcrumb trail.
+10. `Folder Organization`: Create folders to organize your PDF files. Move files or folders into other folders, rename or delete folders as needed. Deleting a folder moves its files to the trash. Navigate between folders using the breadcrumb trail.
+11. `Drag and Drop`: Drag files or folders and drop them onto a folder or a breadcrumb item to move them. Batch-selected items can be dragged and moved together.
 
 ## Contribution
 

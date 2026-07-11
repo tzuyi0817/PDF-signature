@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.8.0](https://github.com/tzuyi0817/PDF-signature/compare/v0.7.0...v0.8.0) (2026-07-11)
+
+### Features
+
+- move files to trash when deleting folder ([f5362ec](https://github.com/tzuyi0817/PDF-signature/commit/f5362ec2341ac5af33f7ea02918f9d17cf01cdae))
+- support drag and drop to move files and folders on home page ([9b45e32](https://github.com/tzuyi0817/PDF-signature/commit/9b45e32b11c8a3fe4f2a0374727f2d742536ac22))
+- support batch drag and drop for selected items ([6342a6c](https://github.com/tzuyi0817/PDF-signature/commit/6342a6c2f897d1ef51aa2a2997fa2debb4c217a5))
+
 ## [0.7.0](https://github.com/tzuyi0817/PDF-signature/compare/v0.6.0...v0.7.0) (2026-03-25)
 
 ### Features
