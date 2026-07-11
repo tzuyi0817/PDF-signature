@@ -1,9 +1,16 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { SvgIcon } from '@/components/common';
 import { useDragMove } from '@/hooks/use-drag-move';
 import { useFolderStore } from '@/stores';
+
+interface CrumbItem {
+  /** 麵包屑節點對應的資料夾 ID，根目錄為 null */
+  folderId: string | null;
+  name: string;
+}
 
 defineOptions({ name: 'FolderBreadcrumb' });
 
@@ -19,6 +26,9 @@ const {
   onDropTargetDrop,
 } = useDragMove();
 
+/** 根目錄與各層資料夾統一為麵包屑節點，供 template 以單一迴圈渲染 */
+const crumbItems = computed<CrumbItem[]>(() => [{ folderId: null, name: t('folder.all_files') }, ...breadcrumbs.value]);
+
 function navigateTo(folderId: string | null) {
   folderStore.navigateTo(folderId);
 }
@@ -26,39 +36,22 @@ function navigateTo(folderId: string | null) {
 
 <template>
   <nav class="flex flex-wrap items-center gap-1 px-4 py-2 text-sm">
-    <button
-      :class="[
-        'shrink-0 font-medium',
-        currentFolderId === null ? 'text-surface-text' : 'breadcrumbs-active',
-        {
-          'drop-candidate': isDropCandidate(null),
-          'drop-target': isDragOverTarget(null),
-        },
-      ]"
-      :disabled="currentFolderId === null"
-      @click="navigateTo(null)"
-      @dragenter="onDropTargetDragEnter($event, null)"
-      @dragover="onDropTargetDragOver($event, null)"
-      @dragleave="onDropTargetDragLeave(null)"
-      @drop="onDropTargetDrop($event, null)"
-    >
-      {{ t('folder.all_files') }}
-    </button>
-
     <template
-      v-for="crumb in breadcrumbs"
-      :key="crumb.folderId"
+      v-for="(crumb, index) in crumbItems"
+      :key="crumb.folderId ?? 'root'"
     >
       <svg-icon
+        v-if="index > 0"
         name="chevron_right"
         class="text-gray-40 h-4 w-4 shrink-0"
         disabled
       />
       <button
         :class="[
-          'max-w-40 shrink-0 truncate font-medium',
+          'shrink-0 font-medium',
           crumb.folderId === currentFolderId ? 'text-surface-text' : 'breadcrumbs-active',
           {
+            'max-w-40 truncate': index > 0,
             'drop-candidate': isDropCandidate(crumb.folderId),
             'drop-target': isDragOverTarget(crumb.folderId),
           },

@@ -26,6 +26,7 @@
     "created": "Carpeta creada",
     "delete": "Eliminar carpeta",
     "deleted": "Carpeta eliminada",
+    "items_count": "{count} elementos",
     "move_here": "Mover aquí",
     "move_to": "Mover a carpeta",
     "moved": "Movido con éxito",

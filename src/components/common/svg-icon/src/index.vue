@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { toSvgSymbolId } from './symbol';
 
 interface Props {
   name: string;
@@ -23,7 +24,7 @@ const {
 
 const isHover = ref(false);
 const symbolId = computed(() => {
-  const symbol = `#${prefix}-ic_${name}`;
+  const symbol = toSvgSymbolId(name, prefix);
 
   if (hoverChangeSvg && isHover.value && !name.includes('_h')) return `${symbol}_h`;
 

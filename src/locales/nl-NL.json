@@ -26,6 +26,7 @@
     "created": "Map aangemaakt",
     "delete": "Map verwijderen",
     "deleted": "Map verwijderd",
+    "items_count": "{count} items",
     "move_here": "Hierheen verplaatsen",
     "move_to": "Verplaatsen naar map",
     "moved": "Verplaatst",

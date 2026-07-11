@@ -26,6 +26,7 @@
     "created": "Kansio luotu",
     "delete": "Poista kansio",
     "deleted": "Kansio poistettu",
+    "items_count": "{count} kohdetta",
     "move_here": "Siirrä tänne",
     "move_to": "Siirrä kansioon",
     "moved": "Siirretty",

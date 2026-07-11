@@ -1,5 +1,5 @@
 import { expect, test, type Locator, type Page } from '@playwright/test';
-import { createMockFileInFolder, createMockFiles, MOCK_FILES, MOCK_FOLDER_FILE } from '../mocks/file';
+import { createMockFiles, MOCK_FILES, MOCK_FOLDER_FILE } from '../mocks/file';
 import { createMockFolder, createMockFolders } from '../mocks/folder';
 
 /** Waiting for the homepage file list to finish rendering */
@@ -61,6 +61,28 @@ async function dragItemTo(page: Page, source: Locator, target: Locator) {
   await page.mouse.up();
 }
 
+/** Create root files plus a folder containing one file, then wait for the list to render */
+async function createFolderWithFile(page: Page, folderName: string) {
+  await createMockFiles(page);
+
+  const folder = await createMockFolder(page, folderName);
+
+  await createMockFiles(page, [{ ...MOCK_FOLDER_FILE, folderId: folder.folderId }]);
+  await waitForFiles(page);
+}
+
+/** Create a folder containing a file, open it, and return the locator of the file inside */
+async function openFolderWithFile(page: Page, folderName: string) {
+  await createFolderWithFile(page, folderName);
+  await page.locator(`.folder-row:has-text("${folderName}")`).click();
+
+  const fileItem = page.locator(`li.sign-file:has-text("${MOCK_FOLDER_FILE.name}")`);
+
+  await expect(fileItem).toBeInViewport();
+
+  return fileItem;
+}
+
 test.describe('folder', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
@@ -107,12 +129,7 @@ test.describe('folder', () => {
     });
 
     test('should move files inside deleted folder to trash', async ({ page }) => {
-      await createMockFiles(page);
-
-      const folder = await createMockFolder(page, 'Folder With File');
-
-      await createMockFileInFolder(page, MOCK_FOLDER_FILE, folder.folderId);
-      await waitForFiles(page);
+      await createFolderWithFile(page, 'Folder With File');
 
       // The file is located inside a folder; it should not appear in the root directory.
       await expect(page.getByText(MOCK_FOLDER_FILE.name)).toBeHidden();
@@ -231,19 +248,7 @@ test.describe('folder', () => {
     });
 
     test('should move file back to root by dropping on breadcrumb', async ({ page }) => {
-      await createMockFiles(page);
-
-      const folder = await createMockFolder(page, 'Deep Folder');
-
-      await createMockFileInFolder(page, MOCK_FOLDER_FILE, folder.folderId);
-      await waitForFiles(page);
-
-      await page.locator('.folder-row:has-text("Deep Folder")').click();
-
-      const fileItem = page.locator(`li.sign-file:has-text("${MOCK_FOLDER_FILE.name}")`);
-
-      await expect(fileItem).toBeInViewport();
-
+      const fileItem = await openFolderWithFile(page, 'Deep Folder');
       const rootCrumb = page.getByRole('button', { name: /all files/i });
 
       await dragItemTo(page, fileItem, rootCrumb);
@@ -255,20 +260,61 @@ test.describe('folder', () => {
       await expect(page.locator(`li.sign-file:has-text("${MOCK_FOLDER_FILE.name}")`)).toBeInViewport();
     });
 
-    test('should not react when dropping on the current folder breadcrumb', async ({ page }) => {
+    test('should move all selected items together via drag and drop', async ({ page }) => {
       await createMockFiles(page);
-
-      const folder = await createMockFolder(page, 'Current Folder');
-
-      await createMockFileInFolder(page, MOCK_FOLDER_FILE, folder.folderId);
+      await createMockFolders(page, ['Batch Child', 'Batch Target']);
       await waitForFiles(page);
 
-      await page.locator('.folder-row:has-text("Current Folder")').click();
+      const [fileA] = MOCK_FILES;
+      const fileItem = page.locator(`li.sign-file:has-text("${fileA.name}")`);
+      const childFolder = page.locator('.folder-row:has-text("Batch Child")');
+      const targetFolder = page.locator('.folder-row:has-text("Batch Target")');
 
-      const fileItem = page.locator(`li.sign-file:has-text("${MOCK_FOLDER_FILE.name}")`);
+      // Select a file first (enters selection mode), then select a folder.
+      await fileItem.click();
+      await expect(fileItem).toHaveClass(/active/);
+      await childFolder.click();
+      await expect(childFolder).toHaveClass(/active/);
 
-      await expect(fileItem).toBeInViewport();
+      await dragItemTo(page, fileItem, targetFolder);
 
+      // Both selected items should move into the target folder.
+      await expect(fileItem).toBeHidden();
+      await expect(childFolder).toBeHidden();
+
+      // Selection is cleared after the move, so clicking navigates into the folder.
+      await targetFolder.click();
+      await expect(page.locator(`li.sign-file:has-text("${fileA.name}")`)).toBeInViewport();
+      await expect(page.locator('.folder-row:has-text("Batch Child")')).toBeInViewport();
+    });
+
+    test('should move only the dragged item when it is not selected', async ({ page }) => {
+      await createMockFiles(page);
+      await createMockFolder(page, 'Solo Target');
+      await waitForFiles(page);
+
+      const [fileA, fileB] = MOCK_FILES;
+      const itemA = page.locator(`li.sign-file:has-text("${fileA.name}")`);
+      const itemB = page.locator(`li.sign-file:has-text("${fileB.name}")`);
+      const targetFolder = page.locator('.folder-row:has-text("Solo Target")');
+
+      // Select file B, then drag the unselected file A.
+      await itemB.click();
+      await expect(itemB).toHaveClass(/active/);
+
+      await dragItemTo(page, itemA, targetFolder);
+
+      // Only file A moves; file B stays at the root directory.
+      await expect(itemA).toBeHidden();
+      await expect(itemB).toBeInViewport();
+
+      await targetFolder.click();
+      await expect(page.locator(`li.sign-file:has-text("${fileA.name}")`)).toBeInViewport();
+      await expect(page.locator(`li.sign-file:has-text("${fileB.name}")`)).toBeHidden();
+    });
+
+    test('should not react when dropping on the current folder breadcrumb', async ({ page }) => {
+      const fileItem = await openFolderWithFile(page, 'Current Folder');
       const currentCrumb = page.getByRole('button', { name: 'Current Folder' });
 
       await waitForStableLayout(page, fileItem);
@@ -284,6 +330,7 @@ test.describe('folder', () => {
 
       // The file stays in place and no moved toast appears within the wait window.
       await expect(fileItem).toBeInViewport();
+      // eslint-disable-next-line playwright/no-wait-for-timeout -- asserting a toast does NOT appear requires a fixed wait window
       await page.waitForTimeout(400);
       await expect(page.getByText(/moved successfully/i)).toBeHidden();
     });

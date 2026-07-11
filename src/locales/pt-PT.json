@@ -26,6 +26,7 @@
     "created": "Pasta criada",
     "delete": "Eliminar pasta",
     "deleted": "Pasta eliminada",
+    "items_count": "{count} itens",
     "move_here": "Mover para aqui",
     "move_to": "Mover para pasta",
     "moved": "Movido com sucesso",

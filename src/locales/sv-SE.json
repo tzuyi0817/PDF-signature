@@ -26,6 +26,7 @@
     "created": "Mapp skapad",
     "delete": "Ta bort mapp",
     "deleted": "Mapp borttagen",
+    "items_count": "{count} objekt",
     "move_here": "Flytta hit",
     "move_to": "Flytta till mapp",
     "moved": "Flyttad",

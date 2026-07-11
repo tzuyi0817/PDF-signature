@@ -31,22 +31,7 @@ export const MOCK_FOLDER_FILE: PDF = {
   updateDate: 1722503099999,
 };
 
-/** 在指定資料夾內建立 mock 檔案 */
-export async function createMockFileInFolder(page: Page, file: PDF, folderId: string) {
-  await page.addScriptTag({ content: String(importModule) });
-
-  return page.evaluate(
-    async ({ mockFile, mockFolderId }) => {
-      const { usePdfStore } = await importModule<PdfStore>('/src/stores');
-      const { addPDF } = usePdfStore();
-
-      await addPDF({ ...mockFile, folderId: mockFolderId });
-    },
-    { mockFile: file, mockFolderId: folderId },
-  );
-}
-
-export async function createMockFiles(page: Page) {
+export async function createMockFiles(page: Page, files: PDF[] = MOCK_FILES) {
   await page.addScriptTag({ content: String(importModule) });
 
   return page.evaluate(async mockFiles => {
@@ -56,7 +41,7 @@ export async function createMockFiles(page: Page) {
     for (const file of mockFiles) {
       await addPDF(file);
     }
-  }, MOCK_FILES);
+  }, files);
 }
 
 export async function clearMockFiles(page: Page) {

@@ -25,6 +25,7 @@ interface Emits {
   openEncryptPopup: [file: PDF];
   selectFile: [file: PDF, isSelected: boolean];
   openMoveToFolder: [file: PDF];
+  startDrag: [file: PDF, event: DragEvent];
 }
 
 defineOptions({ name: 'SignFile' });
@@ -36,22 +37,12 @@ const isSelected = ref(false);
 const router = useRouter();
 const { addPDF, addArchive, addTrash, deleteArchive, deleteTrash, setCurrentPDF } = usePdfStore();
 const { toggleLoading } = useConfigStore();
-const { startDragMove, endDragMove } = useDragMove();
-const isDragSource = ref(false);
+const { isDragSourceItem, endDragMove } = useDragMove();
 
 const localTime = computed(() => transformTimestamp(file.updateDate));
 
-/** 僅檔案頁籤且非勾選模式時可拖曳移動 */
-const isDraggable = computed(() => type === 'file' && !isSelectAll);
-
 function onDragStart(event: DragEvent) {
-  isDragSource.value = true;
-  startDragMove(event, { pdfIds: [file.PDFId], folderIds: [] }, { label: file.name, icon: 'file_item' });
-}
-
-function onDragEnd() {
-  isDragSource.value = false;
-  endDragMove();
+  emit('startDrag', file, event);
 }
 
 const more = computed(() => {
@@ -163,12 +154,12 @@ watch(
     :class="[
       'sign-file flex flex-col',
       isListStatus ? 'lg:flex-row' : 'lg:h-fit lg:w-79 lg:shrink-0',
-      { active: isSelected, dragging: isDragSource },
+      { active: isSelected, dragging: isDragSourceItem(file.PDFId) },
     ]"
-    :draggable="isDraggable"
+    :draggable="type === 'file'"
     @click="selectFile"
     @dragstart="onDragStart"
-    @dragend="onDragEnd"
+    @dragend="endDragMove"
   >
     <div :class="['transition-opacity lg:hidden', isShowMore ? 'z-10 opacity-100' : '-z-1 opacity-0']">
       <template v-if="isShowMore">

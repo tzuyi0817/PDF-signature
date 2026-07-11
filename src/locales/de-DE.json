@@ -26,6 +26,7 @@
     "created": "Ordner erstellt",
     "delete": "Ordner löschen",
     "deleted": "Ordner gelöscht",
+    "items_count": "{count} Elemente",
     "move_here": "Hierher verschieben",
     "move_to": "In Ordner verschieben",
     "moved": "Verschoben",

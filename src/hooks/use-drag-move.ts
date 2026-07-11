@@ -1,6 +1,6 @@
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { showToast } from '@/components/common';
+import { showToast, toSvgSymbolId } from '@/components/common';
 import { useFolderStore, usePdfStore } from '@/stores';
 
 export interface DragMovePayload {
@@ -17,39 +17,30 @@ export interface DragMovePreview {
   icon: 'folder' | 'file_item';
 }
 
-/** 拖曳移動使用的自訂 MIME type，用於辨識首頁檔案／資料夾的拖曳 */
+/** 拖曳移動使用的自訂 MIME type；Firefox 需要 dataTransfer 帶有資料才會啟動拖曳 */
 const DRAG_MOVE_TYPE = 'application/x-pdf-move';
-
 /** 根目錄的放置目標 key（folderId 為 UUID，不會與此值衝突） */
 const ROOT_DROP_KEY = 'drop-root';
-
-/** 目前拖曳中的項目；dragover 階段無法讀取 dataTransfer 內容，需以模組層級狀態輔助判斷 */
+/** 拖曳提示縮圖與游標的間距 */
+const DRAG_PREVIEW_OFFSET = 16;
+/**
+ * 目前拖曳中的項目；dragover 階段無法讀取 dataTransfer 內容，
+ * 且全 app 同時僅有一個拖曳 session，故以模組層級狀態判斷
+ */
 const draggingPayload = ref<DragMovePayload | null>(null);
+/** 目前 dragover 中的放置目標 key，null 表示無；游標同時只會位於一個放置目標上 */
+const dragOverKey = ref<string | null>(null);
+/** 放置目標合法性快取；payload 與清單在拖曳期間不變，每個目標整趟拖曳只需計算一次 */
+const dropCandidateCache = new Map<string, boolean>();
+/** 拖曳來源的 id 集合 */
+let dragSourceIds = new Set<string>();
+/** 拖曳移動成功後的回呼，由發起拖曳的元件註冊（例如清除批次選取） */
+let onMovedCallback: (() => void) | null = null;
+/** 追蹤 dragenter / dragleave 配對次數，避免游標移入子元素時高亮閃爍 */
+let enterCount = 0;
 
-function isDragMovePayload(value: unknown): value is DragMovePayload {
-  if (typeof value !== 'object' || value === null) return false;
-
-  const { pdfIds, folderIds } = value as Record<string, unknown>;
-  const isStringArray = (list: unknown) => Array.isArray(list) && list.every(item => typeof item === 'string');
-
-  return isStringArray(pdfIds) && isStringArray(folderIds);
-}
-
-/** 優先讀取 dataTransfer 內容，失敗時退回模組層級狀態 */
-function parseDropPayload(event: DragEvent): DragMovePayload | null {
-  const raw = event.dataTransfer?.getData(DRAG_MOVE_TYPE);
-
-  if (raw) {
-    try {
-      const parsed: unknown = JSON.parse(raw);
-
-      if (isDragMovePayload(parsed)) return parsed;
-    } catch {
-      // 內容非合法 JSON 時，改用模組層級狀態
-    }
-  }
-
-  return draggingPayload.value;
+function toDropKey(targetFolderId: string | null) {
+  return targetFolderId ?? ROOT_DROP_KEY;
 }
 
 /** 判斷所有拖曳項目是否已位於目標資料夾（移動到原位置視為無效放置） */
@@ -72,9 +63,7 @@ function isSameLocation(payload: DragMovePayload, targetFolderId: string | null)
   return payload.pdfIds.every(isFileInTarget) && payload.folderIds.every(isFolderInTarget);
 }
 
-function canDropPayload(payload: DragMovePayload, targetFolderId: string | null) {
-  if (payload.pdfIds.length === 0 && payload.folderIds.length === 0) return false;
-
+function computeCanDrop(payload: DragMovePayload, targetFolderId: string | null) {
   // 禁止將資料夾放進自己
   if (targetFolderId !== null && payload.folderIds.includes(targetFolderId)) return false;
 
@@ -82,12 +71,41 @@ function canDropPayload(payload: DragMovePayload, targetFolderId: string | null)
   return !isSameLocation(payload, targetFolderId);
 }
 
-function toDropKey(targetFolderId: string | null) {
-  return targetFolderId ?? ROOT_DROP_KEY;
+/** 是否為拖曳進行中的合法放置目標（用於預先提示可放置位置；dragover 高頻觸發，故以快取避免重複掃描清單） */
+function isDropCandidate(targetFolderId: string | null) {
+  const payload = draggingPayload.value;
+
+  if (!payload) return false;
+
+  const key = toDropKey(targetFolderId);
+  const cached = dropCandidateCache.get(key);
+
+  if (cached !== undefined) return cached;
+
+  const canDrop = computeCanDrop(payload, targetFolderId);
+
+  dropCandidateCache.set(key, canDrop);
+
+  return canDrop;
 }
 
-/** 拖曳提示縮圖與游標的間距 */
-const DRAG_PREVIEW_OFFSET = 16;
+/** 項目是否包含在拖曳中的 payload 內（用於呈現所有拖曳來源的視覺狀態） */
+function isDragSourceItem(id: string) {
+  return draggingPayload.value !== null && dragSourceIds.has(id);
+}
+
+function isDragOverTarget(targetFolderId: string | null) {
+  return dragOverKey.value === toDropKey(targetFolderId);
+}
+
+function endDragMove() {
+  draggingPayload.value = null;
+  dragSourceIds = new Set();
+  onMovedCallback = null;
+  dragOverKey.value = null;
+  enterCount = 0;
+  dropCandidateCache.clear();
+}
 
 /**
  * 建立小型拖曳提示縮圖，取代瀏覽器預設的整卡截圖，
@@ -99,7 +117,7 @@ function createDragPreviewElement(preview: DragMovePreview): HTMLElement {
   const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
   const label = document.createElement('span');
 
-  use.setAttribute('href', `#icon-ic_${preview.icon}`);
+  use.setAttribute('href', toSvgSymbolId(preview.icon));
   icon.append(use);
   icon.setAttribute('width', '20');
   icon.setAttribute('height', '20');
@@ -129,8 +147,11 @@ function createDragPreviewElement(preview: DragMovePreview): HTMLElement {
   return element;
 }
 
-function startDragMove(event: DragEvent, payload: DragMovePayload, preview: DragMovePreview) {
+function startDragMove(event: DragEvent, payload: DragMovePayload, preview: DragMovePreview, onMoved?: () => void) {
   draggingPayload.value = payload;
+  dragSourceIds = new Set([...payload.pdfIds, ...payload.folderIds]);
+  onMovedCallback = onMoved ?? null;
+  dropCandidateCache.clear();
 
   if (!event.dataTransfer) return;
 
@@ -145,19 +166,23 @@ function startDragMove(event: DragEvent, payload: DragMovePayload, preview: Drag
   setTimeout(() => previewElement.remove(), 0);
 }
 
-/** 是否為拖曳進行中的合法放置目標（用於預先提示可放置位置） */
-function isDropCandidate(targetFolderId: string | null) {
-  return canDropTo(targetFolderId);
-}
+function onDropTargetDragEnter(event: DragEvent, targetFolderId: string | null) {
+  if (!isDropCandidate(targetFolderId)) return;
 
-function canDropTo(targetFolderId: string | null) {
-  if (!draggingPayload.value) return false;
+  event.preventDefault();
 
-  return canDropPayload(draggingPayload.value, targetFolderId);
+  const key = toDropKey(targetFolderId);
+
+  if (dragOverKey.value === key) {
+    enterCount += 1;
+  } else {
+    dragOverKey.value = key;
+    enterCount = 1;
+  }
 }
 
 function onDropTargetDragOver(event: DragEvent, targetFolderId: string | null) {
-  if (!canDropTo(targetFolderId)) return;
+  if (!isDropCandidate(targetFolderId)) return;
 
   event.preventDefault();
 
@@ -166,70 +191,40 @@ function onDropTargetDragOver(event: DragEvent, targetFolderId: string | null) {
   }
 }
 
-export function useDragMove() {
-  const { t } = useI18n();
-  const pdfStore = usePdfStore();
-  const folderStore = useFolderStore();
-  /** 目前 dragover 中的放置目標 key，null 表示無 */
-  const dragOverKey = ref<string | null>(null);
-  /** 追蹤 dragenter / dragleave 配對次數，避免游標移入子元素時高亮閃爍 */
-  let enterCount = 0;
+function onDropTargetDragLeave(targetFolderId: string | null) {
+  if (dragOverKey.value !== toDropKey(targetFolderId)) return;
 
-  function isDragOverTarget(targetFolderId: string | null) {
-    return dragOverKey.value === toDropKey(targetFolderId);
-  }
+  enterCount -= 1;
 
-  function endDragMove() {
-    draggingPayload.value = null;
+  if (enterCount <= 0) {
     dragOverKey.value = null;
     enterCount = 0;
   }
+}
 
-  function onDropTargetDragEnter(event: DragEvent, targetFolderId: string | null) {
-    if (!canDropTo(targetFolderId)) return;
-
-    event.preventDefault();
-
-    const key = toDropKey(targetFolderId);
-
-    if (dragOverKey.value === key) {
-      enterCount += 1;
-    } else {
-      dragOverKey.value = key;
-      enterCount = 1;
-    }
-  }
-
-  function onDropTargetDragLeave(targetFolderId: string | null) {
-    if (dragOverKey.value !== toDropKey(targetFolderId)) return;
-
-    enterCount -= 1;
-
-    if (enterCount <= 0) {
-      dragOverKey.value = null;
-      enterCount = 0;
-    }
-  }
+export function useDragMove() {
+  const { t } = useI18n();
 
   async function onDropTargetDrop(event: DragEvent, targetFolderId: string | null) {
     event.preventDefault();
-    dragOverKey.value = null;
-    enterCount = 0;
 
-    const payload = parseDropPayload(event);
+    const payload = draggingPayload.value;
+    const onMoved = onMovedCallback;
+    const isValidDrop = isDropCandidate(targetFolderId);
 
-    draggingPayload.value = null;
+    // 拖曳來源可能因移動而自 DOM 移除、不再收到 dragend，故 drop 時一併清理拖曳狀態
+    endDragMove();
 
-    if (!payload || !canDropPayload(payload, targetFolderId)) return;
+    if (!payload || !isValidDrop) return;
 
     const promises: Promise<unknown>[] = [];
 
     if (payload.pdfIds.length > 0) {
-      promises.push(pdfStore.moveFilesToFolder(new Set(payload.pdfIds), targetFolderId));
+      promises.push(usePdfStore().moveFilesToFolder(new Set(payload.pdfIds), targetFolderId));
     }
 
     if (payload.folderIds.length > 0) {
-      const result = folderStore.batchMoveFolders(new Set(payload.folderIds), targetFolderId);
+      const result = useFolderStore().batchMoveFolders(new Set(payload.folderIds), targetFolderId);
 
       if (result) promises.push(result);
     }
@@ -238,11 +233,13 @@ export function useDragMove() {
 
     await Promise.all(promises);
     showToast(t('folder.moved'));
+    onMoved?.();
   }
 
   return {
     isDragOverTarget,
     isDropCandidate,
+    isDragSourceItem,
     startDragMove,
     endDragMove,
     onDropTargetDragEnter,

@@ -18,6 +18,7 @@ interface Emits {
   openRenameDialog: [folder: Folder];
   openMoveFolder: [folder: Folder];
   selectFolder: [folder: Folder, isSelected: boolean];
+  startDrag: [folder: Folder, event: DragEvent];
 }
 
 const { folder, isSelectAll } = defineProps<Props>();
@@ -29,25 +30,18 @@ const { t } = useI18n();
 const {
   isDragOverTarget,
   isDropCandidate,
-  startDragMove,
+  isDragSourceItem,
   endDragMove,
   onDropTargetDragEnter,
   onDropTargetDragOver,
   onDropTargetDragLeave,
   onDropTargetDrop,
 } = useDragMove();
-const isDragSource = ref(false);
 
 const localTime = computed(() => transformTimestamp(folder.createDate));
 
 function onDragStart(event: DragEvent) {
-  isDragSource.value = true;
-  startDragMove(event, { pdfIds: [], folderIds: [folder.folderId] }, { label: folder.name, icon: 'folder' });
-}
-
-function onDragEnd() {
-  isDragSource.value = false;
-  endDragMove();
+  emit('startDrag', folder, event);
 }
 
 function openFolder() {
@@ -63,6 +57,15 @@ function toggleSelect() {
   isSelected.value = !isSelected.value;
   emit('selectFolder', folder, isSelected.value);
 }
+
+watch(
+  () => isSelectAll,
+  isSelect => {
+    if (isSelect === 'mixed') return;
+
+    isSelected.value = isSelect;
+  },
+);
 
 function renameFolder() {
   toggleMore(false);
@@ -97,15 +100,6 @@ async function confirmDelete() {
 function toggleMore(isOpen: boolean) {
   isShowMore.value = isOpen;
 }
-
-watch(
-  () => isSelectAll,
-  isSelect => {
-    if (isSelect === 'mixed') return;
-
-    isSelected.value = isSelect;
-  },
-);
 </script>
 
 <template>
@@ -115,15 +109,15 @@ watch(
       isListStatus ? 'lg:flex-row' : 'lg:h-fit lg:w-79 lg:shrink-0',
       {
         active: isSelected,
-        dragging: isDragSource,
+        dragging: isDragSourceItem(folder.folderId),
         'drop-candidate': isDropCandidate(folder.folderId),
         'drop-target': isDragOverTarget(folder.folderId),
       },
     ]"
-    :draggable="!isSelectAll"
+    draggable="true"
     @click="openFolder"
     @dragstart="onDragStart"
-    @dragend="onDragEnd"
+    @dragend="endDragMove"
     @dragenter="onDropTargetDragEnter($event, folder.folderId)"
     @dragover="onDropTargetDragOver($event, folder.folderId)"
     @dragleave="onDropTargetDragLeave(folder.folderId)"

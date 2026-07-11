@@ -26,6 +26,7 @@
     "created": "文件夹已创建",
     "delete": "删除文件夹",
     "deleted": "文件夹已删除",
+    "items_count": "{count} 个项目",
     "move_here": "移动到这里",
     "move_to": "移动到文件夹",
     "moved": "移动成功",

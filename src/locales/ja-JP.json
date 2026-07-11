@@ -26,6 +26,7 @@
     "created": "フォルダが作成されました",
     "delete": "フォルダを削除",
     "deleted": "フォルダが削除されました",
+    "items_count": "{count} 件の項目",
     "move_here": "ここに移動",
     "move_to": "フォルダに移動",
     "moved": "移動しました",

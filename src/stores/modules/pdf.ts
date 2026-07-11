@@ -96,7 +96,7 @@ export const usePdfStore = defineStore('pdf', {
       return PDFList;
     },
     addPDF(PDF: PDF) {
-      this.PDFList.unshift({ ...PDF });
+      this.PDFList.unshift(this.sanitizeFolderId({ ...PDF }));
 
       return this.updatePDFIdb();
     },
@@ -249,20 +249,27 @@ export const usePdfStore = defineStore('pdf', {
     /** 刪除資料夾時，將其下所有檔案移入垃圾桶，並清除封存與垃圾桶內指向已刪資料夾的 folderId */
     trashFilesByFolderIds(folderIds: Set<string>) {
       const isInDeletedFolder = (pdf: PDF) => Boolean(pdf.folderId && folderIds.has(pdf.folderId));
+      const clearFolderId = (pdf: PDF) => (isInDeletedFolder(pdf) ? { ...pdf, folderId: undefined } : pdf);
+      const trashChanged = this.trashList.some(pdf => isInDeletedFolder(pdf));
+      const archiveChanged = this.archiveList.some(pdf => isInDeletedFolder(pdf));
+
+      if (trashChanged) this.trashList = this.trashList.map(pdf => clearFolderId(pdf));
+      if (archiveChanged) this.archiveList = this.archiveList.map(pdf => clearFolderId(pdf));
+
       const trashedFiles = this.PDFList.filter(pdf => isInDeletedFolder(pdf)).map(pdf => ({
         ...pdf,
         folderId: undefined,
-        trashDate: Date.now(),
       }));
 
-      this.PDFList = this.PDFList.filter(pdf => !isInDeletedFolder(pdf));
-      this.trashList = [
-        ...trashedFiles,
-        ...this.trashList.map(pdf => (isInDeletedFolder(pdf) ? { ...pdf, folderId: undefined } : pdf)),
-      ];
-      this.archiveList = this.archiveList.map(pdf => (isInDeletedFolder(pdf) ? { ...pdf, folderId: undefined } : pdf));
+      // batchAddTrash 會一併寫入三份清單的 IDB，涵蓋上方的 folderId 清理
+      if (trashedFiles.length > 0) return this.batchAddTrash(new Set(trashedFiles), 'file');
 
-      return Promise.all([this.updatePDFIdb(), this.updateTrashIdb(), this.updateArchiveIdb()]);
+      const updates: Promise<unknown>[] = [];
+
+      if (trashChanged) updates.push(this.updateTrashIdb());
+      if (archiveChanged) updates.push(this.updateArchiveIdb());
+
+      return Promise.all(updates);
     },
   },
 });

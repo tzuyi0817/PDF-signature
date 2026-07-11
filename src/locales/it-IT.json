@@ -26,6 +26,7 @@
     "created": "Cartella creata",
     "delete": "Elimina cartella",
     "deleted": "Cartella eliminata",
+    "items_count": "{count} elementi",
     "move_here": "Sposta qui",
     "move_to": "Sposta nella cartella",
     "moved": "Spostato con successo",

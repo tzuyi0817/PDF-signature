@@ -3,6 +3,7 @@ import { computed, defineAsyncComponent, nextTick, onActivated, ref } from 'vue'
 import { useI18n } from 'vue-i18n';
 import { SignFile } from '@/components/biz';
 import { BatchOperation, Checkbox, showToast, SvgIcon } from '@/components/common';
+import { useDragMove, type DragMovePayload, type DragMovePreview } from '@/hooks/use-drag-move';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { usePdfStore } from '@/stores';
 import FolderRow from './FolderRow.vue';
@@ -38,6 +39,7 @@ const folderBatch = new Set<Folder>();
 const { t } = useI18n();
 const { deleteTrash, batchDeleteTrash } = usePdfStore();
 const { isShowWarnPopup, Popup, toggleWarnPopup } = useWarnPopup();
+const { startDragMove } = useDragMove();
 
 const hasFiles = computed(() => props.list.length > 0);
 const hasFolders = computed(() => (props.folders?.length ?? 0) > 0);
@@ -212,6 +214,44 @@ function closeMoveModal() {
   clearBatch();
 }
 
+function onFileStartDrag(file: PDF, event: DragEvent) {
+  startItemDrag(
+    event,
+    batch.has(file),
+    { pdfIds: [file.PDFId], folderIds: [] },
+    { label: file.name, icon: 'file_item' },
+  );
+}
+
+function onFolderStartDrag(folder: Folder, event: DragEvent) {
+  startItemDrag(
+    event,
+    folderBatch.has(folder),
+    { pdfIds: [], folderIds: [folder.folderId] },
+    { label: folder.name, icon: 'folder' },
+  );
+}
+
+/** 拖曳來源若在批次選取內，改為拖曳整個批次選取；移動成功後清除批次選取，避免選取集合殘留已移動的項目 */
+function startItemDrag(event: DragEvent, isInBatch: boolean, single: DragMovePayload, preview: DragMovePreview) {
+  const total = batch.size + folderBatch.size;
+
+  if (!isInBatch || total <= 1) {
+    startDragMove(event, single, preview, clearBatch);
+    return;
+  }
+
+  const pdfIds = [...batch].map(({ PDFId }) => PDFId);
+  const folderIds = [...folderBatch].map(({ folderId }) => folderId);
+
+  startDragMove(
+    event,
+    { pdfIds, folderIds },
+    { label: t('folder.items_count', { count: total }), icon: folderIds.length > 0 ? 'folder' : 'file_item' },
+    clearBatch,
+  );
+}
+
 onActivated(updateSelectAll);
 </script>
 
@@ -286,6 +326,7 @@ onActivated(updateSelectAll);
         @open-rename-dialog="emit('openRenameDialog', $event)"
         @open-move-folder="openFolderMoveModal"
         @select-folder="selectFolder"
+        @start-drag="onFolderStartDrag"
       />
 
       <sign-file
@@ -301,6 +342,7 @@ onActivated(updateSelectAll);
         @open-encrypt-popup="openEncryptPopup"
         @select-file="selectFile"
         @open-move-to-folder="openSingleMoveModal"
+        @start-drag="onFileStartDrag"
       />
     </ul>
 

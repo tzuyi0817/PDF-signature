@@ -26,6 +26,7 @@
     "created": "Klasör oluşturuldu",
     "delete": "Klasörü sil",
     "deleted": "Klasör silindi",
+    "items_count": "{count} öğe",
     "move_here": "Buraya taşı",
     "move_to": "Klasöre taşı",
     "moved": "Taşındı",

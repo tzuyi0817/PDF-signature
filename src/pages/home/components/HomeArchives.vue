@@ -10,7 +10,7 @@ const keyword = ref('');
 </script>
 
 <template>
-  <div class="index-archives index-container">
+  <div class="index-archives index-container relative">
     <template v-if="archiveList.length">
       <home-search v-model="keyword" />
 

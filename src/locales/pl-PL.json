@@ -26,6 +26,7 @@
     "created": "Folder utworzony",
     "delete": "Usuń folder",
     "deleted": "Folder usunięty",
+    "items_count": "Elementy: {count}",
     "move_here": "Przenieś tutaj",
     "move_to": "Przenieś do folderu",
     "moved": "Przeniesiono",

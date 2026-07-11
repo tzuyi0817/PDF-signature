@@ -12,7 +12,7 @@ usePdfStore().filterTrash();
 </script>
 
 <template>
-  <div class="index-trash index-container">
+  <div class="index-trash index-container relative">
     <template v-if="trashList.length">
       <home-search v-model="keyword" />
 

@@ -26,6 +26,7 @@
     "created": "Mappe opprettet",
     "delete": "Slett mappe",
     "deleted": "Mappe slettet",
+    "items_count": "{count} elementer",
     "move_here": "Flytt hit",
     "move_to": "Flytt til mappe",
     "moved": "Flyttet",

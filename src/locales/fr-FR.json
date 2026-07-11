@@ -26,6 +26,7 @@
     "created": "Dossier créé",
     "delete": "Supprimer le dossier",
     "deleted": "Dossier supprimé",
+    "items_count": "{count} éléments",
     "move_here": "Déplacer ici",
     "move_to": "Déplacer vers un dossier",
     "moved": "Déplacé avec succès",

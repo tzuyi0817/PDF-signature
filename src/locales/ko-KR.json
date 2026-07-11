@@ -26,6 +26,7 @@
     "created": "폴더가 생성되었습니다",
     "delete": "폴더 삭제",
     "deleted": "폴더가 삭제되었습니다",
+    "items_count": "항목 {count}개",
     "move_here": "여기로 이동",
     "move_to": "폴더로 이동",
     "moved": "이동 완료",

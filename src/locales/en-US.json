@@ -26,6 +26,7 @@
     "created": "Folder created",
     "delete": "Delete Folder",
     "deleted": "Folder deleted",
+    "items_count": "{count} items",
     "move_here": "Move Here",
     "move_to": "Move to Folder",
     "moved": "Moved successfully",
