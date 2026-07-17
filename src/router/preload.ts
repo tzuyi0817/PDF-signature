@@ -51,7 +51,7 @@ function isLazyLoader(component: unknown): component is () => Promise<RouteCompo
 
 /** Safari does not support requestIdleCallback, setTimeout is used instead to delay execution. */
 function scheduleIdle(callback: () => void) {
-  if (requestIdleCallback) {
+  if (isFunction(requestIdleCallback)) {
     requestIdleCallback(callback);
   } else {
     setTimeout(callback, 1);
