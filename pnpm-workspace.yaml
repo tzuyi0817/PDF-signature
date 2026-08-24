@@ -1,5 +1,5 @@
 overrides:
-  '@typescript-eslint/typescript-estree': 8.63.0
+  '@typescript-eslint/typescript-estree': 8.67.0
 
 allowBuilds:
   '@swc/core': true
