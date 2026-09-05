@@ -43,7 +43,7 @@
     "@types/node": "^24.13.3",
     "@vitejs/plugin-vue": "^6.0.8",
     "@vue/tsconfig": "^0.9.1",
-    "cssnano": "^8.0.8",
+    "cssnano": "^9.0.3",
     "eslint": "^9.39.5",
     "postcss": "^8.5.26",
     "postcss-preset-env": "^11.4.0",
