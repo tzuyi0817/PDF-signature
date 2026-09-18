@@ -22,7 +22,7 @@
     "browser-image-compression": "^2.0.2",
     "idb-keyval": "^6.3.0",
     "jspdf": "^2.5.2",
-    "pinia": "^3.0.4",
+    "pinia": "^4.0.3",
     "pinia-plugin-persistedstate": "^4.7.1",
     "vue": "^3.5.41",
     "vue-i18n": "^11.4.9",
