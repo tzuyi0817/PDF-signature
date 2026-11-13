@@ -27,7 +27,7 @@ function close() {
     </h5>
 
     <div class="signature-popup-content">
-      <slot></slot>
+      <slot />
     </div>
 
     <div class="flex justify-center gap-5 lg:hidden">

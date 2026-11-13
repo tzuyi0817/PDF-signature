@@ -22,10 +22,12 @@ async function waitForStableLayout(page: Page, locator: Locator) {
   await expect(async () => {
     const box = JSON.stringify(await locator.boundingBox());
 
-    if (box !== previousBox) {
-      previousBox = box;
-      throw new Error('layout is still shifting');
+    if (box === previousBox) {
+      return;
     }
+
+    previousBox = box;
+    throw new Error('layout is still shifting');
   }).toPass({ timeout: 10_000, intervals: [150] });
 }
 
@@ -330,7 +332,7 @@ test.describe('folder', () => {
 
       // The file stays in place and no moved toast appears within the wait window.
       await expect(fileItem).toBeInViewport();
-      // eslint-disable-next-line playwright/no-wait-for-timeout -- asserting a toast does NOT appear requires a fixed wait window
+      // eslint-disable-next-line playwright/no-wait-for-timeout, sonarjs/no-fixed-wait-in-tests -- asserting a toast does NOT appear requires a fixed wait window
       await page.waitForTimeout(400);
       await expect(page.getByText(/moved successfully/i)).toBeHidden();
     });

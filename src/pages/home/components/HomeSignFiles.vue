@@ -279,7 +279,7 @@ onActivated(updateSelectAll);
         />
 
         <p :class="['text-sm', { 'opacity-0': isSelectAll }]">
-          {{ isShowThread ? $t('setup_time') : $t('batch_operation') }}
+          {{ $t(isShowThread ? 'setup_time' : 'batch_operation') }}
         </p>
       </div>
 

@@ -23,7 +23,7 @@ onMounted(() => emit('childMounted'));
         <h5 class="border-primary border-b-2 px-4 py-1 text-center font-medium lg:pb-4">
           {{ title }}
         </h5>
-        <slot></slot>
+        <slot />
       </div>
     </div>
   </teleport>

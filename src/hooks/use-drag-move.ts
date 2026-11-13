@@ -147,10 +147,15 @@ function createDragPreviewElement(preview: DragMovePreview): HTMLElement {
   return element;
 }
 
-function startDragMove(event: DragEvent, payload: DragMovePayload, preview: DragMovePreview, onMoved?: () => void) {
+function startDragMove(
+  event: DragEvent,
+  payload: DragMovePayload,
+  preview: DragMovePreview,
+  onMoved: (() => void) | null = null,
+) {
   draggingPayload.value = payload;
   dragSourceIds = new Set([...payload.pdfIds, ...payload.folderIds]);
-  onMovedCallback = onMoved ?? null;
+  onMovedCallback = onMoved;
   dropCandidateCache.clear();
 
   if (!event.dataTransfer) return;
@@ -196,10 +201,10 @@ function onDropTargetDragLeave(targetFolderId: string | null) {
 
   enterCount -= 1;
 
-  if (enterCount <= 0) {
-    dragOverKey.value = null;
-    enterCount = 0;
-  }
+  if (enterCount > 0) return;
+
+  dragOverKey.value = null;
+  enterCount = 0;
 }
 
 export function useDragMove() {

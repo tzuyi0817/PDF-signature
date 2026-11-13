@@ -65,10 +65,12 @@ function close() {
   isClose.value = true;
   emits('close');
 
-  if (timer) {
-    clearTimeout(timer);
-    timer = null;
+  if (!timer) {
+    return;
   }
+
+  clearTimeout(timer);
+  timer = null;
 }
 
 function onTransitionEnd() {

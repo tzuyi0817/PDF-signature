@@ -71,11 +71,12 @@ function toggleLiteralPopup(isOpen: boolean, isEdit = false) {
 }
 
 function dragLiteral(event: DragEvent) {
-  const { textContent, offsetHeight, offsetWidth } = event.target as HTMLParagraphElement;
+  const target = event.target as HTMLParagraphElement;
+  const { offsetHeight, offsetWidth } = target;
   const offsetX = event.offsetX / offsetWidth;
   const offsetY = event.offsetY / offsetHeight;
 
-  event.dataTransfer?.setData('text/plain', textContent ?? '');
+  event.dataTransfer?.setData('text/plain', target.textContent ?? '');
   event.dataTransfer?.setData('custom/offset', JSON.stringify({ offsetX, offsetY }));
   dragOffset.value = { x: event.offsetX, y: event.offsetY, width: offsetWidth, height: offsetHeight };
 }
@@ -156,7 +157,7 @@ function close() {
 
   <popup
     v-if="isShowLiteralPopup"
-    :title="isEditing ? $t('edit_text') : $t('add_text')"
+    :title="$t(isEditing ? 'edit_text' : 'add_text')"
   >
     <textarea
       v-model="literal"

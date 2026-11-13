@@ -53,11 +53,11 @@ export function isDesktop() {
 }
 
 export function transformTimestamp(timestamp: number) {
-  const [date, time] = new Date(timestamp).toLocaleString('en-GB').split(',');
+  const [date, time] = new Date(timestamp).toLocaleString('en-GB').split(',', 2);
 
   if (!date || !time) return '';
 
-  const [day, month, year] = date.split('/');
+  const [day, month, year] = date.split('/', 3);
 
   return `${year}-${month}-${day} ${time}`;
 }
@@ -69,10 +69,12 @@ export function monitorDevicePixelRatio(callback: (ratio: number) => void) {
 
   const handleChange = () => {
     const newRatio = window.devicePixelRatio;
-    if (newRatio !== currentRatio) {
-      currentRatio = newRatio;
-      callback(newRatio);
+    if (newRatio === currentRatio) {
+      return;
     }
+
+    currentRatio = newRatio;
+    callback(newRatio);
   };
 
   mediaQuery.addEventListener('change', handleChange);
