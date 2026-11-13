@@ -23,4 +23,6 @@ export interface PageOverlay extends Box {
 export interface SignedPdfOptions {
   /** 原始 PDF 受密碼保護時，使用者上傳時輸入的密碼 */
   sourcePassword?: string;
+  /** 下載時使用者設定的密碼；有值才加密輸出，與原始 PDF 是否受保護無關 */
+  password?: string;
 }

@@ -1,4 +1,4 @@
-import { getDocument, OPS } from 'pdfjs-dist/legacy/build/pdf.mjs';
+import { getDocument, OPS, PermissionFlag } from 'pdfjs-dist/legacy/build/pdf.mjs';
 import type { Box } from '../types';
 
 type Matrix = [number, number, number, number, number, number];
@@ -14,6 +14,16 @@ export interface PageReport {
   /** 畫面上的頁面尺寸（pt），已套用旋轉 */
   viewWidth: number;
   viewHeight: number;
+}
+
+export interface Permissions {
+  print: boolean;
+  copy: boolean;
+  copyForAccessibility: boolean;
+  modify: boolean;
+  annotate: boolean;
+  fillForms: boolean;
+  assemble: boolean;
 }
 
 const IDENTITY: Matrix = [1, 0, 0, 1, 0, 0];
@@ -98,6 +108,29 @@ export async function inspectPdf(bytes: Uint8Array, password?: string): Promise<
     }
 
     return reports;
+  } finally {
+    await doc.destroy();
+  }
+}
+
+/** 讀出加密 PDF 的權限；未加密的文件回傳 null */
+export async function readPermissions(bytes: Uint8Array, password?: string): Promise<Permissions | null> {
+  const doc = await getDocument({ data: new Uint8Array(bytes), password, verbosity: 0 }).promise;
+
+  try {
+    const flags = await doc.getPermissions();
+
+    if (!flags) return null;
+
+    return {
+      print: flags.includes(PermissionFlag.PRINT) && flags.includes(PermissionFlag.PRINT_HIGH_QUALITY),
+      copy: flags.includes(PermissionFlag.COPY),
+      copyForAccessibility: flags.includes(PermissionFlag.COPY_FOR_ACCESSIBILITY),
+      modify: flags.includes(PermissionFlag.MODIFY_CONTENTS),
+      annotate: flags.includes(PermissionFlag.MODIFY_ANNOTATIONS),
+      fillForms: flags.includes(PermissionFlag.FILL_INTERACTIVE_FORMS),
+      assemble: flags.includes(PermissionFlag.ASSEMBLE),
+    };
   } finally {
     await doc.destroy();
   }
