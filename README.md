@@ -58,7 +58,7 @@ Clone this repository and install dependencies by running `pnpm`(Node.js version
 ## Use Technology
 
 - Frontend: vue3, typescript, tailwindcss, pinia
-- Environment construction: vite, eslint, prettier
+- Environment construction: vite, eslint, oxfmt
 - PDF Handling: jspdf
 - Signature Drawing: [@component-hook/pdf-canvas](https://github.com/tzuyi0817/component-hook/tree/master/packages/pdf-canvas#readme)
 - Compress image: browser-image-compression

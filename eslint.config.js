@@ -3,7 +3,7 @@ import componentHookPlugin from '@component-hook/eslint-plugin';
 export default [
   ...componentHookPlugin.configs.basic,
   ...componentHookPlugin.configs.vue,
-  componentHookPlugin.configs.prettier,
+  componentHookPlugin.configs.oxfmt,
   ...componentHookPlugin.configs.sonarjs,
   componentHookPlugin.configs.security,
   ...componentHookPlugin.configs.markdown,

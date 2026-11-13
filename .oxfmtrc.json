@@ -1,0 +1,13 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "singleQuote": true,
+  "semi": true,
+  "endOfLine": "lf",
+  "printWidth": 120,
+  "proseWrap": "preserve",
+  "arrowParens": "avoid",
+  "singleAttributePerLine": true,
+  "sortPackageJson": false,
+  "sortTailwindcss": {},
+  "ignorePatterns": []
+}
