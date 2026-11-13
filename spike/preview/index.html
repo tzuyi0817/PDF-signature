@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Spike #135 預覽效能</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: system-ui, sans-serif;
+        background: #ddd;
+      }
+      #report {
+        padding: 8px 12px;
+        background: #fff;
+        font-size: 14px;
+      }
+      #stage {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 12px;
+        max-width: 842px;
+      }
+      .page {
+        position: relative;
+        background: #fff;
+      }
+      .page > canvas,
+      .page > img.full {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+      .page > img.overlay {
+        position: absolute;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="report">量測中…</div>
+    <div id="stage"></div>
+    <script
+      type="module"
+      src="./main.ts"
+    ></script>
+  </body>
+</html>
