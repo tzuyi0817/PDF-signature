@@ -35,6 +35,7 @@
     "lint-staged": "^17.6.0"
   },
   "devDependencies": {
+    "@cantoo/pdf-lib": "^2.11.1",
     "@component-hook/eslint-plugin": "^1.8.1",
     "@intlify/unplugin-vue-i18n": "^11.2.8",
     "@playwright/test": "^1.65.0",
@@ -46,6 +47,7 @@
     "cssnano": "^9.9.0",
     "eslint": "^9.39.5",
     "oxfmt": "^0.78.0",
+    "pdfjs-dist": "4.10.38",
     "postcss": "^8.5.32",
     "postcss-preset-env": "^11.6.2",
     "postcss-pxtorem": "^6.1.0",

@@ -197,6 +197,9 @@ importers:
         specifier: ^5.5.0
         version: 5.5.0(@vue/compiler-sfc@3.5.45)(pinia@4.1.0(@vue/devtools-api@8.2.1)(typescript@6.0.3)(vue@3.5.45(typescript@6.0.3)))(rolldown@1.2.19)(rollup@4.62.5)(vite@8.3.8(@types/node@24.19.2)(jiti@2.7.0)(terser@5.46.1)(yaml@2.9.1))(vue@3.5.45(typescript@6.0.3))
     devDependencies:
+      '@cantoo/pdf-lib':
+        specifier: ^2.11.1
+        version: 2.11.1(html-entities@2.6.0)
       '@component-hook/eslint-plugin':
         specifier: ^1.8.1
         version: 1.8.1(@typescript-eslint/parser@8.72.2(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3))(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(oxfmt@0.78.0)(prettier@3.10.1)(supports-color@7.2.0)(typescript@6.0.3)
@@ -230,6 +233,9 @@ importers:
       oxfmt:
         specifier: ^0.78.0
         version: 0.78.0
+      pdfjs-dist:
+        specifier: 4.10.38
+        version: 4.10.38
       postcss:
         specifier: ^8.5.32
         version: 8.5.32
@@ -802,6 +808,11 @@ packages:
   '@babel/types@8.0.6':
     resolution: {integrity: sha512-c+xgSWboV2pdwXP67BUWDVRHi2BO5Q3KwxyFVs7taVTY+fsK47/L51ZXQoV9rozHJDNHvJ4v4WEsI/IlxV2l2A==}
     engines: {node: ^22.18.0 || >=24.11.0}
+
+  '@cantoo/pdf-lib@2.11.1':
+    resolution: {integrity: sha512-lYuRJFfXgoP8WVE8HYSeoLfDcnSXmjMLmdZS7YvmYHngbcZfiqDOruHrZBqjYizkrNa4ad1yW4WCrPYyb26T3Q==}
+    peerDependencies:
+      html-entities: '>=2.3.2'
 
   '@colordx/core@7.3.0':
     resolution: {integrity: sha512-LVzTTPhX7wpy7TkGjouA9zbbCBIw92RGm7ZQqSKFE0oYE3sMx2FGXz90eVpgw7k/+wrrY+qJ86nHXifZWMS5jA==}
@@ -3115,6 +3126,10 @@ packages:
   csstype@3.2.3:
     resolution: {integrity: sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ==}
 
+  culori@4.0.2:
+    resolution: {integrity: sha512-1+BhOB8ahCn4O0cep0Sh2l9KCOfOdY+BXJnKMHFFzDEouSr/el18QwXEMRlOj9UY5nCeA8UN3a/82rUWRBeyBw==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+
   damerau-levenshtein@1.0.8:
     resolution: {integrity: sha512-sdQSFB7+llfUcQHUQO3+B8ERRj0Oa4w9POWMI/puGtuf7gFywGmkaLCElnudfTiKZV+NvHqL0ifzdrI8Ro7ESA==}
 
@@ -4771,6 +4786,9 @@ packages:
   node-exports-info@1.6.0:
     resolution: {integrity: sha512-pyFS63ptit/P5WqUkt+UUfe+4oevH+bFeIiPPdfb0pFeYEu/1ELnJu5l+5EcTKYL5M7zaAa7S8ddywgXypqKCw==}
     engines: {node: '>= 0.4'}
+
+  node-html-better-parser@1.5.9:
+    resolution: {integrity: sha512-z1I5UINMezJXYL9cH3h0a9KBth2G978gSLlfkpQ+CQzzVHVQy9gpARgm9eDsz1O4gn1HtgUqjdAIYxKFZm6uHQ==}
 
   node-html-parser@5.4.2:
     resolution: {integrity: sha512-RaBPP3+51hPne/OolXxcz89iYvQvKOydaqoePpOgXcrOKZhjVIzmpKZz+Hd/RBO2/zN2q6CNJhQzucVz+u3Jyw==}
@@ -6975,6 +6993,14 @@ snapshots:
       '@babel/helper-string-parser': 8.0.6
       '@babel/helper-validator-identifier': 8.0.6
 
+  '@cantoo/pdf-lib@2.11.1(html-entities@2.6.0)':
+    dependencies:
+      culori: 4.0.2
+      fflate: 0.8.2
+      html-entities: 2.6.0
+      node-html-better-parser: 1.5.9
+      tslib: 2.8.1
+
   '@colordx/core@7.3.0': {}
 
   '@commitlint/cli@21.2.4(conventional-commits-parser@7.1.0)(typescript@6.0.3)':
@@ -9152,6 +9178,8 @@ snapshots:
 
   csstype@3.2.3: {}
 
+  culori@4.0.2: {}
+
   damerau-levenshtein@1.0.8: {}
 
   data-urls@5.0.0:
@@ -11235,6 +11263,10 @@ snapshots:
       es-errors: 1.3.0
       object.entries: 1.1.9
       semver: 6.3.1
+
+  node-html-better-parser@1.5.9:
+    dependencies:
+      html-entities: 2.6.0
 
   node-html-parser@5.4.2:
     dependencies:
