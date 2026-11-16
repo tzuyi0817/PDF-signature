@@ -17,3 +17,10 @@ export async function exportSignedPdf(
 
   return createSignedPdf(source, overlays, options);
 }
+
+/** 解除 PDF 的密碼保護。與 `exportSignedPdf` 一樣動態載入，只有上傳受保護的檔案時才會抓 pdf-lib。 */
+export async function removePdfPassword(source: Uint8Array, password: string): Promise<Uint8Array> {
+  const module = await import('./signed-pdf');
+
+  return module.removePdfPassword(source, password);
+}

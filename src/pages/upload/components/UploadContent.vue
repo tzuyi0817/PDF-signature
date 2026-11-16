@@ -7,6 +7,7 @@ import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { onAfterRouteLeave } from '@/router/events';
 import { useConfigStore, usePdfStore } from '@/stores';
 import { sleep } from '@/utils/common';
+import { unlockOriginal } from '@/utils/pdf-document';
 import { checkFile } from '@/utils/reader';
 
 const fileName = ref('');
@@ -61,7 +62,7 @@ async function renderFile(file: File) {
     if (!fileContent) throw new Error('File content is empty');
 
     scale.value = window.devicePixelRatio;
-    setCurrentPDF(fileContent);
+    setCurrentPDF(await unlockOriginal(fileContent, filePassword));
     pages.value = fileContent.pages;
     showToast(t('prompt.file_upload_success'));
     fileName.value = file.name;

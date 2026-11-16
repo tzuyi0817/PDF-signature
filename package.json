@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@cantoo/pdf-lib": "^2.11.1",
-    "@component-hook/pdf-canvas": "^1.8.1",
+    "@component-hook/pdf-canvas": "^1.9.0",
     "browser-image-compression": "^2.0.2",
     "idb-keyval": "^6.3.0",
     "jspdf": "^2.5.2",

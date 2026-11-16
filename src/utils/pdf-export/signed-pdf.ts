@@ -1,4 +1,4 @@
-import { degrees, PDFDocument } from '@cantoo/pdf-lib';
+import { degrees, PDFDocument, PDFInvalidObject, PDFRef } from '@cantoo/pdf-lib';
 import { toPlacement } from './placement';
 import type { PageOverlay, SignedPdfOptions } from './types';
 
@@ -11,6 +11,10 @@ const DOWNLOAD_PERMISSIONS = {
   copying: true,
   contentAccessibility: true,
 } as const;
+
+const XREF_STREAM = /\/Type\s*\/XRef\b/;
+const ENCRYPT_REF = /\/Encrypt\s+(\d+)\s+(\d+)\s+R/;
+const INFO_REF = /\/Info\s+(\d+)\s+(\d+)\s+R/;
 
 /**
  * 在原始 PDF 上疊上簽名 overlay，回傳簽署後的 PDF 位元組。
@@ -55,4 +59,64 @@ export async function createSignedPdf(
   }
 
   return pdf.save();
+}
+
+function toRef(match: RegExpExecArray | null) {
+  return match ? PDFRef.of(Number(match[1]), Number(match[2])) : null;
+}
+
+/**
+ * 清掉解密後殘留的舊交叉參照串流與加密字典。
+ *
+ * pdf-lib 解密時會把來源的交叉參照串流留成一個無法解析的物件，裡面還指著舊的加密字典；
+ * 不清掉的話，存出來的檔案之後再被 pdf-lib 載入會被當成加密檔而失敗。
+ * 文件資訊（Info）的指標也只留在那個物件裡，這裡一併接回去。
+ */
+function dropStaleEncryption({ context }: PDFDocument) {
+  const decoder = new TextDecoder('latin1');
+
+  for (const [ref, object] of context.enumerateIndirectObjects()) {
+    if (!(object instanceof PDFInvalidObject)) continue;
+
+    const bytes = new Uint8Array(object.sizeInBytes());
+
+    object.copyBytesInto(bytes, 0);
+
+    const text = decoder.decode(bytes);
+
+    if (!XREF_STREAM.test(text)) continue;
+
+    const encryptRef = toRef(ENCRYPT_REF.exec(text));
+    const infoRef = toRef(INFO_REF.exec(text));
+
+    if (encryptRef) context.delete(encryptRef);
+
+    if (infoRef && !context.trailerInfo.Info) {
+      context.trailerInfo.Info = infoRef;
+    }
+
+    context.delete(ref);
+  }
+}
+
+/**
+ * 解除 PDF 的密碼保護，回傳不加密的 PDF 位元組。
+ *
+ * 頁面內容只解密、不重新編碼；文件資訊與修改日期維持原樣。
+ * 回傳前會確認結果不帶密碼也能再被載入，之後匯出才不會失敗。
+ *
+ * @param source 受密碼保護的 PDF 位元組，不會被修改
+ * @param password 使用者上傳時輸入的密碼
+ * @throws 密碼錯誤、pdf-lib 無法解析，或解除後的檔案無法再載入時
+ */
+export async function removePdfPassword(source: Uint8Array, password: string): Promise<Uint8Array> {
+  const pdf = await PDFDocument.load(source, { password, updateMetadata: false });
+
+  dropStaleEncryption(pdf);
+
+  const output = await pdf.save();
+
+  await PDFDocument.load(output, { updateMetadata: false });
+
+  return output;
 }

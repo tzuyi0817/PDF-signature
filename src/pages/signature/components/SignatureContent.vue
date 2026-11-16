@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import imageCompression from 'browser-image-compression';
 import { storeToRefs } from 'pinia';
 import { computed, defineAsyncComponent, ref, useTemplateRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { showToast, StepBtn, Version } from '@/components/common';
-import { A4_WIDTH, DRAG_MOVE_STEP } from '@/constants/common';
+import { DRAG_MOVE_STEP } from '@/constants/common';
 import { useLoadCanvas } from '@/hooks/use-load-canvas';
 import { usePointerFabric } from '@/hooks/use-pointer-fabric';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { onAfterRouteLeave } from '@/router/events';
 import { useConfigStore, usePdfStore } from '@/stores';
 import { sleep } from '@/utils/common';
-import { canvasToFile } from '@/utils/image';
+import { createThumbnail } from '@/utils/image';
+import { collectOverlays } from '@/utils/pdf-document';
 import SignatureImage from './SignatureImage.vue';
 import SignatureLiteral from './SignatureLiteral.vue';
 import SignatureLoading from './SignatureLoading.vue';
@@ -62,32 +62,25 @@ async function mergeFile() {
 
   requestAnimationFrame(async () => {
     try {
-      if (!signatureCanvasItems.value) return;
-      const { setCurrentPDFCanvas, addPDF, updatePDF } = usePdfStore();
-      const compressPromises = signatureCanvasItems.value.map(async ({ canvasRef }) => {
-        if (!canvasRef) return '';
+      const firstPageCanvas = signatureCanvasItems.value?.at(0)?.canvasRef;
 
-        const imageFile = await canvasToFile(canvasRef);
+      if (!signatureCanvasItems.value || !firstPageCanvas) return;
 
-        return imageCompression(imageFile, { useWebWorker: true });
-      });
-
-      const blobs = await Promise.all(compressPromises);
+      const { setCurrentPDFSignResult, addPDF, updatePDF } = usePdfStore();
+      const [overlays, thumbnail] = await Promise.all([
+        collectOverlays(signatureCanvasItems.value),
+        createThumbnail(firstPageCanvas),
+      ]);
 
       if (isCancelMerge.value) {
         isCancelMerge.value = false;
         return;
       }
 
-      const filteredBlobs = blobs.filter(blob => blob !== '');
-      const isPortrait = canvasRect.value.width <= canvasRect.value.height;
-      const ratio = A4_WIDTH / (isPortrait ? canvasRect.value.width : canvasRect.value.height);
-      const width = canvasRect.value.width * ratio;
-      const height = canvasRect.value.height * ratio;
+      await setCurrentPDFSignResult({ overlays, thumbnail });
 
-      setCurrentPDFCanvas(filteredBlobs, width, height);
-
-      const file = { ...currentPDF.value, data: null, updateDate: Date.now() };
+      // 原始檔留在文件上，下載與預覽都從「原始檔 + overlay」產生
+      const file = { ...currentPDF.value, updateDate: Date.now() };
 
       if (file.isUpdate) {
         updatePDF(file);
