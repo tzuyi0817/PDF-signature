@@ -8,6 +8,7 @@ import { useDragMove } from '@/hooks/use-drag-move';
 import { useConfigStore, usePdfStore } from '@/stores';
 import { sleep, transformTimestamp } from '@/utils/common';
 import { generatePDF } from '@/utils/jspdf';
+import { createEditingBackground, hasOriginalPDF } from '@/utils/pdf-document';
 import type { MenuTab } from '@/types/menu';
 import type { PDF } from '@/types/pdf';
 
@@ -80,15 +81,34 @@ function openMoveToFolder() {
 async function editFile() {
   toggleLoading({ isShow: true, title: 'upload_file', content: 'file_uploading' });
 
-  const [pdf] = await Promise.all([generatePDF(file), sleep(300)]);
+  try {
+    const [document] = await Promise.all([hasOriginalPDF(file) ? reopenSigned(file) : reopenLegacy(), sleep(300)]);
+
+    if (!document) return;
+
+    await setCurrentPDF(document);
+    router.push({ name: 'signature' });
+  } finally {
+    toggleLoading({ isShow: false });
+  }
+}
+
+/** 保有原始檔的文件：既有 overlay 畫進編輯用底圖固定住，原始檔與 overlay 原樣帶著，新簽名之後追加成一層 */
+async function reopenSigned(document: PDF & { data: File }): Promise<PDF> {
+  const background = await createEditingBackground(document);
+
+  return { ...document, background: background ?? undefined, isUpdate: true };
+}
+
+/** 此變更前儲存的文件：沒有原始檔，以整頁 PNG 重建一份 PDF 當作原始檔 */
+async function reopenLegacy(): Promise<PDF | undefined> {
+  const pdf = await generatePDF(file);
 
   if (!pdf) return;
 
   const content = await loadFile(pdf);
 
-  setCurrentPDF({ ...file, ...content, PDFId: file.PDFId, canvas: [], isUpdate: true });
-  toggleLoading({ isShow: false });
-  router.push({ name: 'signature' });
+  return { ...file, ...content, PDFId: file.PDFId, canvas: [], isUpdate: true };
 }
 
 function moveToArchive() {

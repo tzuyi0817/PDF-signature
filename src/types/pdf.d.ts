@@ -31,6 +31,8 @@ export interface PDF extends P {
   thumbnail?: Blob;
   /** 上傳時輸入的密碼；只有原始檔的密碼保護解除失敗時才會保存，用來之後重新開啟原始檔 */
   password?: string;
+  /** 重新編輯用的底圖（原始檔加上既有 overlay）；只在編輯期間存在於目前文件上，不會存回清單 */
+  background?: File;
   trashDate?: number;
   isUpdate?: boolean;
   height?: number;

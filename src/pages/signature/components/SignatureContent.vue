@@ -11,7 +11,7 @@ import { onAfterRouteLeave } from '@/router/events';
 import { useConfigStore, usePdfStore } from '@/stores';
 import { sleep } from '@/utils/common';
 import { createThumbnail } from '@/utils/image';
-import { collectOverlays } from '@/utils/pdf-document';
+import { collectOverlays, toSigningFile, toStoredDocument } from '@/utils/pdf-document';
 import SignatureImage from './SignatureImage.vue';
 import SignatureLiteral from './SignatureLiteral.vue';
 import SignatureLoading from './SignatureLoading.vue';
@@ -49,6 +49,7 @@ const {
   handleCanvasReload,
 } = useLoadCanvas(currentPDF, true);
 
+const signingFile = computed(() => toSigningFile(currentPDF.value));
 const canvasWidth = computed(() => `${canvasRect.value.width * fileZoom.value * canvasScale.value}px`);
 const canvasHeight = computed(() => `${canvasRect.value.height * fileZoom.value * canvasScale.value}px`);
 
@@ -80,7 +81,7 @@ async function mergeFile() {
       await setCurrentPDFSignResult({ overlays, thumbnail });
 
       // 原始檔留在文件上，下載與預覽都從「原始檔 + overlay」產生
-      const file = { ...currentPDF.value, updateDate: Date.now() };
+      const file = { ...toStoredDocument(currentPDF.value), updateDate: Date.now() };
 
       if (file.isUpdate) {
         updatePDF(file);
@@ -258,7 +259,7 @@ onAfterRouteLeave(() => {
                   v-show="currentPage === page"
                   ref="signatureCanvasItems"
                   class="absolute origin-top-left"
-                  :file="currentPDF"
+                  :file="signingFile"
                   :file-zoom="fileZoom"
                   :file-scale="6.8"
                   :page="page"
