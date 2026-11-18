@@ -1,3 +1,6 @@
+/** 列表縮圖的長邊上限（px） */
+const THUMBNAIL_MAX_SIZE = 600;
+
 export function createImageSrc(url: string) {
   return new URL(`/src/assets/${url}`, import.meta.url).href;
 }
@@ -62,4 +65,12 @@ export function loadImage(src: string) {
     image.addEventListener('error', reject);
     image.src = src;
   });
+}
+
+/** 把頁面畫布縮成檔案列表用的縮圖 */
+export async function createThumbnail(canvas: HTMLCanvasElement): Promise<Blob> {
+  const { default: imageCompression } = await import('browser-image-compression');
+  const image = await canvasToFile(canvas);
+
+  return imageCompression(image, { useWebWorker: true, maxWidthOrHeight: THUMBNAIL_MAX_SIZE });
 }

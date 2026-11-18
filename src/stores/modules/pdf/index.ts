@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia';
 import { IDB_KEY } from '@/constants/idb';
 import { getIdb, setIdb } from '@/utils/idb';
-import { useFolderStore } from './folder';
+import { useFolderStore } from '../folder';
 import type { MenuTab } from '@/types/menu';
-import type { PDF } from '@/types/pdf';
+import type { PDF, SignResult } from '@/types/pdf';
 
 interface PDFStore {
   currentPDF: PDF;
@@ -31,7 +31,7 @@ const defaultState: PDFStore = {
 };
 
 export const usePdfStore = defineStore('pdf', {
-  state: () => ({ ...defaultState }),
+  state: (): PDFStore => ({ ...defaultState, PDFList: [], archiveList: [], trashList: [] }),
   getters: {},
   actions: {
     async getCurrentPDF() {
@@ -75,10 +75,13 @@ export const usePdfStore = defineStore('pdf', {
 
       return this.updateCurrentPDFIdb();
     },
-    setCurrentPDFCanvas(canvas: Blob[], width: number, height: number) {
-      this.currentPDF.canvas = canvas;
-      this.currentPDF.width = width;
-      this.currentPDF.height = height;
+    /** 寫入一次簽署的結果：新的 overlay 排在既有的之後（既有的不動），並更新第一頁縮圖；原始檔保留 */
+    setCurrentPDFSignResult({ overlays, thumbnail }: SignResult) {
+      this.currentPDF = {
+        ...this.currentPDF,
+        overlays: [...(this.currentPDF.overlays ?? []), ...overlays],
+        thumbnail,
+      };
 
       return this.updateCurrentPDFIdb();
     },
