@@ -77,11 +77,6 @@ export default defineConfig({
               test: /node_modules[\\/]@component-hook[\\/]pdf-canvas/,
               priority: 10,
             },
-            {
-              name: 'jspdf',
-              test: /node_modules[\\/]jspdf/,
-              priority: 5,
-            },
           ],
         },
       },
