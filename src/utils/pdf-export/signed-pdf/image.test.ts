@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { createSignedPdf } from './signed-pdf';
-import { inspectPdf } from './testing/inspect';
-import { createPng } from './testing/png';
-import { readJpegSource } from './testing/source';
-import type { Box, PageOverlay } from './types';
+import { createSignedPdf } from '../signed-pdf';
+import { inspectPdf } from '../testing/inspect';
+import { createPng } from '../testing/png';
+import { readJpegSource, withExifOrientation } from '../testing/source';
+import type { Box, PageOverlay } from '../types';
 
 const BOX: Box = { x: 0.1, y: 0.2, width: 0.3, height: 0.1 };
 const OVERLAY: PageOverlay = { page: 1, image: createPng(120, 40), ...BOX };
@@ -58,6 +58,20 @@ describe.each(IMAGE_SOURCES)('createSignedPdf：原始檔是%s', (_, readSource,
     await expect(createSignedPdf(await readSource(), [{ ...OVERLAY, page: 2 }])).rejects.toThrow(
       'Overlay page 2 is out of range',
     );
+  });
+});
+
+describe('createSignedPdf：帶 EXIF 旋轉的 JPEG', () => {
+  it('方向不是正向時丟出錯誤，交給轉圖匯出處理（pdf-lib 不會套用 EXIF 旋轉）', async () => {
+    const rotated = withExifOrientation(await readJpegSource(), 6);
+
+    await expect(createSignedPdf(rotated, [])).rejects.toThrow('EXIF orientation');
+  });
+
+  it('方向是正向時照常匯出', async () => {
+    const upright = withExifOrientation(await readJpegSource(), 1);
+
+    await expect(inspectPdf(await createSignedPdf(upright, []))).resolves.toHaveLength(1);
   });
 });
 

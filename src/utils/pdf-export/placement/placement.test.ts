@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { toPlacement } from './placement';
+import { toPlacement } from '../placement';
 
 /** A4 直式、原點在 (0, 0) 的 CropBox */
 const A4 = { x: 0, y: 0, width: 595.28, height: 841.89 };

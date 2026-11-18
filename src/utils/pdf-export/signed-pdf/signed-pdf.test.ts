@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, it } from 'vitest';
-import { createSignedPdf } from './signed-pdf';
-import { inspectPdf, type PageReport } from './testing/inspect';
-import { createPng } from './testing/png';
+import { createSignedPdf } from '../signed-pdf';
+import { inspectPdf, type PageReport } from '../testing/inspect';
+import { createPng } from '../testing/png';
 import {
   createSourcePdf,
   ENCRYPTED_SOURCES,
@@ -9,8 +9,8 @@ import {
   PAGE_TEXTS,
   readEncryptedSource,
   SOURCE_PASSWORD,
-} from './testing/source';
-import type { Box, PageOverlay } from './types';
+} from '../testing/source';
+import type { Box, PageOverlay } from '../types';
 
 const IMAGE = createPng(120, 40);
 const BOX: Box = { x: 0.1, y: 0.2, width: 0.3, height: 0.1 };

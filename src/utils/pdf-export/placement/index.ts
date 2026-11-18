@@ -1,6 +1,22 @@
-import type { Box, Placement } from './types';
+import type { Box, Placement } from '../types';
 
 const FULL_TURN = 360;
+/** A4 的短邊與長邊（pt） */
+const A4_SHORT_SIDE = 595.28;
+const A4_LONG_SIDE = 841.89;
+
+/**
+ * 圖片原始檔的頁面尺寸（pt）：維持圖片長寬比，縮放到剛好放進同方向的 A4。
+ * 橫向圖片對橫放的 A4、直向對直放的 A4，以 100% 列印時任何圖片都剛好在一張 A4 內。
+ */
+export function toImagePageSize(imageWidth: number, imageHeight: number): Pick<Box, 'width' | 'height'> {
+  const isLandscape = imageWidth > imageHeight;
+  const maxWidth = isLandscape ? A4_LONG_SIDE : A4_SHORT_SIDE;
+  const maxHeight = isLandscape ? A4_SHORT_SIDE : A4_LONG_SIDE;
+  const scale = Math.min(maxWidth / imageWidth, maxHeight / imageHeight);
+
+  return { width: imageWidth * scale, height: imageHeight * scale };
+}
 
 /**
  * 把畫面比例座標換成 PDF 使用者空間的繪製參數。

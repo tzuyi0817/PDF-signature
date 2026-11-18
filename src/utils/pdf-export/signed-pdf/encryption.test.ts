@@ -1,8 +1,8 @@
 import { PDFDocument } from '@cantoo/pdf-lib';
 import { beforeAll, describe, expect, it } from 'vitest';
-import { createSignedPdf, removePdfPassword } from './signed-pdf';
-import { inspectPdf, readPermissions } from './testing/inspect';
-import { createPng } from './testing/png';
+import { createSignedPdf, removePdfPassword } from '../signed-pdf';
+import { inspectPdf, readPermissions } from '../testing/inspect';
+import { createPng } from '../testing/png';
 import {
   createSourcePdf,
   ENCRYPTED_SOURCES,
@@ -10,8 +10,8 @@ import {
   PAGE_TEXTS,
   readEncryptedSource,
   SOURCE_PASSWORD,
-} from './testing/source';
-import type { PageOverlay } from './types';
+} from '../testing/source';
+import type { PageOverlay } from '../types';
 
 const PASSWORD = 'download-pass';
 const IMAGE = createPng(120, 40);

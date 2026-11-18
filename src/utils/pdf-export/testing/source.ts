@@ -57,3 +57,24 @@ export async function readJpegSource(): Promise<Uint8Array> {
   // eslint-disable-next-line security/detect-non-literal-fs-filename -- 路徑是固定的 fixture
   return new Uint8Array(await readFile(fileURLToPath(url)));
 }
+
+/** 在 JPEG 開頭插入一段只帶方向標籤的 EXIF，模擬手機直拍的照片 */
+export function withExifOrientation(jpeg: Uint8Array, orientation: number, isLittleEndian = false): Uint8Array {
+  const bytes = new Uint8Array(36);
+  const segment = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  const tiff = 10;
+
+  segment.setUint16(0, 0xff_e1);
+  segment.setUint16(2, 34);
+  segment.setUint32(4, 0x45_78_69_66);
+  segment.setUint16(tiff, isLittleEndian ? 0x49_49 : 0x4d_4d);
+  segment.setUint16(tiff + 2, 42, isLittleEndian);
+  segment.setUint32(tiff + 4, 8, isLittleEndian);
+  segment.setUint16(tiff + 8, 1, isLittleEndian);
+  segment.setUint16(tiff + 10, 0x01_12, isLittleEndian);
+  segment.setUint16(tiff + 12, 3, isLittleEndian);
+  segment.setUint32(tiff + 14, 1, isLittleEndian);
+  segment.setUint16(tiff + 18, orientation, isLittleEndian);
+
+  return new Uint8Array([...jpeg.subarray(0, 2), ...bytes, ...jpeg.subarray(2)]);
+}

@@ -45,6 +45,31 @@ describe('createRasterPdf', () => {
     await expect(inspectPdf(bytes, 'download-pass')).resolves.toHaveLength(1);
   });
 
+  it('頁面各自帶尺寸時，每頁用自己的尺寸與方向', async () => {
+    const [image] = createPages(1);
+    const pdf = await createRasterPdf([
+      { image: image!, width: 210, height: 297 },
+      { image: image!, width: 300, height: 200 },
+      { image: image!, width: 100, height: 150 },
+    ]);
+    const pages = await inspectPdf(toBytes(pdf));
+    const sizes = pages.map(page => [Math.round(page.viewWidth), Math.round(page.viewHeight)]);
+
+    expect(sizes).toEqual([
+      [595, 842],
+      [850, 567],
+      [283, 425],
+    ]);
+    expect(pages.every(page => page.images.length === 1)).toBe(true);
+  });
+
+  it('空缺的頁面影像會略過，不留下空白頁', async () => {
+    const [image] = createPages(1);
+    const pages = await inspectPdf(toBytes(await createRasterPdf([image, undefined, image, undefined])));
+
+    expect(pages.map(page => page.images.length)).toEqual([1, 1]);
+  });
+
   it('每處理完一頁就回報一次已完成的頁數', async () => {
     const onPage = vi.fn();
 

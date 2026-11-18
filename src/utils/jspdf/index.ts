@@ -3,10 +3,17 @@ import { sleep } from '../common';
 import type { PDF } from '@/types/pdf';
 import type { jsPDF, jsPDFOptions } from 'jspdf';
 
+/** 帶著自己尺寸（mm）的一頁影像 */
+export interface RasterPage {
+  image: Blob;
+  width: number;
+  height: number;
+}
+
 export interface RasterPdfOptions {
-  /** 頁面寬度（mm），預設 A4 */
+  /** 沒有自帶尺寸的頁面使用的寬度（mm），預設 A4 */
   width?: number;
-  /** 頁面高度（mm），預設 A4 */
+  /** 沒有自帶尺寸的頁面使用的高度（mm），預設 A4 */
   height?: number;
   /** 有值才加密輸出；使用者密碼與擁有者密碼相同，開放列印與複製 */
   password?: string;
@@ -47,23 +54,33 @@ export async function generatePDF(doc: PDF) {
 }
 
 /**
- * 把一組頁面影像組成 PDF：每張影像一頁、鋪滿整頁，所有頁面同一個尺寸。
+ * 把一組頁面影像組成 PDF：每張影像一頁、鋪滿整頁。
  *
  * jsPDF 體積不小，這裡用動態 import，只有舊格式文件或退回轉圖匯出時才會載入，不進初始 bundle。
  *
- * @param images 依頁碼順序排列的整頁 PNG；空缺的項目會略過
+ * @param images 依頁碼順序排列的整頁 PNG，可以各自帶尺寸；空缺的項目會略過
  * @param options 頁面尺寸、加密與進度回報
  */
 export async function createRasterPdf(
-  images: readonly (Blob | undefined)[],
+  images: readonly (Blob | RasterPage | undefined)[],
   { width, height, password, onPage }: RasterPdfOptions = {},
 ): Promise<jsPDF> {
   const { jsPDF: JsPDF } = await import('jspdf');
-  const pdf = new JsPDF(getOptions(width || A4_WIDTH, height || A4_HEIGHT, password));
+  const fallbackSize = { width: width || A4_WIDTH, height: height || A4_HEIGHT };
+  const pages = images.map(image => (image instanceof Blob ? { image, ...fallbackSize } : image));
+  const pdf = new JsPDF({ ...toPageFormat(pages.find(Boolean) ?? fallbackSize), ...toEncryption(password) });
+  let isFirstPage = true;
 
-  for (const [index, image] of images.entries()) {
-    if (image) {
-      await setPdf(pdf, image, index === images.length - 1);
+  for (const [index, page] of pages.entries()) {
+    if (page) {
+      if (!isFirstPage) {
+        const { format, orientation } = toPageFormat(page);
+
+        pdf.addPage(format, orientation);
+      }
+
+      await drawPage(pdf, page.image);
+      isFirstPage = false;
     }
 
     await onPage?.(index + 1);
@@ -72,36 +89,26 @@ export async function createRasterPdf(
   return pdf;
 }
 
-async function setPdf(pdf: jsPDF, blob: Blob, isLast: boolean) {
+async function drawPage(pdf: jsPDF, blob: Blob) {
   const { width, height } = pdf.internal.pageSize;
   const arrayBuffer = await blobToArrayBuffer(blob);
-  const uint8Array = new Uint8Array(arrayBuffer);
 
-  pdf.addImage(uint8Array, 'PNG', 0, 0, width, height, undefined, 'SLOW');
-
-  if (isLast) return;
-
-  pdf.addPage();
+  pdf.addImage(new Uint8Array(arrayBuffer), 'PNG', 0, 0, width, height, undefined, 'SLOW');
 }
 
-function getOptions(width: number, height: number, password?: string) {
-  const orientation = width > height ? 'l' : 'p';
-  const options: jsPDFOptions = {
-    orientation,
+function toPageFormat({ width, height }: Pick<RasterPage, 'width' | 'height'>) {
+  return {
+    orientation: width > height ? 'l' : 'p',
     unit: 'mm',
     format: [width, height],
     compress: true,
-  };
+  } satisfies jsPDFOptions;
+}
 
-  if (password) {
-    options.encryption = {
-      userPassword: password,
-      ownerPassword: password,
-      userPermissions: ['print', 'copy'],
-    };
-  }
+function toEncryption(password?: string): jsPDFOptions {
+  if (!password) return {};
 
-  return options;
+  return { encryption: { userPassword: password, ownerPassword: password, userPermissions: ['print', 'copy'] } };
 }
 
 export function blobToArrayBuffer(file: Blob): Promise<ArrayBuffer> {

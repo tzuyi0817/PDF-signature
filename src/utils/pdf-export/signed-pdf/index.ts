@@ -1,6 +1,7 @@
 import { degrees, PDFDocument, PDFInvalidObject, PDFRef } from '@cantoo/pdf-lib';
-import { toPlacement } from './placement';
-import type { PageOverlay, SignedPdfOptions } from './types';
+import { readJpegOrientation } from '../exif';
+import { toImagePageSize, toPlacement } from '../placement';
+import type { PageOverlay, SignedPdfOptions } from '../types';
 
 /**
  * 加密輸出的權限：沿用 jsPDF 路徑的列印與複製。
@@ -11,10 +12,6 @@ const DOWNLOAD_PERMISSIONS = {
   copying: true,
   contentAccessibility: true,
 } as const;
-
-/** A4 的短邊與長邊（pt）；圖片原始檔的頁面會縮放到剛好放進同方向的 A4 */
-const A4_SHORT_SIDE = 595.28;
-const A4_LONG_SIDE = 841.89;
 
 const PNG_SIGNATURE = [0x89, 0x50, 0x4e, 0x47];
 const JPEG_SIGNATURE = [0xff, 0xd8, 0xff];
@@ -36,7 +33,7 @@ const INFO_REF = /\/Info\s+(\d+)\s+(\d+)\s+R/;
  * @param options 匯出選項
  * @param options.sourcePassword 原始 PDF 受保護時，上傳時輸入的密碼
  * @param options.password 下載時設定的密碼，有值才加密
- * @throws 來源受保護而密碼缺漏或錯誤、來源格式無法辨識，或 overlay 的頁碼超出範圍時
+ * @throws 來源受保護而密碼缺漏或錯誤、來源格式無法辨識、JPEG 帶有 EXIF 旋轉，或 overlay 的頁碼超出範圍時
  */
 export async function createSignedPdf(
   source: Uint8Array,
@@ -89,6 +86,10 @@ async function loadSource(source: Uint8Array, sourcePassword?: string): Promise<
     return pdf;
   }
 
+  if (!isPng && readJpegOrientation(source) !== 1) {
+    throw new Error('JPEG with an EXIF orientation cannot be embedded as is');
+  }
+
   const pdf = await PDFDocument.create();
   const image = await (isPng ? pdf.embedPng(source) : pdf.embedJpg(source));
   const { width, height } = toImagePageSize(image.width, image.height);
@@ -96,19 +97,6 @@ async function loadSource(source: Uint8Array, sourcePassword?: string): Promise<
   pdf.addPage([width, height]).drawImage(image, { x: 0, y: 0, width, height });
 
   return pdf;
-}
-
-/**
- * 圖片原始檔的頁面尺寸（pt）：維持圖片長寬比，縮放到剛好放進同方向的 A4。
- * 橫向圖片對橫放的 A4、直向對直放的 A4，以 100% 列印時任何圖片都剛好在一張 A4 內。
- */
-function toImagePageSize(imageWidth: number, imageHeight: number) {
-  const isLandscape = imageWidth > imageHeight;
-  const maxWidth = isLandscape ? A4_LONG_SIDE : A4_SHORT_SIDE;
-  const maxHeight = isLandscape ? A4_SHORT_SIDE : A4_LONG_SIDE;
-  const scale = Math.min(maxWidth / imageWidth, maxHeight / imageHeight);
-
-  return { width: imageWidth * scale, height: imageHeight * scale };
 }
 
 function toRef(match: RegExpExecArray | null) {
