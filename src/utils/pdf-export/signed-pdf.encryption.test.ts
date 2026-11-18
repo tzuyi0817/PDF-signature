@@ -83,6 +83,17 @@ describe('createSignedPdf 的加密與輸出大小', () => {
     await expect(readPermissions(output)).resolves.toBeNull();
   });
 
+  it.each(ENCRYPTED_SOURCES)(
+    '%s 來源帶著上傳密碼匯出後，輸出不殘留原本的加密資訊，pdf-lib 不帶密碼也能再載入',
+    async variant => {
+      const protectedSource = await readEncryptedSource(variant);
+      const output = await createSignedPdf(protectedSource, OVERLAYS, { sourcePassword: SOURCE_PASSWORD });
+
+      expect(new TextDecoder('latin1').decode(output)).not.toContain('/Encrypt');
+      await expect(PDFDocument.load(output)).resolves.toBeInstanceOf(PDFDocument);
+    },
+  );
+
   it('來源受保護且下載時另設密碼，輸出只能用新密碼開啟', async () => {
     const protectedSource = await readEncryptedSource('aes-256');
     const output = await createSignedPdf(protectedSource, OVERLAYS, {

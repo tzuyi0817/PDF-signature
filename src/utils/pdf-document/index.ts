@@ -1,4 +1,4 @@
-import { exportSignedPdf, removePdfPassword, type PageOverlay } from './pdf-export';
+import { exportSignedPdf, removePdfPassword, type PageOverlay } from '../pdf-export';
 import type { PDF, StoredOverlay } from '@/types/pdf';
 import type { ExportOverlayOptions, FabricOverlay } from '@component-hook/pdf-canvas/vue';
 
@@ -67,6 +67,7 @@ export function toPageOverlays(overlays: readonly StoredOverlay[]): Promise<Page
  *
  * 既有的簽名畫在底圖裡，在簽名頁上看得到但動不了；儲存的原始檔與 overlay 都不會被改動。
  * 沒有 overlay 也沒有保留密碼時不需要底圖，回傳 `null`，直接用原始檔即可。
+ * 底圖一律是 PDF：原始檔是圖片時，匯出模組會把它包成單頁 PDF。
  *
  * @param pdf 保有原始檔的文件
  */
@@ -78,7 +79,7 @@ export async function createEditingBackground(pdf: PDF & { data: File }): Promis
   const [source, pageOverlays] = await Promise.all([data.arrayBuffer(), toPageOverlays(overlays)]);
   const output = await exportSignedPdf(new Uint8Array(source), pageOverlays, { sourcePassword: password });
 
-  return new File([output], data.name, { type: data.type });
+  return new File([output], data.name, { type: 'application/pdf' });
 }
 
 /** 簽名頁要顯示的檔案：重新編輯時是底圖，否則是原始檔 */

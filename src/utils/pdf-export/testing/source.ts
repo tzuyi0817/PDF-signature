@@ -49,3 +49,11 @@ export async function readEncryptedSource(variant: string): Promise<Uint8Array> 
   // eslint-disable-next-line security/detect-non-literal-fs-filename -- variant 只來自 ENCRYPTED_SOURCES 的固定清單
   return new Uint8Array(await readFile(fileURLToPath(url)));
 }
+
+/** fixtures 內的 JPEG 圖片來源（60×40，以 sips 產生；Node 沒有 canvas 可以現場編碼） */
+export async function readJpegSource(): Promise<Uint8Array> {
+  const url = new URL('../fixtures/source-image.jpg', import.meta.url);
+
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- 路徑是固定的 fixture
+  return new Uint8Array(await readFile(fileURLToPath(url)));
+}

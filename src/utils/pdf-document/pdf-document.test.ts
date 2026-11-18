@@ -1,4 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
+import { inspectPdf } from '../pdf-export/testing/inspect';
+import { createPng } from '../pdf-export/testing/png';
+import { createSourcePdf, PAGE_TEXTS, readEncryptedSource, SOURCE_PASSWORD } from '../pdf-export/testing/source';
 import {
   collectOverlays,
   createEditingBackground,
@@ -7,10 +10,7 @@ import {
   toSigningFile,
   toStoredDocument,
   unlockOriginal,
-} from './pdf-document';
-import { inspectPdf } from './pdf-export/testing/inspect';
-import { createPng } from './pdf-export/testing/png';
-import { createSourcePdf, PAGE_TEXTS, readEncryptedSource, SOURCE_PASSWORD } from './pdf-export/testing/source';
+} from '.';
 import type { PDF, StoredOverlay } from '@/types/pdf';
 
 function toDocument(bytes: Uint8Array): PDF & { data: File } {
@@ -133,6 +133,25 @@ describe('createEditingBackground', () => {
     const background = await createEditingBackground(document);
 
     await expect(inspectPdf(await toBytes(requireFile(background)))).resolves.toHaveLength(PAGE_TEXTS.length);
+  });
+});
+
+describe('createEditingBackground：原始檔是圖片', () => {
+  it('底圖是 PDF 檔，簽名頁才會用 PDF 的方式載入它', async () => {
+    const data = new File([createPng(90, 120)], 'photo.png', { type: 'image/png' });
+    const document = {
+      PDFId: 'doc-2',
+      name: 'photo',
+      updateDate: 1,
+      pages: 1,
+      data,
+      overlays: [createStoredOverlay(1)],
+    };
+    const background = requireFile(await createEditingBackground(document));
+    const [page] = await inspectPdf(await toBytes(background));
+
+    expect(background.type).toBe('application/pdf');
+    expect(page?.images).toHaveLength(2);
   });
 });
 
