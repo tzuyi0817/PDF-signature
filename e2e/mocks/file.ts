@@ -18,6 +18,13 @@ interface JspdfModule {
   createRasterPdf: (pages: readonly RasterPage[]) => Promise<{ output: (type: 'blob') => Blob }>;
 }
 
+/** 完成頁要預覽的文件種類 */
+export type MockCurrentKind = 'signed' | 'legacy' | 'image' | 'broken';
+
+export const MOCK_IMAGE_SOURCE_WIDTH = 200;
+/** 預覽用文件的 overlay 位置（頁面寬高的 0–1 比例） */
+export const MOCK_OVERLAY_BOX = { x: 0.1, y: 0.2, width: 0.3, height: 0.1 };
+
 export const MOCK_FILES: [PDF, PDF] = [
   {
     data: null,
@@ -120,6 +127,54 @@ export async function createMockSignedFile(page: Page, file: PDF = MOCK_SIGNED_F
       pdf: [...bytes],
       png: [...createPng(120, 40)],
       thumbnailPng: [...createPng(MOCK_THUMBNAIL_WIDTH, 40)],
+    },
+  );
+}
+
+/**
+ * 把一份文件設成目前文件（寫進 IndexedDB），之後前往完成頁就會預覽它。
+ *
+ * - `signed`：7 頁帶文字的原始 PDF，第一頁有一層 overlay
+ * - `legacy`：此變更前儲存的文件，只有整頁 PNG
+ * - `image`：原始檔是 PNG 圖片，有一層 overlay
+ * - `broken`：原始檔已損壞，只剩縮圖可顯示
+ */
+export async function setMockCurrentPDF(page: Page, kind: MockCurrentKind) {
+  const pdf = kind === 'signed' ? await createSourcePdf() : new Uint8Array([1, 2, 3]);
+
+  await page.addScriptTag({ content: String(importModule) });
+
+  return page.evaluate(
+    async ({ mockKind, mockFile, box, bytes }) => {
+      const { usePdfStore } = await importModule<PdfStore>('/src/stores');
+      const toBlob = (png: number[]) => new Blob([new Uint8Array(png)], { type: 'image/png' });
+      const overlays = [{ page: 1, ...box, image: toBlob(bytes.overlay) }];
+      const thumbnail = toBlob(bytes.thumbnail);
+      const original = new File([new Uint8Array(bytes.pdf)], 'source.pdf', { type: 'application/pdf' });
+      const documents = {
+        signed: { data: original, overlays, thumbnail },
+        legacy: { data: null, canvas: Array.from({ length: mockFile.pages }, () => toBlob(bytes.pageImage)) },
+        image: {
+          data: new File([toBlob(bytes.imageSource)], 'source.png', { type: 'image/png' }),
+          overlays,
+          thumbnail,
+        },
+        broken: { data: original, overlays, thumbnail },
+      };
+
+      await usePdfStore().setCurrentPDF({ ...mockFile, ...documents[mockKind] });
+    },
+    {
+      mockKind: kind,
+      mockFile: toMeta(kind === 'legacy' ? MOCK_FILES[0] : MOCK_SIGNED_FILE),
+      box: MOCK_OVERLAY_BOX,
+      bytes: {
+        pdf: [...pdf],
+        overlay: [...createPng(120, 40)],
+        thumbnail: [...createPng(MOCK_THUMBNAIL_WIDTH, 40)],
+        pageImage: [...createPng(MOCK_PAGE_IMAGE_WIDTH, 80)],
+        imageSource: [...createPng(MOCK_IMAGE_SOURCE_WIDTH, 100)],
+      },
     },
   );
 }

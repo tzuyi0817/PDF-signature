@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { computed, defineAsyncComponent, onBeforeMount, onBeforeUnmount, ref } from 'vue';
+import { computed, defineAsyncComponent, onBeforeMount, onBeforeUnmount, ref, useTemplateRef } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { BlobImage, showToast, SvgIcon, Version } from '@/components/common';
+import { showToast, SvgIcon, Version } from '@/components/common';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { useConfigStore, usePdfStore } from '@/stores';
+import CompletePreview from './CompletePreview.vue';
 
 type WarnType = 'archive' | 'trash';
 
 const warnType = ref<WarnType>('archive');
 const iShowEncryptPopup = ref(false);
+const previewRoot = useTemplateRef('previewRoot');
 const { currentPDF } = storeToRefs(usePdfStore());
 const { t } = useI18n();
 const { isShowWarnPopup, Popup, goPage, toggleWarnPopup } = useWarnPopup();
@@ -83,18 +85,14 @@ onBeforeUnmount(() => {
       </li>
     </ul>
 
-    <div class="complete-content-file">
-      <div class="flex h-fit w-fit origin-top-left scale-150 flex-col gap-5 px-3 py-5 lg:scale-100 lg:px-14 lg:py-10">
-        <template
-          v-for="(canvas, index) in currentPDF.canvas"
-          :key="index"
-        >
-          <blob-image
-            :blob="canvas"
-            alt="PDF document"
-          />
-        </template>
-      </div>
+    <div
+      ref="previewRoot"
+      class="complete-content-file"
+    >
+      <complete-preview
+        :file="currentPDF"
+        :scroll-root="previewRoot"
+      />
     </div>
 
     <button
