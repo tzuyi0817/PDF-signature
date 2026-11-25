@@ -13,7 +13,7 @@ import {
 } from '.';
 import type { PDF, StoredOverlay } from '@/types/pdf';
 
-function toDocument(bytes: Uint8Array): PDF & { data: File } {
+function toDocument(bytes: BlobPart): PDF & { data: File } {
   const data = new File([bytes], 'contract.pdf', { type: 'application/pdf' });
 
   return { PDFId: 'doc-1', name: 'contract', updateDate: 1, pages: PAGE_TEXTS.length, data };

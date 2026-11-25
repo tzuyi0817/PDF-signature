@@ -1,7 +1,7 @@
 import { degrees, PDFDocument, PDFInvalidObject, PDFRef } from '@cantoo/pdf-lib';
 import { readJpegOrientation } from '../exif';
 import { toImagePageSize, toPlacement } from '../placement';
-import type { PageOverlay, SignedPdfOptions } from '../types';
+import type { PageOverlay, PdfBytes, SignedPdfOptions } from '../types';
 
 /**
  * 加密輸出的權限：沿用 jsPDF 路徑的列印與複製。
@@ -39,7 +39,7 @@ export async function createSignedPdf(
   source: Uint8Array,
   overlays: readonly PageOverlay[],
   { sourcePassword, password }: SignedPdfOptions = {},
-): Promise<Uint8Array> {
+): Promise<PdfBytes> {
   const pdf = await loadSource(source, sourcePassword);
   const pages = pdf.getPages();
 
@@ -62,7 +62,17 @@ export async function createSignedPdf(
     });
   }
 
-  return pdf.save();
+  return savePdf(pdf);
+}
+
+/**
+ * 存檔並把型別收斂成 `PdfBytes`。
+ * pdf-lib 的 `save()` 配置的是一般的 ArrayBuffer，但型別宣告只寫 `Uint8Array`，Blob／File 不收。
+ */
+async function savePdf(pdf: PDFDocument): Promise<PdfBytes> {
+  const output = await pdf.save();
+
+  return output as PdfBytes;
 }
 
 function startsWith(bytes: Uint8Array, signature: readonly number[]) {
@@ -147,12 +157,12 @@ function dropStaleEncryption({ context }: PDFDocument) {
  * @param password 使用者上傳時輸入的密碼
  * @throws 密碼錯誤、pdf-lib 無法解析，或解除後的檔案無法再載入時
  */
-export async function removePdfPassword(source: Uint8Array, password: string): Promise<Uint8Array> {
+export async function removePdfPassword(source: Uint8Array, password: string): Promise<PdfBytes> {
   const pdf = await PDFDocument.load(source, { password, updateMetadata: false });
 
   dropStaleEncryption(pdf);
 
-  const output = await pdf.save();
+  const output = await savePdf(pdf);
 
   await PDFDocument.load(output, { updateMetadata: false });
 

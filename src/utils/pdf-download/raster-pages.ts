@@ -28,7 +28,7 @@ export function renderSignedPages(
 }
 
 async function renderPdf(file: File, overlays: readonly StoredOverlay[], password?: string): Promise<RasterPage[]> {
-  const worker = new PDFWorker({ port: new PdfjsWorker() });
+  const worker: PDFWorker = PDFWorker.fromPort({ port: new PdfjsWorker() });
   const loadingTask = getDocument({ data: await file.arrayBuffer(), password, worker });
 
   try {

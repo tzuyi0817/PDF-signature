@@ -1,4 +1,4 @@
-import type { PageOverlay, SignedPdfOptions } from './types';
+import type { PageOverlay, PdfBytes, SignedPdfOptions } from './types';
 
 export type { Box, PageOverlay, Placement, SignedPdfOptions } from './types';
 
@@ -12,14 +12,14 @@ export async function exportSignedPdf(
   source: Uint8Array,
   overlays: readonly PageOverlay[],
   options?: SignedPdfOptions,
-): Promise<Uint8Array> {
+): Promise<PdfBytes> {
   const { createSignedPdf } = await import('./signed-pdf');
 
   return createSignedPdf(source, overlays, options);
 }
 
 /** 解除 PDF 的密碼保護。與 `exportSignedPdf` 一樣動態載入，只有上傳受保護的檔案時才會抓 pdf-lib。 */
-export async function removePdfPassword(source: Uint8Array, password: string): Promise<Uint8Array> {
+export async function removePdfPassword(source: Uint8Array, password: string): Promise<PdfBytes> {
   const module = await import('./signed-pdf');
 
   return module.removePdfPassword(source, password);

@@ -16,7 +16,7 @@ function createChunk(type: string, data: Uint8Array): Buffer {
 }
 
 /** 產生一張半透明藍色的 RGBA PNG，測試時當作簽名影像（Node 沒有 canvas） */
-export function createPng(width: number, height: number): Uint8Array {
+export function createPng(width: number, height: number): Uint8Array<ArrayBuffer> {
   const rowSize = width * 4 + 1;
   const raw = Buffer.alloc(rowSize * height);
 

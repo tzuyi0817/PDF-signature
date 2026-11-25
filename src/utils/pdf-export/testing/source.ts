@@ -27,7 +27,7 @@ export const PAGE_TEXTS = PAGE_SPECS.map((spec, index) => `Searchable text on pa
 export const SOURCE_PASSWORD = 'upload-pass';
 export const ENCRYPTED_SOURCES = ['rc4-128', 'aes-128', 'aes-256'];
 
-export async function createSourcePdf(): Promise<Uint8Array> {
+export async function createSourcePdf(): Promise<Uint8Array<ArrayBuffer>> {
   const pdf = await PDFDocument.create();
   const font = await pdf.embedFont(StandardFonts.Helvetica);
 
@@ -40,10 +40,10 @@ export async function createSourcePdf(): Promise<Uint8Array> {
     page.drawText(PAGE_TEXTS[index] ?? '', { x: 80, y: 300, size: 14, font });
   }
 
-  return pdf.save();
+  return new Uint8Array(await pdf.save());
 }
 
-export async function readEncryptedSource(variant: string): Promise<Uint8Array> {
+export async function readEncryptedSource(variant: string): Promise<Uint8Array<ArrayBuffer>> {
   const url = new URL(`../fixtures/source-${variant}.pdf`, import.meta.url);
 
   // eslint-disable-next-line security/detect-non-literal-fs-filename -- variant 只來自 ENCRYPTED_SOURCES 的固定清單
@@ -51,7 +51,7 @@ export async function readEncryptedSource(variant: string): Promise<Uint8Array> 
 }
 
 /** fixtures 內的 JPEG 圖片來源（60×40，以 sips 產生；Node 沒有 canvas 可以現場編碼） */
-export async function readJpegSource(): Promise<Uint8Array> {
+export async function readJpegSource(): Promise<Uint8Array<ArrayBuffer>> {
   const url = new URL('../fixtures/source-image.jpg', import.meta.url);
 
   // eslint-disable-next-line security/detect-non-literal-fs-filename -- 路徑是固定的 fixture
@@ -59,7 +59,11 @@ export async function readJpegSource(): Promise<Uint8Array> {
 }
 
 /** 在 JPEG 開頭插入一段只帶方向標籤的 EXIF，模擬手機直拍的照片 */
-export function withExifOrientation(jpeg: Uint8Array, orientation: number, isLittleEndian = false): Uint8Array {
+export function withExifOrientation(
+  jpeg: Uint8Array,
+  orientation: number,
+  isLittleEndian = false,
+): Uint8Array<ArrayBuffer> {
   const bytes = new Uint8Array(36);
   const segment = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
   const tiff = 10;

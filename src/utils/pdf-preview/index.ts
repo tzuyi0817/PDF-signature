@@ -38,7 +38,7 @@ export interface PreviewDocument {
  * @throws 原始檔無法開啟時
  */
 export async function openPreview(file: File, password?: string): Promise<PreviewDocument> {
-  const worker = new PDFWorker({ port: new PdfjsWorker() });
+  const worker: PDFWorker = PDFWorker.fromPort({ port: new PdfjsWorker() });
   const loadingTask = getDocument({ data: await file.arrayBuffer(), password, worker });
 
   async function destroy() {

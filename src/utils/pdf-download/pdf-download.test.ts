@@ -23,7 +23,7 @@ function createPageImage() {
   return new Blob([createPng(60, 80)], { type: 'image/png' });
 }
 
-function toOriginal(bytes: Uint8Array | string): File {
+function toOriginal(bytes: BlobPart): File {
   return new File([bytes], 'contract.pdf', { type: 'application/pdf' });
 }
 

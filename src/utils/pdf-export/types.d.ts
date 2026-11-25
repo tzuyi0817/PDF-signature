@@ -1,3 +1,6 @@
+/** PDF 位元組；明確標成一般的 ArrayBuffer（不是 SharedArrayBuffer），才能直接交給 Blob／File */
+export type PdfBytes = Uint8Array<ArrayBuffer>;
+
 /** 矩形：位置與尺寸 */
 export interface Box {
   x: number;
