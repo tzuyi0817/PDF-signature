@@ -3,7 +3,8 @@ import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { PasswordInput, Popup, showToast } from '@/components/common';
 import { useConfigStore } from '@/stores';
-import { downloadPDF } from '@/utils/jspdf';
+import { createDownloadFile } from '@/utils/pdf-download';
+import { saveFile } from '@/utils/pdf-download/save-file';
 import type { PDF } from '@/types/pdf';
 
 interface Props {
@@ -21,7 +22,7 @@ const emit = defineEmits<Emits>();
 const password = ref('');
 const confirmPassword = ref('');
 const { t } = useI18n();
-const { toggleLoading, setLoadingCompleteness } = useConfigStore();
+const { toggleLoading } = useConfigStore();
 
 function download(isEncrypt: boolean) {
   if (isEncrypt && (!password.value || !confirmPassword.value)) {
@@ -35,11 +36,16 @@ function download(isEncrypt: boolean) {
   emit('closeEncryptPopup');
   requestAnimationFrame(async () => {
     if (!file) return;
-    const userPassword = isEncrypt ? password.value : '';
 
-    toggleLoading({ isShow: true, title: 'download', content: 'file_downloading', isProcess: true });
-    await downloadPDF(file, setLoadingCompleteness, userPassword);
-    toggleLoading({ isShow: false });
+    toggleLoading({ isShow: true, title: 'download', content: 'file_downloading' });
+
+    try {
+      saveFile(await createDownloadFile(file, isEncrypt ? password.value : undefined));
+    } catch {
+      showToast({ message: t('prompt.file_download_failed'), type: 'error' });
+    } finally {
+      toggleLoading({ isShow: false });
+    }
   });
 }
 </script>

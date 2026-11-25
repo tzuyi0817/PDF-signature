@@ -7,8 +7,8 @@ import { SvgList } from '@/components/svg';
 import { useDragMove } from '@/hooks/use-drag-move';
 import { useConfigStore, usePdfStore } from '@/stores';
 import { sleep, transformTimestamp } from '@/utils/common';
-import { generatePDF } from '@/utils/jspdf';
 import { createEditingBackground, hasOriginalPDF } from '@/utils/pdf-document';
+import { createDownloadFile } from '@/utils/pdf-download';
 import type { MenuTab } from '@/types/menu';
 import type { PDF } from '@/types/pdf';
 
@@ -84,8 +84,6 @@ async function editFile() {
   try {
     const [document] = await Promise.all([hasOriginalPDF(file) ? reopenSigned(file) : reopenLegacy(), sleep(300)]);
 
-    if (!document) return;
-
     await setCurrentPDF(document);
     router.push({ name: 'signature' });
   } finally {
@@ -101,12 +99,8 @@ async function reopenSigned(document: PDF & { data: File }): Promise<PDF> {
 }
 
 /** 此變更前儲存的文件：沒有原始檔，以整頁 PNG 重建一份 PDF 當作原始檔 */
-async function reopenLegacy(): Promise<PDF | undefined> {
-  const pdf = await generatePDF(file);
-
-  if (!pdf) return;
-
-  const content = await loadFile(pdf);
+async function reopenLegacy(): Promise<PDF> {
+  const content = await loadFile(await createDownloadFile(file));
 
   return { ...file, ...content, PDFId: file.PDFId, canvas: [], isUpdate: true };
 }

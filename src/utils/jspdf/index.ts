@@ -1,6 +1,4 @@
 import { A4_HEIGHT, A4_WIDTH } from '@/constants/common';
-import { sleep } from '../common';
-import type { PDF } from '@/types/pdf';
 import type { jsPDF, jsPDFOptions } from 'jspdf';
 
 /** 帶著自己尺寸（mm）的一頁影像 */
@@ -17,40 +15,6 @@ export interface RasterPdfOptions {
   height?: number;
   /** 有值才加密輸出；使用者密碼與擁有者密碼相同，開放列印與複製 */
   password?: string;
-  /** 每處理完一頁呼叫一次，參數是已完成的頁數；回傳 Promise 時會等它結束再處理下一頁 */
-  onPage?: (done: number) => unknown;
-}
-
-/** 下載舊格式文件（只有整頁 PNG、沒有原始檔）。 */
-export async function downloadPDF(doc: PDF, setCompleteness?: (value: number) => void, password?: string) {
-  const { name, canvas, width, height } = doc;
-
-  if (!canvas) return;
-
-  const pages = canvas.length;
-  const pdf = await createRasterPdf(canvas, {
-    width,
-    height,
-    password,
-    async onPage(done) {
-      setCompleteness?.((done / pages) * 100);
-      await sleep(50);
-    },
-  });
-
-  pdf.save(`${name}.pdf`);
-}
-
-/** 把舊格式文件的整頁 PNG 組成 PDF 檔。 */
-export async function generatePDF(doc: PDF) {
-  const { canvas, name, width, height } = doc;
-
-  if (!canvas) return;
-
-  const pdf = await createRasterPdf(canvas, { width, height });
-  const blob = pdf.output('blob');
-
-  return new File([blob], `${name}.pdf`, { type: blob.type });
 }
 
 /**
@@ -59,11 +23,11 @@ export async function generatePDF(doc: PDF) {
  * jsPDF 體積不小，這裡用動態 import，只有舊格式文件或退回轉圖匯出時才會載入，不進初始 bundle。
  *
  * @param images 依頁碼順序排列的整頁 PNG，可以各自帶尺寸；空缺的項目會略過
- * @param options 頁面尺寸、加密與進度回報
+ * @param options 頁面尺寸與加密
  */
 export async function createRasterPdf(
   images: readonly (Blob | RasterPage | undefined)[],
-  { width, height, password, onPage }: RasterPdfOptions = {},
+  { width, height, password }: RasterPdfOptions = {},
 ): Promise<jsPDF> {
   const { jsPDF: JsPDF } = await import('jspdf');
   const fallbackSize = { width: width || A4_WIDTH, height: height || A4_HEIGHT };
@@ -71,19 +35,17 @@ export async function createRasterPdf(
   const pdf = new JsPDF({ ...toPageFormat(pages.find(Boolean) ?? fallbackSize), ...toEncryption(password) });
   let isFirstPage = true;
 
-  for (const [index, page] of pages.entries()) {
-    if (page) {
-      if (!isFirstPage) {
-        const { format, orientation } = toPageFormat(page);
+  for (const page of pages) {
+    if (!page) continue;
 
-        pdf.addPage(format, orientation);
-      }
+    if (!isFirstPage) {
+      const { format, orientation } = toPageFormat(page);
 
-      await drawPage(pdf, page.image);
-      isFirstPage = false;
+      pdf.addPage(format, orientation);
     }
 
-    await onPage?.(index + 1);
+    await drawPage(pdf, page.image);
+    isFirstPage = false;
   }
 
   return pdf;

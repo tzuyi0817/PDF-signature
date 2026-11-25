@@ -1,8 +1,7 @@
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { inspectPdf } from '../pdf-export/testing/inspect';
 import { createPng } from '../pdf-export/testing/png';
-import { createRasterPdf, generatePDF } from '.';
-import type { PDF } from '@/types/pdf';
+import { createRasterPdf } from '.';
 
 /** A4 的寬高（pt），對應預設的 210 × 297mm */
 const A4_POINTS = { width: 595.28, height: 841.89 };
@@ -68,29 +67,5 @@ describe('createRasterPdf', () => {
     const pages = await inspectPdf(toBytes(await createRasterPdf([image, undefined, image, undefined])));
 
     expect(pages.map(page => page.images.length)).toEqual([1, 1]);
-  });
-
-  it('每處理完一頁就回報一次已完成的頁數', async () => {
-    const onPage = vi.fn();
-
-    await createRasterPdf(createPages(3), { onPage });
-
-    expect(onPage.mock.calls).toEqual([[1], [2], [3]]);
-  });
-});
-
-describe('generatePDF', () => {
-  const document: PDF = { PDFId: 'legacy-1', name: 'contract', updateDate: 1, pages: 2, data: null };
-
-  it('把舊格式文件的整頁 PNG 組成以文件名稱命名的 PDF 檔', async () => {
-    const file = await generatePDF({ ...document, canvas: createPages(2) });
-
-    expect(file?.name).toBe('contract.pdf');
-    expect(file?.type).toBe('application/pdf');
-    await expect(inspectPdf(new Uint8Array((await file?.arrayBuffer()) ?? []))).resolves.toHaveLength(2);
-  });
-
-  it('文件沒有整頁 PNG 時不產生檔案', async () => {
-    await expect(generatePDF(document)).resolves.toBeUndefined();
   });
 });
