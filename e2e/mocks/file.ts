@@ -64,6 +64,10 @@ export const MOCK_BROKEN_FILE: PDF = {
   updateDate: 1722503122222,
 };
 
+/** 整頁 PNG（舊文件）與第一頁縮圖（新文件）的像素寬，測試用來分辨列表縮圖讀的是哪一張 */
+export const MOCK_PAGE_IMAGE_WIDTH = 60;
+export const MOCK_THUMBNAIL_WIDTH = 30;
+
 /** 只留可以跨 `page.evaluate` 傳遞的欄位 */
 function toMeta({ PDFId, name, pages, updateDate, folderId }: PDF) {
   return { PDFId, name, pages, updateDate, folderId };
@@ -87,7 +91,7 @@ export async function createMockFiles(page: Page, files: PDF[] = MOCK_FILES) {
         await addPDF({ ...file, data: null, canvas });
       }
     },
-    { mockFiles: files.map(toMeta), png: [...createPng(60, 80)] },
+    { mockFiles: files.map(toMeta), png: [...createPng(MOCK_PAGE_IMAGE_WIDTH, 80)] },
   );
 }
 
@@ -98,18 +102,25 @@ export async function createMockSignedFile(page: Page, file: PDF = MOCK_SIGNED_F
   await page.addScriptTag({ content: String(importModule) });
 
   return page.evaluate(
-    async ({ mockFile, pdf, png }) => {
+    async ({ mockFile, pdf, png, thumbnailPng }) => {
       const { usePdfStore } = await importModule<PdfStore>('/src/stores');
       const data = new File([new Uint8Array(pdf)], `${mockFile.name}.pdf`, { type: 'application/pdf' });
       const image = new Blob([new Uint8Array(png)], { type: 'image/png' });
+      const thumbnail = new Blob([new Uint8Array(thumbnailPng)], { type: 'image/png' });
 
       await usePdfStore().addPDF({
         ...mockFile,
         data,
         overlays: [{ page: 1, x: 0.1, y: 0.2, width: 0.3, height: 0.1, image }],
+        thumbnail,
       });
     },
-    { mockFile: toMeta(file), pdf: [...bytes], png: [...createPng(120, 40)] },
+    {
+      mockFile: toMeta(file),
+      pdf: [...bytes],
+      png: [...createPng(120, 40)],
+      thumbnailPng: [...createPng(MOCK_THUMBNAIL_WIDTH, 40)],
+    },
   );
 }
 

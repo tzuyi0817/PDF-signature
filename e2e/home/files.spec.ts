@@ -1,6 +1,13 @@
 import { expect, test } from '@playwright/test';
 import { transformTimestamp } from '@/utils/common';
-import { createMockFiles, MOCK_FILES } from '../mocks/file';
+import {
+  createMockFiles,
+  createMockSignedFile,
+  MOCK_FILES,
+  MOCK_PAGE_IMAGE_WIDTH,
+  MOCK_SIGNED_FILE,
+  MOCK_THUMBNAIL_WIDTH,
+} from '../mocks/file';
 
 test.describe('files', () => {
   test.beforeEach(async ({ page }) => {
@@ -44,6 +51,22 @@ test.describe('files', () => {
         await expect(page.getByText(file.name)).toBeInViewport();
         await expect(page.getByText(transformTimestamp(file.updateDate))).toBeInViewport();
       }
+    });
+
+    test('thumbnail of a document saved before the storage change shows its first stored page', async ({ page }) => {
+      const legacyFile = page.getByRole('listitem').filter({ hasText: MOCK_FILES[0].name });
+      const thumbnail = legacyFile.getByRole('img', { name: 'file', exact: true, includeHidden: true });
+
+      await expect(thumbnail).toHaveJSProperty('naturalWidth', MOCK_PAGE_IMAGE_WIDTH);
+    });
+
+    test('thumbnail of a document with its original shows the stored first-page thumbnail', async ({ page }) => {
+      await createMockSignedFile(page);
+
+      const signedFile = page.getByRole('listitem').filter({ hasText: MOCK_SIGNED_FILE.name });
+      const thumbnail = signedFile.getByRole('img', { name: 'file', exact: true, includeHidden: true });
+
+      await expect(thumbnail).toHaveJSProperty('naturalWidth', MOCK_THUMBNAIL_WIDTH);
     });
 
     test('search files', async ({ page }) => {

@@ -42,6 +42,8 @@ const { isDragSourceItem, endDragMove } = useDragMove();
 
 const localTime = computed(() => transformTimestamp(file.updateDate));
 
+const thumbnail = computed(() => file.thumbnail ?? file.canvas?.at(0));
+
 function onDragStart(event: DragEvent) {
   emit('startDrag', file, event);
 }
@@ -212,7 +214,7 @@ watch(
 
     <div :class="['flex h-37.5 w-1/3 items-center justify-center', { 'lg:hidden': isListStatus }]">
       <blob-image
-        :blob="file.canvas?.at(0)"
+        :blob="thumbnail"
         class="border-gray-20 w-full border-2"
         alt="file"
         draggable="false"
