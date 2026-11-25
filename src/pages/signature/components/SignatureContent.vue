@@ -4,7 +4,7 @@ import { computed, defineAsyncComponent, ref, useTemplateRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { showToast, StepBtn, Version } from '@/components/common';
 import { DRAG_MOVE_STEP } from '@/constants/common';
-import { useLoadCanvas } from '@/hooks/use-load-canvas';
+import { useLoadCanvas, type CanvasItemInstance } from '@/hooks/use-load-canvas';
 import { usePointerFabric } from '@/hooks/use-pointer-fabric';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { onAfterRouteLeave } from '@/router/events';
@@ -37,9 +37,9 @@ const configStore = useConfigStore();
 const { t } = useI18n();
 const { isShowWarnPopup, Popup, goBack, goPage, toggleWarnPopup } = useWarnPopup();
 const { handlePointerDown, handlePointerMove, handlePointerUp } = usePointerFabric(fileContainerRef);
+const signatureCanvasItems = useTemplateRef<CanvasItemInstance[]>('signatureCanvasItems');
 const {
   currentPage,
-  canvasItems: signatureCanvasItems,
   loadedState,
   isCompleted,
   canvasRect,
@@ -47,7 +47,7 @@ const {
   currentCanvasItem,
   handleCanvasLoaded,
   handleCanvasReload,
-} = useLoadCanvas(currentPDF, true);
+} = useLoadCanvas({ currentPDF, canvasItems: signatureCanvasItems, isObserveResize: true });
 
 const signingFile = computed(() => toSigningFile(currentPDF.value));
 const canvasWidth = computed(() => `${canvasRect.value.width * fileZoom.value * canvasScale.value}px`);

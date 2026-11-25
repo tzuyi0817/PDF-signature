@@ -5,7 +5,7 @@ import { useFolderStore } from '../folder';
 import type { MenuTab } from '@/types/menu';
 import type { PDF, SignResult } from '@/types/pdf';
 
-interface PDFStore {
+export interface PDFStore {
   currentPDF: PDF;
   PDFList: PDF[];
   archiveList: PDF[];

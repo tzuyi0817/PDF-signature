@@ -9,7 +9,7 @@
     "dev:e2e": "vite --port 8081",
     "build": "vite build",
     "lint": "eslint --fix .",
-    "typecheck": "vue-tsc --noEmit",
+    "typecheck": "vue-tsc --build --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",

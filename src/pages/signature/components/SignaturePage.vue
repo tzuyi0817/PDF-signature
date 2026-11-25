@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { computed, defineAsyncComponent, onBeforeUnmount, ref } from 'vue';
-import { useLoadCanvas } from '@/hooks/use-load-canvas';
+import { computed, defineAsyncComponent, onBeforeUnmount, ref, useTemplateRef } from 'vue';
+import { useLoadCanvas, type CanvasItemInstance } from '@/hooks/use-load-canvas';
 import { useConfigStore, usePdfStore } from '@/stores';
 import { isDesktop, monitorDevicePixelRatio } from '@/utils/common';
 import { toSigningFile } from '@/utils/pdf-document';
@@ -13,7 +13,8 @@ const currentTool = defineModel<SignatureTool | ''>('currentTool');
 const devicePixelRatio = ref(window.devicePixelRatio);
 const { currentPDF } = storeToRefs(usePdfStore());
 const configStore = useConfigStore();
-const { currentPage, loadedState, canvasItems, handleCanvasLoaded } = useLoadCanvas(currentPDF);
+const canvasItems = useTemplateRef<CanvasItemInstance[]>('canvasItems');
+const { currentPage, loadedState, handleCanvasLoaded } = useLoadCanvas({ currentPDF, canvasItems });
 const SignaturePageItem = defineAsyncComponent(() => import('@component-hook/pdf-canvas/vue'));
 const stopMonitorDevicePixelRatio = monitorDevicePixelRatio(changeDevicePixelRatio);
 
