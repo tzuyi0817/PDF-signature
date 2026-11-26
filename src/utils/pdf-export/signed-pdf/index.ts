@@ -72,7 +72,15 @@ export async function createSignedPdf(
 async function savePdf(pdf: PDFDocument): Promise<PdfBytes> {
   const output = await pdf.save();
 
-  return output as PdfBytes;
+  if (!isPdfBytes(output)) {
+    throw new TypeError('PDF output is not backed by an ArrayBuffer');
+  }
+
+  return output;
+}
+
+function isPdfBytes(bytes: Uint8Array): bytes is PdfBytes {
+  return bytes.buffer instanceof ArrayBuffer;
 }
 
 function startsWith(bytes: Uint8Array, signature: readonly number[]) {

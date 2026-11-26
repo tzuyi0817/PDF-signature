@@ -6,6 +6,7 @@ import {
   MOCK_PAGE_IMAGE_WIDTH,
   MOCK_THUMBNAIL_WIDTH,
   setMockCurrentPDF,
+  STORED_BLOB,
   type MockCurrentKind,
 } from '../mocks/file';
 
@@ -48,7 +49,7 @@ function expectOverlayInPlace(measured: typeof MOCK_OVERLAY_BOX) {
   }
 }
 
-test.describe('complete page preview', () => {
+test.describe('complete page preview', STORED_BLOB, () => {
   test.describe('document that keeps its original PDF', () => {
     test.beforeEach(async ({ page, browserName }) => {
       // 預覽會在頁面內啟動 pdf.js worker，觸發 files.spec.ts 記錄的 Playwright Firefox regression（microsoft/playwright#41742）

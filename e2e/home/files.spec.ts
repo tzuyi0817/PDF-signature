@@ -7,6 +7,7 @@ import {
   MOCK_PAGE_IMAGE_WIDTH,
   MOCK_SIGNED_FILE,
   MOCK_THUMBNAIL_WIDTH,
+  STORED_BLOB,
 } from '../mocks/file';
 
 test.describe('files', () => {
@@ -53,21 +54,29 @@ test.describe('files', () => {
       }
     });
 
-    test('thumbnail of a document saved before the storage change shows its first stored page', async ({ page }) => {
-      const legacyFile = page.getByRole('listitem').filter({ hasText: MOCK_FILES[0].name });
-      const thumbnail = legacyFile.getByRole('img', { name: 'file', exact: true, includeHidden: true });
+    test(
+      'thumbnail of a document saved before the storage change shows its first stored page',
+      STORED_BLOB,
+      async ({ page }) => {
+        const legacyFile = page.getByRole('listitem').filter({ hasText: MOCK_FILES[0].name });
+        const thumbnail = legacyFile.getByRole('img', { name: 'file', exact: true, includeHidden: true });
 
-      await expect(thumbnail).toHaveJSProperty('naturalWidth', MOCK_PAGE_IMAGE_WIDTH);
-    });
+        await expect(thumbnail).toHaveJSProperty('naturalWidth', MOCK_PAGE_IMAGE_WIDTH);
+      },
+    );
 
-    test('thumbnail of a document with its original shows the stored first-page thumbnail', async ({ page }) => {
-      await createMockSignedFile(page);
+    test(
+      'thumbnail of a document with its original shows the stored first-page thumbnail',
+      STORED_BLOB,
+      async ({ page }) => {
+        await createMockSignedFile(page);
 
-      const signedFile = page.getByRole('listitem').filter({ hasText: MOCK_SIGNED_FILE.name });
-      const thumbnail = signedFile.getByRole('img', { name: 'file', exact: true, includeHidden: true });
+        const signedFile = page.getByRole('listitem').filter({ hasText: MOCK_SIGNED_FILE.name });
+        const thumbnail = signedFile.getByRole('img', { name: 'file', exact: true, includeHidden: true });
 
-      await expect(thumbnail).toHaveJSProperty('naturalWidth', MOCK_THUMBNAIL_WIDTH);
-    });
+        await expect(thumbnail).toHaveJSProperty('naturalWidth', MOCK_THUMBNAIL_WIDTH);
+      },
+    );
 
     test('search files', async ({ page }) => {
       const searchbar = page.getByPlaceholder(/please enter keywords/i);
@@ -107,7 +116,7 @@ test.describe('files', () => {
         await expect(page.getByPlaceholder(/please enter password again/i, { exact: true })).toBeInViewport();
       });
 
-      test('download file', async ({ page }) => {
+      test('download file', STORED_BLOB, async ({ page }) => {
         const { name } = MOCK_FILES[0];
         const li = page.locator(`li:has-text("${name}")`);
 
@@ -167,7 +176,7 @@ test.describe('files', () => {
         await expect(page.getByText(/passwords are inconsistent/i)).toBeInViewport();
       });
 
-      test('with correct password', async ({ page }) => {
+      test('with correct password', STORED_BLOB, async ({ page }) => {
         const secret = '123456';
         const { name } = MOCK_FILES[1];
         const li = page.locator(`li:has-text("${name}")`);
@@ -185,7 +194,7 @@ test.describe('files', () => {
       });
     });
 
-    test('click on the sign icon to redirect to signature page', async ({ page, browserName }) => {
+    test('click on the sign icon to redirect to signature page', STORED_BLOB, async ({ page, browserName }) => {
       // Playwright >= 1.61.0 regression: a WebSocket opened inside a Web Worker kills the Firefox
       // page session with a bare "Error: Assertion error" (ffPage `_onWebSocketOpened` asserts on a
       // request it never tracked). The signing flow triggers it because pdf.js spawns a worker whose

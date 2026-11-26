@@ -9,6 +9,7 @@ import {
   MOCK_BROKEN_FILE,
   MOCK_FILES,
   MOCK_SIGNED_FILE,
+  STORED_BLOB,
 } from '../mocks/file';
 
 const PDF_JS_WORKER_SKIP =
@@ -32,7 +33,7 @@ async function readDownload(file: Download) {
   return new Uint8Array(await readFile(await file.path()));
 }
 
-test.describe('download', () => {
+test.describe('download', STORED_BLOB, () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/', { waitUntil: 'domcontentloaded' });
   });

@@ -39,6 +39,7 @@ export default defineConfig({
     {
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
+      grepInvert: /@stored-blob/,
     },
 
     /* Test against mobile viewports. */

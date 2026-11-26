@@ -74,31 +74,40 @@ export const MOCK_BROKEN_FILE: PDF = {
 /** 整頁 PNG（舊文件）與第一頁縮圖（新文件）的像素寬，測試用來分辨列表縮圖讀的是哪一張 */
 export const MOCK_PAGE_IMAGE_WIDTH = 60;
 export const MOCK_THUMBNAIL_WIDTH = 30;
+export const STORED_BLOB = { tag: '@stored-blob' };
 
 /** 只留可以跨 `page.evaluate` 傳遞的欄位 */
 function toMeta({ PDFId, name, pages, updateDate, folderId }: PDF) {
   return { PDFId, name, pages, updateDate, folderId };
 }
 
+/** Playwright 的 WebKit 把 Blob／File 存進 IndexedDB 會失敗（錯誤是 null）；其他引擎可以 */
+export function canStoreBlobs(page: Page) {
+  return page.context().browser()?.browserType().name() !== 'webkit';
+}
+
 /**
  * 建立此變更前儲存的文件（沒有原始檔，只有整頁 PNG）。
  * Blob 無法跨 `page.evaluate` 傳遞，整頁 PNG 以位元組帶進頁面後再組回，每頁一張。
+ * WebKit 存不了 Blob，在那裡文件沒有頁面影像：列表類的測試照跑，需要頁面影像的測試要掛 `STORED_BLOB`。
  */
 export async function createMockFiles(page: Page, files: PDF[] = MOCK_FILES) {
   await page.addScriptTag({ content: String(importModule) });
 
   return page.evaluate(
-    async ({ mockFiles, png }) => {
+    async ({ mockFiles, png, hasPages }) => {
       const { usePdfStore } = await importModule<PdfStore>('/src/stores');
       const { addPDF } = usePdfStore();
 
       for (const file of mockFiles) {
-        const canvas = Array.from({ length: file.pages }, () => new Blob([new Uint8Array(png)], { type: 'image/png' }));
+        const canvas = Array.from({ length: hasPages ? file.pages : 0 }, () => {
+          return new Blob([new Uint8Array(png)], { type: 'image/png' });
+        });
 
         await addPDF({ ...file, data: null, canvas });
       }
     },
-    { mockFiles: files.map(toMeta), png: [...createPng(MOCK_PAGE_IMAGE_WIDTH, 80)] },
+    { mockFiles: files.map(toMeta), png: [...createPng(MOCK_PAGE_IMAGE_WIDTH, 80)], hasPages: canStoreBlobs(page) },
   );
 }
 
