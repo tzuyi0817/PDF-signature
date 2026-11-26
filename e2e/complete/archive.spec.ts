@@ -1,8 +1,8 @@
 import { expect, test } from '@playwright/test';
 import { IDB_KEY } from '@/constants/idb';
-import { PDF_JS_WORKER, readStoredList, setMockCurrentPDF, STORED_BLOB } from '../mocks/file';
+import { readStoredList, setMockCurrentPDF, STORED_BLOB } from '../mocks/file';
 
-test.describe('complete page archive and trash after re-editing', { tag: [STORED_BLOB, PDF_JS_WORKER] }, () => {
+test.describe('complete page archive and trash after re-editing', { tag: [STORED_BLOB] }, () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/', { waitUntil: 'domcontentloaded' });
     await setMockCurrentPDF(page, 'edited');

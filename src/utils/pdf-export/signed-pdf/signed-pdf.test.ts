@@ -137,6 +137,7 @@ describe('createSignedPdf', () => {
     const output = await createSignedPdf(await readEncryptedSource('owner-aes-256'), [overlayOn(1)]);
     const pages = await inspectPdf(output);
 
+    expect(new TextDecoder('latin1').decode(output)).not.toContain('/Encrypt');
     expect(pages.map(page => page.text)).toEqual(PAGE_TEXTS);
     expect(pages[0]?.images).toHaveLength(1);
   });

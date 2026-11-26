@@ -83,7 +83,6 @@ export const MOCK_BROKEN_FILE: PDF = {
 export const MOCK_PAGE_IMAGE_WIDTH = 60;
 export const MOCK_THUMBNAIL_WIDTH = 30;
 export const STORED_BLOB = '@stored-blob';
-export const PDF_JS_WORKER = '@pdfjs-worker';
 
 /** 只留可以跨 `page.evaluate` 傳遞的欄位 */
 function toMeta({ PDFId, name, pages, updateDate, folderId }: PDF) {

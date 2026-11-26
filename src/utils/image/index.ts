@@ -41,12 +41,15 @@ export function canvasToFile(
   quality = 1,
   filename = 'image.png',
 ): Promise<File> {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     canvas.toBlob(
       blob => {
         if (!blob) {
-          throw new Error('Failed to convert canvas to blob');
+          reject(new Error('Failed to convert canvas to blob'));
+
+          return;
         }
+
         const file = new File([blob], filename, { type });
 
         resolve(file);

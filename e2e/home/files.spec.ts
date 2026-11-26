@@ -8,7 +8,6 @@ import {
   MOCK_PAGE_IMAGE_WIDTH,
   MOCK_SIGNED_FILE,
   MOCK_THUMBNAIL_WIDTH,
-  PDF_JS_WORKER,
   STORED_BLOB,
 } from '../mocks/file';
 
@@ -196,34 +195,23 @@ test.describe('files', () => {
       });
     });
 
-    test(
-      'click on the sign icon to redirect to signature page',
-      { tag: [STORED_BLOB, PDF_JS_WORKER] },
-      async ({ page }) => {
-        // Playwright >= 1.61.0 regression: a WebSocket opened inside a Web Worker kills the Firefox
-        // page session with a bare "Error: Assertion error" (ffPage `_onWebSocketOpened` asserts on a
-        // request it never tracked). The signing flow triggers it because pdf.js spawns a worker whose
-        // script is served by the Vite dev server, which injects the HMR client (`/@vite/client`), and
-        // that client opens its HMR WebSocket inside the worker. Chromium/WebKit and real Firefox are
-        // unaffected; 1.59.1/1.60.0 pass, 1.61.x and 1.62.0-alpha fail. Minimal repro: https://github.com/microsoft/playwright/issues/41742.
-        // Remove this skip once the upstream regression is fixed.
-        const { name } = MOCK_FILES[0];
-        const li = page.locator(`li:has-text("${name}")`);
+    test('click on the sign icon to redirect to signature page', { tag: [STORED_BLOB] }, async ({ page }) => {
+      const { name } = MOCK_FILES[0];
+      const li = page.locator(`li:has-text("${name}")`);
 
-        await li.getByTitle(/#icon-ic_sign/i).click();
-        await page.waitForURL('http://localhost:8081/signature');
+      await li.getByTitle(/#icon-ic_sign/i).click();
+      await page.waitForURL('http://localhost:8081/signature');
 
-        expect(page.url()).toBe('http://localhost:8081/signature');
-      },
-    );
+      expect(page.url()).toBe('http://localhost:8081/signature');
+    });
 
     test(
       'editing a signed photo with an EXIF orientation opens the signature page',
-      { tag: [STORED_BLOB, PDF_JS_WORKER] },
+      { tag: [STORED_BLOB] },
       async ({ page }) => {
         await createMockSignedFile(
           page,
-          MOCK_SIGNED_FILE,
+          { ...MOCK_SIGNED_FILE, pages: 1 },
           withExifOrientation(await readJpegSource(), 6),
           'image/jpeg',
         );
@@ -233,7 +221,7 @@ test.describe('files', () => {
         await li.getByTitle(/#icon-ic_sign/i).click();
         await page.waitForURL('http://localhost:8081/signature');
 
-        expect(page.url()).toBe('http://localhost:8081/signature');
+        await expect(page.getByRole('button', { name: /next step/i })).toBeEnabled({ timeout: 30_000 });
       },
     );
 

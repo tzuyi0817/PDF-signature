@@ -67,15 +67,19 @@ async function renderPdf(file: File, overlays: readonly StoredOverlay[], passwor
 /** 圖片原始檔：瀏覽器解碼時會套用 EXIF 方向，與簽名頁上看到的一致 */
 async function renderImage(file: File, overlays: readonly StoredOverlay[]): Promise<RasterPage[]> {
   const bitmap = await createImageBitmap(file);
+  let canvas: HTMLCanvasElement | undefined;
 
   try {
-    const { canvas, context } = createCanvas(bitmap.width, bitmap.height);
+    const created = createCanvas(bitmap.width, bitmap.height);
 
-    context.drawImage(bitmap, 0, 0);
+    canvas = created.canvas;
+    created.context.drawImage(bitmap, 0, 0);
 
-    return [await toRasterPage(canvas, context, overlays, 1, toImagePageSize(bitmap.width, bitmap.height))];
+    return [await toRasterPage(canvas, created.context, overlays, 1, toImagePageSize(bitmap.width, bitmap.height))];
   } finally {
     bitmap.close();
+
+    if (canvas) releaseCanvas(canvas);
   }
 }
 

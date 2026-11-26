@@ -112,6 +112,18 @@ describe('pdf store：原始 PDF 與簽名 overlay', () => {
       expect(store.currentPDF.overlays).toHaveLength(1);
       expect((idb.get(IDB_KEY.CURRENT_PDF) as PDF).overlays).toHaveLength(1);
     });
+
+    it('寫入失敗時 IndexedDB 仍保留原本的目前文件', async () => {
+      const store = usePdfStore();
+      const result = { overlays: [createOverlay(1)], thumbnail: new Blob(['thumbnail']) };
+
+      await store.setCurrentPDF(createDocument());
+      setIdbValue.mockRejectedValueOnce(new Error('QuotaExceededError'));
+
+      await expect(store.setCurrentPDFSignResult(result)).rejects.toThrow('QuotaExceededError');
+
+      expect((idb.get(IDB_KEY.CURRENT_PDF) as PDF | undefined)?.PDFId).toBe('doc-1');
+    });
   });
 
   describe('原始 PDF 的生命週期', () => {

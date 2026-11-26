@@ -10,8 +10,6 @@ import {
   type MockCurrentKind,
 } from '../mocks/file';
 
-const PDF_JS_WORKER_SKIP =
-  'Playwright >= 1.61.0 Firefox regression: WebSocket inside a worker crashes the page session';
 const SIGNED_PAGES = 7;
 
 async function openCompletePage(page: Page, kind: MockCurrentKind) {
@@ -51,9 +49,7 @@ function expectOverlayInPlace(measured: typeof MOCK_OVERLAY_BOX) {
 
 test.describe('complete page preview', { tag: [STORED_BLOB] }, () => {
   test.describe('document that keeps its original PDF', () => {
-    test.beforeEach(async ({ page, browserName }) => {
-      // 預覽會在頁面內啟動 pdf.js worker，觸發 files.spec.ts 記錄的 Playwright Firefox regression（microsoft/playwright#41742）
-      test.skip(browserName === 'firefox', PDF_JS_WORKER_SKIP);
+    test.beforeEach(async ({ page }) => {
       await openCompletePage(page, 'signed');
     });
 
@@ -118,10 +114,7 @@ test.describe('complete page preview', { tag: [STORED_BLOB] }, () => {
     expectOverlayInPlace(await measureOverlay(overlay, image));
   });
 
-  test('falls back to the stored thumbnail when the original cannot be rendered', async ({ page, browserName }) => {
-    // 嘗試開啟原始檔時同樣會啟動 pdf.js worker
-    test.skip(browserName === 'firefox', PDF_JS_WORKER_SKIP);
-
+  test('falls back to the stored thumbnail when the original cannot be rendered', async ({ page }) => {
     await openCompletePage(page, 'broken');
 
     await expect(page.getByRole('img', { name: 'PDF document', exact: true })).toHaveJSProperty(

@@ -9,12 +9,8 @@ import {
   MOCK_BROKEN_FILE,
   MOCK_FILES,
   MOCK_SIGNED_FILE,
-  PDF_JS_WORKER,
   STORED_BLOB,
 } from '../mocks/file';
-
-const PDF_JS_WORKER_SKIP =
-  'Playwright >= 1.61.0 Firefox regression: WebSocket inside a worker crashes the page session';
 
 async function openEncryptPopup(page: Page, name: string) {
   await page
@@ -71,7 +67,7 @@ test.describe('download', { tag: [STORED_BLOB] }, () => {
     });
 
     test('is not larger than the raster export of the same document', async ({ page, browserName }) => {
-      // 轉圖會在頁面內啟動 pdf.js worker（Firefox 見下方說明）；大小比較與瀏覽器無關，一個引擎就夠
+      // 大小比較與瀏覽器無關，一個引擎就夠
       test.skip(browserName !== 'chromium', 'Size comparison renders with pdf.js; one engine is enough');
 
       const sizes = await measureExportSizes(page, MOCK_SIGNED_FILE.PDFId);
@@ -94,10 +90,7 @@ test.describe('download', { tag: [STORED_BLOB] }, () => {
     expect(pages.map(({ images }) => images.length)).toEqual(Array.from({ length: legacy.pages }, () => 1));
   });
 
-  test('shows an error when the original cannot be rendered either', async ({ page, browserName }) => {
-    // 轉圖退路會啟動 pdf.js worker，觸發 files.spec.ts 記錄的 Playwright Firefox regression（microsoft/playwright#41742）
-    test.skip(browserName === 'firefox', PDF_JS_WORKER_SKIP);
-
+  test('shows an error when the original cannot be rendered either', async ({ page }) => {
     await createMockSignedFile(page, MOCK_BROKEN_FILE, new TextEncoder().encode('not a pdf'));
     await openEncryptPopup(page, MOCK_BROKEN_FILE.name);
     await page.getByRole('button', { name: /not yet/i }).click();
@@ -106,7 +99,7 @@ test.describe('download', { tag: [STORED_BLOB] }, () => {
     await expect(page.getByText(/file downloading/i)).toBeHidden();
   });
 
-  test('terminates the pdf.js worker of the raster fallback', { tag: [PDF_JS_WORKER] }, async ({ page }) => {
+  test('terminates the pdf.js worker of the raster fallback', async ({ page }) => {
     await createMockSignedFile(page, MOCK_BROKEN_FILE, new TextEncoder().encode('not a pdf'));
 
     const idleWorkers = page.workers().length;
