@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useFabric } from '@component-hook/pdf-canvas/vue';
-import { computed, defineAsyncComponent, nextTick, onMounted, ref, useTemplateRef } from 'vue';
+import { computed, defineAsyncComponent, nextTick, onBeforeMount, onMounted, ref, useTemplateRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { showToast, StepBtn, SvgIcon, Version } from '@/components/common';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
@@ -109,6 +109,7 @@ function blur() {
   usePdfStore().setCurrentPDFName(projectName.value);
 }
 
+onBeforeMount(() => updateFilePassword(''));
 onMounted(createCanvas);
 onAfterRouteLeave(deleteCanvas);
 </script>

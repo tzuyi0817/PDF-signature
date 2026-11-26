@@ -95,7 +95,7 @@ async function editFile() {
 
 /** 保有原始檔的文件：既有 overlay 畫進編輯用底圖固定住，原始檔與 overlay 原樣帶著，新簽名之後追加成一層 */
 async function reopenSigned(document: PDF & { data: File }): Promise<PDF> {
-  const background = await createEditingBackground(document);
+  const background = await createEditingBackground(document).catch(() => createDownloadFile(document));
 
   return { ...document, background: background ?? undefined, isUpdate: true };
 }

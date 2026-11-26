@@ -93,7 +93,7 @@ function startsWith(bytes: Uint8Array, signature: readonly number[]) {
  * 圖片依檔頭辨識（不看副檔名或 MIME），包成單頁 PDF；其餘一律當成 PDF 載入，格式不對由 pdf-lib 丟錯。
  * 受保護的 PDF 解密後要清掉殘留的加密資訊，否則不加密的輸出仍會被 pdf-lib 當成加密檔。
  */
-async function loadSource(source: Uint8Array, sourcePassword?: string): Promise<PDFDocument> {
+async function loadSource(source: Uint8Array, sourcePassword = ''): Promise<PDFDocument> {
   const isPng = startsWith(source, PNG_SIGNATURE);
 
   if (!isPng && !startsWith(source, JPEG_SIGNATURE)) {

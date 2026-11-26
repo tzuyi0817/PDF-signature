@@ -132,4 +132,12 @@ describe('createSignedPdf', () => {
       await expect(createSignedPdf(protectedSource, [overlayOn(1)], { sourcePassword: 'wrong' })).rejects.toThrow();
     });
   });
+
+  it('只設擁有者密碼的來源不給密碼也能載入，輸出不需密碼且文字仍可抽取', async () => {
+    const output = await createSignedPdf(await readEncryptedSource('owner-aes-256'), [overlayOn(1)]);
+    const pages = await inspectPdf(output);
+
+    expect(pages.map(page => page.text)).toEqual(PAGE_TEXTS);
+    expect(pages[0]?.images).toHaveLength(1);
+  });
 });

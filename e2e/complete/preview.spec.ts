@@ -49,7 +49,7 @@ function expectOverlayInPlace(measured: typeof MOCK_OVERLAY_BOX) {
   }
 }
 
-test.describe('complete page preview', STORED_BLOB, () => {
+test.describe('complete page preview', { tag: [STORED_BLOB] }, () => {
   test.describe('document that keeps its original PDF', () => {
     test.beforeEach(async ({ page, browserName }) => {
       // 預覽會在頁面內啟動 pdf.js worker，觸發 files.spec.ts 記錄的 Playwright Firefox regression（microsoft/playwright#41742）
@@ -81,6 +81,19 @@ test.describe('complete page preview', STORED_BLOB, () => {
 
       await expect.poll(() => isPainted(last)).toBe(true);
       await expect(first).toHaveJSProperty('width', 0);
+    });
+
+    test('terminates its pdf.js worker after leaving the page', async ({ page }) => {
+      const pages = page.getByRole('img', { name: 'PDF document', exact: true });
+
+      await expect.poll(() => isPainted(pages.first())).toBe(true);
+
+      const openWorkers = page.workers().length;
+
+      await page.getByRole('button', { name: /return to home page/i }).click();
+      await page.waitForURL('http://localhost:8081/');
+
+      await expect.poll(() => page.workers().length).toBe(openWorkers - 1);
     });
   });
 

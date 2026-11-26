@@ -6,10 +6,13 @@ import { usePdfStore } from '.';
 import type { PDF, StoredOverlay } from '@/types/pdf';
 
 const idb = vi.hoisted(() => new Map<unknown, unknown>());
+const setIdbValue = vi.hoisted(() =>
+  vi.fn((key: unknown, value: unknown) => Promise.resolve(void idb.set(key, value))),
+);
 
 vi.mock('idb-keyval', () => ({
   get: (key: unknown) => Promise.resolve(idb.get(key)),
-  set: (key: unknown, value: unknown) => Promise.resolve(void idb.set(key, value)),
+  set: setIdbValue,
   del: (key: unknown) => Promise.resolve(void idb.delete(key)),
 }));
 
@@ -94,6 +97,20 @@ describe('pdf store：原始 PDF 與簽名 overlay', () => {
       expect(saved.overlays?.[0]?.image).toBe(first.image);
       expect(saved.overlays?.[1]?.image).toBe(second.image);
       expect(saved.thumbnail).toBe(newThumbnail);
+    });
+
+    it('寫入失敗後重試，同一批 overlay 只會存一份', async () => {
+      const store = usePdfStore();
+      const result = { overlays: [createOverlay(1)], thumbnail: new Blob(['thumbnail']) };
+
+      await store.setCurrentPDF(createDocument());
+      setIdbValue.mockRejectedValueOnce(new Error('QuotaExceededError'));
+
+      await expect(store.setCurrentPDFSignResult(result)).rejects.toThrow('QuotaExceededError');
+      await store.setCurrentPDFSignResult(result);
+
+      expect(store.currentPDF.overlays).toHaveLength(1);
+      expect((idb.get(IDB_KEY.CURRENT_PDF) as PDF).overlays).toHaveLength(1);
     });
   });
 

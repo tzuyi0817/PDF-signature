@@ -38,12 +38,15 @@ export interface PreviewDocument {
  * @throws 原始檔無法開啟時
  */
 export async function openPreview(file: File, password?: string): Promise<PreviewDocument> {
-  const worker: PDFWorker = PDFWorker.fromPort({ port: new PdfjsWorker() });
-  const loadingTask = getDocument({ data: await file.arrayBuffer(), password, worker });
+  const data = await file.arrayBuffer();
+  const port = new PdfjsWorker();
+  const worker: PDFWorker = PDFWorker.fromPort({ port });
+  const loadingTask = getDocument({ data, password, worker });
 
   async function destroy() {
     await loadingTask.destroy();
     worker.destroy();
+    port.terminate();
   }
 
   try {
@@ -90,10 +93,4 @@ export async function openPreview(file: File, password?: string): Promise<Previe
 
     throw error;
   }
-}
-
-/** 釋放 canvas 佔用的像素記憶體；頁面離開畫面時呼叫 */
-export function releaseCanvas(canvas: HTMLCanvasElement) {
-  canvas.width = 0;
-  canvas.height = 0;
 }

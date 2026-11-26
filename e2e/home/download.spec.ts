@@ -9,6 +9,7 @@ import {
   MOCK_BROKEN_FILE,
   MOCK_FILES,
   MOCK_SIGNED_FILE,
+  PDF_JS_WORKER,
   STORED_BLOB,
 } from '../mocks/file';
 
@@ -33,7 +34,7 @@ async function readDownload(file: Download) {
   return new Uint8Array(await readFile(await file.path()));
 }
 
-test.describe('download', STORED_BLOB, () => {
+test.describe('download', { tag: [STORED_BLOB] }, () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/', { waitUntil: 'domcontentloaded' });
   });
@@ -103,5 +104,17 @@ test.describe('download', STORED_BLOB, () => {
 
     await expect(page.getByText(/file download failed/i)).toBeVisible();
     await expect(page.getByText(/file downloading/i)).toBeHidden();
+  });
+
+  test('terminates the pdf.js worker of the raster fallback', { tag: [PDF_JS_WORKER] }, async ({ page }) => {
+    await createMockSignedFile(page, MOCK_BROKEN_FILE, new TextEncoder().encode('not a pdf'));
+
+    const idleWorkers = page.workers().length;
+
+    await openEncryptPopup(page, MOCK_BROKEN_FILE.name);
+    await page.getByRole('button', { name: /not yet/i }).click();
+
+    await expect(page.getByText(/file download failed/i)).toBeVisible();
+    await expect.poll(() => page.workers().length).toBe(idleWorkers);
   });
 });

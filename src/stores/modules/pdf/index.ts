@@ -76,14 +76,15 @@ export const usePdfStore = defineStore('pdf', {
       return this.updateCurrentPDFIdb();
     },
     /** 寫入一次簽署的結果：新的 overlay 排在既有的之後（既有的不動），並更新第一頁縮圖；原始檔保留 */
-    setCurrentPDFSignResult({ overlays, thumbnail }: SignResult) {
-      this.currentPDF = {
+    async setCurrentPDFSignResult({ overlays, thumbnail }: SignResult) {
+      const signed = {
         ...this.currentPDF,
         overlays: [...(this.currentPDF.overlays ?? []), ...overlays],
         thumbnail,
       };
 
-      return this.updateCurrentPDFIdb();
+      await setIdb(IDB_KEY.CURRENT_PDF, signed);
+      this.currentPDF = signed;
     },
     updateCurrentPDFIdb() {
       return setIdb(IDB_KEY.CURRENT_PDF, this.currentPDF);

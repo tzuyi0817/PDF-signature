@@ -18,8 +18,16 @@ interface JspdfModule {
   createRasterPdf: (pages: readonly RasterPage[]) => Promise<{ output: (type: 'blob') => Blob }>;
 }
 
+interface ConfigStoreModule {
+  useConfigStore: () => { updateFilePassword: (password: string) => void };
+}
+
+interface IdbModule {
+  getIdb: <T>(key: IDBValidKey) => Promise<T | undefined>;
+}
+
 /** 完成頁要預覽的文件種類 */
-export type MockCurrentKind = 'signed' | 'legacy' | 'image' | 'broken';
+export type MockCurrentKind = 'signed' | 'edited' | 'legacy' | 'image' | 'broken';
 
 export const MOCK_IMAGE_SOURCE_WIDTH = 200;
 /** 預覽用文件的 overlay 位置（頁面寬高的 0–1 比例） */
@@ -74,7 +82,8 @@ export const MOCK_BROKEN_FILE: PDF = {
 /** 整頁 PNG（舊文件）與第一頁縮圖（新文件）的像素寬，測試用來分辨列表縮圖讀的是哪一張 */
 export const MOCK_PAGE_IMAGE_WIDTH = 60;
 export const MOCK_THUMBNAIL_WIDTH = 30;
-export const STORED_BLOB = { tag: '@stored-blob' };
+export const STORED_BLOB = '@stored-blob';
+export const PDF_JS_WORKER = '@pdfjs-worker';
 
 /** 只留可以跨 `page.evaluate` 傳遞的欄位 */
 function toMeta({ PDFId, name, pages, updateDate, folderId }: PDF) {
@@ -111,16 +120,21 @@ export async function createMockFiles(page: Page, files: PDF[] = MOCK_FILES) {
   );
 }
 
-/** 建立保有原始檔的文件；`source` 沒給時用帶文字的 7 頁 PDF */
-export async function createMockSignedFile(page: Page, file: PDF = MOCK_SIGNED_FILE, source?: Uint8Array) {
+/** 建立保有原始檔的文件；`source` 沒給時用帶文字的 7 頁 PDF，`type` 是原始檔的 MIME 類型 */
+export async function createMockSignedFile(
+  page: Page,
+  file: PDF = MOCK_SIGNED_FILE,
+  source?: Uint8Array,
+  type = 'application/pdf',
+) {
   const bytes = source ?? (await createSourcePdf());
 
   await page.addScriptTag({ content: String(importModule) });
 
   return page.evaluate(
-    async ({ mockFile, pdf, png, thumbnailPng }) => {
+    async ({ mockFile, pdf, sourceType, png, thumbnailPng }) => {
       const { usePdfStore } = await importModule<PdfStore>('/src/stores');
-      const data = new File([new Uint8Array(pdf)], `${mockFile.name}.pdf`, { type: 'application/pdf' });
+      const data = new File([new Uint8Array(pdf)], mockFile.name, { type: sourceType });
       const image = new Blob([new Uint8Array(png)], { type: 'image/png' });
       const thumbnail = new Blob([new Uint8Array(thumbnailPng)], { type: 'image/png' });
 
@@ -134,6 +148,7 @@ export async function createMockSignedFile(page: Page, file: PDF = MOCK_SIGNED_F
     {
       mockFile: toMeta(file),
       pdf: [...bytes],
+      sourceType: type,
       png: [...createPng(120, 40)],
       thumbnailPng: [...createPng(MOCK_THUMBNAIL_WIDTH, 40)],
     },
@@ -144,12 +159,13 @@ export async function createMockSignedFile(page: Page, file: PDF = MOCK_SIGNED_F
  * 把一份文件設成目前文件（寫進 IndexedDB），之後前往完成頁就會預覽它。
  *
  * - `signed`：7 頁帶文字的原始 PDF，第一頁有一層 overlay
+ * - `edited`：同 `signed`，但像從列表重新編輯後一樣帶著編輯用底圖 `background`
  * - `legacy`：此變更前儲存的文件，只有整頁 PNG
  * - `image`：原始檔是 PNG 圖片，有一層 overlay
  * - `broken`：原始檔已損壞，只剩縮圖可顯示
  */
 export async function setMockCurrentPDF(page: Page, kind: MockCurrentKind) {
-  const pdf = kind === 'signed' ? await createSourcePdf() : new Uint8Array([1, 2, 3]);
+  const pdf = kind === 'signed' || kind === 'edited' ? await createSourcePdf() : new Uint8Array([1, 2, 3]);
 
   await page.addScriptTag({ content: String(importModule) });
 
@@ -162,6 +178,7 @@ export async function setMockCurrentPDF(page: Page, kind: MockCurrentKind) {
       const original = new File([new Uint8Array(bytes.pdf)], 'source.pdf', { type: 'application/pdf' });
       const documents = {
         signed: { data: original, overlays, thumbnail },
+        edited: { data: original, overlays, thumbnail, background: original },
         legacy: { data: null, canvas: Array.from({ length: mockFile.pages }, () => toBlob(bytes.pageImage)) },
         image: {
           data: new File([toBlob(bytes.imageSource)], 'source.png', { type: 'image/png' }),
@@ -219,4 +236,38 @@ export async function measureExportSizes(page: Page, id: string) {
 
     return { overlaid: overlaid.size, raster: raster.output('blob').size };
   }, id);
+}
+
+/** 讀出 IndexedDB 中某份清單，只回傳每筆是否帶原始檔與編輯用底圖 */
+export async function readStoredList(page: Page, key: string) {
+  await page.addScriptTag({ content: String(importModule) });
+
+  return page.evaluate(async idbKey => {
+    const { getIdb } = await importModule<IdbModule>('/src/utils/idb.ts');
+    const list = (await getIdb<PDF[]>(idbKey)) ?? [];
+
+    return list.map(document => ({ hasData: Boolean(document.data), hasBackground: 'background' in document }));
+  }, key);
+}
+
+/** 在頁面內設定上傳密碼，模擬前一次上傳留下的值 */
+export async function setFilePassword(page: Page, password: string) {
+  await page.addScriptTag({ content: String(importModule) });
+
+  return page.evaluate(async value => {
+    const { useConfigStore } = await importModule<ConfigStoreModule>('/src/stores');
+
+    useConfigStore().updateFilePassword(value);
+  }, password);
+}
+
+/** 讀出 IndexedDB 中某份文件是否帶著上傳密碼 */
+export async function readStoredPassword(page: Page, key: string) {
+  await page.addScriptTag({ content: String(importModule) });
+
+  return page.evaluate(async idbKey => {
+    const { getIdb } = await importModule<IdbModule>('/src/utils/idb.ts');
+
+    return (await getIdb<PDF>(idbKey))?.password;
+  }, key);
 }

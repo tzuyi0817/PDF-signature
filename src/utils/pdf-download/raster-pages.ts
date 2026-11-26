@@ -1,5 +1,6 @@
 import { getDocument, PDFWorker } from 'pdfjs-dist';
 import PdfjsWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?worker';
+import { releaseCanvas } from '../canvas';
 import { canvasToFile } from '../image';
 import { toImagePageSize } from '../pdf-export/placement';
 import type { RasterPage } from '../jspdf';
@@ -28,8 +29,10 @@ export function renderSignedPages(
 }
 
 async function renderPdf(file: File, overlays: readonly StoredOverlay[], password?: string): Promise<RasterPage[]> {
-  const worker: PDFWorker = PDFWorker.fromPort({ port: new PdfjsWorker() });
-  const loadingTask = getDocument({ data: await file.arrayBuffer(), password, worker });
+  const data = await file.arrayBuffer();
+  const port = new PdfjsWorker();
+  const worker: PDFWorker = PDFWorker.fromPort({ port });
+  const loadingTask = getDocument({ data, password, worker });
 
   try {
     const pdf = await loadingTask.promise;
@@ -40,19 +43,24 @@ async function renderPdf(file: File, overlays: readonly StoredOverlay[], passwor
       const viewport = page.getViewport({ scale: RENDER_SCALE });
       const { canvas, context } = createCanvas(viewport.width, viewport.height);
 
-      await page.render({ canvasContext: context, viewport }).promise;
-      pages.push(
-        await toRasterPage(canvas, context, overlays, pageNumber, {
-          width: viewport.width / RENDER_SCALE,
-          height: viewport.height / RENDER_SCALE,
-        }),
-      );
+      try {
+        await page.render({ canvasContext: context, viewport }).promise;
+        pages.push(
+          await toRasterPage(canvas, context, overlays, pageNumber, {
+            width: viewport.width / RENDER_SCALE,
+            height: viewport.height / RENDER_SCALE,
+          }),
+        );
+      } finally {
+        releaseCanvas(canvas);
+      }
     }
 
     return pages;
   } finally {
     await loadingTask.destroy();
     worker.destroy();
+    port.terminate();
   }
 }
 

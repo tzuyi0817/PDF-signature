@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n';
 import { showToast, SvgIcon, Version } from '@/components/common';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { useConfigStore, usePdfStore } from '@/stores';
+import { toStoredDocument } from '@/utils/pdf-document';
 import CompletePreview from './CompletePreview.vue';
 
 type WarnType = 'archive' | 'trash';
@@ -32,11 +33,12 @@ function openWarnPopup(type: WarnType) {
 function warnConfirm() {
   const { addArchive, addTrash } = usePdfStore();
   const isArchive = warnType.value === 'archive';
+  const file = toStoredDocument(currentPDF.value);
 
   if (isArchive) {
-    addArchive(currentPDF.value);
+    addArchive(file);
   } else {
-    addTrash(currentPDF.value);
+    addTrash(file);
   }
   showToast(t(isArchive ? 'prompt.file_archived_success' : 'prompt.file_delete_success'));
   toggleWarnPopup(false);

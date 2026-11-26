@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { useTemplateRef, watch } from 'vue';
 import { useInView } from '@/hooks/use-in-view';
-import { releaseCanvas, toPixelWidth, type PageSize, type PreviewDocument } from '@/utils/pdf-preview';
+import { releaseCanvas } from '@/utils/canvas';
+import { toPixelWidth, type PageSize, type PreviewDocument } from '@/utils/pdf-preview';
 import CompletePreviewOverlays from './CompletePreviewOverlays.vue';
 import type { StoredOverlay } from '@/types/pdf';
 
