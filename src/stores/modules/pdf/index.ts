@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { toRaw } from 'vue';
 import { IDB_KEY } from '@/constants/idb';
 import { getIdb, setIdb } from '@/utils/idb';
 import { useFolderStore } from '../folder';
@@ -43,18 +44,15 @@ export const usePdfStore = defineStore('pdf', {
 
       return currentPDF;
     },
-    setCurrentPDF(PDF: PDF) {
+    async setCurrentPDF(PDF: PDF) {
       const { currentFolderId } = useFolderStore();
+      const next = { ...PDF, folderId: currentFolderId ?? undefined };
 
-      this.currentPDF = {
-        ...PDF,
-        folderId: currentFolderId ?? undefined,
-      };
-
-      return this.updateCurrentPDFIdb();
+      await setIdb(IDB_KEY.CURRENT_PDF, next);
+      this.currentPDF = next;
     },
-    clearCurrentPDF() {
-      this.currentPDF = {
+    async clearCurrentPDF() {
+      const empty: PDF = {
         PDFId: '',
         name: '',
         updateDate: 0,
@@ -68,12 +66,14 @@ export const usePdfStore = defineStore('pdf', {
         folderId: undefined,
       };
 
-      return this.updateCurrentPDFIdb();
+      await setIdb(IDB_KEY.CURRENT_PDF, empty);
+      this.currentPDF = empty;
     },
-    setCurrentPDFName(name: string) {
-      this.currentPDF.name = name;
+    async setCurrentPDFName(name: string) {
+      const next = { ...this.currentPDF, name };
 
-      return this.updateCurrentPDFIdb();
+      await setIdb(IDB_KEY.CURRENT_PDF, next);
+      this.currentPDF = next;
     },
     /** 寫入一次簽署的結果：新的 overlay 排在既有的之後（既有的不動），並更新第一頁縮圖；原始檔保留 */
     async setCurrentPDFSignResult({ overlays, thumbnail }: SignResult) {
@@ -86,9 +86,6 @@ export const usePdfStore = defineStore('pdf', {
       await setIdb(IDB_KEY.CURRENT_PDF, signed);
       this.currentPDF = signed;
     },
-    updateCurrentPDFIdb() {
-      return setIdb(IDB_KEY.CURRENT_PDF, this.currentPDF);
-    },
 
     async getPDF() {
       const PDFList = await getIdb<PDF[]>(IDB_KEY.PDF_LIST);
@@ -99,19 +96,31 @@ export const usePdfStore = defineStore('pdf', {
 
       return PDFList;
     },
-    addPDF(PDF: PDF) {
-      this.PDFList.unshift(this.sanitizeFolderId({ ...PDF }));
+    async addPDF(PDF: PDF) {
+      const item = this.sanitizeFolderId({ ...PDF });
 
-      return this.updatePDFIdb();
+      this.PDFList = [item, ...this.PDFList];
+
+      try {
+        await this.updatePDFIdb();
+      } catch (error) {
+        this.PDFList = this.PDFList.filter(entry => toRaw(entry) !== item);
+        throw error;
+      }
     },
-    updatePDF(PDF: PDF) {
-      const index = this.PDFList.findIndex(item => item.PDFId === PDF.PDFId);
+    async updatePDF(PDF: PDF) {
+      const previous = this.PDFList.find(item => item.PDFId === PDF.PDFId);
 
-      if (index === -1) return;
+      if (!previous) return;
 
-      this.PDFList[index] = PDF;
+      this.PDFList = this.PDFList.map(item => (item === previous ? PDF : item));
 
-      return this.updatePDFIdb();
+      try {
+        await this.updatePDFIdb();
+      } catch (error) {
+        this.PDFList = this.PDFList.map(item => (toRaw(item) === toRaw(PDF) ? previous : item));
+        throw error;
+      }
     },
     deletePDF(id: string) {
       this.PDFList = this.PDFList.filter(({ PDFId }) => id !== PDFId);

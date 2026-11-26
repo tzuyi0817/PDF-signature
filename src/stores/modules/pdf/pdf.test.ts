@@ -126,6 +126,81 @@ describe('pdf store：原始 PDF 與簽名 overlay', () => {
     });
   });
 
+  describe('設定目前文件', () => {
+    it('寫入失敗時記憶體與 IndexedDB 都保留原本的目前文件', async () => {
+      const store = usePdfStore();
+
+      await store.setCurrentPDF(createDocument());
+      setIdbValue.mockRejectedValueOnce(new Error('QuotaExceededError'));
+
+      await expect(store.setCurrentPDF(createDocument({ PDFId: 'doc-2' }))).rejects.toThrow('QuotaExceededError');
+
+      expect(store.currentPDF.PDFId).toBe('doc-1');
+      expect((idb.get(IDB_KEY.CURRENT_PDF) as PDF).PDFId).toBe('doc-1');
+    });
+
+    it('清除失敗時記憶體仍保留目前文件', async () => {
+      const store = usePdfStore();
+
+      await store.setCurrentPDF(createDocument());
+      setIdbValue.mockRejectedValueOnce(new Error('QuotaExceededError'));
+
+      await expect(store.clearCurrentPDF()).rejects.toThrow('QuotaExceededError');
+
+      expect(store.currentPDF.PDFId).toBe('doc-1');
+    });
+
+    it('改名失敗時記憶體仍保留原本的名稱', async () => {
+      const store = usePdfStore();
+
+      await store.setCurrentPDF(createDocument());
+      setIdbValue.mockRejectedValueOnce(new Error('QuotaExceededError'));
+
+      await expect(store.setCurrentPDFName('renamed')).rejects.toThrow('QuotaExceededError');
+
+      expect(store.currentPDF.name).toBe('contract');
+    });
+  });
+
+  describe('寫入清單', () => {
+    const listIds = () => (idb.get(IDB_KEY.PDF_LIST) as PDF[] | undefined)?.map(({ PDFId }) => PDFId);
+
+    it('新增失敗時清單不變，重試後只有一筆', async () => {
+      const store = usePdfStore();
+      const document = createDocument();
+
+      setIdbValue.mockRejectedValueOnce(new Error('QuotaExceededError'));
+
+      await expect(store.addPDF(document)).rejects.toThrow('QuotaExceededError');
+      expect(store.PDFList).toHaveLength(0);
+
+      await store.addPDF(document);
+
+      expect(store.PDFList.map(({ PDFId }) => PDFId)).toEqual(['doc-1']);
+      expect(listIds()).toEqual(['doc-1']);
+    });
+
+    it('更新失敗時清單保留原本的文件', async () => {
+      const store = usePdfStore();
+
+      await store.addPDF(createDocument());
+      setIdbValue.mockRejectedValueOnce(new Error('QuotaExceededError'));
+
+      await expect(store.updatePDF(createDocument({ name: 'renamed' }))).rejects.toThrow('QuotaExceededError');
+
+      expect(store.PDFList.map(({ name }) => name)).toEqual(['contract']);
+    });
+
+    it('同時新增兩份文件，兩份都會留在清單', async () => {
+      const store = usePdfStore();
+
+      await Promise.all([store.addPDF(createDocument({ PDFId: 'a' })), store.addPDF(createDocument({ PDFId: 'b' }))]);
+
+      expect(store.PDFList.map(({ PDFId }) => PDFId)).toEqual(['b', 'a']);
+      expect(listIds()).toEqual(['b', 'a']);
+    });
+  });
+
   describe('原始 PDF 的生命週期', () => {
     it('從列表移到封存再移到垃圾桶，原始 PDF 與 overlay 都還在', async () => {
       const store = usePdfStore();

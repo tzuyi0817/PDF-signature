@@ -62,7 +62,7 @@ async function renderFile(file: File) {
     if (!fileContent) throw new Error('File content is empty');
 
     scale.value = window.devicePixelRatio;
-    setCurrentPDF(await unlockOriginal(fileContent, filePassword));
+    await setCurrentPDF(await unlockOriginal(fileContent, filePassword));
     pages.value = fileContent.pages;
     showToast(t('prompt.file_upload_success'));
     fileName.value = file.name;
@@ -91,6 +91,7 @@ function closePasswordPopup(isEnterPassword = false) {
 
 function remove() {
   fileName.value = '';
+  projectName.value = '';
   usePdfStore().clearCurrentPDF();
   updateFilePassword('');
 }

@@ -22,10 +22,10 @@ import SignatureSign from './SignatureSign.vue';
 import SignatureToolbar from './SignatureToolbar.vue';
 import type { DragOffset } from '@/types/drag';
 import type { SignatureTool } from '@/types/menu';
+import type { PDF } from '@/types/pdf';
 
 const SignatureCanvasItem = defineAsyncComponent(() => import('@component-hook/pdf-canvas/vue'));
 const currentTool = ref<SignatureTool | ''>('');
-const isCancelMerge = ref(false);
 const isShowNextWarnPopup = ref(false);
 const isShowMergePopup = ref(false);
 const fileContainerRef = useTemplateRef<HTMLDivElement>('fileContainer');
@@ -55,13 +55,20 @@ const canvasHeight = computed(() => `${canvasRect.value.height * fileZoom.value 
 
 let isGiveUpSignature = false;
 let requestFrame: number | null = null;
+let mergeGeneration = 0;
+let isMergeCommitting = false;
+let pendingFile: PDF | null = null;
 
 async function mergeFile() {
+  const generation = ++mergeGeneration;
+
   toggleNextWarnPopup(false);
   toggleMergePopup(true);
   await sleep();
 
   requestAnimationFrame(async () => {
+    let isCommitted = false;
+
     try {
       const firstPageCanvas = signatureCanvasItems.value?.at(0)?.canvasRef;
 
@@ -73,27 +80,37 @@ async function mergeFile() {
         createThumbnail(firstPageCanvas),
       ]);
 
-      if (isCancelMerge.value) {
-        isCancelMerge.value = false;
-        return;
+      if (generation !== mergeGeneration) return;
+
+      isCommitted = true;
+      isMergeCommitting = true;
+
+      if (!pendingFile) {
+        await setCurrentPDFSignResult({ overlays, thumbnail });
+
+        // 原始檔留在文件上，下載與預覽都從「原始檔 + overlay」產生
+        pendingFile = { ...toStoredDocument(currentPDF.value), updateDate: Date.now() };
       }
 
-      await setCurrentPDFSignResult({ overlays, thumbnail });
-
-      // 原始檔留在文件上，下載與預覽都從「原始檔 + overlay」產生
-      const file = { ...toStoredDocument(currentPDF.value), updateDate: Date.now() };
-
-      if (file.isUpdate) {
-        updatePDF(file);
+      if (pendingFile.isUpdate) {
+        await updatePDF(pendingFile);
       } else {
-        addPDF(file);
+        await addPDF(pendingFile);
       }
+
+      pendingFile = null;
       showToast(t('prompt.file_created_success'));
       goPage('complete');
     } catch {
-      showToast({ message: t('prompt.operation_timed_out'), type: 'error' });
+      if (generation === mergeGeneration) {
+        showToast({ message: t('prompt.operation_timed_out'), type: 'error' });
+      }
     } finally {
-      toggleMergePopup(false);
+      if (isCommitted) isMergeCommitting = false;
+
+      if (generation === mergeGeneration) {
+        toggleMergePopup(false);
+      }
     }
   });
 }
@@ -136,7 +153,9 @@ function giveUpSignature() {
 }
 
 function cancelMergeFile() {
-  isCancelMerge.value = true;
+  if (isMergeCommitting) return;
+
+  mergeGeneration++;
   toggleMergePopup(false);
 }
 
