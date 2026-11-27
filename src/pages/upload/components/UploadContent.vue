@@ -105,9 +105,27 @@ function focus() {
   isShowPen.value = false;
 }
 
+async function saveProjectName() {
+  try {
+    await usePdfStore().setCurrentPDFName(projectName.value);
+
+    return true;
+  } catch {
+    showToast({ message: t('prompt.operation_timed_out'), type: 'error' });
+
+    return false;
+  }
+}
+
 function blur() {
   isShowPen.value = true;
-  usePdfStore().setCurrentPDFName(projectName.value);
+  saveProjectName();
+}
+
+async function nextStep() {
+  if ((await saveProjectName()) && fileName.value) {
+    goPage('signature');
+  }
 }
 
 onBeforeMount(() => updateFilePassword(''));
@@ -209,7 +227,7 @@ onAfterRouteLeave(deleteCanvas);
 
     <step-btn
       :is-next-disabled="isNextDisabled"
-      @next-step="goPage('signature')"
+      @next-step="nextStep"
       @prev-step="toggleWarnPopup(true)"
     />
 

@@ -270,3 +270,14 @@ export async function readStoredPassword(page: Page, key: string) {
     return (await getIdb<PDF>(idbKey))?.password;
   }, key);
 }
+
+/** 讀出 IndexedDB 中某份文件的 overlay 數量 */
+export async function readStoredOverlayCount(page: Page, key: string) {
+  await page.addScriptTag({ content: String(importModule) });
+
+  return page.evaluate(async idbKey => {
+    const { getIdb } = await importModule<IdbModule>('/src/utils/idb.ts');
+
+    return (await getIdb<PDF>(idbKey))?.overlays?.length ?? 0;
+  }, key);
+}

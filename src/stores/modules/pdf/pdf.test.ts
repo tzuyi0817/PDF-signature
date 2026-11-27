@@ -191,6 +191,21 @@ describe('pdf store：原始 PDF 與簽名 overlay', () => {
       expect(store.PDFList.map(({ name }) => name)).toEqual(['contract']);
     });
 
+    it('要更新的文件已不在清單時，以新的 id 存成另一筆', async () => {
+      const store = usePdfStore();
+
+      store.archiveList = [createDocument()];
+      await store.addPDF(createDocument({ PDFId: 'other' }));
+      await store.updatePDF(createDocument({ name: 'signed' }));
+
+      const [saved] = store.PDFList;
+
+      expect(saved.name).toBe('signed');
+      expect(saved.PDFId).not.toBe('doc-1');
+      expect(listIds()).toEqual([saved.PDFId, 'other']);
+      expect(store.archiveList.map(({ PDFId }) => PDFId)).toEqual(['doc-1']);
+    });
+
     it('同時新增兩份文件，兩份都會留在清單', async () => {
       const store = usePdfStore();
 
@@ -198,6 +213,60 @@ describe('pdf store：原始 PDF 與簽名 overlay', () => {
 
       expect(store.PDFList.map(({ PDFId }) => PDFId)).toEqual(['b', 'a']);
       expect(listIds()).toEqual(['b', 'a']);
+    });
+  });
+
+  describe('從封存與垃圾桶還原', () => {
+    const storedIds = (key: string) => (idb.get(key) as PDF[] | undefined)?.map(({ PDFId }) => PDFId);
+
+    it.each([
+      ['封存', IDB_KEY.ARCHIVE_LIST, 'archiveList', 'batchReductionArchive'],
+      ['垃圾桶', IDB_KEY.TRASH_LIST, 'trashList', 'batchReductionTrash'],
+    ] as const)('從%s還原時清單寫入失敗，文件仍留在原處', async (_, key, listName, restore) => {
+      const store = usePdfStore();
+      const document = createDocument();
+
+      store[listName] = [document];
+      idb.set(key, [document]);
+      setIdbValue.mockRejectedValueOnce(new Error('QuotaExceededError'));
+
+      await expect(store[restore](new Set([document]))).rejects.toThrow('QuotaExceededError');
+
+      expect(store.PDFList).toHaveLength(0);
+      expect(store[listName].map(({ PDFId }) => PDFId)).toEqual(['doc-1']);
+      expect(storedIds(key)).toEqual(['doc-1']);
+    });
+
+    it.each([
+      ['封存', IDB_KEY.ARCHIVE_LIST, 'archiveList', 'batchReductionArchive'],
+      ['垃圾桶', IDB_KEY.TRASH_LIST, 'trashList', 'batchReductionTrash'],
+    ] as const)('從%s還原多份文件，依原本順序回到清單', async (_, key, listName, restore) => {
+      const store = usePdfStore();
+      const documents = [createDocument({ PDFId: 'a' }), createDocument({ PDFId: 'b' })];
+
+      store[listName] = documents;
+      idb.set(key, documents);
+
+      await store[restore](new Set(documents));
+
+      expect(storedIds(IDB_KEY.PDF_LIST)).toEqual(['b', 'a']);
+      expect(storedIds(key)).toEqual([]);
+    });
+
+    it.each([
+      ['封存', IDB_KEY.ARCHIVE_LIST, 'archiveList', 'batchReductionArchive'],
+      ['垃圾桶', IDB_KEY.TRASH_LIST, 'trashList', 'batchReductionTrash'],
+    ] as const)('同一份文件從%s連續還原兩次，清單只有一筆', async (_, key, listName, restore) => {
+      const store = usePdfStore();
+      const document = createDocument();
+
+      store[listName] = [document];
+      idb.set(key, [document]);
+
+      await Promise.all([store[restore](new Set([document])), store[restore](new Set([document]))]);
+
+      expect(storedIds(IDB_KEY.PDF_LIST)).toEqual(['doc-1']);
+      expect(storedIds(key)).toEqual([]);
     });
   });
 

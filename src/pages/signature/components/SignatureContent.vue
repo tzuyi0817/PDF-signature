@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { computed, defineAsyncComponent, ref, useTemplateRef } from 'vue';
+import { computed, defineAsyncComponent, onBeforeUnmount, ref, useTemplateRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { showToast, StepBtn, Version } from '@/components/common';
 import { DRAG_MOVE_STEP } from '@/constants/common';
@@ -57,7 +57,8 @@ let isGiveUpSignature = false;
 let requestFrame: number | null = null;
 let mergeGeneration = 0;
 let isMergeCommitting = false;
-let pendingFile: PDF | null = null;
+let pendingMerge: { base: PDF; file: PDF } | null = null;
+let isUnmounted = false;
 
 async function mergeFile() {
   const generation = ++mergeGeneration;
@@ -74,7 +75,7 @@ async function mergeFile() {
 
       if (!signatureCanvasItems.value || !firstPageCanvas) return;
 
-      const { setCurrentPDFSignResult, addPDF, updatePDF } = usePdfStore();
+      const { setCurrentPDFSignResult, restoreCurrentPDF, addPDF, updatePDF } = usePdfStore();
       const [overlays, thumbnail] = await Promise.all([
         collectOverlays(signatureCanvasItems.value),
         createThumbnail(firstPageCanvas),
@@ -85,22 +86,33 @@ async function mergeFile() {
       isCommitted = true;
       isMergeCommitting = true;
 
-      if (!pendingFile) {
+      if (!pendingMerge) {
+        const base = currentPDF.value;
+
         await setCurrentPDFSignResult({ overlays, thumbnail });
 
         // 原始檔留在文件上，下載與預覽都從「原始檔 + overlay」產生
-        pendingFile = { ...toStoredDocument(currentPDF.value), updateDate: Date.now() };
+        pendingMerge = { base, file: { ...toStoredDocument(currentPDF.value), updateDate: Date.now() } };
       }
 
-      if (pendingFile.isUpdate) {
-        await updatePDF(pendingFile);
-      } else {
-        await addPDF(pendingFile);
+      const { base, file } = pendingMerge;
+
+      try {
+        if (file.isUpdate) {
+          await updatePDF(file);
+        } else {
+          await addPDF(file);
+        }
+      } catch (error) {
+        await restoreCurrentPDF(base);
+        pendingMerge = null;
+        throw error;
       }
 
-      pendingFile = null;
+      pendingMerge = null;
       showToast(t('prompt.file_created_success'));
-      goPage('complete');
+
+      if (!isUnmounted) goPage('complete');
     } catch {
       if (generation === mergeGeneration) {
         showToast({ message: t('prompt.operation_timed_out'), type: 'error' });
@@ -215,6 +227,12 @@ function cancelScrollToPerFrame() {
 function watermarkActiveFabric() {
   currentCanvasItem.value?.setActiveFabric({ opacity: 0.3 });
 }
+
+onBeforeUnmount(() => {
+  isUnmounted = true;
+
+  if (!isMergeCommitting) mergeGeneration++;
+});
 
 onAfterRouteLeave(() => {
   if (!isGiveUpSignature) return;

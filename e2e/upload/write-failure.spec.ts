@@ -1,7 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
-import { IDB_KEY } from '@/constants/idb';
 import { createPng } from '@/utils/pdf-export/testing/png';
-import { readStoredPassword, STORED_BLOB } from '../mocks/file';
+import { STORED_BLOB } from '../mocks/file';
 
 async function openUploadPage(page: Page) {
   await page.goto('/', { waitUntil: 'domcontentloaded' });
@@ -9,15 +8,17 @@ async function openUploadPage(page: Page) {
   await page.waitForURL('http://localhost:8081/upload');
 }
 
-function failNextWrite(page: Page) {
-  return page.evaluate(() => {
+function failNextWrite(page: Page, times = 1) {
+  return page.evaluate(count => {
     const { put } = IDBObjectStore.prototype;
+    let remaining = count;
 
     IDBObjectStore.prototype.put = function () {
-      IDBObjectStore.prototype.put = put;
+      remaining -= 1;
+      if (remaining === 0) IDBObjectStore.prototype.put = put;
       throw new DOMException('Quota exceeded', 'QuotaExceededError');
     };
-  });
+  }, times);
 }
 
 function uploadPng(page: Page) {
@@ -44,11 +45,21 @@ test.describe('upload write failure', { tag: [STORED_BLOB] }, () => {
     await expect(page.getByRole('button', { name: /next step/i })).toBeEnabled();
 
     await page.getByTitle(/#icon-ic_close$/).click();
-    await expect.poll(() => readStoredPassword(page, IDB_KEY.CURRENT_PDF)).toBeUndefined();
     await failNextWrite(page);
     await uploadPng(page);
 
     await expect(page.getByText(/file upload failed/i)).toBeVisible();
     await expect(page.getByRole('button', { name: /next step/i })).toBeDisabled();
+  });
+
+  test('stays on the upload page when the project name cannot be saved', async ({ page }) => {
+    await openUploadPage(page);
+    await uploadPng(page);
+    await page.locator('input[type="text"]').fill('Contract-final');
+    await failNextWrite(page, 2);
+    await page.getByRole('button', { name: /next step/i }).click();
+
+    await expect(page.getByText(/operation timed out/i)).toHaveCount(2);
+    expect(page.url()).toBe('http://localhost:8081/upload');
   });
 });

@@ -36,7 +36,7 @@ const emit = defineEmits<Emits>();
 const isShowMore = ref(false);
 const isSelected = ref(false);
 const router = useRouter();
-const { addPDF, addArchive, addTrash, deleteArchive, deleteTrash, setCurrentPDF } = usePdfStore();
+const { addArchive, addTrash, batchReductionArchive, batchReductionTrash, setCurrentPDF } = usePdfStore();
 const { toggleLoading } = useConfigStore();
 const { isDragSourceItem, endDragMove } = useDragMove();
 
@@ -118,15 +118,13 @@ function moveToTrash() {
 }
 
 function reductionArchive() {
-  deleteArchive(file.PDFId);
   emit('selectFile', file, false);
-  addPDF(file);
+  return batchReductionArchive(new Set([file]));
 }
 
 function reductionTrash() {
-  deleteTrash(file.PDFId);
   emit('selectFile', file, false);
-  addPDF(file);
+  return batchReductionTrash(new Set([file]));
 }
 
 function openWarnPopup() {
