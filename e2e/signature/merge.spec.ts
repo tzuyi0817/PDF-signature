@@ -1,5 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import { IDB_KEY } from '@/constants/idb';
+import { createPng } from '@/utils/pdf-export/testing/png';
 import { createMockSignedFile, MOCK_SIGNED_FILE, readStoredOverlayCount, STORED_BLOB } from '../mocks/file';
 
 const LITERAL = 'E2E signature';
@@ -31,8 +32,12 @@ function holdNextListWrite(page: Page, key: string) {
 
       const spin = (request: IDBRequest) => {
         request.onsuccess = () => {
-          if (sessionStorage.getItem('list-write') === 'released') {
+          const state = sessionStorage.getItem('list-write');
+
+          if (state === 'released') {
             put.call(this, value, storeKey);
+          } else if (state === 'failed') {
+            this.transaction.abort();
           } else {
             spin(this.get('__hold'));
           }
@@ -45,6 +50,40 @@ function holdNextListWrite(page: Page, key: string) {
       return first as unknown as IDBRequest<IDBValidKey>;
     };
   }, key);
+}
+
+function watchNextWrite(page: Page, key: string) {
+  return page.evaluate(watchedKey => {
+    const { put } = IDBObjectStore.prototype;
+
+    IDBObjectStore.prototype.put = function (value: unknown, storeKey?: IDBValidKey) {
+      if (storeKey === watchedKey) {
+        IDBObjectStore.prototype.put = put;
+        console.info('write-queued');
+      }
+
+      return put.call(this, value, storeKey);
+    };
+  }, key);
+}
+
+function watchCompleteNavigation(page: Page) {
+  return page.evaluate(() => {
+    const app: unknown = Reflect.get(document.querySelector('#app') ?? {}, '__vue_app__');
+    const router: unknown = Reflect.get(
+      Reflect.get(Reflect.get(new Object(app), 'config') ?? {}, 'globalProperties') ?? {},
+      '$router',
+    );
+
+    if (typeof router !== 'object' || router === null || !('beforeEach' in router)) {
+      throw new Error('Vue router is not mounted');
+    }
+    if (typeof router.beforeEach !== 'function') throw new TypeError('Vue router is not mounted');
+
+    router.beforeEach((to: { name?: unknown }) => {
+      if (to.name === 'complete') sessionStorage.setItem('complete-attempted', 'true');
+    });
+  });
 }
 
 async function addLiteralSignature(page: Page) {
@@ -93,6 +132,7 @@ test.describe('signature merge', { tag: [STORED_BLOB] }, () => {
   test('stays on the page the user went back to while the merge is saving', async ({ page }) => {
     await addLiteralSignature(page);
     await holdNextListWrite(page, IDB_KEY.PDF_LIST);
+    await watchCompleteNavigation(page);
     await page.getByRole('button', { name: /next step/i }).click();
 
     const held = page.waitForEvent('console', message => message.text() === 'list-write-held');
@@ -105,12 +145,37 @@ test.describe('signature merge', { tag: [STORED_BLOB] }, () => {
     await page.evaluate(() => sessionStorage.setItem('list-write', 'released'));
 
     await expect(page.getByText(/file created successfully/i)).toBeVisible();
+    expect(await page.evaluate(() => sessionStorage.getItem('complete-attempted'))).toBeNull();
+  });
 
-    const isNavigated = await page.waitForURL(/\/complete$/, { timeout: 3000 }).then(
-      () => true,
-      () => false,
-    );
+  test('keeps the document the user opened after leaving when the merge fails', async ({ page }) => {
+    await addLiteralSignature(page);
+    await holdNextListWrite(page, IDB_KEY.PDF_LIST);
+    await page.getByRole('button', { name: /next step/i }).click();
 
-    expect(isNavigated).toBe(false);
+    const held = page.waitForEvent('console', message => message.text() === 'list-write-held');
+
+    await page.getByRole('button', { name: /^confirm$/i }).click();
+    await held;
+
+    await page.goBack();
+    await page.waitForURL('http://localhost:8081/');
+    await page.getByRole('img', { name: /add file svg/i }).click();
+    await page.waitForURL('http://localhost:8081/upload');
+    await watchNextWrite(page, IDB_KEY.CURRENT_PDF);
+
+    const queued = page.waitForEvent('console', message => message.text() === 'write-queued');
+
+    await page.locator('input[type="file"]').setInputFiles({
+      name: 'photo.png',
+      mimeType: 'image/png',
+      buffer: Buffer.from(createPng(60, 40)),
+    });
+    await queued;
+    await page.evaluate(() => sessionStorage.setItem('list-write', 'failed'));
+
+    await expect(page.getByText(/operation timed out/i)).toBeVisible();
+    await expect(page.getByText(/file uploaded successfully/i)).toBeVisible();
+    expect(await readStoredOverlayCount(page, IDB_KEY.CURRENT_PDF)).toBe(0);
   });
 });

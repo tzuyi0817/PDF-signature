@@ -31,6 +31,8 @@ const defaultState: PDFStore = {
   trashList: [],
 };
 
+const restoringIds = new Set<string>();
+
 export const usePdfStore = defineStore('pdf', {
   state: (): PDFStore => ({ ...defaultState, PDFList: [], archiveList: [], trashList: [] }),
   getters: {},
@@ -87,8 +89,8 @@ export const usePdfStore = defineStore('pdf', {
       this.currentPDF = signed;
     },
     async restoreCurrentPDF(PDF: PDF) {
-      await setIdb(IDB_KEY.CURRENT_PDF, PDF);
       this.currentPDF = PDF;
+      await setIdb(IDB_KEY.CURRENT_PDF, PDF);
     },
 
     async getPDF() {
@@ -119,7 +121,15 @@ export const usePdfStore = defineStore('pdf', {
       const previous = this.PDFList.find(item => item.PDFId === PDF.PDFId);
 
       if (!previous) {
-        await this.addPDF({ ...PDF, PDFId: crypto.randomUUID() });
+        const PDFId = crypto.randomUUID();
+
+        if (this.currentPDF.PDFId === PDF.PDFId) {
+          const current = { ...this.currentPDF, PDFId };
+
+          await setIdb(IDB_KEY.CURRENT_PDF, current);
+          this.currentPDF = current;
+        }
+        await this.addPDF({ ...PDF, PDFId });
 
         return;
       }
@@ -171,15 +181,8 @@ export const usePdfStore = defineStore('pdf', {
 
       return this.updateArchiveIdb();
     },
-    async batchReductionArchive(PDFList: Set<PDF>) {
-      const restoring = [...PDFList].filter(({ PDFId }) => this.PDFList.every(item => item.PDFId !== PDFId));
-      const ids = new Set(restoring.map(({ PDFId }) => PDFId));
-
-      if (restoring.length === 0) return;
-
-      await this.addPDFs(restoring);
-      this.archiveList = this.archiveList.filter(({ PDFId }) => !ids.has(PDFId));
-      await this.updateArchiveIdb();
+    batchReductionArchive(PDFList: Set<PDF>) {
+      return this.restoreDocuments(PDFList, 'archiveList');
     },
     updateArchiveIdb() {
       return setIdb(IDB_KEY.ARCHIVE_LIST, this.archiveList);
@@ -228,15 +231,38 @@ export const usePdfStore = defineStore('pdf', {
 
       return this.updateTrashIdb();
     },
-    async batchReductionTrash(PDFList: Set<PDF>) {
-      const restoring = [...PDFList].filter(({ PDFId }) => this.PDFList.every(item => item.PDFId !== PDFId));
-      const ids = new Set(restoring.map(({ PDFId }) => PDFId));
+    batchReductionTrash(PDFList: Set<PDF>) {
+      return this.restoreDocuments(PDFList, 'trashList');
+    },
+    async restoreDocuments(PDFList: Set<PDF>, source: 'archiveList' | 'trashList') {
+      const requested = [...PDFList].filter(({ PDFId }) => !restoringIds.has(PDFId));
+      const ids = new Set(requested.map(({ PDFId }) => PDFId));
 
-      if (restoring.length === 0) return;
+      if (ids.size === 0) return;
 
-      await this.addPDFs(restoring);
-      this.trashList = this.trashList.filter(({ PDFId }) => !ids.has(PDFId));
-      await this.updateTrashIdb();
+      const missing = requested.filter(({ PDFId }) => this.PDFList.every(item => item.PDFId !== PDFId));
+
+      for (const id of ids) restoringIds.add(id);
+
+      try {
+        if (missing.length > 0) await this.addPDFs(missing);
+
+        const removed = this[source].filter(({ PDFId }) => ids.has(PDFId));
+
+        this[source] = this[source].filter(({ PDFId }) => !ids.has(PDFId));
+
+        try {
+          await (source === 'archiveList' ? this.updateArchiveIdb() : this.updateTrashIdb());
+        } catch (error) {
+          const current = this[source];
+          const restored = removed.filter(({ PDFId }) => current.every(item => item.PDFId !== PDFId));
+
+          this[source] = restored.concat(current);
+          throw error;
+        }
+      } finally {
+        for (const id of ids) restoringIds.delete(id);
+      }
     },
     filterTrash() {
       const MAX_DAY = 30 * 24 * 60 * 60 * 1000;

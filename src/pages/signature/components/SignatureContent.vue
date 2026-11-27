@@ -104,8 +104,12 @@ async function mergeFile() {
           await addPDF(file);
         }
       } catch (error) {
-        await restoreCurrentPDF(base);
         pendingMerge = null;
+
+        if (!isUnmounted) {
+          await restoreCurrentPDF(base);
+        }
+
         throw error;
       }
 

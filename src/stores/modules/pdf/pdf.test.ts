@@ -124,6 +124,19 @@ describe('pdf store：原始 PDF 與簽名 overlay', () => {
 
       expect((idb.get(IDB_KEY.CURRENT_PDF) as PDF | undefined)?.PDFId).toBe('doc-1');
     });
+
+    it('還原簽名前的文件時寫入失敗，記憶體仍回到簽名前', async () => {
+      const store = usePdfStore();
+      const base = createDocument();
+
+      await store.setCurrentPDF(base);
+      await store.setCurrentPDFSignResult({ overlays: [createOverlay(1)], thumbnail: new Blob(['thumbnail']) });
+      setIdbValue.mockRejectedValueOnce(new Error('QuotaExceededError'));
+
+      await expect(store.restoreCurrentPDF(base)).rejects.toThrow('QuotaExceededError');
+
+      expect(store.currentPDF.overlays ?? []).toHaveLength(0);
+    });
   });
 
   describe('設定目前文件', () => {
@@ -206,6 +219,19 @@ describe('pdf store：原始 PDF 與簽名 overlay', () => {
       expect(store.archiveList.map(({ PDFId }) => PDFId)).toEqual(['doc-1']);
     });
 
+    it('目前文件已不在清單時，目前文件跟著換成存下的新 id', async () => {
+      const store = usePdfStore();
+
+      await store.setCurrentPDF(createDocument({ isUpdate: true }));
+      await store.updatePDF(createDocument({ name: 'signed', isUpdate: true }));
+
+      const [saved] = store.PDFList;
+
+      expect(saved.PDFId).not.toBe('doc-1');
+      expect(store.currentPDF.PDFId).toBe(saved.PDFId);
+      expect((idb.get(IDB_KEY.CURRENT_PDF) as PDF).PDFId).toBe(saved.PDFId);
+    });
+
     it('同時新增兩份文件，兩份都會留在清單', async () => {
       const store = usePdfStore();
 
@@ -267,6 +293,88 @@ describe('pdf store：原始 PDF 與簽名 overlay', () => {
 
       expect(storedIds(IDB_KEY.PDF_LIST)).toEqual(['doc-1']);
       expect(storedIds(key)).toEqual([]);
+    });
+
+    it.each([
+      ['封存', IDB_KEY.ARCHIVE_LIST, 'archiveList', 'batchReductionArchive'],
+      ['垃圾桶', IDB_KEY.TRASH_LIST, 'trashList', 'batchReductionTrash'],
+    ] as const)('文件已在清單時從%s還原，殘留的那筆仍會移除', async (_, key, listName, restore) => {
+      const store = usePdfStore();
+      const document = createDocument();
+
+      store.PDFList = [document];
+      idb.set(IDB_KEY.PDF_LIST, [document]);
+      store[listName] = [document];
+      idb.set(key, [document]);
+
+      await store[restore](new Set([document]));
+
+      expect(storedIds(IDB_KEY.PDF_LIST)).toEqual(['doc-1']);
+      expect(store[listName]).toHaveLength(0);
+      expect(storedIds(key)).toEqual([]);
+    });
+
+    it.each([
+      ['封存', IDB_KEY.ARCHIVE_LIST, 'archiveList', 'batchReductionArchive'],
+      ['垃圾桶', IDB_KEY.TRASH_LIST, 'trashList', 'batchReductionTrash'],
+    ] as const)('從%s還原時第二次寫入失敗，畫面與 IndexedDB 一致', async (_, key, listName, restore) => {
+      const store = usePdfStore();
+      const document = createDocument();
+
+      store[listName] = [document];
+      idb.set(key, [document]);
+      setIdbValue
+        .mockImplementationOnce((storeKey, value) => Promise.resolve(void idb.set(storeKey, value)))
+        .mockRejectedValueOnce(new Error('QuotaExceededError'));
+
+      await expect(store[restore](new Set([document]))).rejects.toThrow('QuotaExceededError');
+
+      expect(store[listName].map(({ PDFId }) => PDFId)).toEqual(['doc-1']);
+      expect(storedIds(key)).toEqual(['doc-1']);
+    });
+
+    it('同一份文件連續還原兩次、第一次清單寫入失敗時，文件仍留在封存', async () => {
+      const store = usePdfStore();
+      const document = createDocument();
+
+      store.archiveList = [document];
+      idb.set(IDB_KEY.ARCHIVE_LIST, [document]);
+      setIdbValue.mockRejectedValueOnce(new Error('QuotaExceededError'));
+
+      const results = await Promise.allSettled([
+        store.batchReductionArchive(new Set([document])),
+        store.batchReductionArchive(new Set([document])),
+      ]);
+
+      expect(results.map(({ status }) => status)).toEqual(['rejected', 'fulfilled']);
+      expect(store.archiveList.map(({ PDFId }) => PDFId)).toEqual(['doc-1']);
+      expect(storedIds(IDB_KEY.ARCHIVE_LIST)).toEqual(['doc-1']);
+    });
+
+    it('還原途中又封存同一份文件，寫入失敗回滾後封存只有一筆', async () => {
+      const store = usePdfStore();
+      const document = createDocument();
+      let failArchiveWrite: (() => void) | undefined;
+
+      store.archiveList = [document];
+      idb.set(IDB_KEY.ARCHIVE_LIST, [document]);
+      setIdbValue
+        .mockImplementationOnce((storeKey, value) => Promise.resolve(void idb.set(storeKey, value)))
+        .mockImplementationOnce(
+          () =>
+            new Promise<undefined>((_, reject) => {
+              failArchiveWrite = () => reject(new Error('QuotaExceededError'));
+            }),
+        );
+
+      const restoring = store.batchReductionArchive(new Set([document]));
+
+      await vi.waitFor(() => expect(failArchiveWrite).toBeDefined());
+      await store.addArchive(createDocument());
+      failArchiveWrite?.();
+
+      await expect(restoring).rejects.toThrow('QuotaExceededError');
+      expect(store.archiveList.map(({ PDFId }) => PDFId)).toEqual(['doc-1']);
     });
   });
 
