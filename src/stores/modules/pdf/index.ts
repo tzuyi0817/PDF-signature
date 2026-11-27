@@ -1,11 +1,12 @@
 import { defineStore } from 'pinia';
+import { toRaw } from 'vue';
 import { IDB_KEY } from '@/constants/idb';
 import { getIdb, setIdb } from '@/utils/idb';
-import { useFolderStore } from './folder';
+import { useFolderStore } from '../folder';
 import type { MenuTab } from '@/types/menu';
-import type { PDF } from '@/types/pdf';
+import type { PDF, SignResult } from '@/types/pdf';
 
-interface PDFStore {
+export interface PDFStore {
   currentPDF: PDF;
   PDFList: PDF[];
   archiveList: PDF[];
@@ -30,8 +31,10 @@ const defaultState: PDFStore = {
   trashList: [],
 };
 
+const restoringIds = new Set<string>();
+
 export const usePdfStore = defineStore('pdf', {
-  state: () => ({ ...defaultState }),
+  state: (): PDFStore => ({ ...defaultState, PDFList: [], archiveList: [], trashList: [] }),
   getters: {},
   actions: {
     async getCurrentPDF() {
@@ -43,18 +46,15 @@ export const usePdfStore = defineStore('pdf', {
 
       return currentPDF;
     },
-    setCurrentPDF(PDF: PDF) {
+    async setCurrentPDF(PDF: PDF) {
       const { currentFolderId } = useFolderStore();
+      const next = { ...PDF, folderId: currentFolderId ?? undefined };
 
-      this.currentPDF = {
-        ...PDF,
-        folderId: currentFolderId ?? undefined,
-      };
-
-      return this.updateCurrentPDFIdb();
+      await setIdb(IDB_KEY.CURRENT_PDF, next);
+      this.currentPDF = next;
     },
-    clearCurrentPDF() {
-      this.currentPDF = {
+    async clearCurrentPDF() {
+      const empty: PDF = {
         PDFId: '',
         name: '',
         updateDate: 0,
@@ -68,22 +68,29 @@ export const usePdfStore = defineStore('pdf', {
         folderId: undefined,
       };
 
-      return this.updateCurrentPDFIdb();
+      await setIdb(IDB_KEY.CURRENT_PDF, empty);
+      this.currentPDF = empty;
     },
-    setCurrentPDFName(name: string) {
-      this.currentPDF.name = name;
+    async setCurrentPDFName(name: string) {
+      const next = { ...this.currentPDF, name };
 
-      return this.updateCurrentPDFIdb();
+      await setIdb(IDB_KEY.CURRENT_PDF, next);
+      this.currentPDF = next;
     },
-    setCurrentPDFCanvas(canvas: Blob[], width: number, height: number) {
-      this.currentPDF.canvas = canvas;
-      this.currentPDF.width = width;
-      this.currentPDF.height = height;
+    /** 寫入一次簽署的結果：新的 overlay 排在既有的之後（既有的不動），並更新第一頁縮圖；原始檔保留 */
+    async setCurrentPDFSignResult({ overlays, thumbnail }: SignResult) {
+      const signed = {
+        ...this.currentPDF,
+        overlays: [...(this.currentPDF.overlays ?? []), ...overlays],
+        thumbnail,
+      };
 
-      return this.updateCurrentPDFIdb();
+      await setIdb(IDB_KEY.CURRENT_PDF, signed);
+      this.currentPDF = signed;
     },
-    updateCurrentPDFIdb() {
-      return setIdb(IDB_KEY.CURRENT_PDF, this.currentPDF);
+    async restoreCurrentPDF(PDF: PDF) {
+      this.currentPDF = PDF;
+      await setIdb(IDB_KEY.CURRENT_PDF, PDF);
     },
 
     async getPDF() {
@@ -96,18 +103,46 @@ export const usePdfStore = defineStore('pdf', {
       return PDFList;
     },
     addPDF(PDF: PDF) {
-      this.PDFList.unshift(this.sanitizeFolderId({ ...PDF }));
-
-      return this.updatePDFIdb();
+      return this.addPDFs([PDF]);
     },
-    updatePDF(PDF: PDF) {
-      const index = this.PDFList.findIndex(item => item.PDFId === PDF.PDFId);
+    async addPDFs(PDFs: PDF[]) {
+      const items = PDFs.map(PDF => this.sanitizeFolderId({ ...PDF }));
 
-      if (index === -1) return;
+      this.PDFList = items.toReversed().concat(this.PDFList);
 
-      this.PDFList[index] = PDF;
+      try {
+        await this.updatePDFIdb();
+      } catch (error) {
+        this.PDFList = this.PDFList.filter(entry => !items.includes(toRaw(entry)));
+        throw error;
+      }
+    },
+    async updatePDF(PDF: PDF) {
+      const previous = this.PDFList.find(item => item.PDFId === PDF.PDFId);
 
-      return this.updatePDFIdb();
+      if (!previous) {
+        const PDFId = crypto.randomUUID();
+
+        if (this.currentPDF.PDFId === PDF.PDFId) {
+          const current = { ...this.currentPDF, PDFId };
+
+          await setIdb(IDB_KEY.CURRENT_PDF, current);
+          this.currentPDF = current;
+        }
+        await this.addPDF({ ...PDF, PDFId });
+
+        return;
+      }
+
+      this.PDFList = this.PDFList.map(item => (item === previous ? PDF : item));
+
+      try {
+        await this.updatePDFIdb();
+      } catch (error) {
+        this.PDFList = this.PDFList.map(item => (toRaw(item) === toRaw(PDF) ? previous : item));
+
+        throw error;
+      }
     },
     deletePDF(id: string) {
       this.PDFList = this.PDFList.filter(({ PDFId }) => id !== PDFId);
@@ -147,12 +182,7 @@ export const usePdfStore = defineStore('pdf', {
       return this.updateArchiveIdb();
     },
     batchReductionArchive(PDFList: Set<PDF>) {
-      for (const PDF of PDFList) {
-        this.archiveList = this.archiveList.filter(({ PDFId }) => PDF.PDFId !== PDFId);
-        this.PDFList.unshift(this.sanitizeFolderId(PDF));
-      }
-
-      return Promise.all([this.updatePDFIdb(), this.updateArchiveIdb()]);
+      return this.restoreDocuments(PDFList, 'archiveList');
     },
     updateArchiveIdb() {
       return setIdb(IDB_KEY.ARCHIVE_LIST, this.archiveList);
@@ -202,12 +232,37 @@ export const usePdfStore = defineStore('pdf', {
       return this.updateTrashIdb();
     },
     batchReductionTrash(PDFList: Set<PDF>) {
-      for (const PDF of PDFList) {
-        this.trashList = this.trashList.filter(({ PDFId }) => PDF.PDFId !== PDFId);
-        this.PDFList.unshift(this.sanitizeFolderId(PDF));
-      }
+      return this.restoreDocuments(PDFList, 'trashList');
+    },
+    async restoreDocuments(PDFList: Set<PDF>, source: 'archiveList' | 'trashList') {
+      const requested = [...PDFList].filter(({ PDFId }) => !restoringIds.has(PDFId));
+      const ids = new Set(requested.map(({ PDFId }) => PDFId));
 
-      return Promise.all([this.updatePDFIdb(), this.updateTrashIdb()]);
+      if (ids.size === 0) return;
+
+      const missing = requested.filter(({ PDFId }) => this.PDFList.every(item => item.PDFId !== PDFId));
+
+      for (const id of ids) restoringIds.add(id);
+
+      try {
+        if (missing.length > 0) await this.addPDFs(missing);
+
+        const removed = this[source].filter(({ PDFId }) => ids.has(PDFId));
+
+        this[source] = this[source].filter(({ PDFId }) => !ids.has(PDFId));
+
+        try {
+          await (source === 'archiveList' ? this.updateArchiveIdb() : this.updateTrashIdb());
+        } catch (error) {
+          const current = this[source];
+          const restored = removed.filter(({ PDFId }) => current.every(item => item.PDFId !== PDFId));
+
+          this[source] = restored.concat(current);
+          throw error;
+        }
+      } finally {
+        for (const id of ids) restoringIds.delete(id);
+      }
     },
     filterTrash() {
       const MAX_DAY = 30 * 24 * 60 * 60 * 1000;

@@ -10,6 +10,11 @@ on:
       - package.json
 
 jobs:
+  unit-test:
+    uses: tzuyi0817/workflows/.github/workflows/test.yml@v1
+    with:
+      test: pnpm test
+
   e2e-test:
     uses: tzuyi0817/workflows/.github/workflows/test.yml@v1
     with:
@@ -17,7 +22,7 @@ jobs:
       test: pnpm test:ci-e2e
 
   deploy:
-    needs: e2e-test
+    needs: [unit-test, e2e-test]
     uses: tzuyi0817/workflows/.github/workflows/deploy-vercel.yml@v1
     secrets:
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}

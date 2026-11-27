@@ -3,12 +3,17 @@ import { sleep, throttle } from '@/utils/common';
 import type { PDF } from '@/types/pdf';
 import type CanvasItem from '@component-hook/pdf-canvas/vue';
 
-type CanvasItemInstance = InstanceType<typeof CanvasItem>;
+export type CanvasItemInstance = InstanceType<typeof CanvasItem>;
 type CanvasRect = Record<'height' | 'width', number>;
+
+interface UseLoadCanvasOptions {
+  currentPDF: Ref<PDF>;
+  canvasItems: Readonly<Ref<CanvasItemInstance[] | null>>;
+  isObserveResize?: boolean;
+}
 
 interface LoadCanvasReturn {
   currentPage: Ref<number>;
-  canvasItems: Ref<CanvasItemInstance[] | null>;
   loadedState: Readonly<Ref<readonly boolean[]>>;
   canvasRect: Readonly<Ref<CanvasRect>>;
   canvasScale: Readonly<Ref<number>>;
@@ -18,12 +23,15 @@ interface LoadCanvasReturn {
   handleCanvasReload: () => void;
 }
 
-export function useLoadCanvas(currentPDF: Ref<PDF>, isObserveResize = false): LoadCanvasReturn {
+export function useLoadCanvas({
+  currentPDF,
+  canvasItems,
+  isObserveResize = false,
+}: UseLoadCanvasOptions): LoadCanvasReturn {
   const BASE_SCALE = 0.4;
   const currentPage = ref(1);
   const loadedState = ref<boolean[]>([]);
   const loadedPages = ref(-1);
-  const canvasItems = ref<CanvasItemInstance[] | null>(null);
   const canvasRect = ref<CanvasRect>({ height: 0, width: 0 });
   const canvasScale = ref(BASE_SCALE * window.devicePixelRatio);
   const resizeObserver = new ResizeObserver(handleCanvasResize);
@@ -100,7 +108,6 @@ export function useLoadCanvas(currentPDF: Ref<PDF>, isObserveResize = false): Lo
 
   return {
     currentPage,
-    canvasItems,
     loadedState: readonly(loadedState),
     canvasRect: readonly(canvasRect),
     canvasScale: readonly(canvasScale),

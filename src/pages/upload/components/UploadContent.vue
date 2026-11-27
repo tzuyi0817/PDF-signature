@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { useFabric } from '@component-hook/pdf-canvas/vue';
-import { computed, defineAsyncComponent, nextTick, onMounted, ref, useTemplateRef } from 'vue';
+import { computed, defineAsyncComponent, nextTick, onBeforeMount, onMounted, ref, useTemplateRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { showToast, StepBtn, SvgIcon, Version } from '@/components/common';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { onAfterRouteLeave } from '@/router/events';
 import { useConfigStore, usePdfStore } from '@/stores';
 import { sleep } from '@/utils/common';
+import { unlockOriginal } from '@/utils/pdf-document';
 import { checkFile } from '@/utils/reader';
 
 const fileName = ref('');
@@ -61,7 +62,7 @@ async function renderFile(file: File) {
     if (!fileContent) throw new Error('File content is empty');
 
     scale.value = window.devicePixelRatio;
-    setCurrentPDF(fileContent);
+    await setCurrentPDF(await unlockOriginal(fileContent, filePassword));
     pages.value = fileContent.pages;
     showToast(t('prompt.file_upload_success'));
     fileName.value = file.name;
@@ -90,6 +91,7 @@ function closePasswordPopup(isEnterPassword = false) {
 
 function remove() {
   fileName.value = '';
+  projectName.value = '';
   usePdfStore().clearCurrentPDF();
   updateFilePassword('');
 }
@@ -103,11 +105,30 @@ function focus() {
   isShowPen.value = false;
 }
 
-function blur() {
-  isShowPen.value = true;
-  usePdfStore().setCurrentPDFName(projectName.value);
+async function saveProjectName() {
+  try {
+    await usePdfStore().setCurrentPDFName(projectName.value);
+
+    return true;
+  } catch {
+    showToast({ message: t('prompt.operation_timed_out'), type: 'error' });
+
+    return false;
+  }
 }
 
+function blur() {
+  isShowPen.value = true;
+  saveProjectName();
+}
+
+async function nextStep() {
+  if ((await saveProjectName()) && fileName.value) {
+    goPage('signature');
+  }
+}
+
+onBeforeMount(() => updateFilePassword(''));
 onMounted(createCanvas);
 onAfterRouteLeave(deleteCanvas);
 </script>
@@ -206,7 +227,7 @@ onAfterRouteLeave(deleteCanvas);
 
     <step-btn
       :is-next-disabled="isNextDisabled"
-      @next-step="goPage('signature')"
+      @next-step="nextStep"
       @prev-step="toggleWarnPopup(true)"
     />
 

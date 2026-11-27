@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { defineAsyncComponent, onBeforeUnmount, ref } from 'vue';
-import { useLoadCanvas } from '@/hooks/use-load-canvas';
+import { computed, defineAsyncComponent, onBeforeUnmount, ref, useTemplateRef } from 'vue';
+import { useLoadCanvas, type CanvasItemInstance } from '@/hooks/use-load-canvas';
 import { useConfigStore, usePdfStore } from '@/stores';
 import { isDesktop, monitorDevicePixelRatio } from '@/utils/common';
+import { toSigningFile } from '@/utils/pdf-document';
 import SignaturePopup from './SignaturePopup.vue';
 import type { SignatureTool } from '@/types/menu';
 
@@ -12,13 +13,18 @@ const currentTool = defineModel<SignatureTool | ''>('currentTool');
 const devicePixelRatio = ref(window.devicePixelRatio);
 const { currentPDF } = storeToRefs(usePdfStore());
 const configStore = useConfigStore();
-const { currentPage, loadedState, canvasItems, handleCanvasLoaded } = useLoadCanvas(currentPDF);
+const canvasItems = useTemplateRef<CanvasItemInstance[]>('canvasItems');
+const { currentPage, loadedState, handleCanvasLoaded } = useLoadCanvas({ currentPDF, canvasItems });
 const SignaturePageItem = defineAsyncComponent(() => import('@component-hook/pdf-canvas/vue'));
 const stopMonitorDevicePixelRatio = monitorDevicePixelRatio(changeDevicePixelRatio);
 
+const signingFile = computed(() => toSigningFile(currentPDF.value));
+
 function selectPage(page: number) {
   currentPage.value = page;
+
   if (!isDesktop()) return;
+
   emit('usePage', currentPage.value);
 }
 
@@ -63,7 +69,7 @@ onBeforeUnmount(() => {
           v-if="loadedState[page - 1]"
           ref="canvasItems"
           class="pointer-events-none"
-          :file="currentPDF"
+          :file="signingFile"
           canvas-id="PDF-page-canvas"
           :page="page"
           :canvas-class="loadedState[page] ? 'border-2 border-gray-20' : undefined"

@@ -1,6 +1,15 @@
 import { expect, test } from '@playwright/test';
 import { transformTimestamp } from '@/utils/common';
-import { createMockFiles, MOCK_FILES } from '../mocks/file';
+import { readJpegSource, withExifOrientation } from '@/utils/pdf-export/testing/source';
+import {
+  createMockFiles,
+  createMockSignedFile,
+  MOCK_FILES,
+  MOCK_PAGE_IMAGE_WIDTH,
+  MOCK_SIGNED_FILE,
+  MOCK_THUMBNAIL_WIDTH,
+  STORED_BLOB,
+} from '../mocks/file';
 
 test.describe('files', () => {
   test.beforeEach(async ({ page }) => {
@@ -46,6 +55,30 @@ test.describe('files', () => {
       }
     });
 
+    test(
+      'thumbnail of a document saved before the storage change shows its first stored page',
+      { tag: [STORED_BLOB] },
+      async ({ page }) => {
+        const legacyFile = page.getByRole('listitem').filter({ hasText: MOCK_FILES[0].name });
+        const thumbnail = legacyFile.getByRole('img', { name: 'file', exact: true, includeHidden: true });
+
+        await expect(thumbnail).toHaveJSProperty('naturalWidth', MOCK_PAGE_IMAGE_WIDTH);
+      },
+    );
+
+    test(
+      'thumbnail of a document with its original shows the stored first-page thumbnail',
+      { tag: [STORED_BLOB] },
+      async ({ page }) => {
+        await createMockSignedFile(page);
+
+        const signedFile = page.getByRole('listitem').filter({ hasText: MOCK_SIGNED_FILE.name });
+        const thumbnail = signedFile.getByRole('img', { name: 'file', exact: true, includeHidden: true });
+
+        await expect(thumbnail).toHaveJSProperty('naturalWidth', MOCK_THUMBNAIL_WIDTH);
+      },
+    );
+
     test('search files', async ({ page }) => {
       const searchbar = page.getByPlaceholder(/please enter keywords/i);
 
@@ -84,7 +117,7 @@ test.describe('files', () => {
         await expect(page.getByPlaceholder(/please enter password again/i, { exact: true })).toBeInViewport();
       });
 
-      test('download file', async ({ page }) => {
+      test('download file', { tag: [STORED_BLOB] }, async ({ page }) => {
         const { name } = MOCK_FILES[0];
         const li = page.locator(`li:has-text("${name}")`);
 
@@ -144,7 +177,7 @@ test.describe('files', () => {
         await expect(page.getByText(/passwords are inconsistent/i)).toBeInViewport();
       });
 
-      test('with correct password', async ({ page }) => {
+      test('with correct password', { tag: [STORED_BLOB] }, async ({ page }) => {
         const secret = '123456';
         const { name } = MOCK_FILES[1];
         const li = page.locator(`li:has-text("${name}")`);
@@ -162,19 +195,7 @@ test.describe('files', () => {
       });
     });
 
-    test('click on the sign icon to redirect to signature page', async ({ page, browserName }) => {
-      // Playwright >= 1.61.0 regression: a WebSocket opened inside a Web Worker kills the Firefox
-      // page session with a bare "Error: Assertion error" (ffPage `_onWebSocketOpened` asserts on a
-      // request it never tracked). The signing flow triggers it because pdf.js spawns a worker whose
-      // script is served by the Vite dev server, which injects the HMR client (`/@vite/client`), and
-      // that client opens its HMR WebSocket inside the worker. Chromium/WebKit and real Firefox are
-      // unaffected; 1.59.1/1.60.0 pass, 1.61.x and 1.62.0-alpha fail. Minimal repro: https://github.com/microsoft/playwright/issues/41742.
-      // Remove this skip once the upstream regression is fixed.
-      test.skip(
-        browserName === 'firefox',
-        'Playwright >= 1.61.0 Firefox regression: WebSocket inside a worker crashes the page session',
-      );
-
+    test('click on the sign icon to redirect to signature page', { tag: [STORED_BLOB] }, async ({ page }) => {
       const { name } = MOCK_FILES[0];
       const li = page.locator(`li:has-text("${name}")`);
 
@@ -183,6 +204,26 @@ test.describe('files', () => {
 
       expect(page.url()).toBe('http://localhost:8081/signature');
     });
+
+    test(
+      'editing a signed photo with an EXIF orientation opens the signature page',
+      { tag: [STORED_BLOB] },
+      async ({ page }) => {
+        await createMockSignedFile(
+          page,
+          { ...MOCK_SIGNED_FILE, pages: 1 },
+          withExifOrientation(await readJpegSource(), 6),
+          'image/jpeg',
+        );
+
+        const li = page.locator(`li:has-text("${MOCK_SIGNED_FILE.name}")`);
+
+        await li.getByTitle(/#icon-ic_sign/i).click();
+        await page.waitForURL('http://localhost:8081/signature');
+
+        await expect(page.getByRole('button', { name: /next step/i })).toBeEnabled({ timeout: 30_000 });
+      },
+    );
 
     test('click on the archive icon to move file to archive', async ({ page }) => {
       const { name } = MOCK_FILES[0];

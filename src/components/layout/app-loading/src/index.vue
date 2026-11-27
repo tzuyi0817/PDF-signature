@@ -23,18 +23,6 @@ const { loading } = storeToRefs(useConfigStore());
       <h5 class="text-surface-text text-center">
         {{ $t(loading.content) }}
       </h5>
-      <div
-        v-if="loading.isProcess"
-        class="bg-gray-30 h-2 w-[90%] rounded"
-      >
-        <div
-          class="bg-primary h-full rounded transition-all"
-          :style="{ width: `${loading.completeness}%` }"
-        ></div>
-        <p class="mt-1 text-center text-sm lg:text-base">
-          {{ `${$t('download_progress')} ${Math.floor(loading.completeness)}%` }}
-        </p>
-      </div>
     </div>
   </popup>
 </template>

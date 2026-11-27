@@ -13,8 +13,6 @@ const defaultState: ConfigStore = {
     isShow: false,
     title: '',
     content: '',
-    isProcess: false,
-    completeness: 0,
   },
   filePassword: '',
   theme: 'light',
@@ -26,17 +24,8 @@ export const useConfigStore = defineStore('config', {
     pick: ['theme'],
   },
   actions: {
-    toggleLoading({
-      isShow,
-      title = '',
-      content = '',
-      isProcess = false,
-      completeness = 0,
-    }: PickPartial<Loading, 'title' | 'content' | 'isProcess' | 'completeness'>) {
-      this.loading = { isShow, title, content, isProcess, completeness };
-    },
-    setLoadingCompleteness(completeness: number) {
-      this.loading.completeness = completeness;
+    toggleLoading({ isShow, title = '', content = '' }: PickPartial<Loading, 'title' | 'content'>) {
+      this.loading = { isShow, title, content };
     },
     updateFilePassword(password: string) {
       this.filePassword = password;

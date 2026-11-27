@@ -7,7 +7,8 @@ import { SvgList } from '@/components/svg';
 import { useDragMove } from '@/hooks/use-drag-move';
 import { useConfigStore, usePdfStore } from '@/stores';
 import { sleep, transformTimestamp } from '@/utils/common';
-import { generatePDF } from '@/utils/jspdf';
+import { createEditingBackground, hasOriginalPDF } from '@/utils/pdf-document';
+import { createDownloadFile } from '@/utils/pdf-download';
 import type { MenuTab } from '@/types/menu';
 import type { PDF } from '@/types/pdf';
 
@@ -35,11 +36,13 @@ const emit = defineEmits<Emits>();
 const isShowMore = ref(false);
 const isSelected = ref(false);
 const router = useRouter();
-const { addPDF, addArchive, addTrash, deleteArchive, deleteTrash, setCurrentPDF } = usePdfStore();
+const { addArchive, addTrash, batchReductionArchive, batchReductionTrash, setCurrentPDF } = usePdfStore();
 const { toggleLoading } = useConfigStore();
 const { isDragSourceItem, endDragMove } = useDragMove();
 
 const localTime = computed(() => transformTimestamp(file.updateDate));
+
+const thumbnail = computed(() => file.thumbnail ?? file.canvas?.at(0));
 
 function onDragStart(event: DragEvent) {
   emit('startDrag', file, event);
@@ -80,15 +83,28 @@ function openMoveToFolder() {
 async function editFile() {
   toggleLoading({ isShow: true, title: 'upload_file', content: 'file_uploading' });
 
-  const [pdf] = await Promise.all([generatePDF(file), sleep(300)]);
+  try {
+    const [document] = await Promise.all([hasOriginalPDF(file) ? reopenSigned(file) : reopenLegacy(), sleep(300)]);
 
-  if (!pdf) return;
+    await setCurrentPDF(document);
+    router.push({ name: 'signature' });
+  } finally {
+    toggleLoading({ isShow: false });
+  }
+}
 
-  const content = await loadFile(pdf);
+/** 保有原始檔的文件：既有 overlay 畫進編輯用底圖固定住，原始檔與 overlay 原樣帶著，新簽名之後追加成一層 */
+async function reopenSigned(document: PDF & { data: File }): Promise<PDF> {
+  const background = await createEditingBackground(document).catch(() => createDownloadFile(document));
 
-  setCurrentPDF({ ...file, ...content, PDFId: file.PDFId, canvas: [], isUpdate: true });
-  toggleLoading({ isShow: false });
-  router.push({ name: 'signature' });
+  return { ...document, background: background ?? undefined, isUpdate: true };
+}
+
+/** 此變更前儲存的文件：沒有原始檔，以整頁 PNG 重建一份 PDF 當作原始檔 */
+async function reopenLegacy(): Promise<PDF> {
+  const content = await loadFile(await createDownloadFile(file));
+
+  return { ...file, ...content, PDFId: file.PDFId, canvas: [], isUpdate: true };
 }
 
 function moveToArchive() {
@@ -102,15 +118,13 @@ function moveToTrash() {
 }
 
 function reductionArchive() {
-  deleteArchive(file.PDFId);
   emit('selectFile', file, false);
-  addPDF(file);
+  return batchReductionArchive(new Set([file]));
 }
 
 function reductionTrash() {
-  deleteTrash(file.PDFId);
   emit('selectFile', file, false);
-  addPDF(file);
+  return batchReductionTrash(new Set([file]));
 }
 
 function openWarnPopup() {
@@ -198,7 +212,7 @@ watch(
 
     <div :class="['flex h-37.5 w-1/3 items-center justify-center', { 'lg:hidden': isListStatus }]">
       <blob-image
-        :blob="file.canvas?.at(0)"
+        :blob="thumbnail"
         class="border-gray-20 w-full border-2"
         alt="file"
         draggable="false"

@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import imageCompression from 'browser-image-compression';
 import { storeToRefs } from 'pinia';
-import { computed, defineAsyncComponent, ref, useTemplateRef } from 'vue';
+import { computed, defineAsyncComponent, onBeforeUnmount, ref, useTemplateRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { showToast, StepBtn, Version } from '@/components/common';
-import { A4_WIDTH, DRAG_MOVE_STEP } from '@/constants/common';
-import { useLoadCanvas } from '@/hooks/use-load-canvas';
+import { DRAG_MOVE_STEP } from '@/constants/common';
+import { useLoadCanvas, type CanvasItemInstance } from '@/hooks/use-load-canvas';
 import { usePointerFabric } from '@/hooks/use-pointer-fabric';
 import { useWarnPopup } from '@/hooks/use-warn-popup';
 import { onAfterRouteLeave } from '@/router/events';
 import { useConfigStore, usePdfStore } from '@/stores';
 import { sleep } from '@/utils/common';
-import { canvasToFile } from '@/utils/image';
+import { createThumbnail } from '@/utils/image';
+import { collectOverlays, toSigningFile, toStoredDocument } from '@/utils/pdf-document';
 import SignatureImage from './SignatureImage.vue';
 import SignatureLiteral from './SignatureLiteral.vue';
 import SignatureLoading from './SignatureLoading.vue';
@@ -22,10 +22,10 @@ import SignatureSign from './SignatureSign.vue';
 import SignatureToolbar from './SignatureToolbar.vue';
 import type { DragOffset } from '@/types/drag';
 import type { SignatureTool } from '@/types/menu';
+import type { PDF } from '@/types/pdf';
 
 const SignatureCanvasItem = defineAsyncComponent(() => import('@component-hook/pdf-canvas/vue'));
 const currentTool = ref<SignatureTool | ''>('');
-const isCancelMerge = ref(false);
 const isShowNextWarnPopup = ref(false);
 const isShowMergePopup = ref(false);
 const fileContainerRef = useTemplateRef<HTMLDivElement>('fileContainer');
@@ -37,9 +37,9 @@ const configStore = useConfigStore();
 const { t } = useI18n();
 const { isShowWarnPopup, Popup, goBack, goPage, toggleWarnPopup } = useWarnPopup();
 const { handlePointerDown, handlePointerMove, handlePointerUp } = usePointerFabric(fileContainerRef);
+const signatureCanvasItems = useTemplateRef<CanvasItemInstance[]>('signatureCanvasItems');
 const {
   currentPage,
-  canvasItems: signatureCanvasItems,
   loadedState,
   isCompleted,
   canvasRect,
@@ -47,59 +47,86 @@ const {
   currentCanvasItem,
   handleCanvasLoaded,
   handleCanvasReload,
-} = useLoadCanvas(currentPDF, true);
+} = useLoadCanvas({ currentPDF, canvasItems: signatureCanvasItems, isObserveResize: true });
 
+const signingFile = computed(() => toSigningFile(currentPDF.value));
 const canvasWidth = computed(() => `${canvasRect.value.width * fileZoom.value * canvasScale.value}px`);
 const canvasHeight = computed(() => `${canvasRect.value.height * fileZoom.value * canvasScale.value}px`);
 
 let isGiveUpSignature = false;
 let requestFrame: number | null = null;
+let mergeGeneration = 0;
+let isMergeCommitting = false;
+let pendingMerge: { base: PDF; file: PDF } | null = null;
+let isUnmounted = false;
 
 async function mergeFile() {
+  const generation = ++mergeGeneration;
+
   toggleNextWarnPopup(false);
   toggleMergePopup(true);
   await sleep();
 
   requestAnimationFrame(async () => {
+    let isCommitted = false;
+
     try {
-      if (!signatureCanvasItems.value) return;
-      const { setCurrentPDFCanvas, addPDF, updatePDF } = usePdfStore();
-      const compressPromises = signatureCanvasItems.value.map(async ({ canvasRef }) => {
-        if (!canvasRef) return '';
+      const firstPageCanvas = signatureCanvasItems.value?.at(0)?.canvasRef;
 
-        const imageFile = await canvasToFile(canvasRef);
+      if (!signatureCanvasItems.value || !firstPageCanvas) return;
 
-        return imageCompression(imageFile, { useWebWorker: true });
-      });
+      const { setCurrentPDFSignResult, restoreCurrentPDF, addPDF, updatePDF } = usePdfStore();
+      const [overlays, thumbnail] = await Promise.all([
+        collectOverlays(signatureCanvasItems.value),
+        createThumbnail(firstPageCanvas),
+      ]);
 
-      const blobs = await Promise.all(compressPromises);
+      if (generation !== mergeGeneration) return;
 
-      if (isCancelMerge.value) {
-        isCancelMerge.value = false;
-        return;
+      isCommitted = true;
+      isMergeCommitting = true;
+
+      if (!pendingMerge) {
+        const base = currentPDF.value;
+
+        await setCurrentPDFSignResult({ overlays, thumbnail });
+
+        // 原始檔留在文件上，下載與預覽都從「原始檔 + overlay」產生
+        pendingMerge = { base, file: { ...toStoredDocument(currentPDF.value), updateDate: Date.now() } };
       }
 
-      const filteredBlobs = blobs.filter(blob => blob !== '');
-      const isPortrait = canvasRect.value.width <= canvasRect.value.height;
-      const ratio = A4_WIDTH / (isPortrait ? canvasRect.value.width : canvasRect.value.height);
-      const width = canvasRect.value.width * ratio;
-      const height = canvasRect.value.height * ratio;
+      const { base, file } = pendingMerge;
 
-      setCurrentPDFCanvas(filteredBlobs, width, height);
+      try {
+        if (file.isUpdate) {
+          await updatePDF(file);
+        } else {
+          await addPDF(file);
+        }
+      } catch (error) {
+        pendingMerge = null;
 
-      const file = { ...currentPDF.value, data: null, updateDate: Date.now() };
+        if (!isUnmounted) {
+          await restoreCurrentPDF(base);
+        }
 
-      if (file.isUpdate) {
-        updatePDF(file);
-      } else {
-        addPDF(file);
+        throw error;
       }
+
+      pendingMerge = null;
       showToast(t('prompt.file_created_success'));
-      goPage('complete');
+
+      if (!isUnmounted) goPage('complete');
     } catch {
-      showToast({ message: t('prompt.operation_timed_out'), type: 'error' });
+      if (generation === mergeGeneration) {
+        showToast({ message: t('prompt.operation_timed_out'), type: 'error' });
+      }
     } finally {
-      toggleMergePopup(false);
+      if (isCommitted) isMergeCommitting = false;
+
+      if (generation === mergeGeneration) {
+        toggleMergePopup(false);
+      }
     }
   });
 }
@@ -142,7 +169,9 @@ function giveUpSignature() {
 }
 
 function cancelMergeFile() {
-  isCancelMerge.value = true;
+  if (isMergeCommitting) return;
+
+  mergeGeneration++;
   toggleMergePopup(false);
 }
 
@@ -202,6 +231,12 @@ function cancelScrollToPerFrame() {
 function watermarkActiveFabric() {
   currentCanvasItem.value?.setActiveFabric({ opacity: 0.3 });
 }
+
+onBeforeUnmount(() => {
+  isUnmounted = true;
+
+  if (!isMergeCommitting) mergeGeneration++;
+});
 
 onAfterRouteLeave(() => {
   if (!isGiveUpSignature) return;
@@ -265,7 +300,7 @@ onAfterRouteLeave(() => {
                   v-show="currentPage === page"
                   ref="signatureCanvasItems"
                   class="absolute origin-top-left"
-                  :file="currentPDF"
+                  :file="signingFile"
                   :file-zoom="fileZoom"
                   :file-scale="6.8"
                   :page="page"
